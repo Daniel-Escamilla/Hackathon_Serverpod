@@ -1,4 +1,31 @@
 services:
+  # The Serverpod server itself, built from ../Dockerfile. Runs in "staging"
+  # mode (config/staging.yaml, repurposed since --mode only accepts
+  # development/staging/production/test), talking to postgres/redis over the
+  # compose network instead of localhost. Lets anyone with Docker run the
+  # whole backend the same way on Linux, Windows or Mac, without installing
+  # Dart.
+  server:
+    build:
+      context: ..
+      dockerfile: hackathon_serverpod_server/Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+      - "8082:8082"
+    environment:
+      runmode: staging
+      # Postgres dev password already committed above for the postgres
+      # service; the auth secrets below are per-developer, generated into a
+      # local .env (see .env.example) so nothing sensitive is committed.
+      SERVERPOD_DATABASE_PASSWORD: "j1Sg2Y40G79vEbFQ-5lNWUwp4LQe0P0O"
+      SERVERPOD_SERVICE_SECRET: ${SERVERPOD_SERVICE_SECRET}
+      SERVERPOD_PASSWORD_emailSecretHashPepper: ${SERVERPOD_PASSWORD_emailSecretHashPepper}
+      SERVERPOD_PASSWORD_jwtHmacSha512PrivateKey: ${SERVERPOD_PASSWORD_jwtHmacSha512PrivateKey}
+      SERVERPOD_PASSWORD_jwtRefreshTokenHashPepper: ${SERVERPOD_PASSWORD_jwtRefreshTokenHashPepper}
+    depends_on:
+      - postgres
+
   # Development services
   postgres:
     image: ghcr.io/serverpod/postgres:16

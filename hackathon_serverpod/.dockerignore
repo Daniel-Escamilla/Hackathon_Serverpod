@@ -1,0 +1,11 @@
+.git
+.dart_tool
+build
+.serverpod
+hackathon_serverpod_flutter
+hackathon_serverpod_client/.dart_tool
+hackathon_serverpod_server/.dart_tool
+hackathon_serverpod_server/build
+hackathon_serverpod_server/.serverpod
+hackathon_serverpod_server/config/passwords.yaml
+hackathon_serverpod_server/.env
