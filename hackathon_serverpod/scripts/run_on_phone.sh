@@ -16,6 +16,9 @@ GREEN='\033[32m'
 RED='\033[31m'
 YELLOW='\033[33m'
 RESET='\033[0m'
+DIM='\033[2m'
+
+section() { printf "\n${DIM}── %s${RESET}\n\n" "$1"; }
 
 ok() { printf "\r  ${GREEN}✓${RESET} %-40s\n" "$1"; }
 fail() { printf "\r  ${RED}✗${RESET} %-40s\n" "$1"; }
@@ -78,8 +81,7 @@ confirm() {
   esac
 }
 
-echo "=== Requisitos ==="
-echo
+section "Requisitos"
 
 MISSING_TOOLS=()
 check "adb en PATH"     "command -v adb"     || MISSING_TOOLS+=("adb")
@@ -111,8 +113,7 @@ if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
   echo
 fi
 
-echo "=== Backend (Docker) ==="
-echo
+section "Backend (Docker)"
 
 ENV_FILE="$SERVER_DIR/.env"
 
@@ -167,7 +168,7 @@ else
 fi
 echo
 
-echo "=== Móvil ==="
+section "Móvil"
 echo "Buscando dispositivo Android por USB..."
 echo
 
