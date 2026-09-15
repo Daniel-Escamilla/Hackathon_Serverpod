@@ -56,7 +56,17 @@ coin balance (SVG icon in `assets/icons/coin.svg`, fixed-width number field)
 next to the title. Backend is still the default Serverpod scaffold; no
 custom endpoints or data models yet.
 
-`scripts/run_on_phone.sh` detects a connected Android phone over adb, checks
-that `adb`/`flutter` are installed and the device is authorized, then asks
-for confirmation before building+installing the debug APK and again before
-opening the app.
+`scripts/run_on_phone.sh` first brings up the backend with Docker (checks
+docker is installed/running, generates `hackathon_serverpod_server/.env`
+with dev secrets if missing, `docker compose up --build`) so it runs the
+same on Linux/Windows/Mac without installing Dart — see
+`hackathon_serverpod_server/docker-compose.yaml` (the `server` service runs
+in the repurposed "staging" mode, `config/staging.yaml`, since `--mode` only
+accepts development/staging/production/test). It then detects a connected
+Android phone over adb, checks that `adb`/`flutter` are installed and the
+device is authorized, and asks for confirmation before building+installing
+the debug APK and again before opening the app.
+
+For local hot-reload development instead (the MCP workflow above), keep
+using native `serverpod start` — don't run it at the same time as the
+Docker backend, both bind ports 8080-8082.
