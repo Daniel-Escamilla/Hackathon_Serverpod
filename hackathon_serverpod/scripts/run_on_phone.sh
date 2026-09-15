@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
-# Detects a connected Android phone, checks that adb/flutter are installed
-# and the device is ready, then asks for confirmation before installing and
-# before opening the app.
+# Brings up the backend with Docker (same on Linux/Windows/Mac, no Dart
+# install needed), then detects a connected Android phone, checks that
+# adb/flutter are installed and the device is ready, then asks for
+# confirmation before installing and before opening the app.
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SERVER_DIR="$SCRIPT_DIR/../hackathon_serverpod_server"
 FLUTTER_PROJECT_DIR="$SCRIPT_DIR/../hackathon_serverpod_flutter"
 APP_ID="com.example.hackathon_serverpod_flutter"
 MIN_SDK=21
@@ -76,7 +78,7 @@ confirm() {
   esac
 }
 
-echo "Comprobando requisitos..."
+echo "=== Requisitos ==="
 echo
 
 MISSING_TOOLS=()
@@ -109,6 +111,63 @@ if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
   echo
 fi
 
+echo "=== Backend (Docker) ==="
+echo
+
+ENV_FILE="$SERVER_DIR/.env"
+
+if ! check "docker en PATH" "command -v docker"; then
+  echo "Instala Docker Desktop (Mac/Windows) o Docker Engine (Linux): https://docs.docker.com/get-docker/"
+  echo "Vuelve a lanzar el script cuando lo tengas."
+  exit 1
+fi
+
+if ! check "Docker daemon activo" "docker info"; then
+  echo "Arranca Docker Desktop (o el servicio docker) y vuelve a lanzar el script."
+  exit 1
+fi
+
+if [ ! -f "$ENV_FILE" ]; then
+  {
+    echo "SERVERPOD_SERVICE_SECRET=$(openssl rand -hex 24)"
+    echo "SERVERPOD_PASSWORD_emailSecretHashPepper=$(openssl rand -hex 24)"
+    echo "SERVERPOD_PASSWORD_jwtHmacSha512PrivateKey=$(openssl rand -hex 24)"
+    echo "SERVERPOD_PASSWORD_jwtRefreshTokenHashPepper=$(openssl rand -hex 24)"
+  } >"$ENV_FILE"
+  ok "Secretos de desarrollo generados (hackathon_serverpod_server/.env)"
+fi
+
+echo
+frames_len=${#FRAMES}
+if confirm "¿Levantar el backend (Postgres + servidor Serverpod) con Docker?"; then
+  compose_up() {
+    cd "$SERVER_DIR" && docker compose up -d --build server
+  }
+  run_with_spinner "Levantando backend con Docker" compose_up || exit 1
+
+  i=0
+  BACKEND_UP=""
+  while [ $i -lt 75 ]; do
+    if curl -sf http://localhost:8080/ >/dev/null 2>&1; then
+      BACKEND_UP=1
+      break
+    fi
+    printf "\r  %s Esperando a que el servidor responda..." "${FRAMES:$((i % frames_len)):1}"
+    sleep 0.2
+    i=$((i + 1))
+  done
+  if [ -n "$BACKEND_UP" ]; then
+    ok "Backend respondiendo en http://localhost:8080"
+  else
+    fail "El backend no respondió a tiempo"
+    echo "Revisa los logs con: docker compose -f '$SERVER_DIR/docker-compose.yaml' logs server"
+  fi
+else
+  echo "Backend no levantado. La app se puede instalar igualmente, pero no tendrá servidor detrás."
+fi
+echo
+
+echo "=== Móvil ==="
 echo "Buscando dispositivo Android por USB..."
 echo
 
