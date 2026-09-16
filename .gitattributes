@@ -1,0 +1,3 @@
+# The rules PDF has no NUL bytes near its head, so Git guesses "text" and would
+# apply CRLF conversion to it on checkout, corrupting the file on Windows.
+*.pdf binary
