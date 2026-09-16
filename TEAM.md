@@ -8,21 +8,27 @@ feature lands.
 
 ## Members
 
-| Name | GitHub | Contact |
+| Name | GitHub | Repo role |
 |---|---|---|
-| _(name)_ | @_(handle)_ | |
-| _(name)_ | @_(handle)_ | |
-| _(name)_ | @_(handle)_ | |
-| _(name)_ | @_(handle)_ | |
+| Descamil | [@Daniel-Escamilla](https://github.com/Daniel-Escamilla) | admin (owner) |
+| Volmer42 | [@VolmerES](https://github.com/VolmerES) | write |
+| _(name)_ | @_(handle)_ | _(not yet added as a collaborator)_ |
+| _(name)_ | @_(handle)_ | _(not yet added as a collaborator)_ |
+
+Fill in the last two rows when those members are added to the repository.
 
 Four is the maximum the rules allow (§3: *"A Team may have a maximum of four (4) members"*).
 
 ## Ownership
 
-The code in this repository is the joint work of the members listed above, licensed to
-everyone else under the MIT terms in [`LICENSE`](LICENSE). Being a collaborator on the GitHub
-repository grants push access and nothing more; it is this file and the copyright line in
-`LICENSE` that state the code belongs to all four of us, not to the account that hosts it.
+The code in this repository is the joint work of the members listed above. Being a
+collaborator on the GitHub repository grants push access and nothing more; this file is what
+states that the code belongs to all four of us, not to the account that hosts it.
+
+The repository deliberately carries **no licence**. The code is public to read, but with no
+licence granting anything, all rights stay with its authors: nobody outside the team may copy,
+modify or redistribute it beyond what GitHub's own terms allow (viewing and forking on GitHub).
+Adding a licence later is a decision for all four members.
 
 The rules leave ownership with us (§7: *"All Submissions remain the intellectual property of the
 individuals or organizations that developed them"*) and only grant the organisers a 12-month
