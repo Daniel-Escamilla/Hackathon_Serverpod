@@ -123,8 +123,24 @@ What follows from that:
 - Small and finished beats large and broken. Teams reliably finish about a quarter of what they plan, so scope to one user, one problem, one flow, and make that flow real.
 - The placeholders in the current UI are precisely what the first two criteria penalise: the hardcoded `_members` list in `group_screen.dart`, the in-memory `_items` in `todo_list_screen.dart`, and `_coins = 0` in `main.dart`. Putting those on real models, tables and endpoints is the highest-value work available, and it is the same work that raises the Serverpod-stack score.
 - Prefer deepening one flow over adding a third tab.
-- Serverpod Cloud is the intended deploy target and `lib/server.dart` is already wired for it (`ServerpodCloudEmailIdpConfig`, `ServerpodCloudProvider`); in development, email verification codes are printed to the server console, so sign-in is testable without any mail setup.
-- Two side prizes reward things that are cheap to do while building, and both stack with an overall prize. *Most Valuable Feedback* needs a registered Entrant, an eligible Submission **and** a separate feedback form filed before the deadline, containing actionable material — bug reports, UI improvements, suggested integrations for the Serverpod SDKs, App Studio or the docs. One per Entrant. So Serverpod friction is worth noting as it is hit, not reconstructed on 14 October. *Best Hackathon Post* is a public post, published in the same window, that clearly identifies the Hackathon; only the best one counts.
+- Serverpod Cloud is the intended deploy target and `lib/server.dart` is already wired for it (`ServerpodCloudEmailIdpConfig`, `ServerpodCloudProvider`); in development, email verification codes are printed to the server console, so sign-in is testable without any mail setup. Outside Serverpod Cloud those emails are not sent unless the provider is switched to `EmailIdpConfigFromPasswords` with a real mail sender — self-hosting without doing that leaves judges stuck at sign-up.
+- Hosting: registrants get **one month of free Serverpod Cloud hosting** (welcome pack); the Starter plan is $5/month after that. The deployment has to stay reachable until judging ends on **2026-10-20 17:00**, so a free month that starts counting before about 21 September runs out mid-judging — budget the extra days rather than let it lapse. Deploy with `serverpod cloud launch` (docs: <https://docs.serverpod.dev/cloud>). Deploying creates a live, billable service: it is the team's decision, never a side effect of another task.
+- Two side prizes reward things that are cheap to do while building, and both stack with an overall prize. *Most Valuable Feedback* needs a registered Entrant, an eligible Submission **and** a separate feedback form filed before the deadline, containing actionable material — bug reports, UI improvements, suggested integrations for the Serverpod SDKs, App Studio or the docs. One per Entrant. So Serverpod friction is worth noting as it is hit, not reconstructed on 14 October. *Best Hackathon Post* is a public post, published in the same window, that clearly identifies the Hackathon (the organisers use the hashtag `#buildsomethingreal`); only the best one counts.
+- Support comes from the Serverpod team on Discord (see Links below), which is also where Serverpod friction and bugs are best raised before they go into the feedback form.
+
+## Links
+
+| What | Where |
+|---|---|
+| Serverpod documentation | <https://docs.serverpod.dev> |
+| Serverpod Cloud docs (deploying) | <https://docs.serverpod.dev/cloud> |
+| Serverpod Cloud (plans, free month) | <https://serverpod.dev/cloud> |
+| App Studio — the all-in-one install; **no Windows build**, so on Windows use the CLI as in the README | <https://serverpod.dev/appstudio> |
+| Serverpod Discord — support from the Serverpod team | <https://discord.gg/wJ4pQeHhVc> |
+| Hackathon page — registration, team, submission form | <https://builderbase.com/event/build-something-real-the-serverpod-hackathon> |
+| Official rules (local copy in `docs/`) | <https://tinyurl.com/SP-rules> |
+
+For Serverpod-specific questions, prefer the documentation (or the local `serverpod-*` agent skills, when present) over memory: Serverpod 4 is new, and much of what is written about Serverpod online describes 2.x and 3.x.
 
 ## What the submission has to contain
 

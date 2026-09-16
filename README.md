@@ -111,6 +111,8 @@ serverpod create-migration     # only when a model with a `table` changed
 
 ## Docs
 
+- [Serverpod documentation](https://docs.serverpod.dev) — this project targets Serverpod **4.0**; much
+  older material online covers 2.x and 3.x.
 - [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.
 - [`hackathon_serverpod/AGENTS.md`](hackathon_serverpod/AGENTS.md) — working notes: architecture,
   conventions, the hackathon's judging criteria and submission requirements. Also loaded as
