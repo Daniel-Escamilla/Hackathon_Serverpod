@@ -35,3 +35,39 @@ doc/api/
 .claude/skills/
 .mcp.json
 .vscode/mcp.json
+
+# --- Per-machine files that would break or overwrite the other three ---------
+# Four people, three operating systems: anything below is personal, and
+# committing it silently changes someone else's setup.
+
+# Coding agents' personal settings (the workspace .gitignore covers its own
+# folder; these cover the repo root). CLAUDE.md and AGENTS.md stay shared.
+.claude/settings.local.json
+CLAUDE.local.md
+.cursor/
+.codex/
+.gemini/
+.agents/
+
+# Docker Compose loads an override file automatically. One committed with
+# someone's personal port remaps would move everybody's ports.
+docker-compose.override.yml
+docker-compose.override.yaml
+compose.override.yml
+compose.override.yaml
+
+# Editor settings hold absolute local paths (e.g. the Flutter SDK location).
+# launch.json and tasks.json in hackathon_serverpod/.vscode stay shared.
+.vscode/settings.json
+.idea/
+*.iml
+
+# Flutter version managers point at a local SDK install.
+.fvm/
+
+# Operating system clutter.
+.DS_Store
+Thumbs.db
+desktop.ini
+
+*.log

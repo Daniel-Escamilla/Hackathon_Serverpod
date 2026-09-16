@@ -1,3 +1,22 @@
+# Line endings for a team on Linux, macOS and Windows.
+
+# Store every text file with LF in the repository, whatever the committer's
+# core.autocrlf says. Without this, one Windows machine configured differently
+# can commit CRLF and turn every line of a file into a diff for the others.
+* text=auto
+
+# Shell scripts must stay LF on disk everywhere. A CRLF checkout on Windows
+# still runs under Git Bash, but fails under WSL or inside a container with
+# $'\r': command not found.
+*.sh text eol=lf
+
+# Flutter rewrites these on every `flutter pub get`, always with LF. Checked
+# out as CRLF on Windows they then show as modified with no real change.
+**/flutter/generated_plugin_registrant.cc text eol=lf
+**/flutter/generated_plugin_registrant.h text eol=lf
+**/flutter/generated_plugins.cmake text eol=lf
+**/Flutter/GeneratedPluginRegistrant.swift text eol=lf
+
 # The rules PDF has no NUL bytes near its head, so Git guesses "text" and would
-# apply CRLF conversion to it on checkout, corrupting the file on Windows.
+# apply line-ending conversion to it on checkout, corrupting the file.
 *.pdf binary
