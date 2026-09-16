@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# Mirrors the server-package checks from .github/workflows/{format,analyze}.yml,
+# so a bad commit never has to wait for CI to find out. Enable once per clone:
+#   git config core.hooksPath .githooks
+set -uo pipefail
+
+# The workspace has a Flutter package as a member, so plain `dart` (e.g. from
+# apt) can't resolve it — only the Dart SDK bundled with Flutter can. Put
+# Flutter's bin directory first if it's not already ahead of a system dart.
+if command -v flutter >/dev/null 2>&1; then
+  export PATH="$(dirname "$(command -v flutter)"):$PATH"
+fi
+
+cd "$(git rev-parse --show-toplevel)/hackathon_serverpod/hackathon_serverpod_server" || exit 1
+
+echo "pre-commit: dart format"
+if ! dart format --output=none --set-exit-if-changed .; then
+  echo
+  echo "Formatting issues found. Run 'dart format .' in hackathon_serverpod_server and re-commit."
+  exit 1
+fi
+
+echo "pre-commit: dart analyze --fatal-infos"
+if ! dart analyze --fatal-infos; then
+  echo
+  echo "Analyzer issues found (same --fatal-infos setting CI uses). Fix them and re-commit."
+  exit 1
+fi

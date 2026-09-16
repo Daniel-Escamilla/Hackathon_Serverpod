@@ -43,6 +43,16 @@ The script creates `config/passwords.yaml` (for `serverpod start` and `dart test
 (for Docker) with random values. Both are git-ignored and personal: never commit them, never share
 them. It never overwrites an existing file, so running it again is safe.
 
+Then, from the repo root, enable the git hooks (one-time, per clone):
+
+```sh
+git config core.hooksPath .githooks
+```
+
+`.githooks/pre-commit` runs `dart format`/`dart analyze --fatal-infos`, `.githooks/pre-push` runs
+`dart test` — both scoped to `hackathon_serverpod_server`, the same checks CI
+(`.github/workflows/`) runs again server-side either way.
+
 **Windows:** if the clone fails with `Filename too long`, run
 `git config --global core.longpaths true` and clone again — the Android sources are nested deep
 enough to cross the 260-character path limit in a long base folder.

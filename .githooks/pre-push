@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Runs the server test suite before it leaves the machine — no Docker needed,
+# dart test manages its own embedded PostgreSQL (config/test.yaml). Enable
+# once per clone:
+#   git config core.hooksPath .githooks
+set -uo pipefail
+
+# See pre-commit for why: only Flutter's bundled dart can resolve a workspace
+# that has a Flutter package as a member.
+if command -v flutter >/dev/null 2>&1; then
+  export PATH="$(dirname "$(command -v flutter)"):$PATH"
+fi
+
+cd "$(git rev-parse --show-toplevel)/hackathon_serverpod/hackathon_serverpod_server" || exit 1
+
+echo "pre-push: dart test"
+if ! dart test; then
+  echo
+  echo "Tests failed. Fix them before pushing, or push with --no-verify if you really mean to."
+  exit 1
+fi
