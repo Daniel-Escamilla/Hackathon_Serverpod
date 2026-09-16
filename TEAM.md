@@ -21,18 +21,16 @@ Four is the maximum the rules allow (§3: *"A Team may have a maximum of four (4
 
 ## Ownership
 
-The code in this repository is the joint work of the members listed above. Being a
-collaborator on the GitHub repository grants push access and nothing more; this file is what
-states that the code belongs to all four of us, not to the account that hosts it.
+**The code in this repository belongs jointly to the collaborators of this repository**, the
+members listed above, in equal parts — not to the account that hosts it. The GitHub owner holds
+the repository settings on the team's behalf; that role confers no greater ownership of the code.
 
-The repository deliberately carries **no licence**. The code is public to read, but with no
-licence granting anything, all rights stay with its authors: nobody outside the team may copy,
-modify or redistribute it beyond what GitHub's own terms allow (viewing and forking on GitHub).
-Adding a licence later is a decision for all four members.
+All rights are reserved by the collaborators. The code is public to read, but nobody outside the
+team may copy, modify or redistribute it.
 
-The rules leave ownership with us (§7: *"All Submissions remain the intellectual property of the
-individuals or organizations that developed them"*) and only grant the organisers a 12-month
-licence to show the submission for judging and promotion.
+The hackathon rules leave ownership with the team (§7: *"All Submissions remain the intellectual
+property of the individuals or organizations that developed them"*). Submitting only lets the
+organisers show the project for judging and promotion, for 12 months.
 
 ## Representative
 
