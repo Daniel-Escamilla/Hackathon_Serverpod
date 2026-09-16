@@ -29,22 +29,35 @@ rewrites the lock for everybody.
 
 ## Run it
 
-Fetch dependencies once, from the workspace root — it resolves all three packages together:
+Once, after cloning — fetch dependencies from the workspace root, then generate your local
+secrets:
 
 ```sh
 cd hackathon_serverpod
 flutter pub get
+cd hackathon_serverpod_server
+dart run tool/init_local_secrets.dart
 ```
+
+The script creates `config/passwords.yaml` (for `serverpod start` and `dart test`) and `.env`
+(for Docker) with random values. Both are git-ignored and personal: never commit them, never share
+them. It never overwrites an existing file, so running it again is safe.
+
+**Windows:** if the clone fails with `Filename too long`, run
+`git config --global core.longpaths true` and clone again — the Android sources are nested deep
+enough to cross the 260-character path limit in a long base folder.
+
+**Ports:** the backend needs 8080-8082 free (and 8090 for the Docker database). If another
+project's containers hold them, stop those first; nothing here will start while they are taken.
 
 ### Backend, in Docker
 
-Runs the same on Linux, macOS and Windows and needs no Dart toolchain. It expects a `.env` with
-dev secrets next to the compose file; `scripts/run_on_phone.sh` generates one automatically, or
-copy `.env.example` and fill it in.
+Runs the same on Linux, macOS and Windows. It needs the `.env` created by
+`tool/init_local_secrets.dart` above (without Dart, `scripts/run_on_phone.sh` generates one too,
+or copy `.env.example` and fill it in).
 
 ```sh
 cd hackathon_serverpod/hackathon_serverpod_server
-cp .env.example .env    # then replace the changeme values
 docker compose up --build server
 ```
 

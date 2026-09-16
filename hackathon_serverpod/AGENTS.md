@@ -56,6 +56,8 @@ Still-unused scaffold leftovers: the `Greeting` model/endpoint/test, and `screen
 
 ## Commands
 
+On a fresh clone, `dart run tool/init_local_secrets.dart` in the server package creates the git-ignored `config/passwords.yaml` and `.env`; without them neither `serverpod start` nor `dart test` can start. It never overwrites, and nobody should delete an existing `passwords.yaml` — the local embedded database was initialised with that password.
+
 Run each check from the package it covers. CI (`.github/workflows/`) gates only the server package, and analysis is stricter there than the default:
 
 ```sh
