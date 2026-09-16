@@ -13,9 +13,19 @@ The Dart workspace lives in [`hackathon_serverpod/`](hackathon_serverpod) and ho
 
 ## Requirements
 
-- Flutter **3.44.4** and the Dart SDK it ships (`^3.12.2`)
-- The Serverpod CLI, for the hot-reload workflow: `dart install serverpod_cli 4.0.0`
-- Docker, only for the containerised backend below
+Four people on three operating systems work on this, so what gets pinned is the versions, not
+the platform. Check yours with `flutter --version` and `serverpod --version`.
+
+| Tool | Version | Why this one |
+|---|---|---|
+| Flutter | **3.44.4** | What CI runs; `pubspec.yaml` requires `^3.44.4` |
+| Dart | **3.12.2** | Ships with that Flutter; the server Dockerfile builds on `dart:3.12.2` |
+| Serverpod CLI | **4.0.0** | Same as the `serverpod` package. `dart install serverpod_cli 4.0.0` — it prints where it put the binary and warns if that directory is not on your PATH |
+| Docker | any recent | Optional, only for the containerised backend below |
+
+`pubspec.lock` is committed on purpose. `flutter pub get` honours it, so everyone resolves the
+same dependencies. Don't run `flutter pub upgrade` without agreeing it with the team — it
+rewrites the lock for everybody.
 
 ## Run it
 
@@ -101,6 +111,7 @@ serverpod create-migration     # only when a model with a `table` changed
 
 ## Docs
 
+- [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.
 - [`hackathon_serverpod/AGENTS.md`](hackathon_serverpod/AGENTS.md) — working notes: architecture,
   conventions, the hackathon's judging criteria and submission requirements. Also loaded as
   `CLAUDE.md`.
