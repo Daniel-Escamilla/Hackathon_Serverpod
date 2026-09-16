@@ -23,11 +23,6 @@ NEVER edit generated code. The server's `lib/src/generated/` directory and the w
 
 Migrations are a narrow exception: the `migration.sql` of a generated migration MAY be edited by hand when the generated SQL would lose data — to add a data transformation, or to reach a destructive change through non-destructive steps. Never touch the other files in the migration directory, and keep the schema the SQL ends up with identical to `definition.sql` — new databases are created from that file and never run `migration.sql`.
 
-Only when the server cannot be started at all, fall back to the CLI in the server package:
-
-- `serverpod generate` to regenerate the client and the generated server code.
-- `serverpod create-migration` after changing a model with a `table` (add `--force` for destructive changes). It only writes the migration; `serverpod start` applies pending migrations when it boots the server.
-
 Tests need no Docker. `config/test.yaml` sets `database.dataPath`, so Serverpod starts and manages the test database (an embedded PostgreSQL) itself, and the project's `docker-compose.yaml` is not used for it. Just run `dart test` in the server package.
 
 Checklist after doing changes, in this order:
@@ -47,6 +42,100 @@ If the user asks you to test the app:
 
 The app is launched from `hackathon_serverpod_flutter/lib/driver.dart`, which starts the Flutter driver extension with text entry emulation turned off so the app stays usable by hand. To let the driver type, set `enableTextEntryEmulation: true` there and `hot_restart` the app.
 
+## Packages
+
+The root `pubspec.yaml` (`name: _`) is a Dart workspace, so a single `flutter pub get` at the root resolves all three packages together against one shared lockfile.
+
+- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/greetings/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
+- `hackathon_serverpod_client` — 100% generated from the server. Never hand-edit; the Flutter app depends on it by path.
+- `hackathon_serverpod_flutter` — the app. `lib/client.dart` owns the global `client` (a deliberate global, not DI), `lib/main.dart` is the UI shell, screens live in `lib/screens/`.
+
+Still-unused scaffold leftovers: the `Greeting` model/endpoint/test, and `screens/greetings_screen.dart` + `screens/sign_in_screen.dart`, which nothing imports.
+
+## Commands
+
+Run each check from the package it covers. CI (`.github/workflows/`) gates only the server package, and analysis is stricter there than the default:
+
+```sh
+cd hackathon_serverpod_server
+dart analyze --fatal-infos          # CI setting; unawaited_futures and avoid_print are on here
+dart format --set-exit-if-changed .
+dart test                                                    # whole suite
+dart test test/integration/greeting_endpoint_test.dart       # one file
+dart test -n 'returned greeting includes name'               # one test by name
+dart test -t integration                                     # the only declared tag (dart_test.yaml)
+
+cd ../hackathon_serverpod_flutter
+flutter analyze
+flutter test
+```
+
+## Ports and databases
+
+| Port | What |
+|---|---|
+| 8080 / 8081 / 8082 | API server / Insights / web server (same in every run mode) |
+| 8090 / 8091 | compose `postgres` / `redis` |
+| 9090 / 9091 | compose `postgres_test` / `redis_test` |
+
+`config/development.yaml` and `config/test.yaml` both set `database.dataPath`, so native `serverpod start` and `dart test` each boot their own embedded PostgreSQL under `.serverpod/`. The compose database services are there for the Docker backend path and for CI. Redis is disabled in every run mode.
+
+## How the app reaches the server
+
+`lib/client.dart` builds the client from `getServerUrl()`, which prefers `--dart-define=SERVER_URL=...`, then falls back to `assets/config.json`, then to `http://localhost:8080/`. The server serves a *runtime* version of that file — `server.dart` mounts `AppConfigRoute` at `/assets/assets/config.json`, filled from the API URL in `config/<mode>.yaml` — so a Flutter **web** build served by the server always gets the right URL, whatever host it runs on.
+
+A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does not pass it today, which is harmless only while the screens stay local placeholders.
+
+## Serving the Flutter app from the server
+
+`serverpod: scripts: flutter_build` in the server `pubspec.yaml` builds the Flutter web app into `hackathon_serverpod_server/web/app` (Windows needs `xcopy` because Flutter's `--output` is broken there; both branches `flutter clean` and retry once on failure). `server.dart` mounts that directory at `/` when it exists and otherwise falls back to the `web/pages/build_flutter_app.html` placeholder — so a bare-looking site on port 8082 usually just means the web app has not been built.
+
+## Why this project exists
+
+"Build Something Real", the Serverpod hackathon. Sponsor Serverpod AB, administered by BuilderBase. One full-stack app, any domain, no tracks, on the condition that Serverpod is the backend. The official rules live in the repo: `docs/hackathon-rules.pdf`, with a greppable text extraction beside it at `docs/hackathon-rules.md` (source <https://tinyurl.com/SP-rules>, copied 2026-09-16). They prevail over anything the event site says, and section 11 allows them to be amended mid-event, so re-check the source before relying on a detail close to the deadline. What follows is a working summary, not a substitute.
+
+| When (CEST) | What |
+|---|---|
+| 2026-09-15 17:30 | Submission Period opens; registration stays open throughout |
+| **2026-10-14 23:59** | **Submissions close. The rules say "No extensions"** |
+| 2026-10-15 09:00 → 10-20 17:00 | Judging. The Submission is frozen, though the repo may keep moving |
+| 2026-10-22 18:00 | Winners announced at the Full Stack Flutter conference |
+
+The first commit here is 2026-09-15 19:46 CEST, inside the window, so the "new projects only" requirement is satisfied.
+
+Judging runs in two stages. **Stage One** is a pass/fail screen: does the Project fit the theme and make reasonable use of the Serverpod stack. A default scaffold behind a UI that never calls it is what fails at this gate. **Stage Two** scores:
+
+| Weight | Criterion | What the Judges look for |
+|---|---|---|
+| 30% | Does it work | It runs, the core flow completes, **nothing critical is faked** |
+| 25% | Use of the Serverpod stack | Doing real work, not sitting behind a static page |
+| 25% | Craft and technical creativity | Rough is fine, careless is not |
+| 20% | Usefulness | A clear user with a clear problem, and this helps |
+
+Ties are broken on "Does it work" first, then down the list in order.
+
+**The Judges are not required to run the Project.** They may score from the text description, images and video alone, so the demo has to show the core flow actually completing. Presentation quality is explicitly not scored, so the effort goes into the flow, not the edit.
+
+What follows from that:
+
+- Small and finished beats large and broken. Teams reliably finish about a quarter of what they plan, so scope to one user, one problem, one flow, and make that flow real.
+- The placeholders in the current UI are precisely what the first two criteria penalise: the hardcoded `_members` list in `group_screen.dart`, the in-memory `_items` in `todo_list_screen.dart`, and `_coins = 0` in `main.dart`. Putting those on real models, tables and endpoints is the highest-value work available, and it is the same work that raises the Serverpod-stack score.
+- Prefer deepening one flow over adding a third tab.
+- Serverpod Cloud is the intended deploy target and `lib/server.dart` is already wired for it (`ServerpodCloudEmailIdpConfig`, `ServerpodCloudProvider`); in development, email verification codes are printed to the server console, so sign-in is testable without any mail setup.
+- Two side prizes reward things that are cheap to do while building, and both stack with an overall prize. *Most Valuable Feedback* needs a registered Entrant, an eligible Submission **and** a separate feedback form filed before the deadline, containing actionable material — bug reports, UI improvements, suggested integrations for the Serverpod SDKs, App Studio or the docs. One per Entrant. So Serverpod friction is worth noting as it is hit, not reconstructed on 14 October. *Best Hackathon Post* is a public post, published in the same window, that clearly identifies the Hackathon; only the best one counts.
+
+## What the submission has to contain
+
+Graded deliverables beyond the code, all of it in English or with an English translation — the UI being in Spanish is fine, the submission materials are not:
+
+- **A repo URL** with all source, assets and instructions needed to make the Project work. A private repo that is not the one created under Serverpod's GitHub org has to be shared with `viktor@`, `alexander@` and `isak@serverpod.dev`.
+- **Build and run instructions.** A requirement, not a nicety. `scripts/run_on_phone.sh` and the Docker path are most of the answer already; the root `README.md` is the natural home for them and is currently stale.
+- **A text description** of the features and how it was built, which **must disclose the use of AI and agentic tooling**. Using it is expressly encouraged; failing to disclose it is a rules breach.
+- **A demo video under 2 minutes**, publicly visible on YouTube or Vimeo, showing the Project running on its target device, free of third-party marks and music.
+- **Working access for testing** — a link, a demo or a test build — free and unrestricted until judging ends, with credentials included if anything is gated.
+
+Third-party SDKs, APIs and data need to be licensed for this use; open-source components are allowed provided the Project builds on top of them rather than merely repackaging them.
+
 ## About this app
 
 "Hackathon App": a Flutter app with a light theme (Archivo font) and two
@@ -55,6 +144,10 @@ swipeable tabs under a top `TabBar` (full-width sliding indicator) — "Grupo"
 coin balance (SVG icon in `assets/icons/coin.svg`, fixed-width number field)
 next to the title. Backend is still the default Serverpod scaffold; no
 custom endpoints or data models yet.
+
+User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
+prompts take `s`/`si` as yes. Commit messages follow Conventional Commits
+(`feat:`, `docs:`, `chore:`, `style:`).
 
 `scripts/run_on_phone.sh` first brings up the backend with Docker (checks
 docker is installed/running, generates `hackathon_serverpod_server/.env`
