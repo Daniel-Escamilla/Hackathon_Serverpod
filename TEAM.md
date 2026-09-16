@@ -10,12 +10,14 @@ feature lands.
 
 | Name | GitHub | Repo role |
 |---|---|---|
-| Descamil | [@Daniel-Escamilla](https://github.com/Daniel-Escamilla) | admin (owner) |
-| Volmer42 | [@VolmerES](https://github.com/VolmerES) | write |
-| _(name)_ | @_(handle)_ | _(not yet added as a collaborator)_ |
-| _(name)_ | @_(handle)_ | _(not yet added as a collaborator)_ |
+| Descamil (Segovia) | [@Daniel-Escamilla](https://github.com/Daniel-Escamilla) | admin (owner) |
+| Volmer42 (Juan) | [@VolmerES](https://github.com/VolmerES) | write |
+| Daniel | [@dperez-a](https://github.com/dperez-a) | write |
+| Mayte | [@madel-04](https://github.com/madel-04) | _(not yet added as a collaborator)_ |
 
-Fill in the last two rows when those members are added to the repository.
+There are two Daniels on the team: `Daniel-Escamilla` goes by "Segovia" here to
+tell them apart from `dperez-a`. Fill in the last row's role once madel-04
+accepts the pending collaborator invite.
 
 Four is the maximum the rules allow (§3: *"A Team may have a maximum of four (4) members"*).
 
