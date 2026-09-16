@@ -4,8 +4,9 @@
 .dart_tool/
 .packages
 build/
-# If you're building an application, you may want to check-in your pubspec.lock
-pubspec.lock
+# pubspec.lock is committed on purpose: this is an application, four people
+# on three operating systems need identical dependency versions, and the
+# server Dockerfile does `COPY pubspec.lock .` and fails without it.
 
 # Directory created by dartdoc
 # If you don't generate documentation locally you can remove this line.
