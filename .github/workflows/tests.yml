@@ -2,9 +2,9 @@ name: Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   test:
@@ -22,24 +22,27 @@ jobs:
           flutter-version: '3.44.4'
 
       - name: Start containers
-        working-directory: hackathon_serverpod_server
+        working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: docker compose up --quiet-pull --build -d
 
       - name: Install dependencies
+        working-directory: hackathon_serverpod
         run: flutter pub get
 
       - name: Install Serverpod CLI
-        run: dart install serverpod_cli $VERSION
+        run: |
+          dart install serverpod_cli $VERSION
+          echo "$HOME/.local/state/Dart/install/bin" >> "$GITHUB_PATH"
 
       - name: Run Serverpod generator
-        working-directory: hackathon_serverpod_server
+        working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: serverpod generate
 
       - name: Run tests
-        working-directory: hackathon_serverpod_server
+        working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: dart test
 
       - name: Stop containers
         if: always()
-        working-directory: hackathon_serverpod_server
+        working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: docker compose down -v

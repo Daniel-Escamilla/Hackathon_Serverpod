@@ -27,6 +27,17 @@ the platform. Check yours with `flutter --version` and `serverpod --version`.
 same dependencies. Don't run `flutter pub upgrade` without agreeing it with the team — it
 rewrites the lock for everybody.
 
+## Branches
+
+Work goes on **`develop`**; **`main`** is production and only gets what already works on `develop`.
+
+```sh
+git switch develop
+```
+
+When `develop` is tested and the team agrees, someone merges it into `main`. The rest is in
+[`AGENTS.md`](AGENTS.md#branches).
+
 ## Run it
 
 Once, after cloning — fetch dependencies from the workspace root, then generate your local

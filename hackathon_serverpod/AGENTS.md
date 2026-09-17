@@ -60,9 +60,11 @@ On a fresh clone, `dart run tool/init_local_secrets.dart` in the server package 
 
 There are two layers enforcing this, both scoped to the server package only:
 - **Git hooks** (`.githooks/pre-commit`, `.githooks/pre-push`) run `dart format`/`dart analyze --fatal-infos` before a commit and `dart test` before a push. They only run once enabled per clone with `git config core.hooksPath .githooks`; run the format/analyze/test commands yourself regardless of whether that's set, rather than relying on the hook to catch it.
-- **CI** (`.github/workflows/{format,analyze,tests}.yml`) re-checks the same things server-side on every push, so a bypassed or unconfigured hook (`--no-verify`, or `core.hooksPath` never set) still gets caught.
+- **CI** (`.github/workflows/{format,analyze,tests}.yml`, at the repo root) re-checks the same things server-side on every push to `main` or `develop` and on every pull request, so a bypassed or unconfigured hook (`--no-verify`, or `core.hooksPath` never set) still gets caught.
 
-Run each check from the package it covers. CI (`.github/workflows/`) gates only the server package, and analysis is stricter there than the default:
+Commits go on `develop`; `main` is production. The branch flow is in the [root `AGENTS.md`](../AGENTS.md#branches).
+
+Run each check from the package it covers. CI (the repo root's `.github/workflows/`) gates only the server package, and analysis is stricter there than the default:
 
 ```sh
 cd hackathon_serverpod_server

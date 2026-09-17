@@ -41,6 +41,22 @@ server, the generated client and the Flutter app.
 - Serverpod 4 is new. Prefer the documentation at <https://docs.serverpod.dev> over memory — most of
   what is written online describes 2.x and 3.x.
 
+## Branches
+
+`develop` is where the work goes. `main` is production: it only gets what already works on
+`develop`, so it stays in a state we would show.
+
+- Commit on `develop`. If you are doing something that could break the others, branch off it and
+  merge back when it works — a pull request is welcome, not required.
+- When `develop` is tested and the team agrees it is ready, someone merges it into `main`:
+
+  ```sh
+  git switch main && git merge --no-ff develop && git push origin main
+  ```
+
+CI (`.github/workflows/`) runs `analyze`, `format` and `tests` on both branches, so `develop` is
+checked before anything reaches `main`.
+
 ## Commands, with and without MCP
 
 Some tools connect to the `serverpod` and `dart` MCP servers declared in `.mcp.json`; Claude Code does.

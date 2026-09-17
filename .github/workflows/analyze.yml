@@ -2,9 +2,9 @@ name: Analyze
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
   analyze:
@@ -18,8 +18,9 @@ jobs:
           flutter-version: '3.44.4'
 
       - name: Install dependencies
+        working-directory: hackathon_serverpod
         run: flutter pub get
 
       - name: Analyze
-        working-directory: hackathon_serverpod_server
+        working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: dart analyze --fatal-infos
