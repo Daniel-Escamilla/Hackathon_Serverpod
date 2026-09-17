@@ -136,7 +136,13 @@ serverpod create-migration     # only when a model with a `table` changed
 
 - [Serverpod documentation](https://docs.serverpod.dev) — this project targets Serverpod **4.0**; much
   older material online covers 2.x and 3.x.
+- [`docs/PRODUCT.md`](docs/PRODUCT.md) — what we are building: the profiles, the task cycle and its
+  voting rules, the shop, the architecture and the agreed scope. In Spanish, the team's working
+  language. Written 2026-09-17.
 - [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.
+- [`AGENTS.md`](AGENTS.md) — the entry point for any coding agent (Codex, Claude Code, Gemini CLI,
+  Cursor…): what to read first, the rules that hold everywhere and the commands with and without MCP.
+  Plain Markdown, no tool-specific format; `CLAUDE.md` just points at it.
 - [`hackathon_serverpod/AGENTS.md`](hackathon_serverpod/AGENTS.md) — working notes: architecture,
   conventions, the hackathon's judging criteria and submission requirements. Also loaded as
   `CLAUDE.md`.
