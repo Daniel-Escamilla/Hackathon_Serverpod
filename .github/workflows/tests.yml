@@ -30,7 +30,9 @@ jobs:
         run: flutter pub get
 
       - name: Install Serverpod CLI
-        run: dart install serverpod_cli $VERSION
+        run: |
+          dart install serverpod_cli $VERSION
+          echo "$HOME/.local/state/Dart/install/bin" >> "$GITHUB_PATH"
 
       - name: Run Serverpod generator
         working-directory: hackathon_serverpod/hackathon_serverpod_server
