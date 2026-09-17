@@ -43,26 +43,19 @@ server, the generated client and the Flutter app.
 
 ## Branches
 
-Two long-lived branches. `develop` is where the work goes; `main` is production.
+`develop` is where the work goes. `main` is production: it only gets what already works on
+`develop`, so it stays in a state we would show.
 
-| Branch | What it is | How it moves |
-|---|---|---|
-| `develop` | **Integration.** Everything lands here first — features, fixes, docs. Branch from it and open pull requests against it | Commits and merged pull requests |
-| `main` | **Production.** Only what has already been tested on `develop`. It is what a judge, a clone or a deploy reads, so it should always be in a state we would show | Only a deliberate merge from `develop` |
-
-- **Commit to `develop`, never straight to `main`.** If you are unsure where you are,
-  `git branch --show-current` before committing.
-- Anything big enough to break the others gets its own branch off `develop` (`feat/…`, `fix/…`) and
-  comes back through a pull request.
-- **Promoting to production is the team's decision**, like deploying to Serverpod Cloud: once
-  `develop` has been tested, someone merges it on purpose, never as a side effect of another task.
+- Commit on `develop`. If you are doing something that could break the others, branch off it and
+  merge back when it works — a pull request is welcome, not required.
+- When `develop` is tested and the team agrees it is ready, someone merges it into `main`:
 
   ```sh
   git switch main && git merge --no-ff develop && git push origin main
   ```
 
-CI (`.github/workflows/`) runs `analyze`, `format` and `tests` on push and pull request for both
-branches, so `develop` is checked before anything reaches `main`.
+CI (`.github/workflows/`) runs `analyze`, `format` and `tests` on both branches, so `develop` is
+checked before anything reaches `main`.
 
 ## Commands, with and without MCP
 

@@ -29,16 +29,14 @@ rewrites the lock for everybody.
 
 ## Branches
 
-Work happens on **`develop`**. **`main`** is production and only receives what has already been
-tested on `develop`, so clone and commit on `develop`:
+Work goes on **`develop`**; **`main`** is production and only gets what already works on `develop`.
 
 ```sh
 git switch develop
 ```
 
-Anything big enough to break the others gets its own branch off `develop` and comes back as a pull
-request. Merging `develop` into `main` is a deliberate team decision, not a routine step. The full
-rules are in [`AGENTS.md`](AGENTS.md#branches).
+When `develop` is tested and the team agrees, someone merges it into `main`. The rest is in
+[`AGENTS.md`](AGENTS.md#branches).
 
 ## Run it
 
