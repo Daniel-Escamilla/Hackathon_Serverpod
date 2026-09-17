@@ -48,11 +48,14 @@ server, the generated client and the Flutter app.
 
 - Commit on `develop`. If you are doing something that could break the others, branch off it and
   merge back when it works — a pull request is welcome, not required.
-- When `develop` is tested and the team agrees it is ready, someone merges it into `main`:
+- **`main` is protected**: no direct push, not even for admins. When `develop` is tested and the
+  team agrees it is ready, someone opens a pull request from `develop` into `main`:
 
   ```sh
-  git switch main && git merge --no-ff develop && git push origin main
+  gh pr create --base main --head develop --title "Promote develop to main" --fill
   ```
+
+  It only merges once `Format`, `Tests` and `Analyze` are green on it.
 
 CI (`.github/workflows/`) runs `analyze`, `format` and `tests` on both branches, so `develop` is
 checked before anything reaches `main`.
