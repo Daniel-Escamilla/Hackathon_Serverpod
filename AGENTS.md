@@ -12,10 +12,12 @@ anyway — they are the instructions.
 | File | What it is | Read it when |
 |---|---|---|
 | [`docs/PRODUCT.md`](docs/PRODUCT.md) | **What we are building**: profiles, the task cycle and its voting rules, fines, shop, architecture, agreed scope and what is still open. In Spanish | Before designing, planning or implementing any feature |
+| [`docs/PLAN.md`](docs/PLAN.md) | **When and who**: the MVP cut, the video script that defines it, the four weeks task by task, the dates that do not move and what gets dropped first if we run late. In Spanish | Picking up work, or wondering whether something is in scope |
 | [`hackathon_serverpod/AGENTS.md`](hackathon_serverpod/AGENTS.md) | **How to work in the code**: packages, commands, ports, conventions, the MCP workflow and the hackathon's judging criteria | Before touching code |
 | [`README.md`](README.md) | Required tool versions and how to run the backend, the app and the tests | Setting up, or running anything |
 | [`TEAM.md`](TEAM.md) | Members, representative, ownership and prize split | Anything about authorship or the submission |
 | [`docs/hackathon-rules.md`](docs/hackathon-rules.md) | The official rules, a text copy of the PDF beside it | A deadline or eligibility question |
+| [`docs/FEEDBACK.md`](docs/FEEDBACK.md) | Serverpod friction, written down as it is hit, for the Most Valuable Feedback prize. In English | Whenever Serverpod, its CLI or its docs get in the way |
 
 The code lives in the Dart workspace [`hackathon_serverpod/`](hackathon_serverpod): the Serverpod
 server, the generated client and the Flutter app.

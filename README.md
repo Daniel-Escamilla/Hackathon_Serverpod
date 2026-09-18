@@ -150,6 +150,10 @@ serverpod create-migration     # only when a model with a `table` changed
 - [`docs/PRODUCT.md`](docs/PRODUCT.md) — what we are building: the profiles, the task cycle and its
   voting rules, the shop, the architecture and the agreed scope. In Spanish, the team's working
   language. Written 2026-09-17.
+- [`docs/PLAN.md`](docs/PLAN.md) — when and who: the MVP cut, the video script that defines it, the
+  four weeks task by task and the dates that do not move. In Spanish. Written 2026-09-18.
+- [`docs/FEEDBACK.md`](docs/FEEDBACK.md) — Serverpod friction as we hit it, for the Most Valuable
+  Feedback prize. In English, because that is what goes into the form.
 - [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.
 - [`AGENTS.md`](AGENTS.md) — the entry point for any coding agent (Codex, Claude Code, Gemini CLI,
   Cursor…): what to read first, the rules that hold everywhere and the commands with and without MCP.

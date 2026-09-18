@@ -91,6 +91,9 @@ pareja, el voto del otro resuelve al instante.
 - **Se deniega** cuando los votos en contra hacen imposible aprobarla.
 - **Expira** si a las 24 horas no se ha decidido. Una votación que expira **cuenta como rechazada**.
 
+La duración es **configurable por entorno**: 24 horas en producción y minutos en desarrollo y en la
+grabación del vídeo. Sin eso no hay forma de probar una expiración ni de enseñarla.
+
 ### 4.3 Contraoferta
 
 Si lo único que no convence es el precio, quien vota una propuesta puede **contraofertar** otro precio
@@ -99,6 +102,9 @@ en lugar de rechazarla. El autor elige:
 - **Aceptar:** la votación **empieza de cero** con el nuevo precio, porque los votos anteriores
   aprobaban otro trato.
 - **Retirar la propuesta**, sin multa.
+
+**La primera contraoferta congela la votación:** mientras el autor no decide, nadie más vota ni
+contraoferta. Así hay siempre una sola oferta sobre la mesa, también en un piso de seis.
 
 ### 4.4 Multas
 
@@ -255,28 +261,36 @@ Quedan cuatro semanas (la entrega cierra el **14 de octubre a las 23:59**) y los
 terminar bastante menos de lo que planean. El jurado penaliza lo que está a medias mucho más de lo que
 premia lo que sobra: "que funcione" pesa un 30 % y lo que está fingido cuenta en contra.
 
-**Imprescindible** — con esto se graba el vídeo:
+El recorte se cerró el **18 de septiembre**. El calendario y el reparto están en
+[`PLAN.md`](PLAN.md).
+
+**El MVP** — es lo que sale en el vídeo, y tiene que funcionar de verdad:
 
 - Registro y entrada con email
-- Crear grupo (piso, pareja o familia) y unirse con código
-- Roles: admin, tutor, hijo
+- Crear grupo **de piso o de pareja** y unirse con código
 - Ciclo completo: proponer → votar → hacer y reclamar → validar → cobrar, con contraoferta
-- Multas y votaciones con plazo de 24 horas
+- Multas y votaciones con plazo
 - Cartera con historial
 - Tienda: plantilla del perfil y recompensas propias, compra eligiendo quién la cumple
 - Avisos en tiempo real dentro de la app
 
-**Si da tiempo:**
+**Fuera del MVP, todo el modo familia** ([§8](#8-modo-familia-y-control-parental)): tutores, hijos,
+control parental y la entrada de los hijos con código. La entrada de los hijos sin email sigue sin
+resolverse, el vídeo se graba con el perfil de pareja y con las horas que hay no cabe. El modelo deja
+sitio para `family`, pero al crear un grupo solo se ofrecen piso y pareja.
+
+**Si da tiempo, por este orden:**
 
 - Misiones periódicas
-- Entrada de los hijos con código
-- Control parental extra: aprobar compras y ver la actividad del hijo
 - Ranking semanal
+- Expulsar, ceder el cargo y salir del grupo
+- Unidades de stock en la tienda
 - Catálogo de tareas típicas para añadirlas de un toque
-- Traducción al inglés
+- Traducción al inglés (los textos salen en ARB desde el primer día, así que es traducir, no rehacer)
 
-**Al final, y solo si sobra:** ruleta de asignación aleatoria · registro con Google · invitación por QR ·
-notificaciones push · iOS · dibujar la casa.
+**Descartado:** ruleta de asignación aleatoria · registro con Google · invitación por QR ·
+notificaciones push · **iOS**, porque la revisión de TestFlight no cabe en el calendario · dibujar la
+casa.
 
 ## 10. Arquitectura
 
@@ -406,15 +420,17 @@ entrega van en inglés obligatoriamente**: descripción, instrucciones y vídeo.
 
 ## 13. Decisiones pendientes
 
+Las que se cerraron el 18 de septiembre están en
+[`PLAN.md` §8](PLAN.md#8-decisiones-tomadas-el-18-de-septiembre).
+
 | Qué | Estado |
 |---|---|
-| **Nombre de la app** | Sin decidir. Hace falta antes del vídeo y del post |
-| **Entrada de los hijos con código** | Decidido cómo funciona para el usuario ([§8](#menores)); falta resolver cómo se crea la cuenta del hijo sin email, porque el proveedor de email de Serverpod lo pide |
-| **Ruleta** | Entra solo si sobra tiempo; su funcionamiento no está definido |
+| **Nombre de la app** | Sin decidir. Fecha tope: **23 de septiembre**; hace falta para el vídeo, el post y el nombre del servicio en Cloud |
 | **Listas de las plantillas** | Borrador escrito en [§6](#plantillas-borrador-a-revisar-por-mayte); falta que Mayte lo revise |
-| **Cuentas de prueba para el jurado** | Decidido que son dos cuentas de una pareja con el grupo ya montado; falta el script que las siembra y quién las mantiene vivas |
-| **Usuarios de GitHub de Mayte y de Segovia** | Faltan en `TEAM.md` |
-| **Reparto del vídeo, el post y el formulario de feedback** | Se decide más adelante |
+| **Misiones periódicas** | Si llegan a entrar, falta decir si cada repetición se vuelve a validar |
+| **Ranking semanal** | Si llega a entrar, falta decir en qué zona horaria se cierra la semana |
+| **Entrada de los hijos con código** | Aparcada: el modo familia queda fuera del MVP ([§9](#9-alcance-por-prioridad)) |
+| **Ruleta** | Descartada ([§9](#9-alcance-por-prioridad)) |
 
 ## 14. Equipo y calendario
 
@@ -428,14 +444,8 @@ entrega van en inglés obligatoriamente**: descripción, instrucciones y vídeo.
 El **representante es Juan**: registra al equipo, envía la entrega y es a quien se le paga el premio,
 que se reparte a partes iguales (ver `TEAM.md`).
 
-Reparto propuesto de las cuatro semanas:
-
-| Semana | Objetivo |
-|---|---|
-| 17–23 sep | Modelos y migraciones, grupos con código de invitación, roles, pantallas base |
-| 24–30 sep | El ciclo completo de la tarea: votaciones, contraofertas, multas, plazos y tiempo real |
-| 1–7 oct | Tienda, compras, cartera y ranking; modo familia |
-| 8–14 oct | Despliegue en Cloud, cuentas de prueba sembradas, inglés, vídeo, descripción y formulario. **Margen para imprevistos** |
+El calendario, el reparto por persona y las fechas que no se mueven están en
+[`PLAN.md`](PLAN.md), escrito el 18 de septiembre. Aquí solo queda quién es quién.
 
 Entregables que no son código, y que puntúan:
 
