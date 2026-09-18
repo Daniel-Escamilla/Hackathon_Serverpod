@@ -152,6 +152,8 @@ serverpod create-migration     # only when a model with a `table` changed
   language. Written 2026-09-17.
 - [`docs/PLAN.md`](docs/PLAN.md) — when and who: the MVP cut, the video script that defines it, the
   four weeks task by task and the dates that do not move. In Spanish. Written 2026-09-18.
+- [`docs/DESIGN.md`](docs/DESIGN.md) — the palette, the typography options still open and the two
+  moments that get motion. A proposal for Mayte and Juan to close. In Spanish.
 - [`docs/FEEDBACK.md`](docs/FEEDBACK.md) — Serverpod friction as we hit it, for the Most Valuable
   Feedback prize. In English, because that is what goes into the form.
 - [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.
