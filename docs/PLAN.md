@@ -92,7 +92,7 @@ Cada semana es su milestone en GitHub.
 
 | Quién | Qué |
 |---|---|
-| Juan | **Registrar el equipo en BuilderBase** (sin esto no hay entrega ni premio de feedback) |
+| Juan | Registrar el equipo en BuilderBase — **hecho el 15 de septiembre**, el primer día. El equipo ya está dado de alta ahí |
 | Equipo | **Decidir el nombre de la app**: hace falta para el vídeo, el post, la interfaz y el nombre del servicio en Cloud |
 | Daniel | `Group` y `GroupMember` en `.spy.yaml`, migración, y `GroupEndpoint`: crear, unirse por código, listar miembros |
 | Segovia | `CoinTransaction`, `RewardItem`, `RewardVote` y `Purchase`; firmas de `WalletEndpoint` y `ShopEndpoint`; plantillas de recompensas como lista en código |
@@ -143,7 +143,6 @@ día.
 | Fecha | Qué | Quién |
 |---|---|---|
 | 21 sep | Contrato de endpoints en `develop` | Daniel y Segovia |
-| 23 sep | Equipo registrado en BuilderBase | Juan |
 | 23 sep | Nombre de la app decidido | Equipo |
 | 30 sep | Ciclo completo y primer despliegue en Cloud | Todos |
 | 7 oct | MVP entero desplegado | Todos |
