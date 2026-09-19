@@ -11,6 +11,12 @@
 // ignore_for_file: dead_code, unnecessary_type_check
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
+    as _iub5jn2z;
+import 'package:hackathon_serverpod_server/src/generated/wallet/coin_transaction.dart'
+    as _ixmfvg9y;
+import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
+    as _ie8onyv8;
 import 'package:serverpod/protocol.dart' as _isp;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
@@ -30,6 +36,7 @@ import 'shop/reward_item_status.dart' as _i2lcnj26;
 import 'shop/reward_vote.dart' as _iod77io3;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
+import 'wallet/ranking_entry.dart' as _izo0hjq0;
 export 'greetings/greeting.dart';
 export 'groups/group.dart';
 export 'groups/group_member.dart';
@@ -43,6 +50,7 @@ export 'shop/reward_item_status.dart';
 export 'shop/reward_vote.dart';
 export 'wallet/coin_transaction.dart';
 export 'wallet/coin_transaction_reason.dart';
+export 'wallet/ranking_entry.dart';
 
 class Protocol extends _is.DatabaseSerializationManager {
   Protocol._();
@@ -596,6 +604,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _inbrsz7i.CoinTransactionReason) {
       return _inbrsz7i.CoinTransactionReason.fromJson(data) as T;
     }
+    if (t == _izo0hjq0.RankingEntry) {
+      return _izo0hjq0.RankingEntry.fromJson(data) as T;
+    }
     if (t == _is.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
     }
@@ -643,6 +654,27 @@ class Protocol extends _is.DatabaseSerializationManager {
               : null)
           as T;
     }
+    if (t == _is.getType<_izo0hjq0.RankingEntry?>()) {
+      return (data != null ? _izo0hjq0.RankingEntry.fromJson(data) : null) as T;
+    }
+    if (t == List<_iub5jn2z.RewardItem>) {
+      return (data as List)
+              .map((e) => deserialize<_iub5jn2z.RewardItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ixmfvg9y.CoinTransaction>) {
+      return (data as List)
+              .map((e) => deserialize<_ixmfvg9y.CoinTransaction>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ie8onyv8.RankingEntry>) {
+      return (data as List)
+              .map((e) => deserialize<_ie8onyv8.RankingEntry>(e))
+              .toList()
+          as T;
+    }
     try {
       return _iais.Protocol().deserialize<T>(data, t);
     } on _is.DeserializationTypeNotFoundException catch (_) {}
@@ -670,6 +702,7 @@ class Protocol extends _is.DatabaseSerializationManager {
       _iod77io3.RewardVote => 'RewardVote',
       _iyltnat0.CoinTransaction => 'CoinTransaction',
       _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
+      _izo0hjq0.RankingEntry => 'RankingEntry',
       _ => null,
     };
   }
@@ -713,6 +746,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'CoinTransaction';
       case _inbrsz7i.CoinTransactionReason():
         return 'CoinTransactionReason';
+      case _izo0hjq0.RankingEntry():
+        return 'RankingEntry';
     }
     className = _iais.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -777,6 +812,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'CoinTransactionReason') {
       return deserialize<_inbrsz7i.CoinTransactionReason>(data['data']);
+    }
+    if (dataClassName == 'RankingEntry') {
+      return deserialize<_izo0hjq0.RankingEntry>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

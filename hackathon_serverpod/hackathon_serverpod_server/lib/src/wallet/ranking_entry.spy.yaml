@@ -1,0 +1,7 @@
+### One row of the weekly ranking: coins earned minus fines, spending excluded
+### (PRODUCT.md §4.6). Computed on request, not a table.
+class: RankingEntry
+fields:
+  memberId: int
+  displayName: String
+  netCoins: int

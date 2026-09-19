@@ -13,6 +13,14 @@
 import 'dart:async' as _ida;
 import 'package:hackathon_serverpod_client/src/protocol/greetings/greeting.dart'
     as _icy68nvy;
+import 'package:hackathon_serverpod_client/src/protocol/shop/purchase.dart'
+    as _idofij3t;
+import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
+    as _ibcsn808;
+import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_transaction.dart'
+    as _izus2l2b;
+import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
+    as _ixil0pu8;
 import 'package:http/http.dart' as _i85jenna;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
@@ -264,6 +272,154 @@ class EndpointGreeting extends _isc.EndpointRef {
       );
 }
 
+/// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3). Bodies are stubs:
+/// the contract (issue #53) lands ahead of the implementation.
+/// {@category Endpoint}
+class EndpointShop extends _isc.EndpointRef {
+  EndpointShop(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'shop';
+
+  /// All rewards visible in the signed-in member's group shop.
+  _ida.Future<List<_ibcsn808.RewardItem>> listRewards() =>
+      caller.callServerEndpoint<List<_ibcsn808.RewardItem>>(
+        'shop',
+        'listRewards',
+        {},
+      );
+
+  /// Propose a new reward. Starts `proposed` and goes to a vote in piso/pareja.
+  _ida.Future<_ibcsn808.RewardItem> proposeReward(
+    String title,
+    String description,
+    int price, {
+    int? stock,
+  }) => caller.callServerEndpoint<_ibcsn808.RewardItem>(
+    'shop',
+    'proposeReward',
+    {
+      'title': title,
+      'description': description,
+      'price': price,
+      'stock': stock,
+    },
+  );
+
+  /// Vote on a proposed reward.
+  _ida.Future<void> voteReward(
+    int itemId,
+    bool approve,
+  ) => caller.callServerEndpoint<void>(
+    'shop',
+    'voteReward',
+    {
+      'itemId': itemId,
+      'approve': approve,
+    },
+  );
+
+  /// A child asks for a reward with no price yet; a guardian sets it and publishes
+  /// (PRODUCT.md §8).
+  _ida.Future<_ibcsn808.RewardItem> requestWish(
+    String title,
+    String description,
+  ) => caller.callServerEndpoint<_ibcsn808.RewardItem>(
+    'shop',
+    'requestWish',
+    {
+      'title': title,
+      'description': description,
+    },
+  );
+
+  /// Buy a reward, choosing who among the other members fulfils it.
+  _ida.Future<_idofij3t.Purchase> purchaseReward(
+    int itemId,
+    int providerId,
+  ) => caller.callServerEndpoint<_idofij3t.Purchase>(
+    'shop',
+    'purchaseReward',
+    {
+      'itemId': itemId,
+      'providerId': providerId,
+    },
+  );
+
+  /// A guardian approves or denies a child's pending purchase.
+  _ida.Future<void> approveChildPurchase(
+    int purchaseId,
+    bool approve,
+  ) => caller.callServerEndpoint<void>(
+    'shop',
+    'approveChildPurchase',
+    {
+      'purchaseId': purchaseId,
+      'approve': approve,
+    },
+  );
+
+  /// The chosen provider accepts or refuses a purchase. Refusing pays the fine and
+  /// refunds the buyer.
+  _ida.Future<void> respondToPurchase(
+    int purchaseId,
+    bool accept,
+  ) => caller.callServerEndpoint<void>(
+    'shop',
+    'respondToPurchase',
+    {
+      'purchaseId': purchaseId,
+      'accept': accept,
+    },
+  );
+
+  /// The provider marks an accepted purchase as fulfilled.
+  _ida.Future<void> markDelivered(int purchaseId) =>
+      caller.callServerEndpoint<void>(
+        'shop',
+        'markDelivered',
+        {'purchaseId': purchaseId},
+      );
+}
+
+/// Balance, history and ranking (PRODUCT.md §10.3). Bodies are stubs: the contract
+/// (issue #53) lands ahead of the implementation (issues #62-65).
+/// {@category Endpoint}
+class EndpointWallet extends _isc.EndpointRef {
+  EndpointWallet(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'wallet';
+
+  /// Current balance of the signed-in member, in their group. Can be negative.
+  _ida.Future<int> getBalance() => caller.callServerEndpoint<int>(
+    'wallet',
+    'getBalance',
+    {},
+  );
+
+  /// Movement history (earned/fined/spent/refunded), most recent first.
+  _ida.Future<List<_izus2l2b.CoinTransaction>> getHistory({
+    required int limit,
+    required int offset,
+  }) => caller.callServerEndpoint<List<_izus2l2b.CoinTransaction>>(
+    'wallet',
+    'getHistory',
+    {
+      'limit': limit,
+      'offset': offset,
+    },
+  );
+
+  /// This week's ranking: coins earned minus fines, spending excluded.
+  _ida.Future<List<_ixil0pu8.RankingEntry>> getWeeklyRanking() =>
+      caller.callServerEndpoint<List<_ixil0pu8.RankingEntry>>(
+        'wallet',
+        'getWeeklyRanking',
+        {},
+      );
+}
+
 class Modules {
   Modules(Client client) {
     serverpod_auth_idp = _iaic.Caller(client);
@@ -305,6 +461,8 @@ class Client extends _isc.ServerpodClientShared {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     greeting = EndpointGreeting(this);
+    shop = EndpointShop(this);
+    wallet = EndpointWallet(this);
     modules = Modules(this);
   }
 
@@ -314,6 +472,10 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointGreeting greeting;
 
+  late final EndpointShop shop;
+
+  late final EndpointWallet wallet;
+
   late final Modules modules;
 
   @override
@@ -321,6 +483,8 @@ class Client extends _isc.ServerpodClientShared {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
     'greeting': greeting,
+    'shop': shop,
+    'wallet': wallet,
   };
 
   @override
