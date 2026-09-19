@@ -23,6 +23,11 @@ import 'groups/group_member.dart' as _iio6btzp;
 import 'groups/group_member_role.dart' as _ixnaxhon;
 import 'groups/group_member_status.dart' as _ivrm4l0w;
 import 'groups/group_type.dart' as _iskz3t6h;
+import 'shop/purchase.dart' as _iw24ridd;
+import 'shop/purchase_status.dart' as _ifglcefk;
+import 'shop/reward_item.dart' as _ikfprkod;
+import 'shop/reward_item_status.dart' as _i2lcnj26;
+import 'shop/reward_vote.dart' as _iod77io3;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 export 'greetings/greeting.dart';
@@ -31,6 +36,11 @@ export 'groups/group_member.dart';
 export 'groups/group_member_role.dart';
 export 'groups/group_member_status.dart';
 export 'groups/group_type.dart';
+export 'shop/purchase.dart';
+export 'shop/purchase_status.dart';
+export 'shop/reward_item.dart';
+export 'shop/reward_item_status.dart';
+export 'shop/reward_vote.dart';
 export 'wallet/coin_transaction.dart';
 export 'wallet/coin_transaction_reason.dart';
 
@@ -268,6 +278,253 @@ class Protocol extends _is.DatabaseSerializationManager {
       indexes: [],
       managed: true,
     ),
+    _isp.TableDefinition(
+      name: 'purchase',
+      dartName: 'Purchase',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'groupId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'itemId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'buyerId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'providerId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'status',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:PurchaseStatus',
+          columnDefault: '\'pending\'',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'purchase_fk_0',
+          columns: ['groupId'],
+          referenceTable: 'group',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'purchase_fk_1',
+          columns: ['itemId'],
+          referenceTable: 'reward_item',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'purchase_fk_2',
+          columns: ['buyerId'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'purchase_fk_3',
+          columns: ['providerId'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'reward_item',
+      dartName: 'RewardItem',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'groupId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'title',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'description',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'price',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'status',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:RewardItemStatus',
+          columnDefault: '\'proposed\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'createdById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'stock',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'reward_item_fk_0',
+          columns: ['groupId'],
+          referenceTable: 'group',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'reward_item_fk_1',
+          columns: ['createdById'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'reward_vote',
+      dartName: 'RewardVote',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'itemId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'memberId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'approve',
+          columnType: _isp.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'reward_vote_fk_0',
+          columns: ['itemId'],
+          referenceTable: 'reward_item',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'reward_vote_fk_1',
+          columns: ['memberId'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'reward_vote__itemId__memberId__unique_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'itemId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'memberId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     ..._iais.Protocol.targetTableDefinitions,
     ..._iacs.Protocol.targetTableDefinitions,
     ..._isp.Protocol.targetTableDefinitions,
@@ -318,6 +575,21 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _iskz3t6h.GroupType) {
       return _iskz3t6h.GroupType.fromJson(data) as T;
     }
+    if (t == _iw24ridd.Purchase) {
+      return _iw24ridd.Purchase.fromJson(data) as T;
+    }
+    if (t == _ifglcefk.PurchaseStatus) {
+      return _ifglcefk.PurchaseStatus.fromJson(data) as T;
+    }
+    if (t == _ikfprkod.RewardItem) {
+      return _ikfprkod.RewardItem.fromJson(data) as T;
+    }
+    if (t == _i2lcnj26.RewardItemStatus) {
+      return _i2lcnj26.RewardItemStatus.fromJson(data) as T;
+    }
+    if (t == _iod77io3.RewardVote) {
+      return _iod77io3.RewardVote.fromJson(data) as T;
+    }
     if (t == _iyltnat0.CoinTransaction) {
       return _iyltnat0.CoinTransaction.fromJson(data) as T;
     }
@@ -343,6 +615,23 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_iskz3t6h.GroupType?>()) {
       return (data != null ? _iskz3t6h.GroupType.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iw24ridd.Purchase?>()) {
+      return (data != null ? _iw24ridd.Purchase.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ifglcefk.PurchaseStatus?>()) {
+      return (data != null ? _ifglcefk.PurchaseStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_ikfprkod.RewardItem?>()) {
+      return (data != null ? _ikfprkod.RewardItem.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i2lcnj26.RewardItemStatus?>()) {
+      return (data != null ? _i2lcnj26.RewardItemStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_iod77io3.RewardVote?>()) {
+      return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
     }
     if (t == _is.getType<_iyltnat0.CoinTransaction?>()) {
       return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
@@ -374,6 +663,11 @@ class Protocol extends _is.DatabaseSerializationManager {
       _ixnaxhon.GroupMemberRole => 'GroupMemberRole',
       _ivrm4l0w.GroupMemberStatus => 'GroupMemberStatus',
       _iskz3t6h.GroupType => 'GroupType',
+      _iw24ridd.Purchase => 'Purchase',
+      _ifglcefk.PurchaseStatus => 'PurchaseStatus',
+      _ikfprkod.RewardItem => 'RewardItem',
+      _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
+      _iod77io3.RewardVote => 'RewardVote',
       _iyltnat0.CoinTransaction => 'CoinTransaction',
       _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
       _ => null,
@@ -405,6 +699,16 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'GroupMemberStatus';
       case _iskz3t6h.GroupType():
         return 'GroupType';
+      case _iw24ridd.Purchase():
+        return 'Purchase';
+      case _ifglcefk.PurchaseStatus():
+        return 'PurchaseStatus';
+      case _ikfprkod.RewardItem():
+        return 'RewardItem';
+      case _i2lcnj26.RewardItemStatus():
+        return 'RewardItemStatus';
+      case _iod77io3.RewardVote():
+        return 'RewardVote';
       case _iyltnat0.CoinTransaction():
         return 'CoinTransaction';
       case _inbrsz7i.CoinTransactionReason():
@@ -452,6 +756,21 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'GroupType') {
       return deserialize<_iskz3t6h.GroupType>(data['data']);
+    }
+    if (dataClassName == 'Purchase') {
+      return deserialize<_iw24ridd.Purchase>(data['data']);
+    }
+    if (dataClassName == 'PurchaseStatus') {
+      return deserialize<_ifglcefk.PurchaseStatus>(data['data']);
+    }
+    if (dataClassName == 'RewardItem') {
+      return deserialize<_ikfprkod.RewardItem>(data['data']);
+    }
+    if (dataClassName == 'RewardItemStatus') {
+      return deserialize<_i2lcnj26.RewardItemStatus>(data['data']);
+    }
+    if (dataClassName == 'RewardVote') {
+      return deserialize<_iod77io3.RewardVote>(data['data']);
     }
     if (dataClassName == 'CoinTransaction') {
       return deserialize<_iyltnat0.CoinTransaction>(data['data']);
@@ -504,6 +823,12 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _i9ztykbt.Group.t;
       case _iio6btzp.GroupMember:
         return _iio6btzp.GroupMember.t;
+      case _iw24ridd.Purchase:
+        return _iw24ridd.Purchase.t;
+      case _ikfprkod.RewardItem:
+        return _ikfprkod.RewardItem.t;
+      case _iod77io3.RewardVote:
+        return _iod77io3.RewardVote.t;
       case _iyltnat0.CoinTransaction:
         return _iyltnat0.CoinTransaction.t;
     }

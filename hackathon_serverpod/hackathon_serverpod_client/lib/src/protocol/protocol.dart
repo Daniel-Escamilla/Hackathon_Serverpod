@@ -22,6 +22,11 @@ import 'groups/group_member.dart' as _iio6btzp;
 import 'groups/group_member_role.dart' as _ixnaxhon;
 import 'groups/group_member_status.dart' as _ivrm4l0w;
 import 'groups/group_type.dart' as _iskz3t6h;
+import 'shop/purchase.dart' as _iw24ridd;
+import 'shop/purchase_status.dart' as _ifglcefk;
+import 'shop/reward_item.dart' as _ikfprkod;
+import 'shop/reward_item_status.dart' as _i2lcnj26;
+import 'shop/reward_vote.dart' as _iod77io3;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 export 'greetings/greeting.dart';
@@ -30,6 +35,11 @@ export 'groups/group_member.dart';
 export 'groups/group_member_role.dart';
 export 'groups/group_member_status.dart';
 export 'groups/group_type.dart';
+export 'shop/purchase.dart';
+export 'shop/purchase_status.dart';
+export 'shop/reward_item.dart';
+export 'shop/reward_item_status.dart';
+export 'shop/reward_vote.dart';
 export 'wallet/coin_transaction.dart';
 export 'wallet/coin_transaction_reason.dart';
 export 'client.dart';
@@ -86,6 +96,21 @@ class Protocol extends _isc.SerializationManager {
     if (t == _iskz3t6h.GroupType) {
       return _iskz3t6h.GroupType.fromJson(data) as T;
     }
+    if (t == _iw24ridd.Purchase) {
+      return _iw24ridd.Purchase.fromJson(data) as T;
+    }
+    if (t == _ifglcefk.PurchaseStatus) {
+      return _ifglcefk.PurchaseStatus.fromJson(data) as T;
+    }
+    if (t == _ikfprkod.RewardItem) {
+      return _ikfprkod.RewardItem.fromJson(data) as T;
+    }
+    if (t == _i2lcnj26.RewardItemStatus) {
+      return _i2lcnj26.RewardItemStatus.fromJson(data) as T;
+    }
+    if (t == _iod77io3.RewardVote) {
+      return _iod77io3.RewardVote.fromJson(data) as T;
+    }
     if (t == _iyltnat0.CoinTransaction) {
       return _iyltnat0.CoinTransaction.fromJson(data) as T;
     }
@@ -111,6 +136,23 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_iskz3t6h.GroupType?>()) {
       return (data != null ? _iskz3t6h.GroupType.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iw24ridd.Purchase?>()) {
+      return (data != null ? _iw24ridd.Purchase.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ifglcefk.PurchaseStatus?>()) {
+      return (data != null ? _ifglcefk.PurchaseStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ikfprkod.RewardItem?>()) {
+      return (data != null ? _ikfprkod.RewardItem.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i2lcnj26.RewardItemStatus?>()) {
+      return (data != null ? _i2lcnj26.RewardItemStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iod77io3.RewardVote?>()) {
+      return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
     }
     if (t == _isc.getType<_iyltnat0.CoinTransaction?>()) {
       return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
@@ -139,6 +181,11 @@ class Protocol extends _isc.SerializationManager {
       _ixnaxhon.GroupMemberRole => 'GroupMemberRole',
       _ivrm4l0w.GroupMemberStatus => 'GroupMemberStatus',
       _iskz3t6h.GroupType => 'GroupType',
+      _iw24ridd.Purchase => 'Purchase',
+      _ifglcefk.PurchaseStatus => 'PurchaseStatus',
+      _ikfprkod.RewardItem => 'RewardItem',
+      _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
+      _iod77io3.RewardVote => 'RewardVote',
       _iyltnat0.CoinTransaction => 'CoinTransaction',
       _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
       _ => null,
@@ -170,6 +217,16 @@ class Protocol extends _isc.SerializationManager {
         return 'GroupMemberStatus';
       case _iskz3t6h.GroupType():
         return 'GroupType';
+      case _iw24ridd.Purchase():
+        return 'Purchase';
+      case _ifglcefk.PurchaseStatus():
+        return 'PurchaseStatus';
+      case _ikfprkod.RewardItem():
+        return 'RewardItem';
+      case _i2lcnj26.RewardItemStatus():
+        return 'RewardItemStatus';
+      case _iod77io3.RewardVote():
+        return 'RewardVote';
       case _iyltnat0.CoinTransaction():
         return 'CoinTransaction';
       case _inbrsz7i.CoinTransactionReason():
@@ -213,6 +270,21 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'GroupType') {
       return deserialize<_iskz3t6h.GroupType>(data['data']);
+    }
+    if (dataClassName == 'Purchase') {
+      return deserialize<_iw24ridd.Purchase>(data['data']);
+    }
+    if (dataClassName == 'PurchaseStatus') {
+      return deserialize<_ifglcefk.PurchaseStatus>(data['data']);
+    }
+    if (dataClassName == 'RewardItem') {
+      return deserialize<_ikfprkod.RewardItem>(data['data']);
+    }
+    if (dataClassName == 'RewardItemStatus') {
+      return deserialize<_i2lcnj26.RewardItemStatus>(data['data']);
+    }
+    if (dataClassName == 'RewardVote') {
+      return deserialize<_iod77io3.RewardVote>(data['data']);
     }
     if (dataClassName == 'CoinTransaction') {
       return deserialize<_iyltnat0.CoinTransaction>(data['data']);
