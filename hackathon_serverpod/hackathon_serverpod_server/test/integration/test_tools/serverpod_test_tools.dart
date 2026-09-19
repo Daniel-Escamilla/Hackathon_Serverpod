@@ -15,6 +15,12 @@ import 'dart:async' as _ida;
 import 'dart:io' as _idi;
 import 'package:hackathon_serverpod_server/src/generated/greetings/greeting.dart'
     as _ikht4he2;
+import 'package:hackathon_serverpod_server/src/generated/groups/group.dart'
+    as _i96jc0h6;
+import 'package:hackathon_serverpod_server/src/generated/groups/group_member.dart'
+    as _is20wtgg;
+import 'package:hackathon_serverpod_server/src/generated/groups/group_type.dart'
+    as _ik8b7v56;
 import 'package:hackathon_serverpod_server/src/generated/shop/purchase.dart'
     as _il4ufzf6;
 import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
@@ -161,6 +167,8 @@ class TestEndpoints {
 
   late final _GreetingEndpoint greeting;
 
+  late final _GroupEndpoint group;
+
   late final _ShopEndpoint shop;
 
   late final _WalletEndpoint wallet;
@@ -182,6 +190,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     greeting = _GreetingEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    group = _GroupEndpoint(
       endpoints,
       serializationManager,
     );
@@ -548,6 +560,89 @@ class _GreetingEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<_ikht4he2.Greeting>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _GroupEndpoint {
+  _GroupEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<_i96jc0h6.Group> createGroup(
+    _ist.TestSessionBuilder sessionBuilder,
+    String name,
+    _ik8b7v56.GroupType type, {
+    String? displayName,
+  }) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'group',
+            method: 'createGroup',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'group',
+          methodName: 'createGroup',
+          parameters: _ist.testObjectToJson({
+            'name': name,
+            'type': type,
+            'displayName': displayName,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i96jc0h6.Group>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_is20wtgg.GroupMember> joinGroup(
+    _ist.TestSessionBuilder sessionBuilder,
+    String inviteCode, {
+    String? displayName,
+  }) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'group',
+            method: 'joinGroup',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'group',
+          methodName: 'joinGroup',
+          parameters: _ist.testObjectToJson({
+            'inviteCode': inviteCode,
+            'displayName': displayName,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_is20wtgg.GroupMember>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

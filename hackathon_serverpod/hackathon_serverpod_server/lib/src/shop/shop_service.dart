@@ -2,12 +2,39 @@ import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
+import 'reward_templates.dart';
 
 /// Voting, buying and fulfilling rewards (PRODUCT.md §4.1, §4.4, §6).
 class ShopService {
   const ShopService({this.walletService = const WalletService()});
 
   final WalletService walletService;
+
+  /// Copies the profile's reward templates into [group] as `active` items — they
+  /// skip the vote that member-proposed rewards go through (PRODUCT.md §6). Family
+  /// has no templates: out of MVP scope (PLAN.md §1).
+  Future<void> seedRewardTemplates(
+    Session session, {
+    required Group group,
+    required GroupMember createdBy,
+    Transaction? transaction,
+  }) async {
+    final templates = rewardTemplatesByGroupType[group.type] ?? const [];
+    for (final template in templates) {
+      await RewardItem.db.insertRow(
+        session,
+        RewardItem(
+          groupId: group.id!,
+          title: template.title,
+          description: '',
+          price: template.price,
+          status: RewardItemStatus.active,
+          createdById: createdBy.id!,
+        ),
+        transaction: transaction,
+      );
+    }
+  }
 
   /// Records [voter]'s vote on [item] and resolves it to `active`/`rejected` once
   /// the result can no longer change — the same majority rule as a task

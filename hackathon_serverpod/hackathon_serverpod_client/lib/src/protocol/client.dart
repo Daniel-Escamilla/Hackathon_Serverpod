@@ -13,6 +13,12 @@
 import 'dart:async' as _ida;
 import 'package:hackathon_serverpod_client/src/protocol/greetings/greeting.dart'
     as _icy68nvy;
+import 'package:hackathon_serverpod_client/src/protocol/groups/group.dart'
+    as _iubjh9pq;
+import 'package:hackathon_serverpod_client/src/protocol/groups/group_member.dart'
+    as _ir4oz66a;
+import 'package:hackathon_serverpod_client/src/protocol/groups/group_type.dart'
+    as _i0727frs;
 import 'package:hackathon_serverpod_client/src/protocol/shop/purchase.dart'
     as _idofij3t;
 import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
@@ -272,6 +278,46 @@ class EndpointGreeting extends _isc.EndpointRef {
       );
 }
 
+/// Create a group and join one by invite code (PRODUCT.md §7, §10.3).
+/// {@category Endpoint}
+class EndpointGroup extends _isc.EndpointRef {
+  EndpointGroup(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'group';
+
+  /// Creates a group with [name] and [type], making the signed-in user its admin,
+  /// and seeds the profile's reward templates. A person can belong to only one
+  /// group at a time (PRODUCT.md §7).
+  _ida.Future<_iubjh9pq.Group> createGroup(
+    String name,
+    _i0727frs.GroupType type, {
+    String? displayName,
+  }) => caller.callServerEndpoint<_iubjh9pq.Group>(
+    'group',
+    'createGroup',
+    {
+      'name': name,
+      'type': type,
+      'displayName': displayName,
+    },
+  );
+
+  /// Joins the group identified by [inviteCode]. Enters directly, no approval
+  /// needed (PRODUCT.md §7). A person can belong to only one group at a time.
+  _ida.Future<_ir4oz66a.GroupMember> joinGroup(
+    String inviteCode, {
+    String? displayName,
+  }) => caller.callServerEndpoint<_ir4oz66a.GroupMember>(
+    'group',
+    'joinGroup',
+    {
+      'inviteCode': inviteCode,
+      'displayName': displayName,
+    },
+  );
+}
+
 /// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).
 /// {@category Endpoint}
 class EndpointShop extends _isc.EndpointRef {
@@ -461,6 +507,7 @@ class Client extends _isc.ServerpodClientShared {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     greeting = EndpointGreeting(this);
+    group = EndpointGroup(this);
     shop = EndpointShop(this);
     wallet = EndpointWallet(this);
     modules = Modules(this);
@@ -471,6 +518,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointJwtRefresh jwtRefresh;
 
   late final EndpointGreeting greeting;
+
+  late final EndpointGroup group;
 
   late final EndpointShop shop;
 
@@ -483,6 +532,7 @@ class Client extends _isc.ServerpodClientShared {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
     'greeting': greeting,
+    'group': group,
     'shop': shop,
     'wallet': wallet,
   };
