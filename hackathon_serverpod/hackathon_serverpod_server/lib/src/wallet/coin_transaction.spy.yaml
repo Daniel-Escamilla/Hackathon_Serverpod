@@ -12,6 +12,12 @@ fields:
   ### most one of taskId/purchaseId, never both.
   taskId: int?
   ### Set when the transaction comes from the shop (spent on a purchase, refunded, or the fine for
-  ### refusing to fulfil one). Same reasoning as taskId: plain id, Purchase does not exist yet.
+  ### refusing to fulfil one). Same reasoning as taskId: plain id, not a relation.
   purchaseId: int?
   createdAt: DateTime, default=now
+
+indexes:
+  coin_transaction_group_id_idx:
+    fields: groupId
+  coin_transaction_member_id_idx:
+    fields: memberId
