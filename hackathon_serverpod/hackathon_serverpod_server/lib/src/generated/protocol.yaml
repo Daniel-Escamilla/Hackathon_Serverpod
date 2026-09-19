@@ -11,3 +11,16 @@ jwtRefresh:
   - refreshAccessToken:
 greeting:
   - hello:
+shop:
+  - listRewards:
+  - proposeReward:
+  - voteReward:
+  - requestWish:
+  - purchaseReward:
+  - approveChildPurchase:
+  - respondToPurchase:
+  - markDelivered:
+wallet:
+  - getBalance:
+  - getHistory:
+  - getWeeklyRanking:
