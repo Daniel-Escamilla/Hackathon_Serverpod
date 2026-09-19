@@ -1,0 +1,17 @@
+### One entry in a member's coin history. Balance and ranking are derived from summing these
+### (PRODUCT.md §4.6, §10.2). Positive amount = coins in, negative = coins out.
+class: CoinTransaction
+table: coin_transaction
+fields:
+  groupId: int, relation(parent=group)
+  memberId: int, relation(parent=group_member)
+  amount: int
+  reason: CoinTransactionReason
+  ### Set when the transaction comes from a task (earned, or the fine for a denied/expired vote).
+  ### Left as a plain id, not a relation: Task does not exist yet, and a transaction references at
+  ### most one of taskId/purchaseId, never both.
+  taskId: int?
+  ### Set when the transaction comes from the shop (spent on a purchase, refunded, or the fine for
+  ### refusing to fulfil one). Same reasoning as taskId: plain id, Purchase does not exist yet.
+  purchaseId: int?
+  createdAt: DateTime, default=now

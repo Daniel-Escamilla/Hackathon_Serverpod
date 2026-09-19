@@ -1,0 +1,7 @@
+### Why a CoinTransaction happened (PRODUCT.md §4.6: ganado, multado, gastado, devuelto).
+enum: CoinTransactionReason
+values:
+  - earned
+  - fined
+  - spent
+  - refunded

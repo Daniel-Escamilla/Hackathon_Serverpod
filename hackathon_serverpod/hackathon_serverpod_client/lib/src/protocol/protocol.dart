@@ -22,12 +22,16 @@ import 'groups/group_member.dart' as _iio6btzp;
 import 'groups/group_member_role.dart' as _ixnaxhon;
 import 'groups/group_member_status.dart' as _ivrm4l0w;
 import 'groups/group_type.dart' as _iskz3t6h;
+import 'wallet/coin_transaction.dart' as _iyltnat0;
+import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 export 'greetings/greeting.dart';
 export 'groups/group.dart';
 export 'groups/group_member.dart';
 export 'groups/group_member_role.dart';
 export 'groups/group_member_status.dart';
 export 'groups/group_type.dart';
+export 'wallet/coin_transaction.dart';
+export 'wallet/coin_transaction_reason.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -82,6 +86,12 @@ class Protocol extends _isc.SerializationManager {
     if (t == _iskz3t6h.GroupType) {
       return _iskz3t6h.GroupType.fromJson(data) as T;
     }
+    if (t == _iyltnat0.CoinTransaction) {
+      return _iyltnat0.CoinTransaction.fromJson(data) as T;
+    }
+    if (t == _inbrsz7i.CoinTransactionReason) {
+      return _inbrsz7i.CoinTransactionReason.fromJson(data) as T;
+    }
     if (t == _isc.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
     }
@@ -102,6 +112,16 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_iskz3t6h.GroupType?>()) {
       return (data != null ? _iskz3t6h.GroupType.fromJson(data) : null) as T;
     }
+    if (t == _isc.getType<_iyltnat0.CoinTransaction?>()) {
+      return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_inbrsz7i.CoinTransactionReason?>()) {
+      return (data != null
+              ? _inbrsz7i.CoinTransactionReason.fromJson(data)
+              : null)
+          as T;
+    }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
     } on _isc.DeserializationTypeNotFoundException catch (_) {}
@@ -119,6 +139,8 @@ class Protocol extends _isc.SerializationManager {
       _ixnaxhon.GroupMemberRole => 'GroupMemberRole',
       _ivrm4l0w.GroupMemberStatus => 'GroupMemberStatus',
       _iskz3t6h.GroupType => 'GroupType',
+      _iyltnat0.CoinTransaction => 'CoinTransaction',
+      _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
       _ => null,
     };
   }
@@ -148,6 +170,10 @@ class Protocol extends _isc.SerializationManager {
         return 'GroupMemberStatus';
       case _iskz3t6h.GroupType():
         return 'GroupType';
+      case _iyltnat0.CoinTransaction():
+        return 'CoinTransaction';
+      case _inbrsz7i.CoinTransactionReason():
+        return 'CoinTransactionReason';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -187,6 +213,12 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'GroupType') {
       return deserialize<_iskz3t6h.GroupType>(data['data']);
+    }
+    if (dataClassName == 'CoinTransaction') {
+      return deserialize<_iyltnat0.CoinTransaction>(data['data']);
+    }
+    if (dataClassName == 'CoinTransactionReason') {
+      return deserialize<_inbrsz7i.CoinTransactionReason>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);
