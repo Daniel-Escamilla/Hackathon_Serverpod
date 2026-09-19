@@ -382,8 +382,7 @@ class EndpointShop extends _isc.EndpointRef {
       );
 }
 
-/// Balance, history and ranking (PRODUCT.md §10.3). Bodies are stubs: the contract
-/// (issue #53) lands ahead of the implementation (issues #62-65).
+/// Balance, history and ranking (PRODUCT.md §10.3, §4.6).
 /// {@category Endpoint}
 class EndpointWallet extends _isc.EndpointRef {
   EndpointWallet(_isc.EndpointCaller caller) : super(caller);
@@ -411,7 +410,8 @@ class EndpointWallet extends _isc.EndpointRef {
     },
   );
 
-  /// This week's ranking: coins earned minus fines, spending excluded.
+  /// This week's ranking: coins earned minus fines, spending excluded. Resets every
+  /// Monday (PRODUCT.md §4.6).
   _ida.Future<List<_ixil0pu8.RankingEntry>> getWeeklyRanking() =>
       caller.callServerEndpoint<List<_ixil0pu8.RankingEntry>>(
         'wallet',
