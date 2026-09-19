@@ -17,7 +17,17 @@ import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _iaic;
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'greetings/greeting.dart' as _izw8z7ou;
+import 'groups/group.dart' as _i9ztykbt;
+import 'groups/group_member.dart' as _iio6btzp;
+import 'groups/group_member_role.dart' as _ixnaxhon;
+import 'groups/group_member_status.dart' as _ivrm4l0w;
+import 'groups/group_type.dart' as _iskz3t6h;
 export 'greetings/greeting.dart';
+export 'groups/group.dart';
+export 'groups/group_member.dart';
+export 'groups/group_member_role.dart';
+export 'groups/group_member_status.dart';
+export 'groups/group_type.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -57,8 +67,40 @@ class Protocol extends _isc.SerializationManager {
     if (t == _izw8z7ou.Greeting) {
       return _izw8z7ou.Greeting.fromJson(data) as T;
     }
+    if (t == _i9ztykbt.Group) {
+      return _i9ztykbt.Group.fromJson(data) as T;
+    }
+    if (t == _iio6btzp.GroupMember) {
+      return _iio6btzp.GroupMember.fromJson(data) as T;
+    }
+    if (t == _ixnaxhon.GroupMemberRole) {
+      return _ixnaxhon.GroupMemberRole.fromJson(data) as T;
+    }
+    if (t == _ivrm4l0w.GroupMemberStatus) {
+      return _ivrm4l0w.GroupMemberStatus.fromJson(data) as T;
+    }
+    if (t == _iskz3t6h.GroupType) {
+      return _iskz3t6h.GroupType.fromJson(data) as T;
+    }
     if (t == _isc.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i9ztykbt.Group?>()) {
+      return (data != null ? _i9ztykbt.Group.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iio6btzp.GroupMember?>()) {
+      return (data != null ? _iio6btzp.GroupMember.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ixnaxhon.GroupMemberRole?>()) {
+      return (data != null ? _ixnaxhon.GroupMemberRole.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ivrm4l0w.GroupMemberStatus?>()) {
+      return (data != null ? _ivrm4l0w.GroupMemberStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iskz3t6h.GroupType?>()) {
+      return (data != null ? _iskz3t6h.GroupType.fromJson(data) : null) as T;
     }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
@@ -72,6 +114,11 @@ class Protocol extends _isc.SerializationManager {
   static String? getClassNameForType(Type type) {
     return switch (type) {
       _izw8z7ou.Greeting => 'Greeting',
+      _i9ztykbt.Group => 'Group',
+      _iio6btzp.GroupMember => 'GroupMember',
+      _ixnaxhon.GroupMemberRole => 'GroupMemberRole',
+      _ivrm4l0w.GroupMemberStatus => 'GroupMemberStatus',
+      _iskz3t6h.GroupType => 'GroupType',
       _ => null,
     };
   }
@@ -91,6 +138,16 @@ class Protocol extends _isc.SerializationManager {
     switch (data) {
       case _izw8z7ou.Greeting():
         return 'Greeting';
+      case _i9ztykbt.Group():
+        return 'Group';
+      case _iio6btzp.GroupMember():
+        return 'GroupMember';
+      case _ixnaxhon.GroupMemberRole():
+        return 'GroupMemberRole';
+      case _ivrm4l0w.GroupMemberStatus():
+        return 'GroupMemberStatus';
+      case _iskz3t6h.GroupType():
+        return 'GroupType';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -115,6 +172,21 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'Greeting') {
       return deserialize<_izw8z7ou.Greeting>(data['data']);
+    }
+    if (dataClassName == 'Group') {
+      return deserialize<_i9ztykbt.Group>(data['data']);
+    }
+    if (dataClassName == 'GroupMember') {
+      return deserialize<_iio6btzp.GroupMember>(data['data']);
+    }
+    if (dataClassName == 'GroupMemberRole') {
+      return deserialize<_ixnaxhon.GroupMemberRole>(data['data']);
+    }
+    if (dataClassName == 'GroupMemberStatus') {
+      return deserialize<_ivrm4l0w.GroupMemberStatus>(data['data']);
+    }
+    if (dataClassName == 'GroupType') {
+      return deserialize<_iskz3t6h.GroupType>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

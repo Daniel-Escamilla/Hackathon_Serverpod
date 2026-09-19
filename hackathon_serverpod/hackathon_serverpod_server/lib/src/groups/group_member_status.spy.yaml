@@ -1,0 +1,5 @@
+### `pending` is a guardian who has not confirmed yet (PRODUCT.md §10.2). Everyone else joins active.
+enum: GroupMemberStatus
+values:
+  - active
+  - pending
