@@ -272,8 +272,7 @@ class EndpointGreeting extends _isc.EndpointRef {
       );
 }
 
-/// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3). Bodies are stubs:
-/// the contract (issue #53) lands ahead of the implementation.
+/// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).
 /// {@category Endpoint}
 class EndpointShop extends _isc.EndpointRef {
   EndpointShop(_isc.EndpointCaller caller) : super(caller);
@@ -320,7 +319,7 @@ class EndpointShop extends _isc.EndpointRef {
   );
 
   /// A child asks for a reward with no price yet; a guardian sets it and publishes
-  /// (PRODUCT.md §8).
+  /// (PRODUCT.md §8). Family mode is out of MVP scope (PLAN.md §1).
   _ida.Future<_ibcsn808.RewardItem> requestWish(
     String title,
     String description,
@@ -346,7 +345,8 @@ class EndpointShop extends _isc.EndpointRef {
     },
   );
 
-  /// A guardian approves or denies a child's pending purchase.
+  /// A guardian approves or denies a child's pending purchase. Family mode is out
+  /// of MVP scope (PLAN.md §1).
   _ida.Future<void> approveChildPurchase(
     int purchaseId,
     bool approve,
