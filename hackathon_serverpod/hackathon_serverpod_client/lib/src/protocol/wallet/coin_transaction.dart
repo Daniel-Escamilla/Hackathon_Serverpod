@@ -75,7 +75,7 @@ abstract class CoinTransaction
   int? taskId;
 
   /// Set when the transaction comes from the shop (spent on a purchase, refunded, or the fine for
-  /// refusing to fulfil one). Same reasoning as taskId: plain id, Purchase does not exist yet.
+  /// refusing to fulfil one). Same reasoning as taskId: plain id, not a relation.
   int? purchaseId;
 
   DateTime createdAt;

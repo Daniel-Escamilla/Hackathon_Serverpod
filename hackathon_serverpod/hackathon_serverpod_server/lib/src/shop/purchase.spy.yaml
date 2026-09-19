@@ -9,3 +9,13 @@ fields:
   ### Who has to fulfil it, chosen by the buyer among the other members.
   providerId: int, relation(parent=group_member)
   status: PurchaseStatus, default=pending
+
+indexes:
+  purchase_group_id_idx:
+    fields: groupId
+  purchase_item_id_idx:
+    fields: itemId
+  purchase_buyer_id_idx:
+    fields: buyerId
+  purchase_provider_id_idx:
+    fields: providerId

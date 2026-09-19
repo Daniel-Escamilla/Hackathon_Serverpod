@@ -12,3 +12,9 @@ fields:
   ### Null means unlimited (the default per PRODUCT.md §6); a number caps how many times it can
   ### be bought.
   stock: int?
+
+indexes:
+  reward_item_group_id_idx:
+    fields: groupId
+  reward_item_created_by_id_idx:
+    fields: createdById

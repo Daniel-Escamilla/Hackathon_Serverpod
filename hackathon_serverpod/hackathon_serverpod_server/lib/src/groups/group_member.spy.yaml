@@ -12,3 +12,7 @@ fields:
   joinedAt: DateTime, default=now
   ### Set when the member leaves or is expelled. The row itself is kept so past activity is not lost.
   leftAt: DateTime?
+
+indexes:
+  group_member_group_id_idx:
+    fields: groupId
