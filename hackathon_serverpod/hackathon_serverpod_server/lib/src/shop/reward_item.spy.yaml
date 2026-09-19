@@ -1,0 +1,14 @@
+### A reward in a group's shop, from the profile template or proposed by a member
+### (PRODUCT.md §6, §10.2).
+class: RewardItem
+table: reward_item
+fields:
+  groupId: int, relation(parent=group)
+  title: String
+  description: String
+  price: int
+  status: RewardItemStatus, default=proposed
+  createdById: int, relation(parent=group_member)
+  ### Null means unlimited (the default per PRODUCT.md §6); a number caps how many times it can
+  ### be bought.
+  stock: int?

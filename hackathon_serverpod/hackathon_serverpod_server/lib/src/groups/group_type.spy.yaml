@@ -1,0 +1,6 @@
+### The profile chosen when a group is created. Never changes afterwards (PRODUCT.md §7).
+enum: GroupType
+values:
+  - sharedFlat
+  - couple
+  - family

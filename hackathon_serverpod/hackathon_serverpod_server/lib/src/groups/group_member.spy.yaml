@@ -1,0 +1,14 @@
+### One person's membership in a group. The wallet balance lives here (PRODUCT.md §10.2, §4.6).
+class: GroupMember
+table: group_member
+fields:
+  groupId: int, relation(parent=group)
+  authUserId: UuidValue
+  displayName: String
+  role: GroupMemberRole
+  status: GroupMemberStatus, default=active
+  ### Result of the CoinTransaction history, kept here for fast reads (PRODUCT.md §10.2).
+  balance: int, default=0
+  joinedAt: DateTime, default=now
+  ### Set when the member leaves or is expelled. The row itself is kept so past activity is not lost.
+  leftAt: DateTime?
