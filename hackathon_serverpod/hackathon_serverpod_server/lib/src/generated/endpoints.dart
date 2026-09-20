@@ -682,6 +682,25 @@ class Endpoints extends _is.EndpointDispatch {
                     params['accept'],
                   ),
         ),
+        'markTaskDone': _is.MethodConnector(
+          name: 'markTaskDone',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['task'] as _i3nmwja6.TaskEndpoint).markTaskDone(
+                    session,
+                    params['taskId'],
+                  ),
+        ),
       },
     );
     connectors['wallet'] = _is.EndpointConnector(

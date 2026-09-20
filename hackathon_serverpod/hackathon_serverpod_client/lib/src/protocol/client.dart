@@ -500,6 +500,15 @@ class EndpointTask extends _isc.EndpointRef {
       'accept': accept,
     },
   );
+
+  /// Claim an open task as done. Whoever's request commits first wins; the
+  /// other gets rejected (PRODUCT.md §3, §10.2).
+  _ida.Future<_i7vt05yn.Task> markTaskDone(int taskId) =>
+      caller.callServerEndpoint<_i7vt05yn.Task>(
+        'task',
+        'markTaskDone',
+        {'taskId': taskId},
+      );
 }
 
 /// Balance, history and ranking (PRODUCT.md §10.3, §4.6).

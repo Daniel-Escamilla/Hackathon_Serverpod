@@ -203,6 +203,40 @@ class TaskService {
     });
   }
 
+  /// [claimant] marks [task] as done, sending it to validation. Nobody reserves
+  /// a task beforehand (PRODUCT.md §3), so two members can press "done" on the
+  /// same task at once; the row lock inside this transaction means only the
+  /// first commit sees `open` and wins, the other gets a `StateError`
+  /// (PRODUCT.md §10.2).
+  Future<Task> markDone(
+    Session session, {
+    required Task task,
+    required GroupMember claimant,
+  }) {
+    return session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
+        session,
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null) throw StateError('Task not found.');
+      if (locked.status != TaskStatus.open) {
+        throw StateError('This task is not available to claim.');
+      }
+
+      return Task.db.updateRow(
+        session,
+        locked.copyWith(
+          status: TaskStatus.inValidation,
+          doneById: claimant.id,
+          voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+        ),
+        transaction: transaction,
+      );
+    });
+  }
+
   Future<Task> _denyProposal(Session session, Task task) {
     return session.db.transaction((transaction) async {
       final updated = await Task.db.updateRow(

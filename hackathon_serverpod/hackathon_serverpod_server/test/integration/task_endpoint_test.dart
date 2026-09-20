@@ -18,6 +18,7 @@ void main() {
 
     late Group householdGroup;
     late GroupMember alice;
+    late GroupMember bob;
 
     TestSessionBuilder sessionOf(String authUserId) => sessionBuilder.copyWith(
       authentication: AuthenticationOverride.authenticationInfo(authUserId, {}),
@@ -41,7 +42,7 @@ void main() {
           role: GroupMemberRole.admin,
         ),
       );
-      await GroupMember.db.insertRow(
+      bob = await GroupMember.db.insertRow(
         session,
         GroupMember(
           groupId: householdGroup.id!,
@@ -258,5 +259,154 @@ void main() {
         });
       });
     });
+
+    group('when the task is open', () {
+      late Task openTask;
+
+      setUp(() async {
+        final proposedTask = await endpoints.task.proposeTask(
+          sessionOf(_aliceAuthUserId),
+          'Limpiar el baño',
+          '',
+          25,
+        );
+        await endpoints.task.voteTaskProposal(
+          sessionOf(_bobAuthUserId),
+          proposedTask.id!,
+          true,
+        );
+        openTask = await endpoints.task.voteTaskProposal(
+          sessionOf(_carolAuthUserId),
+          proposedTask.id!,
+          true,
+        );
+      });
+
+      test('then marking it done sends it to validation', () async {
+        final claimed = await endpoints.task.markTaskDone(
+          sessionOf(_bobAuthUserId),
+          openTask.id!,
+        );
+
+        expect(claimed.status, TaskStatus.inValidation);
+        expect(claimed.doneById, bob.id);
+        expect(claimed.voteClosesAt, isNotNull);
+      });
+
+      test(
+        'then the proposer can also claim and cash their own task',
+        () async {
+          final claimed = await endpoints.task.markTaskDone(
+            sessionOf(_aliceAuthUserId),
+            openTask.id!,
+          );
+
+          expect(claimed.doneById, alice.id);
+        },
+      );
+
+      test('then a second claim on an already-claimed task fails', () async {
+        await endpoints.task.markTaskDone(
+          sessionOf(_bobAuthUserId),
+          openTask.id!,
+        );
+
+        await expectLater(
+          endpoints.task.markTaskDone(
+            sessionOf(_carolAuthUserId),
+            openTask.id!,
+          ),
+          throwsA(isA<StateError>()),
+        );
+      });
+    });
   });
+
+  // Its own group: real concurrent transactions need rollback disabled
+  // (serverpod-testing skill), and each withServerpod group gets its own
+  // database, so this never leaks into the group above.
+  withServerpod(
+    'Given an open task and two members racing to claim it',
+    (sessionBuilder, endpoints) {
+      final session = sessionBuilder.build();
+
+      TestSessionBuilder sessionOf(String authUserId) =>
+          sessionBuilder.copyWith(
+            authentication: AuthenticationOverride.authenticationInfo(
+              authUserId,
+              {},
+            ),
+          );
+
+      test('then only one of the two simultaneous claims wins', () async {
+        final householdGroup = await Group.db.insertRow(
+          session,
+          Group(
+            name: 'Piso de prueba',
+            type: GroupType.sharedFlat,
+            inviteCode: 'TASK02',
+          ),
+        );
+        await GroupMember.db.insertRow(
+          session,
+          GroupMember(
+            groupId: householdGroup.id!,
+            authUserId: UuidValue.fromString(_aliceAuthUserId),
+            displayName: 'Alice',
+            role: GroupMemberRole.admin,
+          ),
+        );
+        await GroupMember.db.insertRow(
+          session,
+          GroupMember(
+            groupId: householdGroup.id!,
+            authUserId: UuidValue.fromString(_bobAuthUserId),
+            displayName: 'Bob',
+            role: GroupMemberRole.member,
+          ),
+        );
+        await GroupMember.db.insertRow(
+          session,
+          GroupMember(
+            groupId: householdGroup.id!,
+            authUserId: UuidValue.fromString(_carolAuthUserId),
+            displayName: 'Carol',
+            role: GroupMemberRole.member,
+          ),
+        );
+
+        final proposedTask = await endpoints.task.proposeTask(
+          sessionOf(_aliceAuthUserId),
+          'Limpiar el baño',
+          '',
+          25,
+        );
+        // 2 other members: ceil(2/2) = 1 approval already opens it.
+        final openTask = await endpoints.task.voteTaskProposal(
+          sessionOf(_bobAuthUserId),
+          proposedTask.id!,
+          true,
+        );
+
+        final outcomes = await Future.wait([
+          endpoints.task
+              .markTaskDone(sessionOf(_bobAuthUserId), openTask.id!)
+              .then<Object>((task) => task, onError: (Object e) => e),
+          endpoints.task
+              .markTaskDone(sessionOf(_carolAuthUserId), openTask.id!)
+              .then<Object>((task) => task, onError: (Object e) => e),
+        ]);
+
+        final wins = outcomes.whereType<Task>();
+        final losses = outcomes.whereType<StateError>();
+        expect(wins, hasLength(1));
+        expect(losses, hasLength(1));
+
+        final finalState = await Task.db.findById(session, openTask.id!);
+        expect(finalState!.status, TaskStatus.inValidation);
+        expect(finalState.doneById, wins.single.doneById);
+      });
+    },
+    rollbackDatabase: RollbackDatabase.disabled,
+  );
 }

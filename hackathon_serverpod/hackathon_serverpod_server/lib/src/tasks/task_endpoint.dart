@@ -86,6 +86,14 @@ class TaskEndpoint extends Endpoint {
     );
   }
 
+  /// Claim an open task as done. Whoever's request commits first wins; the
+  /// other gets rejected (PRODUCT.md §3, §10.2).
+  Future<Task> markTaskDone(Session session, int taskId) async {
+    final member = await currentGroupMember(session);
+    final task = await _findGroupTask(session, member, taskId);
+    return _taskService.markDone(session, task: task, claimant: member);
+  }
+
   Future<Task> _findGroupTask(
     Session session,
     GroupMember member,
