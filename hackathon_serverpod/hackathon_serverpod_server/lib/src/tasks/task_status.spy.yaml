@@ -1,0 +1,13 @@
+### A Task's place in the cycle (PRODUCT.md §3, §10.2). `counterOffered` freezes the proposal
+### vote while the author decides (§4.3); `rejected` covers both a denied proposal and an expired
+### proposal vote (§4.2). A denied completion vote does not reject the task: it goes back to
+### `open` for someone else to claim.
+enum: TaskStatus
+values:
+  - proposed
+  - counterOffered
+  - open
+  - inValidation
+  - done
+  - rejected
+  - withdrawn

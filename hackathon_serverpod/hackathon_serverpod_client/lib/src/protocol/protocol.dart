@@ -33,6 +33,12 @@ import 'shop/purchase_status.dart' as _ifglcefk;
 import 'shop/reward_item.dart' as _ikfprkod;
 import 'shop/reward_item_status.dart' as _i2lcnj26;
 import 'shop/reward_vote.dart' as _iod77io3;
+import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_kind.dart' as _i4hckegz;
+import 'tasks/task_recurrence.dart' as _ieirl7mq;
+import 'tasks/task_status.dart' as _i65tv1la;
+import 'tasks/task_vote.dart' as _ikgry9hi;
+import 'tasks/task_vote_phase.dart' as _i40o7ktz;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
@@ -47,6 +53,12 @@ export 'shop/purchase_status.dart';
 export 'shop/reward_item.dart';
 export 'shop/reward_item_status.dart';
 export 'shop/reward_vote.dart';
+export 'tasks/task.dart';
+export 'tasks/task_kind.dart';
+export 'tasks/task_recurrence.dart';
+export 'tasks/task_status.dart';
+export 'tasks/task_vote.dart';
+export 'tasks/task_vote_phase.dart';
 export 'wallet/coin_transaction.dart';
 export 'wallet/coin_transaction_reason.dart';
 export 'wallet/ranking_entry.dart';
@@ -119,6 +131,24 @@ class Protocol extends _isc.SerializationManager {
     if (t == _iod77io3.RewardVote) {
       return _iod77io3.RewardVote.fromJson(data) as T;
     }
+    if (t == _i253is06.Task) {
+      return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _i4hckegz.TaskKind) {
+      return _i4hckegz.TaskKind.fromJson(data) as T;
+    }
+    if (t == _ieirl7mq.TaskRecurrence) {
+      return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
+    }
+    if (t == _i65tv1la.TaskStatus) {
+      return _i65tv1la.TaskStatus.fromJson(data) as T;
+    }
+    if (t == _ikgry9hi.TaskVote) {
+      return _ikgry9hi.TaskVote.fromJson(data) as T;
+    }
+    if (t == _i40o7ktz.TaskVotePhase) {
+      return _i40o7ktz.TaskVotePhase.fromJson(data) as T;
+    }
     if (t == _iyltnat0.CoinTransaction) {
       return _iyltnat0.CoinTransaction.fromJson(data) as T;
     }
@@ -164,6 +194,26 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_iod77io3.RewardVote?>()) {
       return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i253is06.Task?>()) {
+      return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i4hckegz.TaskKind?>()) {
+      return (data != null ? _i4hckegz.TaskKind.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ieirl7mq.TaskRecurrence?>()) {
+      return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i65tv1la.TaskStatus?>()) {
+      return (data != null ? _i65tv1la.TaskStatus.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ikgry9hi.TaskVote?>()) {
+      return (data != null ? _ikgry9hi.TaskVote.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i40o7ktz.TaskVotePhase?>()) {
+      return (data != null ? _i40o7ktz.TaskVotePhase.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_iyltnat0.CoinTransaction?>()) {
       return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
@@ -218,6 +268,12 @@ class Protocol extends _isc.SerializationManager {
       _ikfprkod.RewardItem => 'RewardItem',
       _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
       _iod77io3.RewardVote => 'RewardVote',
+      _i253is06.Task => 'Task',
+      _i4hckegz.TaskKind => 'TaskKind',
+      _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
+      _i65tv1la.TaskStatus => 'TaskStatus',
+      _ikgry9hi.TaskVote => 'TaskVote',
+      _i40o7ktz.TaskVotePhase => 'TaskVotePhase',
       _iyltnat0.CoinTransaction => 'CoinTransaction',
       _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
       _izo0hjq0.RankingEntry => 'RankingEntry',
@@ -260,6 +316,18 @@ class Protocol extends _isc.SerializationManager {
         return 'RewardItemStatus';
       case _iod77io3.RewardVote():
         return 'RewardVote';
+      case _i253is06.Task():
+        return 'Task';
+      case _i4hckegz.TaskKind():
+        return 'TaskKind';
+      case _ieirl7mq.TaskRecurrence():
+        return 'TaskRecurrence';
+      case _i65tv1la.TaskStatus():
+        return 'TaskStatus';
+      case _ikgry9hi.TaskVote():
+        return 'TaskVote';
+      case _i40o7ktz.TaskVotePhase():
+        return 'TaskVotePhase';
       case _iyltnat0.CoinTransaction():
         return 'CoinTransaction';
       case _inbrsz7i.CoinTransactionReason():
@@ -320,6 +388,24 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'RewardVote') {
       return deserialize<_iod77io3.RewardVote>(data['data']);
+    }
+    if (dataClassName == 'Task') {
+      return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskKind') {
+      return deserialize<_i4hckegz.TaskKind>(data['data']);
+    }
+    if (dataClassName == 'TaskRecurrence') {
+      return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
+    }
+    if (dataClassName == 'TaskStatus') {
+      return deserialize<_i65tv1la.TaskStatus>(data['data']);
+    }
+    if (dataClassName == 'TaskVote') {
+      return deserialize<_ikgry9hi.TaskVote>(data['data']);
+    }
+    if (dataClassName == 'TaskVotePhase') {
+      return deserialize<_i40o7ktz.TaskVotePhase>(data['data']);
     }
     if (dataClassName == 'CoinTransaction') {
       return deserialize<_iyltnat0.CoinTransaction>(data['data']);

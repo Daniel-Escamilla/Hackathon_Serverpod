@@ -1,0 +1,6 @@
+### How often a `mission`-kind Task comes back (PRODUCT.md §5). Unused for `oneOff` tasks.
+enum: TaskRecurrence
+values:
+  - daily
+  - weekly
+  - monthly

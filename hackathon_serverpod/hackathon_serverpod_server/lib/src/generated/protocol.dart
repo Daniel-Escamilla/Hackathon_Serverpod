@@ -34,6 +34,12 @@ import 'shop/purchase_status.dart' as _ifglcefk;
 import 'shop/reward_item.dart' as _ikfprkod;
 import 'shop/reward_item_status.dart' as _i2lcnj26;
 import 'shop/reward_vote.dart' as _iod77io3;
+import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_kind.dart' as _i4hckegz;
+import 'tasks/task_recurrence.dart' as _ieirl7mq;
+import 'tasks/task_status.dart' as _i65tv1la;
+import 'tasks/task_vote.dart' as _ikgry9hi;
+import 'tasks/task_vote_phase.dart' as _i40o7ktz;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
@@ -48,6 +54,12 @@ export 'shop/purchase_status.dart';
 export 'shop/reward_item.dart';
 export 'shop/reward_item_status.dart';
 export 'shop/reward_vote.dart';
+export 'tasks/task.dart';
+export 'tasks/task_kind.dart';
+export 'tasks/task_recurrence.dart';
+export 'tasks/task_status.dart';
+export 'tasks/task_vote.dart';
+export 'tasks/task_vote_phase.dart';
 export 'wallet/coin_transaction.dart';
 export 'wallet/coin_transaction_reason.dart';
 export 'wallet/ranking_entry.dart';
@@ -654,6 +666,248 @@ class Protocol extends _is.DatabaseSerializationManager {
       ],
       managed: true,
     ),
+    _isp.TableDefinition(
+      name: 'task',
+      dartName: 'Task',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'groupId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'title',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'description',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'reward',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'kind',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:TaskKind',
+          columnDefault: '\'oneOff\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'recurrence',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'protocol:TaskRecurrence?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'status',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:TaskStatus',
+          columnDefault: '\'proposed\'',
+        ),
+        _isp.ColumnDefinition(
+          name: 'proposedById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'doneById',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'voteClosesAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_fk_0',
+          columns: ['groupId'],
+          referenceTable: 'group',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_fk_1',
+          columns: ['proposedById'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_fk_2',
+          columns: ['doneById'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'task_group_id_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'groupId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isp.IndexDefinition(
+          indexName: 'task_proposed_by_id_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'proposedById',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isp.IndexDefinition(
+          indexName: 'task_done_by_id_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'doneById',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
+    _isp.TableDefinition(
+      name: 'task_vote',
+      dartName: 'TaskVote',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'taskId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'memberId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'phase',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'protocol:TaskVotePhase',
+        ),
+        _isp.ColumnDefinition(
+          name: 'approve',
+          columnType: _isp.ColumnType.boolean,
+          isNullable: false,
+          dartType: 'bool',
+        ),
+        _isp.ColumnDefinition(
+          name: 'counterReward',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_vote_fk_0',
+          columns: ['taskId'],
+          referenceTable: 'task',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+        _isp.ForeignKeyDefinition(
+          constraintName: 'task_vote_fk_1',
+          columns: ['memberId'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'task_vote__taskId__phase__memberId__unique_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'taskId',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'phase',
+            ),
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'memberId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     ..._iais.Protocol.targetTableDefinitions,
     ..._iacs.Protocol.targetTableDefinitions,
     ..._isp.Protocol.targetTableDefinitions,
@@ -719,6 +973,24 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _iod77io3.RewardVote) {
       return _iod77io3.RewardVote.fromJson(data) as T;
     }
+    if (t == _i253is06.Task) {
+      return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _i4hckegz.TaskKind) {
+      return _i4hckegz.TaskKind.fromJson(data) as T;
+    }
+    if (t == _ieirl7mq.TaskRecurrence) {
+      return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
+    }
+    if (t == _i65tv1la.TaskStatus) {
+      return _i65tv1la.TaskStatus.fromJson(data) as T;
+    }
+    if (t == _ikgry9hi.TaskVote) {
+      return _ikgry9hi.TaskVote.fromJson(data) as T;
+    }
+    if (t == _i40o7ktz.TaskVotePhase) {
+      return _i40o7ktz.TaskVotePhase.fromJson(data) as T;
+    }
     if (t == _iyltnat0.CoinTransaction) {
       return _iyltnat0.CoinTransaction.fromJson(data) as T;
     }
@@ -764,6 +1036,26 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_iod77io3.RewardVote?>()) {
       return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i253is06.Task?>()) {
+      return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i4hckegz.TaskKind?>()) {
+      return (data != null ? _i4hckegz.TaskKind.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ieirl7mq.TaskRecurrence?>()) {
+      return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_i65tv1la.TaskStatus?>()) {
+      return (data != null ? _i65tv1la.TaskStatus.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ikgry9hi.TaskVote?>()) {
+      return (data != null ? _ikgry9hi.TaskVote.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i40o7ktz.TaskVotePhase?>()) {
+      return (data != null ? _i40o7ktz.TaskVotePhase.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_iyltnat0.CoinTransaction?>()) {
       return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
@@ -821,6 +1113,12 @@ class Protocol extends _is.DatabaseSerializationManager {
       _ikfprkod.RewardItem => 'RewardItem',
       _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
       _iod77io3.RewardVote => 'RewardVote',
+      _i253is06.Task => 'Task',
+      _i4hckegz.TaskKind => 'TaskKind',
+      _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
+      _i65tv1la.TaskStatus => 'TaskStatus',
+      _ikgry9hi.TaskVote => 'TaskVote',
+      _i40o7ktz.TaskVotePhase => 'TaskVotePhase',
       _iyltnat0.CoinTransaction => 'CoinTransaction',
       _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
       _izo0hjq0.RankingEntry => 'RankingEntry',
@@ -863,6 +1161,18 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'RewardItemStatus';
       case _iod77io3.RewardVote():
         return 'RewardVote';
+      case _i253is06.Task():
+        return 'Task';
+      case _i4hckegz.TaskKind():
+        return 'TaskKind';
+      case _ieirl7mq.TaskRecurrence():
+        return 'TaskRecurrence';
+      case _i65tv1la.TaskStatus():
+        return 'TaskStatus';
+      case _ikgry9hi.TaskVote():
+        return 'TaskVote';
+      case _i40o7ktz.TaskVotePhase():
+        return 'TaskVotePhase';
       case _iyltnat0.CoinTransaction():
         return 'CoinTransaction';
       case _inbrsz7i.CoinTransactionReason():
@@ -928,6 +1238,24 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName == 'RewardVote') {
       return deserialize<_iod77io3.RewardVote>(data['data']);
     }
+    if (dataClassName == 'Task') {
+      return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskKind') {
+      return deserialize<_i4hckegz.TaskKind>(data['data']);
+    }
+    if (dataClassName == 'TaskRecurrence') {
+      return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
+    }
+    if (dataClassName == 'TaskStatus') {
+      return deserialize<_i65tv1la.TaskStatus>(data['data']);
+    }
+    if (dataClassName == 'TaskVote') {
+      return deserialize<_ikgry9hi.TaskVote>(data['data']);
+    }
+    if (dataClassName == 'TaskVotePhase') {
+      return deserialize<_i40o7ktz.TaskVotePhase>(data['data']);
+    }
     if (dataClassName == 'CoinTransaction') {
       return deserialize<_iyltnat0.CoinTransaction>(data['data']);
     }
@@ -988,6 +1316,10 @@ class Protocol extends _is.DatabaseSerializationManager {
         return _ikfprkod.RewardItem.t;
       case _iod77io3.RewardVote:
         return _iod77io3.RewardVote.t;
+      case _i253is06.Task:
+        return _i253is06.Task.t;
+      case _ikgry9hi.TaskVote:
+        return _ikgry9hi.TaskVote.t;
       case _iyltnat0.CoinTransaction:
         return _iyltnat0.CoinTransaction.t;
     }
