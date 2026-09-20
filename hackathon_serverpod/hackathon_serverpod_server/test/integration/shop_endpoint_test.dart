@@ -86,6 +86,49 @@ void main() {
       );
     });
 
+    group('when listing and proposing rewards', () {
+      test('then listRewards returns the group shop', () async {
+        final rewards = await endpoints.shop.listRewards(
+          sessionOf(_bobAuthUserId),
+        );
+
+        expect(rewards.map((r) => r.id), contains(proposedItem.id));
+      });
+
+      test('then proposeReward starts a proposed reward', () async {
+        final proposed = await endpoints.shop.proposeReward(
+          sessionOf(_bobAuthUserId),
+          'Un masaje',
+          '',
+          50,
+        );
+
+        expect(proposed.status, RewardItemStatus.proposed);
+        expect(proposed.createdById, bob.id);
+        expect(proposed.groupId, householdGroup.id);
+      });
+    });
+
+    group('family mode stubs, out of MVP scope (PLAN.md §1)', () {
+      test('then requestWish is unimplemented', () async {
+        await expectLater(
+          endpoints.shop.requestWish(sessionOf(_bobAuthUserId), 'Una PS5', ''),
+          throwsA(isA<UnimplementedError>()),
+        );
+      });
+
+      test('then approveChildPurchase is unimplemented', () async {
+        await expectLater(
+          endpoints.shop.approveChildPurchase(
+            sessionOf(_bobAuthUserId),
+            1,
+            true,
+          ),
+          throwsA(isA<UnimplementedError>()),
+        );
+      });
+    });
+
     group('when voting on the proposal', () {
       test('then it activates once the majority of 3 others approve', () async {
         await endpoints.shop.voteReward(
@@ -135,6 +178,13 @@ void main() {
           throwsA(isA<StateError>()),
         );
       });
+
+      test('then voting on an unknown reward throws', () async {
+        await expectLater(
+          endpoints.shop.voteReward(sessionOf(_bobAuthUserId), 999999, true),
+          throwsA(isA<StateError>()),
+        );
+      });
     });
 
     group('when the reward is active', () {
@@ -167,6 +217,17 @@ void main() {
 
         final item = await RewardItem.db.findById(session, proposedItem.id!);
         expect(item!.stock, 1);
+      });
+
+      test('then buying with an unknown provider throws', () async {
+        await expectLater(
+          endpoints.shop.purchaseReward(
+            sessionOf(_bobAuthUserId),
+            proposedItem.id!,
+            999999,
+          ),
+          throwsA(isA<StateError>()),
+        );
       });
 
       test('then a member with a negative balance cannot buy', () async {
@@ -259,6 +320,36 @@ void main() {
           current = await Purchase.db.findById(session, purchase.id!);
           expect(current!.status, PurchaseStatus.delivered);
         });
+
+        test('then responding to an unknown purchase throws', () async {
+          await expectLater(
+            endpoints.shop.respondToPurchase(
+              sessionOf(_carolAuthUserId),
+              999999,
+              true,
+            ),
+            throwsA(isA<StateError>()),
+          );
+        });
+
+        test(
+          'then someone other than the provider cannot mark it delivered',
+          () async {
+            await endpoints.shop.respondToPurchase(
+              sessionOf(_carolAuthUserId),
+              purchase.id!,
+              true,
+            );
+
+            await expectLater(
+              endpoints.shop.markDelivered(
+                sessionOf(_daveAuthUserId),
+                purchase.id!,
+              ),
+              throwsA(isA<StateError>()),
+            );
+          },
+        );
       });
     });
   });
