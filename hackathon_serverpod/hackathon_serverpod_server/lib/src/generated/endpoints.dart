@@ -632,6 +632,56 @@ class Endpoints extends _is.EndpointDispatch {
                     params['approve'],
                   ),
         ),
+        'counterOfferTask': _is.MethodConnector(
+          name: 'counterOfferTask',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'counterReward': _is.ParameterDescription(
+              name: 'counterReward',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .counterOfferTask(
+                    session,
+                    params['taskId'],
+                    params['counterReward'],
+                  ),
+        ),
+        'respondToCounterOffer': _is.MethodConnector(
+          name: 'respondToCounterOffer',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'accept': _is.ParameterDescription(
+              name: 'accept',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .respondToCounterOffer(
+                    session,
+                    params['taskId'],
+                    params['accept'],
+                  ),
+        ),
       },
     );
     connectors['wallet'] = _is.EndpointConnector(

@@ -53,6 +53,39 @@ class TaskEndpoint extends Endpoint {
     );
   }
 
+  /// Counter-offer a different price instead of a plain reject. Freezes the
+  /// vote until the proposer responds.
+  Future<Task> counterOfferTask(
+    Session session,
+    int taskId,
+    int counterReward,
+  ) async {
+    final member = await currentGroupMember(session);
+    final task = await _findGroupTask(session, member, taskId);
+    return _taskService.counterOfferTask(
+      session,
+      task: task,
+      voter: member,
+      counterReward: counterReward,
+    );
+  }
+
+  /// The proposer accepts or withdraws the pending counter-offer.
+  Future<Task> respondToCounterOffer(
+    Session session,
+    int taskId,
+    bool accept,
+  ) async {
+    final member = await currentGroupMember(session);
+    final task = await _findGroupTask(session, member, taskId);
+    return _taskService.respondToCounterOffer(
+      session,
+      task: task,
+      author: member,
+      accept: accept,
+    );
+  }
+
   Future<Task> _findGroupTask(
     Session session,
     GroupMember member,

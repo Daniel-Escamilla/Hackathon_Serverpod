@@ -103,6 +103,106 @@ class TaskService {
     return task;
   }
 
+  /// [voter] counter-offers [counterReward] instead of approving or denying.
+  /// Freezes the proposal: nobody else can vote or counter-offer until the
+  /// proposer responds (PRODUCT.md §4.3).
+  Future<Task> counterOfferTask(
+    Session session, {
+    required Task task,
+    required GroupMember voter,
+    required int counterReward,
+  }) async {
+    if (task.status != TaskStatus.proposed) {
+      throw StateError('This task is not open for a counter-offer.');
+    }
+    if (voter.id == task.proposedById) {
+      throw StateError('The proposer cannot counter-offer their own task.');
+    }
+
+    final existingVote = await TaskVote.db.findFirstRow(
+      session,
+      where: (t) =>
+          t.taskId.equals(task.id!) &
+          t.memberId.equals(voter.id!) &
+          t.phase.equals(TaskVotePhase.proposal),
+    );
+    if (existingVote == null) {
+      await TaskVote.db.insertRow(
+        session,
+        TaskVote(
+          taskId: task.id!,
+          memberId: voter.id!,
+          phase: TaskVotePhase.proposal,
+          approve: false,
+          counterReward: counterReward,
+        ),
+      );
+    } else {
+      await TaskVote.db.updateRow(
+        session,
+        existingVote.copyWith(approve: false, counterReward: counterReward),
+      );
+    }
+
+    return Task.db.updateRow(
+      session,
+      task.copyWith(status: TaskStatus.counterOffered),
+    );
+  }
+
+  /// [author] accepts or withdraws the pending counter-offer on [task]
+  /// (PRODUCT.md §4.3). Accepting restarts the proposal vote from zero at the
+  /// new price; withdrawing carries no fine.
+  Future<Task> respondToCounterOffer(
+    Session session, {
+    required Task task,
+    required GroupMember author,
+    required bool accept,
+  }) async {
+    if (task.status != TaskStatus.counterOffered) {
+      throw StateError('This task has no pending counter-offer.');
+    }
+    if (author.id != task.proposedById) {
+      throw StateError('Only the proposer can respond to a counter-offer.');
+    }
+
+    if (!accept) {
+      return Task.db.updateRow(
+        session,
+        task.copyWith(status: TaskStatus.withdrawn, voteClosesAt: null),
+      );
+    }
+
+    final counterVote = await TaskVote.db.findFirstRow(
+      session,
+      where: (t) =>
+          t.taskId.equals(task.id!) &
+          t.phase.equals(TaskVotePhase.proposal) &
+          t.counterReward.notEquals(null),
+    );
+    if (counterVote == null) {
+      throw StateError('No counter-offer found for this task.');
+    }
+
+    return session.db.transaction((transaction) async {
+      await TaskVote.db.deleteWhere(
+        session,
+        where: (t) =>
+            t.taskId.equals(task.id!) & t.phase.equals(TaskVotePhase.proposal),
+        transaction: transaction,
+      );
+      return Task.db.updateRow(
+        session,
+        task.copyWith(
+          status: TaskStatus.proposed,
+          reward: counterVote.counterReward!,
+          voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+        ),
+        transaction: transaction,
+      );
+    });
+  }
+
   Future<Task> _denyProposal(Session session, Task task) {
     return session.db.transaction((transaction) async {
       final updated = await Task.db.updateRow(

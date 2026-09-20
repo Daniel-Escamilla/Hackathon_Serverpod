@@ -151,5 +151,112 @@ void main() {
         );
       });
     });
+
+    group('when counter-offering the proposal', () {
+      late Task proposedTask;
+
+      setUp(() async {
+        proposedTask = await endpoints.task.proposeTask(
+          sessionOf(_aliceAuthUserId),
+          'Limpiar el baño',
+          '',
+          25,
+        );
+      });
+
+      test('then it freezes the vote for everyone else', () async {
+        final countered = await endpoints.task.counterOfferTask(
+          sessionOf(_bobAuthUserId),
+          proposedTask.id!,
+          20,
+        );
+        expect(countered.status, TaskStatus.counterOffered);
+
+        await expectLater(
+          endpoints.task.voteTaskProposal(
+            sessionOf(_carolAuthUserId),
+            proposedTask.id!,
+            true,
+          ),
+          throwsA(isA<StateError>()),
+        );
+        await expectLater(
+          endpoints.task.counterOfferTask(
+            sessionOf(_carolAuthUserId),
+            proposedTask.id!,
+            15,
+          ),
+          throwsA(isA<StateError>()),
+        );
+      });
+
+      group('and the proposer responds', () {
+        setUp(() async {
+          await endpoints.task.counterOfferTask(
+            sessionOf(_bobAuthUserId),
+            proposedTask.id!,
+            20,
+          );
+        });
+
+        test(
+          'then accepting restarts the vote from zero at the new price',
+          () async {
+            final restarted = await endpoints.task.respondToCounterOffer(
+              sessionOf(_aliceAuthUserId),
+              proposedTask.id!,
+              true,
+            );
+
+            expect(restarted.status, TaskStatus.proposed);
+            expect(restarted.reward, 20);
+            expect(restarted.voteClosesAt, isNotNull);
+
+            final votes = await TaskVote.db.find(
+              session,
+              where: (t) => t.taskId.equals(proposedTask.id!),
+            );
+            expect(votes, isEmpty);
+
+            final resolved = await endpoints.task.voteTaskProposal(
+              sessionOf(_bobAuthUserId),
+              proposedTask.id!,
+              true,
+            );
+            await endpoints.task.voteTaskProposal(
+              sessionOf(_carolAuthUserId),
+              proposedTask.id!,
+              true,
+            );
+            final opened = await Task.db.findById(session, resolved.id!);
+            expect(opened!.status, TaskStatus.open);
+          },
+        );
+
+        test('then withdrawing carries no fine', () async {
+          final withdrawn = await endpoints.task.respondToCounterOffer(
+            sessionOf(_aliceAuthUserId),
+            proposedTask.id!,
+            false,
+          );
+
+          expect(withdrawn.status, TaskStatus.withdrawn);
+
+          final proposer = await GroupMember.db.findById(session, alice.id!);
+          expect(proposer!.balance, 0);
+        });
+
+        test('then only the proposer can respond', () async {
+          await expectLater(
+            endpoints.task.respondToCounterOffer(
+              sessionOf(_bobAuthUserId),
+              proposedTask.id!,
+              true,
+            ),
+            throwsA(isA<StateError>()),
+          );
+        });
+      });
+    });
   });
 }

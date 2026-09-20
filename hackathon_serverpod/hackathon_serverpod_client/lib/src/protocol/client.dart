@@ -473,6 +473,33 @@ class EndpointTask extends _isc.EndpointRef {
       'approve': approve,
     },
   );
+
+  /// Counter-offer a different price instead of a plain reject. Freezes the
+  /// vote until the proposer responds.
+  _ida.Future<_i7vt05yn.Task> counterOfferTask(
+    int taskId,
+    int counterReward,
+  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    'task',
+    'counterOfferTask',
+    {
+      'taskId': taskId,
+      'counterReward': counterReward,
+    },
+  );
+
+  /// The proposer accepts or withdraws the pending counter-offer.
+  _ida.Future<_i7vt05yn.Task> respondToCounterOffer(
+    int taskId,
+    bool accept,
+  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    'task',
+    'respondToCounterOffer',
+    {
+      'taskId': taskId,
+      'accept': accept,
+    },
+  );
 }
 
 /// Balance, history and ranking (PRODUCT.md §10.3, §4.6).
