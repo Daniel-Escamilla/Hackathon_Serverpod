@@ -22,6 +22,7 @@ import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../greetings/greeting_endpoint.dart' as _il624ik7;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
+import '../tasks/task_endpoint.dart' as _i3nmwja6;
 import '../wallet/wallet_endpoint.dart' as _il5vx24y;
 
 class Endpoints extends _is.EndpointDispatch {
@@ -56,6 +57,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'shop',
+          null,
+        ),
+      'task': _i3nmwja6.TaskEndpoint()
+        ..initialize(
+          server,
+          'task',
           null,
         ),
       'wallet': _il5vx24y.WalletEndpoint()
@@ -551,6 +558,78 @@ class Endpoints extends _is.EndpointDispatch {
                   (endpoints['shop'] as _ig43k7x5.ShopEndpoint).markDelivered(
                     session,
                     params['purchaseId'],
+                  ),
+        ),
+      },
+    );
+    connectors['task'] = _is.EndpointConnector(
+      name: 'task',
+      endpoint: endpoints['task']!,
+      methodConnectors: {
+        'listTasks': _is.MethodConnector(
+          name: 'listTasks',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .listTasks(session),
+        ),
+        'proposeTask': _is.MethodConnector(
+          name: 'proposeTask',
+          params: {
+            'title': _is.ParameterDescription(
+              name: 'title',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'description': _is.ParameterDescription(
+              name: 'description',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'reward': _is.ParameterDescription(
+              name: 'reward',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['task'] as _i3nmwja6.TaskEndpoint).proposeTask(
+                    session,
+                    params['title'],
+                    params['description'],
+                    params['reward'],
+                  ),
+        ),
+        'voteTaskProposal': _is.MethodConnector(
+          name: 'voteTaskProposal',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'approve': _is.ParameterDescription(
+              name: 'approve',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .voteTaskProposal(
+                    session,
+                    params['taskId'],
+                    params['approve'],
                   ),
         ),
       },

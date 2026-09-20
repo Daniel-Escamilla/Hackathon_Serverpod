@@ -25,6 +25,8 @@ import 'package:hackathon_serverpod_server/src/generated/shop/purchase.dart'
     as _il4ufzf6;
 import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
+import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
+    as _i0sdpywk;
 import 'package:hackathon_serverpod_server/src/generated/wallet/coin_transaction.dart'
     as _ixmfvg9y;
 import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
@@ -171,6 +173,8 @@ class TestEndpoints {
 
   late final _ShopEndpoint shop;
 
+  late final _TaskEndpoint task;
+
   late final _WalletEndpoint wallet;
 }
 
@@ -198,6 +202,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     shop = _ShopEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    task = _TaskEndpoint(
       endpoints,
       serializationManager,
     );
@@ -929,6 +937,119 @@ class _ShopEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
+class _TaskEndpoint {
+  _TaskEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<List<_i0sdpywk.Task>> listTasks(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'listTasks',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'listTasks',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_i0sdpywk.Task>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i0sdpywk.Task> proposeTask(
+    _ist.TestSessionBuilder sessionBuilder,
+    String title,
+    String description,
+    int reward,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'proposeTask',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'proposeTask',
+          parameters: _ist.testObjectToJson({
+            'title': title,
+            'description': description,
+            'reward': reward,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i0sdpywk.Task>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i0sdpywk.Task> voteTaskProposal(
+    _ist.TestSessionBuilder sessionBuilder,
+    int taskId,
+    bool approve,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'voteTaskProposal',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'voteTaskProposal',
+          parameters: _ist.testObjectToJson({
+            'taskId': taskId,
+            'approve': approve,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i0sdpywk.Task>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

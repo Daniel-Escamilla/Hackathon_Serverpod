@@ -23,6 +23,8 @@ import 'package:hackathon_serverpod_client/src/protocol/shop/purchase.dart'
     as _idofij3t;
 import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
     as _ibcsn808;
+import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
+    as _i7vt05yn;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_transaction.dart'
     as _izus2l2b;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
@@ -428,6 +430,51 @@ class EndpointShop extends _isc.EndpointRef {
       );
 }
 
+/// Propose and vote on tasks (PRODUCT.md §3, §10.3).
+/// {@category Endpoint}
+class EndpointTask extends _isc.EndpointRef {
+  EndpointTask(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'task';
+
+  /// All tasks in the signed-in member's group.
+  _ida.Future<List<_i7vt05yn.Task>> listTasks() =>
+      caller.callServerEndpoint<List<_i7vt05yn.Task>>(
+        'task',
+        'listTasks',
+        {},
+      );
+
+  /// Propose a new task. Starts `proposed` and opens a proposal vote.
+  _ida.Future<_i7vt05yn.Task> proposeTask(
+    String title,
+    String description,
+    int reward,
+  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    'task',
+    'proposeTask',
+    {
+      'title': title,
+      'description': description,
+      'reward': reward,
+    },
+  );
+
+  /// Vote on a proposed task's price and description.
+  _ida.Future<_i7vt05yn.Task> voteTaskProposal(
+    int taskId,
+    bool approve,
+  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    'task',
+    'voteTaskProposal',
+    {
+      'taskId': taskId,
+      'approve': approve,
+    },
+  );
+}
+
 /// Balance, history and ranking (PRODUCT.md §10.3, §4.6).
 /// {@category Endpoint}
 class EndpointWallet extends _isc.EndpointRef {
@@ -509,6 +556,7 @@ class Client extends _isc.ServerpodClientShared {
     greeting = EndpointGreeting(this);
     group = EndpointGroup(this);
     shop = EndpointShop(this);
+    task = EndpointTask(this);
     wallet = EndpointWallet(this);
     modules = Modules(this);
   }
@@ -523,6 +571,8 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointShop shop;
 
+  late final EndpointTask task;
+
   late final EndpointWallet wallet;
 
   late final Modules modules;
@@ -534,6 +584,7 @@ class Client extends _isc.ServerpodClientShared {
     'greeting': greeting,
     'group': group,
     'shop': shop,
+    'task': task,
     'wallet': wallet,
   };
 

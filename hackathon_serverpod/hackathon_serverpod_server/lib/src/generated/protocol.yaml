@@ -23,6 +23,10 @@ shop:
   - approveChildPurchase:
   - respondToPurchase:
   - markDelivered:
+task:
+  - listTasks:
+  - proposeTask:
+  - voteTaskProposal:
 wallet:
   - getBalance:
   - getHistory:
