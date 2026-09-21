@@ -1,3 +1,4 @@
+import 'package:hackathon_serverpod_server/src/events/event_service.dart';
 import 'package:hackathon_serverpod_server/src/generated/protocol.dart';
 import 'package:hackathon_serverpod_server/src/tasks/task_service.dart';
 import 'package:serverpod/serverpod.dart';
@@ -87,6 +88,27 @@ void main() {
       expect(task.proposedById, alice.id);
       expect(task.voteClosesAt, isNotNull);
     });
+
+    test(
+      'then proposing also publishes a GroupEvent on the group stream (#65)',
+      () async {
+        final firstEvent = session.messages
+            .createStream<GroupEvent>(groupEventChannel(householdGroup.id!))
+            .first;
+
+        final task = await endpoints.task.proposeTask(
+          sessionOf(_aliceAuthUserId),
+          'Limpiar el baño',
+          '',
+          25,
+        );
+
+        final event = await firstEvent.timeout(const Duration(seconds: 5));
+        expect(event.groupId, householdGroup.id);
+        expect(event.kind, GroupEventKind.taskProposed);
+        expect(event.taskId, task.id);
+      },
+    );
 
     group('when voting on the proposal', () {
       late Task proposedTask;
@@ -216,6 +238,27 @@ void main() {
 
           final daveAfter = await GroupMember.db.findById(session, dave.id!);
           expect(daveAfter!.balance, 0); // never voted, but not fined
+        },
+      );
+
+      test(
+        'then voting also publishes a GroupEvent on the group stream (#65)',
+        () async {
+          final firstEvent = session.messages
+              .createStream<GroupEvent>(
+                groupEventChannel(householdGroup.id!),
+              )
+              .first;
+
+          await endpoints.task.voteTaskProposal(
+            sessionOf(_bobAuthUserId),
+            proposedTask.id!,
+            true,
+          );
+
+          final event = await firstEvent.timeout(const Duration(seconds: 5));
+          expect(event.kind, GroupEventKind.taskVoteCast);
+          expect(event.taskId, proposedTask.id);
         },
       );
     });
