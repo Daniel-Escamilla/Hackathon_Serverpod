@@ -319,6 +319,93 @@ void main() {
           throwsA(isA<StateError>()),
         );
       });
+
+      group('and it is claimed', () {
+        late Task claimedTask;
+
+        setUp(() async {
+          claimedTask = await endpoints.task.markTaskDone(
+            sessionOf(_bobAuthUserId),
+            openTask.id!,
+          );
+        });
+
+        test(
+          'then approving the validation pays the claimant and closes it as done',
+          () async {
+            await endpoints.task.voteTaskCompletion(
+              sessionOf(_aliceAuthUserId),
+              claimedTask.id!,
+              true,
+            );
+            final resolved = await endpoints.task.voteTaskCompletion(
+              sessionOf(_carolAuthUserId),
+              claimedTask.id!,
+              true,
+            );
+
+            expect(resolved.status, TaskStatus.done);
+            expect(resolved.voteClosesAt, isNull);
+
+            final claimant = await GroupMember.db.findById(session, bob.id!);
+            expect(claimant!.balance, 25);
+
+            final history = await CoinTransaction.db.find(
+              session,
+              where: (t) => t.memberId.equals(bob.id!),
+            );
+            expect(history, hasLength(1));
+            expect(history.single.reason, CoinTransactionReason.earned);
+            expect(history.single.amount, 25);
+            expect(history.single.taskId, claimedTask.id);
+          },
+        );
+
+        test(
+          'then denying the validation fines the claimant and reopens the task',
+          () async {
+            await endpoints.task.voteTaskCompletion(
+              sessionOf(_aliceAuthUserId),
+              claimedTask.id!,
+              false,
+            );
+            final resolved = await endpoints.task.voteTaskCompletion(
+              sessionOf(_carolAuthUserId),
+              claimedTask.id!,
+              false,
+            );
+
+            expect(resolved.status, TaskStatus.open);
+            expect(resolved.doneById, isNull);
+            expect(resolved.voteClosesAt, isNull);
+
+            final claimant = await GroupMember.db.findById(session, bob.id!);
+            expect(claimant!.balance, -5); // 20% of 25, rounded up
+
+            final history = await CoinTransaction.db.find(
+              session,
+              where: (t) => t.memberId.equals(bob.id!),
+            );
+            expect(history, hasLength(1));
+            expect(history.single.reason, CoinTransactionReason.fined);
+            expect(history.single.taskId, claimedTask.id);
+          },
+        );
+
+        test(
+          'then the claimant cannot vote on their own completion',
+          () async {
+            await expectLater(
+              endpoints.task.voteTaskCompletion(
+                sessionOf(_bobAuthUserId),
+                claimedTask.id!,
+                true,
+              ),
+              throwsA(isA<StateError>()),
+            );
+          },
+        );
+      });
     });
   });
 

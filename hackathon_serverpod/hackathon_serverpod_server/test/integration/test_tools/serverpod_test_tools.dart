@@ -1278,6 +1278,41 @@ class _TaskEndpoint {
       }
     });
   }
+
+  _ida.Future<_i0sdpywk.Task> voteTaskCompletion(
+    _ist.TestSessionBuilder sessionBuilder,
+    int taskId,
+    bool approve,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'voteTaskCompletion',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'voteTaskCompletion',
+          parameters: _ist.testObjectToJson({
+            'taskId': taskId,
+            'approve': approve,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i0sdpywk.Task>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
 }
 
 class _WalletEndpoint {

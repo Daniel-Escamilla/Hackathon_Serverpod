@@ -266,4 +266,135 @@ class TaskService {
       return updated;
     });
   }
+
+  /// Records [voter]'s completion vote on [task] and resolves it to `done`/back
+  /// to `open` once the result can no longer change — the same majority rule as
+  /// the proposal vote (PRODUCT.md §4.1: `ceil((members - 1) / 2)` approvals,
+  /// excluding whoever claimed it). Approval pays the claimant (§3); denial
+  /// fines them and reopens the task for someone else, without rejecting it
+  /// (§4.4, `task_status.spy.yaml`).
+  Future<Task> castCompletionVote(
+    Session session, {
+    required Task task,
+    required GroupMember voter,
+    required bool approve,
+  }) async {
+    if (task.status != TaskStatus.inValidation) {
+      throw StateError('This task is not open for a completion vote.');
+    }
+    if (voter.id == task.doneById) {
+      throw StateError('The claimant cannot vote on their own completion.');
+    }
+
+    final existingVote = await TaskVote.db.findFirstRow(
+      session,
+      where: (t) =>
+          t.taskId.equals(task.id!) &
+          t.memberId.equals(voter.id!) &
+          t.phase.equals(TaskVotePhase.completion),
+    );
+    if (existingVote == null) {
+      await TaskVote.db.insertRow(
+        session,
+        TaskVote(
+          taskId: task.id!,
+          memberId: voter.id!,
+          phase: TaskVotePhase.completion,
+          approve: approve,
+        ),
+      );
+    } else {
+      await TaskVote.db.updateRow(
+        session,
+        existingVote.copyWith(approve: approve),
+      );
+    }
+
+    final otherMembers = await GroupMember.db.count(
+      session,
+      where: (t) =>
+          t.groupId.equals(task.groupId) &
+          t.leftAt.equals(null) &
+          t.id.notEquals(task.doneById!),
+    );
+    final needed = (otherMembers / 2).ceil();
+
+    final votes = await TaskVote.db.find(
+      session,
+      where: (t) =>
+          t.taskId.equals(task.id!) & t.phase.equals(TaskVotePhase.completion),
+    );
+    final approveCount = votes.where((v) => v.approve).length;
+    final denyCount = votes.length - approveCount;
+
+    if (approveCount >= needed) {
+      return _payClaimant(session, task);
+    }
+    if (denyCount > otherMembers - needed) {
+      return _denyValidation(session, task);
+    }
+    return task;
+  }
+
+  /// The validation vote passed: closes [task] as `done` and pays its claimant.
+  /// Coins are only ever paid here, never on marking a task done (PRODUCT.md §3).
+  Future<Task> _payClaimant(Session session, Task task) {
+    return session.db.transaction((transaction) async {
+      final updated = await Task.db.updateRow(
+        session,
+        task.copyWith(status: TaskStatus.done, voteClosesAt: null),
+        transaction: transaction,
+      );
+
+      await walletService.recordTransaction(
+        session,
+        groupId: task.groupId,
+        memberId: task.doneById!,
+        amount: task.reward,
+        reason: CoinTransactionReason.earned,
+        taskId: task.id,
+        transaction: transaction,
+      );
+
+      return updated;
+    });
+  }
+
+  /// The validation vote failed: fines whoever claimed [task] and reopens it for
+  /// someone else to claim — unlike a denied proposal, this does not reject the
+  /// task (PRODUCT.md §3, §4.4).
+  Future<Task> _denyValidation(Session session, Task task) {
+    return session.db.transaction((transaction) async {
+      final claimantId = task.doneById!;
+      final updated = await Task.db.updateRow(
+        session,
+        task.copyWith(
+          status: TaskStatus.open,
+          doneById: null,
+          voteClosesAt: null,
+        ),
+        transaction: transaction,
+      );
+
+      final group = await Group.db.findById(
+        session,
+        task.groupId,
+        transaction: transaction,
+      );
+      if (group == null) throw StateError('Group not found.');
+
+      final fine = (task.reward * group.finePercent / 100).ceil();
+      await walletService.recordTransaction(
+        session,
+        groupId: task.groupId,
+        memberId: claimantId,
+        amount: -fine,
+        reason: CoinTransactionReason.fined,
+        taskId: task.id,
+        transaction: transaction,
+      );
+
+      return updated;
+    });
+  }
 }
