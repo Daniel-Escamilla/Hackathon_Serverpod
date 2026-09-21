@@ -121,6 +121,59 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The admin removes [memberId] from the group (PRODUCT.md §7).
+  ///
+  /// Entry is direct with the code, so this is what protects a group whose
+  /// code has leaked: whoever got in without being wanted can be put out.
+  ///
+  /// The row is kept with `leftAt` set, so the tasks they did and the coins
+  /// they moved stay in everyone's history. Their balance is lost, as §4.6
+  /// says, without touching the ledger: no call ever reaches a membership that
+  /// has left, and joining again later starts a new one at zero.
+  Future<void> expelMember(Session session, int memberId) async {
+    final admin = await _requireAdmin(session);
+    if (memberId == admin.id) {
+      throw GroupException(reason: GroupErrorReason.cannotExpelSelf);
+    }
+
+    final target = await GroupMember.db.findById(session, memberId);
+    if (target == null ||
+        target.groupId != admin.groupId ||
+        target.leftAt != null) {
+      throw GroupException(reason: GroupErrorReason.memberNotFound);
+    }
+
+    await GroupMember.db.updateRow(
+      session,
+      target.copyWith(leftAt: DateTime.now().toUtc()),
+    );
+  }
+
+  /// The admin replaces the invite code. The old one stops working at once;
+  /// nobody already in the group is affected.
+  ///
+  /// The other half of what expelling covers: this stops a leaked code from
+  /// letting anyone else in, expelling removes whoever already used it.
+  Future<Group> regenerateInviteCode(Session session) async {
+    final admin = await _requireAdmin(session);
+    final group = await Group.db.findById(session, admin.groupId);
+    if (group == null) {
+      throw GroupException(reason: GroupErrorReason.noMembership);
+    }
+    return Group.db.updateRow(
+      session,
+      group.copyWith(inviteCode: await _freeInviteCode(session)),
+    );
+  }
+
+  Future<GroupMember> _requireAdmin(Session session) async {
+    final member = await currentGroupMember(session);
+    if (member.role != GroupMemberRole.admin) {
+      throw GroupException(reason: GroupErrorReason.notAdmin);
+    }
+    return member;
+  }
+
   Future<void> _requireNoActiveMembership(
     Session session,
     UuidValue authUserId,

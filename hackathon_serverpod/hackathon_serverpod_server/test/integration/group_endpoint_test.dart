@@ -169,5 +169,131 @@ void main() {
         );
       });
     });
+
+    group('when the admin protects the group', () {
+      late Group createdGroup;
+      late GroupMember bob;
+
+      setUp(() async {
+        createdGroup = await endpoints.group.createGroup(
+          sessionOf(_aliceAuthUserId),
+          'Piso de prueba',
+          GroupType.sharedFlat,
+          displayName: 'Alice',
+        );
+        bob = await endpoints.group.joinGroup(
+          sessionOf(_bobAuthUserId),
+          createdGroup.inviteCode,
+          displayName: 'Bob',
+        );
+      });
+
+      test('then expelling removes the member from the group', () async {
+        await endpoints.group.expelMember(sessionOf(_aliceAuthUserId), bob.id!);
+
+        final members = await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        );
+        expect(members.map((m) => m.displayName), ['Alice']);
+        await expectLater(
+          endpoints.group.myGroup(sessionOf(_bobAuthUserId)),
+          _throwsGroupError(GroupErrorReason.noMembership),
+        );
+      });
+
+      test(
+        'then the expelled member keeps their row, marked as left',
+        () async {
+          await endpoints.group.expelMember(
+            sessionOf(_aliceAuthUserId),
+            bob.id!,
+          );
+
+          final row = await GroupMember.db.findById(session, bob.id!);
+          expect(row!.leftAt, isNotNull);
+        },
+      );
+
+      test('then an expelled member is free to join another group', () async {
+        await endpoints.group.expelMember(sessionOf(_aliceAuthUserId), bob.id!);
+
+        final other = await endpoints.group.createGroup(
+          sessionOf(_bobAuthUserId),
+          'Casa de Bob',
+          GroupType.couple,
+        );
+        expect(other.id, isNot(createdGroup.id));
+      });
+
+      test('then a plain member cannot expel anyone', () async {
+        final alice = (await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        )).first;
+
+        await expectLater(
+          endpoints.group.expelMember(sessionOf(_bobAuthUserId), alice.id!),
+          _throwsGroupError(GroupErrorReason.notAdmin),
+        );
+      });
+
+      test('then the admin cannot expel themselves', () async {
+        final alice = (await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        )).first;
+
+        await expectLater(
+          endpoints.group.expelMember(sessionOf(_aliceAuthUserId), alice.id!),
+          _throwsGroupError(GroupErrorReason.cannotExpelSelf),
+        );
+      });
+
+      test('then expelling someone from another group is refused', () async {
+        final carol = await endpoints.group.createGroup(
+          sessionOf(_carolAuthUserId),
+          'Otro piso',
+          GroupType.sharedFlat,
+        );
+        final carolMember = (await endpoints.group.listMembers(
+          sessionOf(_carolAuthUserId),
+        )).single;
+        expect(carol.id, isNot(createdGroup.id));
+
+        await expectLater(
+          endpoints.group.expelMember(
+            sessionOf(_aliceAuthUserId),
+            carolMember.id!,
+          ),
+          _throwsGroupError(GroupErrorReason.memberNotFound),
+        );
+      });
+
+      test('then a new invite code replaces the old one', () async {
+        final renewed = await endpoints.group.regenerateInviteCode(
+          sessionOf(_aliceAuthUserId),
+        );
+        expect(renewed.inviteCode, isNot(createdGroup.inviteCode));
+
+        await expectLater(
+          endpoints.group.joinGroup(
+            sessionOf(_carolAuthUserId),
+            createdGroup.inviteCode,
+          ),
+          _throwsGroupError(GroupErrorReason.inviteCodeNotFound),
+        );
+
+        final carol = await endpoints.group.joinGroup(
+          sessionOf(_carolAuthUserId),
+          renewed.inviteCode,
+        );
+        expect(carol.groupId, createdGroup.id);
+      });
+
+      test('then a plain member cannot replace the invite code', () async {
+        await expectLater(
+          endpoints.group.regenerateInviteCode(sessionOf(_bobAuthUserId)),
+          _throwsGroupError(GroupErrorReason.notAdmin),
+        );
+      });
+    });
   });
 }

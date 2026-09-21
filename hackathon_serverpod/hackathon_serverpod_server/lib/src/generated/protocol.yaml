@@ -16,6 +16,8 @@ group:
   - joinGroup:
   - myGroup:
   - listMembers:
+  - expelMember:
+  - regenerateInviteCode:
 shop:
   - listRewards:
   - proposeReward:

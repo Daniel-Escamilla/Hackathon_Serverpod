@@ -22,7 +22,16 @@ enum GroupErrorReason implements _isc.SerializableModel {
   alreadyInGroup,
 
   /// The caller belongs to no group, so the call was refused.
-  noMembership;
+  noMembership,
+
+  /// Only the admin may do this: expel someone, or replace the invite code.
+  notAdmin,
+
+  /// That member is not in the caller's group, or has already left it.
+  memberNotFound,
+
+  /// The admin tried to expel themselves. Handing the role over is the way out.
+  cannotExpelSelf;
 
   static GroupErrorReason fromJson(String name) {
     switch (name) {
@@ -32,6 +41,12 @@ enum GroupErrorReason implements _isc.SerializableModel {
         return GroupErrorReason.alreadyInGroup;
       case 'noMembership':
         return GroupErrorReason.noMembership;
+      case 'notAdmin':
+        return GroupErrorReason.notAdmin;
+      case 'memberNotFound':
+        return GroupErrorReason.memberNotFound;
+      case 'cannotExpelSelf':
+        return GroupErrorReason.cannotExpelSelf;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupErrorReason"',

@@ -103,6 +103,16 @@ class AppLocalizationsEs extends AppLocalizations {
       'Ya estás en un grupo. Sal de él antes de entrar en otro.';
 
   @override
+  String get errorNotAdmin =>
+      'Solo quien administra el grupo puede hacer esto.';
+
+  @override
+  String get errorMemberNotFound => 'Esa persona ya no está en el grupo.';
+
+  @override
+  String get errorCannotExpelSelf => 'No puedes expulsarte a ti del grupo.';
+
+  @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
 
   @override

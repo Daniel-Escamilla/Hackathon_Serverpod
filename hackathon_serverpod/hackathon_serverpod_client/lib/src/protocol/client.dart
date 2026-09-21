@@ -338,6 +338,34 @@ class EndpointGroup extends _isc.EndpointRef {
         'listMembers',
         {},
       );
+
+  /// The admin removes [memberId] from the group (PRODUCT.md §7).
+  ///
+  /// Entry is direct with the code, so this is what protects a group whose
+  /// code has leaked: whoever got in without being wanted can be put out.
+  ///
+  /// The row is kept with `leftAt` set, so the tasks they did and the coins
+  /// they moved stay in everyone's history. Their balance is lost, as §4.6
+  /// says, without touching the ledger: no call ever reaches a membership that
+  /// has left, and joining again later starts a new one at zero.
+  _ida.Future<void> expelMember(int memberId) =>
+      caller.callServerEndpoint<void>(
+        'group',
+        'expelMember',
+        {'memberId': memberId},
+      );
+
+  /// The admin replaces the invite code. The old one stops working at once;
+  /// nobody already in the group is affected.
+  ///
+  /// The other half of what expelling covers: this stops a leaked code from
+  /// letting anyone else in, expelling removes whoever already used it.
+  _ida.Future<_iubjh9pq.Group> regenerateInviteCode() =>
+      caller.callServerEndpoint<_iubjh9pq.Group>(
+        'group',
+        'regenerateInviteCode',
+        {},
+      );
 }
 
 /// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).

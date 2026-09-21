@@ -129,6 +129,18 @@
   "@errorAlreadyInGroup": {
     "description": "Shown when the user already has an active membership"
   },
+  "errorNotAdmin": "Solo quien administra el grupo puede hacer esto.",
+  "@errorNotAdmin": {
+    "description": "Shown when a non-admin tries an admin-only action"
+  },
+  "errorMemberNotFound": "Esa persona ya no está en el grupo.",
+  "@errorMemberNotFound": {
+    "description": "Shown when the member to act on has left or is in another group"
+  },
+  "errorCannotExpelSelf": "No puedes expulsarte a ti del grupo.",
+  "@errorCannotExpelSelf": {
+    "description": "Shown when the admin tries to expel themselves"
+  },
   "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
   "@errorGeneric": {
     "description": "Fallback for a server error we cannot be specific about"

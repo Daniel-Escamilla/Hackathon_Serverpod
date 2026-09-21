@@ -268,6 +268,24 @@ abstract class AppLocalizations {
   /// **'Ya estás en un grupo. Sal de él antes de entrar en otro.'**
   String get errorAlreadyInGroup;
 
+  /// Shown when a non-admin tries an admin-only action
+  ///
+  /// In es, this message translates to:
+  /// **'Solo quien administra el grupo puede hacer esto.'**
+  String get errorNotAdmin;
+
+  /// Shown when the member to act on has left or is in another group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa persona ya no está en el grupo.'**
+  String get errorMemberNotFound;
+
+  /// Shown when the admin tries to expel themselves
+  ///
+  /// In es, this message translates to:
+  /// **'No puedes expulsarte a ti del grupo.'**
+  String get errorCannotExpelSelf;
+
   /// Fallback for a server error we cannot be specific about
   ///
   /// In es, this message translates to:
