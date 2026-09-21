@@ -964,6 +964,12 @@ abstract class AppLocalizations {
   /// **'No se pudo cargar la cartera.'**
   String get walletLoadError;
 
+  /// No description provided for @negativeBalanceNotice.
+  ///
+  /// In es, this message translates to:
+  /// **'Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.'**
+  String get negativeBalanceNotice;
+
   /// No description provided for @recentMovements.
   ///
   /// In es, this message translates to:

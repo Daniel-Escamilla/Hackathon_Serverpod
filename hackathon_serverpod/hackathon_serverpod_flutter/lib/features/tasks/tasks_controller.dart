@@ -10,6 +10,7 @@ import '../../client.dart';
 class TasksController extends ChangeNotifier {
   List<Task> tasks = [];
   bool loading = false;
+  bool hasLoaded = false;
   Object? error;
 
   Future<void> load() async {
@@ -22,6 +23,7 @@ class TasksController extends ChangeNotifier {
       error = e;
     } finally {
       loading = false;
+      hasLoaded = true;
       notifyListeners();
     }
   }

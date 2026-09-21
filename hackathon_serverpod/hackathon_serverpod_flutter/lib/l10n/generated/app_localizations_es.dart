@@ -466,6 +466,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get walletLoadError => 'No se pudo cargar la cartera.';
 
   @override
+  String get negativeBalanceNotice =>
+      'Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.';
+
+  @override
   String get recentMovements => 'Últimos movimientos';
 
   @override

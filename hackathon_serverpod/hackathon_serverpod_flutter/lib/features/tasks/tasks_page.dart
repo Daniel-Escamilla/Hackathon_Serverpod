@@ -35,7 +35,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    if (controller.loading && controller.tasks.isEmpty) {
+    if (!controller.hasLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
     if (controller.error != null && controller.tasks.isEmpty) {

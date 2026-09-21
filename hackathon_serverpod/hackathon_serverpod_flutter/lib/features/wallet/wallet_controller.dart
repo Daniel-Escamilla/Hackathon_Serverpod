@@ -7,6 +7,7 @@ class WalletController extends ChangeNotifier {
   int balance = 0;
   List<CoinTransaction> history = [];
   bool loading = false;
+  bool hasLoaded = false;
   Object? error;
 
   Future<void> load() async {
@@ -24,6 +25,7 @@ class WalletController extends ChangeNotifier {
       error = e;
     } finally {
       loading = false;
+      hasLoaded = true;
       notifyListeners();
     }
   }

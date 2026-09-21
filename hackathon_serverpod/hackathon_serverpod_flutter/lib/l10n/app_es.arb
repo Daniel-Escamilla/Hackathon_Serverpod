@@ -195,6 +195,7 @@
   "purchaseBlockedNotice": "La compra se activará en cuanto el backend lo exponga.",
 
   "walletLoadError": "No se pudo cargar la cartera.",
+  "negativeBalanceNotice": "Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.",
   "recentMovements": "Últimos movimientos",
   "noMovements": "Todavía no hay movimientos.",
   "reasonEarned": "Tarea completada",

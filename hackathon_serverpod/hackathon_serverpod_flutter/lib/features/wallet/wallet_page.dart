@@ -38,7 +38,7 @@ class _Body extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    if (wallet.loading && wallet.history.isEmpty) {
+    if (!wallet.hasLoaded) {
       return const Center(child: CircularProgressIndicator());
     }
     if (wallet.error != null && wallet.history.isEmpty) {
@@ -59,6 +59,7 @@ class _Body extends StatelessWidget {
         ),
       );
     }
+    final negative = wallet.balance < 0;
     return RefreshIndicator(
       onRefresh: wallet.load,
       child: ListView(
@@ -67,7 +68,7 @@ class _Body extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.violet,
+              color: negative ? AppColors.coral : AppColors.violet,
               borderRadius: BorderRadius.circular(30),
             ),
             child: Row(
@@ -100,6 +101,13 @@ class _Body extends StatelessWidget {
               ],
             ),
           ),
+          if (negative) ...[
+            const SizedBox(height: 14),
+            InfoRow(
+              icon: Icons.info_outline_rounded,
+              text: l10n.negativeBalanceNotice,
+            ),
+          ],
           const SizedBox(height: 28),
           Text(
             l10n.recentMovements,

@@ -6,6 +6,7 @@ import '../../client.dart';
 class ShopController extends ChangeNotifier {
   List<RewardItem> rewards = [];
   bool loading = false;
+  bool hasLoaded = false;
   Object? error;
 
   Future<void> load() async {
@@ -18,6 +19,7 @@ class ShopController extends ChangeNotifier {
       error = e;
     } finally {
       loading = false;
+      hasLoaded = true;
       notifyListeners();
     }
   }

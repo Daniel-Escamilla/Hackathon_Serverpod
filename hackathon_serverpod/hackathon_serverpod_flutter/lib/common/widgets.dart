@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
+import '../features/wallet/wallet_controller.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'activity_screen.dart';
 import 'navigation.dart';
@@ -39,7 +41,7 @@ class PageHeader extends StatelessWidget {
               ],
             ),
           ),
-          if (showBalance) const CoinPill(value: 120),
+          if (showBalance) const _BalancePill(),
           IconButton(
             onPressed: () => pushPage(context, const ActivityScreen()),
             icon: const Badge(
@@ -53,6 +55,26 @@ class PageHeader extends StatelessWidget {
   }
 }
 
+/// The balance pill in the app bar. Waits for [WalletController]'s first
+/// load instead of flashing a wrong number, since it's shown on tabs other
+/// than Cartera where nothing else would trigger that load.
+class _BalancePill extends StatelessWidget {
+  const _BalancePill();
+
+  @override
+  Widget build(BuildContext context) {
+    final wallet = context.watch<WalletController>();
+    if (!wallet.hasLoaded) {
+      return const SizedBox(
+        height: 22,
+        width: 22,
+        child: CircularProgressIndicator(strokeWidth: 2),
+      );
+    }
+    return CoinPill(value: wallet.balance);
+  }
+}
+
 class CoinPill extends StatelessWidget {
   const CoinPill({required this.value, super.key});
 
@@ -60,10 +82,11 @@ class CoinPill extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final negative = value < 0;
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
-        color: AppColors.lime,
+        color: negative ? AppColors.coral : AppColors.lime,
         borderRadius: BorderRadius.circular(22),
       ),
       child: Row(
@@ -73,7 +96,8 @@ class CoinPill extends StatelessWidget {
           const SizedBox(width: 5),
           Text(
             '$value',
-            style: const TextStyle(
+            style: TextStyle(
+              color: negative ? Colors.white : AppColors.ink,
               fontWeight: FontWeight.w900,
               fontFeatures: AppFonts.tabularFigures,
             ),
