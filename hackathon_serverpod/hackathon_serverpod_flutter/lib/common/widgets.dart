@@ -3,8 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
 import '../features/wallet/wallet_controller.dart';
+import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../ui/app_button.dart';
+import '../ui/pressable.dart';
 import 'activity_screen.dart';
 import 'navigation.dart';
 
@@ -73,7 +75,12 @@ class _BalancePill extends StatelessWidget {
         child: CircularProgressIndicator(strokeWidth: 2),
       );
     }
-    return CoinPill(value: wallet.balance);
+    return Pressable(
+      onTap: () =>
+          context.read<HomeTabController>().goTo(HomeTabController.shop),
+      borderRadius: BorderRadius.circular(22),
+      child: CoinPill(value: wallet.balance),
+    );
   }
 }
 

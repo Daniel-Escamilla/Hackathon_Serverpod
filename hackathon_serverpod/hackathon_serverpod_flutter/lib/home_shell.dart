@@ -14,6 +14,26 @@ import 'features/wallet/wallet_controller.dart';
 import 'features/wallet/wallet_page.dart';
 import 'l10n/generated/app_localizations.dart';
 
+/// Which of [HomeShell]'s four tabs is showing. A screen nested inside one
+/// tab (the coin pill in [PageHeader]) reads this through `provider` to jump
+/// to another tab instead of pushing a whole new navigator stack.
+class HomeTabController extends ChangeNotifier {
+  HomeTabController(this.index);
+
+  static const tasks = 0;
+  static const shop = 1;
+  static const wallet = 2;
+  static const group = 3;
+
+  int index;
+
+  void goTo(int value) {
+    if (value == index) return;
+    index = value;
+    notifyListeners();
+  }
+}
+
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key, this.initialIndex = 0});
 
@@ -24,7 +44,7 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
-  late int _index = widget.initialIndex;
+  late final _tabController = HomeTabController(widget.initialIndex);
   final _tasksController = TasksController()..load();
   final _shopController = ShopController()..load();
   final _walletController = WalletController()..load();
@@ -32,6 +52,7 @@ class _HomeShellState extends State<HomeShell> {
 
   @override
   void dispose() {
+    _tabController.dispose();
     _tasksController.dispose();
     _shopController.dispose();
     _walletController.dispose();
@@ -43,6 +64,7 @@ class _HomeShellState extends State<HomeShell> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: _tabController),
         ChangeNotifierProvider.value(value: _tasksController),
         ChangeNotifierProvider.value(value: _shopController),
         ChangeNotifierProvider.value(value: _walletController),
@@ -51,6 +73,7 @@ class _HomeShellState extends State<HomeShell> {
       child: Builder(
         builder: (context) {
           final l10n = AppLocalizations.of(context);
+          final index = context.watch<HomeTabController>().index;
           const pages = [
             TasksPage(),
             ShopPage(),
@@ -59,11 +82,11 @@ class _HomeShellState extends State<HomeShell> {
           ];
           return Scaffold(
             body: SafeArea(
-              child: IndexedStack(index: _index, children: pages),
+              child: IndexedStack(index: index, children: pages),
             ),
             bottomNavigationBar: NavigationBar(
-              selectedIndex: _index,
-              onDestinationSelected: (value) => setState(() => _index = value),
+              selectedIndex: index,
+              onDestinationSelected: _tabController.goTo,
               backgroundColor: Colors.white,
               indicatorColor: AppColors.violet.withValues(alpha: .14),
               destinations: [
@@ -85,7 +108,7 @@ class _HomeShellState extends State<HomeShell> {
                 ),
               ],
             ),
-            floatingActionButton: _index == 0
+            floatingActionButton: index == HomeTabController.tasks
                 ? FloatingActionButton.extended(
                     onPressed: () =>
                         pushPage(context, const ProposeTaskScreen()),
