@@ -13,6 +13,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
+import 'package:hackathon_serverpod_server/src/generated/future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
+    as _i7db9b19;
 import 'package:hackathon_serverpod_server/src/generated/greetings/greeting.dart'
     as _ikht4he2;
 import 'package:hackathon_serverpod_server/src/generated/groups/group.dart'
@@ -163,6 +167,8 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final futureCalls = _FutureCalls();
+
   late final _EmailIdpEndpoint emailIdp;
 
   late final _JwtRefreshEndpoint jwtRefresh;
@@ -214,6 +220,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
   }
+}
+
+class _FutureCalls {
+  late final taskVote = _TaskVoteFutureCall();
 }
 
 class _EmailIdpEndpoint {
@@ -1416,5 +1426,28 @@ class _WalletEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _TaskVoteFutureCall {
+  Future<void> expireVote(
+    _ist.TestSessionBuilder sessionBuilder,
+    int taskId,
+    DateTime expectedVoteClosesAt,
+  ) async {
+    var object = _i7db9b19.TaskVoteFutureCallExpireVoteModel(
+      taskId: taskId,
+      expectedVoteClosesAt: expectedVoteClosesAt,
+    );
+    var _localUniqueSession =
+        (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild();
+    try {
+      await _isvvvywu.TaskVoteExpireVoteFutureCall().invoke(
+        _localUniqueSession,
+        object,
+      );
+    } finally {
+      await _localUniqueSession.close();
+    }
   }
 }

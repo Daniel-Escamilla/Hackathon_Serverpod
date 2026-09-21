@@ -27,6 +27,8 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
+import 'future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
+    as _if11z8io;
 import 'greetings/greeting.dart' as _izw8z7ou;
 import 'groups/group.dart' as _i9ztykbt;
 import 'groups/group_error_reason.dart' as _i7quka6t;
@@ -950,6 +952,9 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
 
+    if (t == _if11z8io.TaskVoteFutureCallExpireVoteModel) {
+      return _if11z8io.TaskVoteFutureCallExpireVoteModel.fromJson(data) as T;
+    }
     if (t == _izw8z7ou.Greeting) {
       return _izw8z7ou.Greeting.fromJson(data) as T;
     }
@@ -1018,6 +1023,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _izo0hjq0.RankingEntry) {
       return _izo0hjq0.RankingEntry.fromJson(data) as T;
+    }
+    if (t == _is.getType<_if11z8io.TaskVoteFutureCallExpireVoteModel?>()) {
+      return (data != null
+              ? _if11z8io.TaskVoteFutureCallExpireVoteModel.fromJson(data)
+              : null)
+          as T;
     }
     if (t == _is.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
@@ -1142,6 +1153,8 @@ class Protocol extends _is.DatabaseSerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _if11z8io.TaskVoteFutureCallExpireVoteModel =>
+        'TaskVoteFutureCallExpireVoteModel',
       _izw8z7ou.Greeting => 'Greeting',
       _i9ztykbt.Group => 'Group',
       _i7quka6t.GroupErrorReason => 'GroupErrorReason',
@@ -1182,6 +1195,8 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
 
     switch (data) {
+      case _if11z8io.TaskVoteFutureCallExpireVoteModel():
+        return 'TaskVoteFutureCallExpireVoteModel';
       case _izw8z7ou.Greeting():
         return 'Greeting';
       case _i9ztykbt.Group():
@@ -1253,6 +1268,11 @@ class Protocol extends _is.DatabaseSerializationManager {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'TaskVoteFutureCallExpireVoteModel') {
+      return deserialize<_if11z8io.TaskVoteFutureCallExpireVoteModel>(
+        data['data'],
+      );
     }
     if (dataClassName == 'Greeting') {
       return deserialize<_izw8z7ou.Greeting>(data['data']);

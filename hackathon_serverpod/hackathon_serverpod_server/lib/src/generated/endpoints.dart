@@ -10,6 +10,8 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
 import 'package:hackathon_serverpod_server/src/generated/groups/group_type.dart'
     as _ik8b7v56;
 import 'package:serverpod/serverpod.dart' as _is;
@@ -24,6 +26,7 @@ import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
 import '../tasks/task_endpoint.dart' as _i3nmwja6;
 import '../wallet/wallet_endpoint.dart' as _il5vx24y;
+export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -832,5 +835,10 @@ class Endpoints extends _is.EndpointDispatch {
       ..initializeEndpoints(server);
     modules['serverpod_auth_core'] = _iacs.Endpoints()
       ..initializeEndpoints(server);
+  }
+
+  @override
+  _is.FutureCallDispatch? get futureCalls {
+    return _isvvvywu.FutureCalls();
   }
 }
