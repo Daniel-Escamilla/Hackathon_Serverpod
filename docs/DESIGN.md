@@ -104,8 +104,12 @@ Para hacer sonar uno a mano: `uiSounds.play(AppSound.success)`.
 Una vibración ligera (`lightImpact`) al pulsar un botón principal y un toque más fino
 (`selectionClick`) en el resto. En la web no hace nada, y no hace falta tratarlo.
 
+**`coin` y `fine` suenan al abrir la cartera**, no en el momento del voto: quien paga o multa a
+alguien no es esa persona, y no hay stream, así que la cartera es el primer momento en que el
+afectado ve el movimiento. `WalletController` compara el historial contra la última carga y suena
+una vez si aparece algo `earned` o `fined` desde entonces; la primera carga nunca suena, porque todo
+parecería "nuevo".
+
 ## Pendiente
 
-- **`coin` y `fine` todavía no suenan en ningún sitio**: se enganchan cuando se cobra una tarea (#61)
-  y cuando llegan las multas (#63). Ahí es donde el sonido más se nota en el vídeo.
 - El botón de silenciar en ajustes.
