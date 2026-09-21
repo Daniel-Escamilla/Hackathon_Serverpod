@@ -8,6 +8,7 @@ import '../theme.dart';
 import '../ui/coin_amount.dart';
 import '../ui/failure_messages.dart';
 import 'create_group_screen.dart';
+import 'group_screen.dart';
 import 'join_group_screen.dart';
 import 'wallet_screen.dart';
 
@@ -28,6 +29,16 @@ class HomeScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(l10n.appTitle),
         actions: [
+          // Only for someone in a group: a balance means a membership. Until the
+          // three tabs land this is how the group screen is reached.
+          if (balance.hasValue)
+            IconButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const GroupScreen()),
+              ),
+              tooltip: l10n.groupTitle,
+              icon: const Icon(Icons.group_outlined),
+            ),
           // The balance rides the app bar wherever you are (PRODUCT.md §11),
           // and opens the wallet. It only appears once there is a figure:
           // before that there is nothing true to show.

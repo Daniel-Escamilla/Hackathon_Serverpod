@@ -4,6 +4,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import '../client.dart';
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
+import '../ui/feedback.dart';
 
 /// Gates [child] behind a real Serverpod sign-in. `SignInWidget` runs the email
 /// identity provider: it takes an address, mails a verification code and
@@ -81,14 +82,6 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void _showMessage(String message, {bool isError = false}) {
-    if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message, style: const TextStyle(color: Colors.white)),
-        backgroundColor: isError ? appCoral : appInk,
-        behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 5),
-      ),
-    );
+    if (mounted) showMessage(context, message, isError: isError);
   }
 }

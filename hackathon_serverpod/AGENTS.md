@@ -120,7 +120,7 @@ Agreed 2026-09-21. They cover the app under `hackathon_serverpod_flutter/lib`.
 
 **State with Riverpod** (`flutter_riverpod`, no code generation, so there is no build step to run). `ProviderScope` wraps the app. Server data that more than one widget needs is a `FutureProvider` — `walletBalanceProvider` is the model to copy — and whatever changes it calls `ref.invalidate`, so every widget showing that figure refreshes once instead of each fetching its own. Form state stays in the widget: a `Notifier` for a text field is ceremony, not architecture.
 
-**Reusable before repeated.** A widget wanted by a second screen moves to `lib/ui/`. `CoinAmount` is the first: every amount in the app goes through it, so a balance, a reward's price and a line of history all read the same, with tabular figures so columns line up.
+**Reusable before repeated.** A widget wanted by a second screen moves to `lib/ui/`. `CoinAmount` is the first: every amount in the app goes through it, so a balance, a reward's price and a line of history all read the same, with tabular figures so columns line up. Messages and confirmations go through `ui/feedback.dart` (`showMessage`, `confirmAction`) — anything that cannot be undone asks first, and its button names the action, not "Sí".
 
 **One thing per file**, named after it: screens end in `Screen`, repositories in `Repository`. Private helpers stay in the file that uses them until a second file wants one.
 
@@ -155,7 +155,7 @@ Ties are broken on "Does it work" first, then down the list in order.
 What follows from that:
 
 - Small and finished beats large and broken. Teams reliably finish about a quarter of what they plan, so scope to one user, one problem, one flow, and make that flow real.
-- The placeholders in the current UI are precisely what the first two criteria penalise: the hardcoded `_members` list in `group_screen.dart`, the in-memory `_items` in `todo_list_screen.dart`, and `_coins = 0` in `main.dart`. Putting those on real models, tables and endpoints is the highest-value work available, and it is the same work that raises the Serverpod-stack score.
+- Placeholders in the UI are precisely what the first two criteria penalise. The three the scaffold shipped with — the hardcoded `_members`, the in-memory `_items` and `_coins = 0` — are gone, replaced by real endpoints; keep it that way. A screen with nothing to show says so, it does not invent data.
 - Prefer deepening one flow over adding a third tab.
 - Serverpod Cloud is the intended deploy target and `lib/server.dart` is already wired for it (`ServerpodCloudEmailIdpConfig`, `ServerpodCloudProvider`); in development, email verification codes are printed to the server console, so sign-in is testable without any mail setup. Outside Serverpod Cloud those emails are not sent unless the provider is switched to `EmailIdpConfigFromPasswords` with a real mail sender — self-hosting without doing that leaves judges stuck at sign-up.
 - Hosting: registrants get **one month of free Serverpod Cloud hosting** (welcome pack); the Starter plan is $5/month after that. The deployment has to stay reachable until judging ends on **2026-10-20 17:00**, so a free month that starts counting before about 21 September runs out mid-judging — budget the extra days rather than let it lapse. Deploy with `serverpod cloud launch` (docs: <https://docs.serverpod.dev/cloud>). Deploying creates a live, billable service: it is the team's decision, never a side effect of another task.
@@ -190,12 +190,15 @@ Third-party SDKs, APIs and data need to be licensed for this use; open-source co
 
 ## About this app
 
-"Hackathon App": a Flutter app with a light theme (Archivo font) and two
-swipeable tabs under a top `TabBar` (full-width sliding indicator) — "Grupo"
-(group members list) and "Tareas" (local to-do list). The app bar shows a
-coin balance (SVG icon in `assets/icons/coin.svg`, fixed-width number field)
-next to the title. Backend is still the default Serverpod scaffold; no
-custom endpoints or data models yet.
+A household-chores app where the group agrees on every task and pays for it in coins (see
+`docs/PRODUCT.md`). The look is Mayte's, from `prototype_app.dart`: Fredoka and Nunito Sans, violet
+on cream, held in `lib/theme.dart`.
+
+What runs today, all against the server: email sign-in, creating a group or joining one by code,
+the group screen (members, invite code, and for the admin, expelling a member and replacing the
+code), and the wallet with its history. The backend has groups, wallet, shop and most of the task
+cycle; `docs/PLAN.md` says what is left and when. `prototype_app.dart` is a design reference only:
+it holds no live data and `main.dart` does not use it.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits

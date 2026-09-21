@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/group_repository.dart';
 import '../l10n/app_localizations.dart';
-import '../theme.dart';
 import '../ui/failure_messages.dart';
+import '../ui/feedback.dart';
 
 /// Joins a group with its invite code, against `GroupEndpoint.joinGroup`.
 /// Entry is direct, with no approval to wait for (PRODUCT.md §7).
@@ -32,7 +32,6 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
     setState(() => _submitting = true);
 
     final l10n = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
 
     try {
@@ -42,13 +41,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
     } catch (error) {
       if (!mounted) return;
       setState(() => _submitting = false);
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(failureMessage(error, l10n)),
-          backgroundColor: appCoral,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      showMessage(context, failureMessage(error, l10n), isError: true);
     }
   }
 

@@ -6,6 +6,7 @@ import '../data/group_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
 import '../ui/failure_messages.dart';
+import '../ui/feedback.dart';
 
 /// Creates a group against `GroupEndpoint.createGroup` and shows the invite
 /// code it comes back with.
@@ -36,7 +37,6 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     setState(() => _submitting = true);
 
     final l10n = AppLocalizations.of(context);
-    final messenger = ScaffoldMessenger.of(context);
     final navigator = Navigator.of(context);
 
     try {
@@ -51,13 +51,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
     } catch (error) {
       if (!mounted) return;
       setState(() => _submitting = false);
-      messenger.showSnackBar(
-        SnackBar(
-          content: Text(failureMessage(error, l10n)),
-          backgroundColor: appCoral,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      showMessage(context, failureMessage(error, l10n), isError: true);
     }
   }
 

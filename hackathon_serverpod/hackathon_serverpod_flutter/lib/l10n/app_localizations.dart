@@ -154,6 +154,102 @@ abstract class AppLocalizations {
   /// **'Volver a intentarlo'**
   String get retry;
 
+  /// Dismisses a confirmation without doing anything
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get cancel;
+
+  /// Title of the group screen, and of its tab
+  ///
+  /// In es, this message translates to:
+  /// **'Grupo'**
+  String get groupTitle;
+
+  /// Label above the invite code on the group screen
+  ///
+  /// In es, this message translates to:
+  /// **'Código para entrar'**
+  String get groupInviteLabel;
+
+  /// Button that copies the invite code to the clipboard
+  ///
+  /// In es, this message translates to:
+  /// **'Copiar'**
+  String get groupInviteCopy;
+
+  /// Confirmation after copying the invite code
+  ///
+  /// In es, this message translates to:
+  /// **'Código copiado. Pásalo por donde quieras.'**
+  String get groupInviteCopied;
+
+  /// Admin button that replaces the invite code
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar el código'**
+  String get groupInviteRegenerate;
+
+  /// Title of the confirmation before replacing the invite code
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cambiar el código?'**
+  String get groupInviteRegenerateTitle;
+
+  /// Explains what replacing the invite code does and does not affect
+  ///
+  /// In es, this message translates to:
+  /// **'El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.'**
+  String get groupInviteRegenerateBody;
+
+  /// Confirmation after the invite code is replaced
+  ///
+  /// In es, this message translates to:
+  /// **'Código cambiado. El anterior ya no sirve.'**
+  String get groupInviteRegenerated;
+
+  /// Heading above the list of group members
+  ///
+  /// In es, this message translates to:
+  /// **'Miembros'**
+  String get groupMembers;
+
+  /// Badge on the member who administers the group
+  ///
+  /// In es, this message translates to:
+  /// **'Admin'**
+  String get memberRoleAdmin;
+
+  /// Badge on the signed-in user's own row
+  ///
+  /// In es, this message translates to:
+  /// **'Tú'**
+  String get memberYou;
+
+  /// Admin action that removes a member from the group
+  ///
+  /// In es, this message translates to:
+  /// **'Expulsar'**
+  String get expelAction;
+
+  /// Title of the confirmation before expelling a member
+  ///
+  /// In es, this message translates to:
+  /// **'¿Expulsar a {name}?'**
+  String expelTitle(String name);
+
+  /// Explains the consequences of expelling a member
+  ///
+  /// In es, this message translates to:
+  /// **'Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.'**
+  String get expelBody;
+
+  /// Confirmation after a member is expelled
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ya no está en el grupo.'**
+  String expelDone(String name);
+
   /// Button that opens the create-group screen
   ///
   /// In es, this message translates to:

@@ -1,5 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+// For the `auth` extension on the client: the signed-in session.
+import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../client.dart';
 import 'app_failure.dart';
@@ -70,4 +72,21 @@ final clientProvider = Provider<Client>((ref) => client);
 
 final groupRepositoryProvider = Provider<GroupRepository>(
   (ref) => GroupRepository(ref.watch(clientProvider)),
+);
+
+/// The caller's group, invite code included. Invalidate it after replacing the
+/// code so every screen showing it picks up the new one.
+final myGroupProvider = FutureProvider<Group>(
+  (ref) => ref.watch(groupRepositoryProvider).myGroup(),
+);
+
+/// Everyone in the caller's group. Invalidate it after expelling someone.
+final groupMembersProvider = FutureProvider<List<GroupMember>>(
+  (ref) => ref.watch(groupRepositoryProvider).members(),
+);
+
+/// Who is signed in, to tell "you" apart in a list of members. Read from the
+/// session the client already holds, so it costs no request.
+final signedInUserIdProvider = Provider<UuidValue?>(
+  (ref) => ref.watch(clientProvider).auth.authInfoListenable.value?.authUserId,
 );
