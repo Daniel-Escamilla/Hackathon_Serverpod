@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../app_theme.dart';
 import '../features/wallet/wallet_controller.dart';
 import '../l10n/generated/app_localizations.dart';
+import '../ui/app_button.dart';
 import 'activity_screen.dart';
 import 'navigation.dart';
 
@@ -326,6 +327,7 @@ class FormScaffold extends StatelessWidget {
     required this.fields,
     required this.button,
     required this.onSubmit,
+    this.loading = false,
     super.key,
   });
 
@@ -333,6 +335,7 @@ class FormScaffold extends StatelessWidget {
   final List<Widget> fields;
   final String button;
   final VoidCallback onSubmit;
+  final bool loading;
 
   @override
   Widget build(BuildContext context) {
@@ -357,7 +360,11 @@ class FormScaffold extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(24, 10, 24, 22),
-              child: FilledButton(onPressed: onSubmit, child: Text(button)),
+              child: AppButton(
+                label: button,
+                loading: loading,
+                onPressed: onSubmit,
+              ),
             ),
           ],
         ),

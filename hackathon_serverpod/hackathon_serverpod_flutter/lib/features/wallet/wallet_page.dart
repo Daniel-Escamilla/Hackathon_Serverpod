@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
-import '../tasks/tasks_controller.dart';
+import '../../ui/app_button.dart';
+import '../../ui/coin_amount.dart';
 import 'wallet_controller.dart';
 
 class WalletPage extends StatelessWidget {
@@ -14,26 +15,22 @@ class WalletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wallet = context.watch<WalletController>();
-    final tasks = context.watch<TasksController>();
     return Column(
       children: [
         PageHeader(
           title: AppLocalizations.of(context).navWallet,
           showBalance: false,
         ),
-        Expanded(
-          child: _Body(wallet: wallet, tasks: tasks),
-        ),
+        Expanded(child: _Body(wallet: wallet)),
       ],
     );
   }
 }
 
 class _Body extends StatelessWidget {
-  const _Body({required this.wallet, required this.tasks});
+  const _Body({required this.wallet});
 
   final WalletController wallet;
-  final TasksController tasks;
 
   @override
   Widget build(BuildContext context) {
@@ -50,9 +47,10 @@ class _Body extends StatelessWidget {
             children: [
               Text(l10n.walletLoadError),
               const SizedBox(height: 12),
-              FilledButton(
+              AppButton(
+                label: l10n.retry,
+                kind: AppButtonKind.secondary,
                 onPressed: wallet.load,
-                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -77,13 +75,13 @@ class _Body extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        '${wallet.balance}',
+                      CoinAmount(
+                        coins: wallet.balance,
+                        size: 40,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 54,
                           fontWeight: FontWeight.w900,
-                          fontFeatures: AppFonts.tabularFigures,
                         ),
                       ),
                       Text(
@@ -119,35 +117,22 @@ class _Body extends StatelessWidget {
               padding: const EdgeInsets.only(top: 40),
               child: Center(child: Text(l10n.noMovements)),
             ),
-          for (final entry in wallet.history)
-            _MovementRow(
-              entry: entry,
-              taskTitle: entry.taskId == null
-                  ? null
-                  : _taskTitle(entry.taskId!),
-            ),
+          for (final movement in wallet.history)
+            _MovementRow(movement: movement),
         ],
       ),
     );
   }
-
-  String? _taskTitle(int taskId) {
-    for (final task in tasks.tasks) {
-      if (task.id == taskId) return task.title;
-    }
-    return null;
-  }
 }
 
 class _MovementRow extends StatelessWidget {
-  const _MovementRow({required this.entry, this.taskTitle});
+  const _MovementRow({required this.movement});
 
-  final CoinTransaction entry;
-  final String? taskTitle;
+  final CoinMovement movement;
 
   @override
   Widget build(BuildContext context) {
-    final positive = entry.amount >= 0;
+    final positive = movement.amount >= 0;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SoftCard(
@@ -160,11 +145,11 @@ class _MovementRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    taskTitle ?? _label(AppLocalizations.of(context)),
+                    movement.title ?? _label(AppLocalizations.of(context)),
                     style: const TextStyle(fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    _formatDate(entry.createdAt),
+                    _formatDate(movement.createdAt),
                     style: const TextStyle(
                       color: AppColors.muted,
                       fontSize: 13,
@@ -174,7 +159,7 @@ class _MovementRow extends StatelessWidget {
               ),
             ),
             Text(
-              '${positive ? '+' : ''}${entry.amount}',
+              '${positive ? '+' : ''}${movement.amount}',
               style: TextStyle(
                 color: positive ? const Color(0xFF16853C) : AppColors.coral,
                 fontSize: 20,
@@ -188,14 +173,14 @@ class _MovementRow extends StatelessWidget {
     );
   }
 
-  IconData get _icon => switch (entry.reason) {
+  IconData get _icon => switch (movement.reason) {
     CoinTransactionReason.earned => Icons.task_alt_rounded,
     CoinTransactionReason.fined => Icons.warning_amber_rounded,
     CoinTransactionReason.spent => Icons.storefront_rounded,
     CoinTransactionReason.refunded => Icons.replay_rounded,
   };
 
-  String _label(AppLocalizations l10n) => switch (entry.reason) {
+  String _label(AppLocalizations l10n) => switch (movement.reason) {
     CoinTransactionReason.earned => l10n.reasonEarned,
     CoinTransactionReason.fined => l10n.reasonFined,
     CoinTransactionReason.spent => l10n.reasonSpent,

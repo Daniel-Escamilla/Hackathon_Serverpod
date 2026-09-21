@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
 import '../home_shell.dart';
+import '../ui/app_button.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({
@@ -60,7 +61,8 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              FilledButton(
+              AppButton(
+                label: button,
                 onPressed: () {
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute<void>(
@@ -69,7 +71,6 @@ class ResultScreen extends StatelessWidget {
                     (_) => false,
                   );
                 },
-                child: Text(button),
               ),
             ],
           ),

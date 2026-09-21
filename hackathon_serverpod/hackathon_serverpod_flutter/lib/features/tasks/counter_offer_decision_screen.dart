@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/sounds.dart';
 import 'tasks_controller.dart';
 
 /// Shown to a task's author to accept or withdraw a pending counter-offer.
@@ -32,14 +34,15 @@ class CounterOfferDecisionScreen extends StatelessWidget {
         ),
       ],
       actions: [
-        FilledButton(
+        AppButton(
+          label: l10n.acceptCounterOffer,
           onPressed: () => _respond(context, true),
-          child: Text(l10n.acceptCounterOffer),
         ),
         const SizedBox(height: 10),
-        OutlinedButton(
+        AppButton(
+          label: l10n.withdrawNoFine,
+          kind: AppButtonKind.secondary,
           onPressed: () => _respond(context, false),
-          child: Text(l10n.withdrawNoFine),
         ),
       ],
     );
@@ -51,15 +54,16 @@ class CounterOfferDecisionScreen extends StatelessWidget {
     try {
       await controller.respondToCounterOffer(task.id!, accept);
       if (context.mounted) {
-        showSnack(
+        showMessage(
           context,
           accept ? l10n.counterOfferAccepted : l10n.proposalWithdrawn,
+          sound: AppSound.success,
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
       if (context.mounted) {
-        showSnack(context, l10n.counterOfferDecisionError);
+        showMessage(context, l10n.counterOfferDecisionError, isError: true);
       }
     }
   }

@@ -363,6 +363,55 @@ class Endpoints extends _is.EndpointDispatch {
                     displayName: params['displayName'],
                   ),
         ),
+        'myGroup': _is.MethodConnector(
+          name: 'myGroup',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .myGroup(session),
+        ),
+        'listMembers': _is.MethodConnector(
+          name: 'listMembers',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .listMembers(session),
+        ),
+        'expelMember': _is.MethodConnector(
+          name: 'expelMember',
+          params: {
+            'memberId': _is.ParameterDescription(
+              name: 'memberId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).expelMember(
+                    session,
+                    params['memberId'],
+                  ),
+        ),
+        'regenerateInviteCode': _is.MethodConnector(
+          name: 'regenerateInviteCode',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .regenerateInviteCode(session),
+        ),
       },
     );
     connectors['shop'] = _is.EndpointConnector(

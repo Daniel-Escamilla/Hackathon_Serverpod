@@ -204,12 +204,15 @@ Precios según la escala de [§4.5](#45-escala-de-monedas): una tarea típica va
 - **No hay límite de miembros** en ningún perfil: el perfil cambia la plantilla y las reglas, no el
   tamaño.
 - En piso y pareja se entra con el **código del grupo**, que se comparte por WhatsApp o por donde sea,
-  y **se entra directamente**, sin aprobación. Si entra quien no debe, el admin lo expulsa.
+  y **se entra directamente**, sin aprobación. El código **no caduca**. Lo que protege al grupo si se
+  filtra es el admin, por los dos lados: **expulsa** a quien haya entrado sin deber, y **cambia el
+  código** para que no entre nadie más (el viejo deja de valer al momento).
 - Manda **quien crea el grupo**, y puede ceder el cargo. Si el admin se va sin cederlo, **pasa al
   miembro más antiguo**.
 
-Solo el admin puede **expulsar miembros**, **borrar tareas y recompensas** y **configurar el grupo**
-(nombre, porcentaje de multa).
+Solo el admin puede **expulsar miembros**, **cambiar el código de invitación**, **borrar tareas y
+recompensas** y **configurar el grupo** (nombre, porcentaje de multa). Al admin no se le puede
+expulsar, ni puede expulsarse a sí mismo.
 
 Lo que **nadie** puede, ni el admin: **forzar una aprobación**. Ninguna tarea se da por buena
 saltándose la votación.
@@ -268,6 +271,9 @@ El recorte se cerró el **18 de septiembre**. El calendario y el reparto están 
 
 - Registro y entrada con email
 - Crear grupo **de piso o de pareja** y unirse con código
+- Expulsar a un miembro y cambiar el código de invitación, las dos solo el admin. Entró en el MVP el
+  21 de septiembre: como se entra sin aprobación, es lo único que protege un grupo cuyo código se ha
+  filtrado ([§7](#7-grupos-roles-y-permisos))
 - Ciclo completo: proponer → votar → hacer y reclamar → validar → cobrar, con contraoferta
 - Multas y votaciones con plazo
 - Cartera con historial
@@ -283,7 +289,7 @@ sitio para `family`, pero al crear un grupo solo se ofrecen piso y pareja.
 
 - Misiones periódicas
 - Ranking semanal
-- Expulsar, ceder el cargo y salir del grupo
+- Ceder el cargo y salir del grupo
 - Unidades de stock en la tienda
 - Catálogo de tareas típicas para añadirlas de un toque
 - Traducción al inglés (los textos salen en ARB desde el primer día, así que es traducir, no rehacer)

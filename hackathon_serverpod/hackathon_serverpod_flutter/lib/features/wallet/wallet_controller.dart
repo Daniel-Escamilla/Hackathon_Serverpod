@@ -5,7 +5,7 @@ import '../../client.dart';
 
 class WalletController extends ChangeNotifier {
   int balance = 0;
-  List<CoinTransaction> history = [];
+  List<CoinMovement> history = [];
   bool loading = false;
   bool hasLoaded = false;
   Object? error;
@@ -20,7 +20,7 @@ class WalletController extends ChangeNotifier {
         client.wallet.getHistory(limit: 50, offset: 0),
       ]);
       balance = results[0] as int;
-      history = results[1] as List<CoinTransaction>;
+      history = results[1] as List<CoinMovement>;
     } catch (e) {
       error = e;
     } finally {

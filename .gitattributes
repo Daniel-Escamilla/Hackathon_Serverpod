@@ -20,3 +20,7 @@
 # The rules PDF has no NUL bytes near its head, so Git guesses "text" and would
 # apply line-ending conversion to it on checkout, corrupting the file.
 *.pdf binary
+
+# UI sounds are generated WAV files. Git guesses them right today, but a guess
+# is what corrupted the rules PDF above; line-ending conversion would too.
+*.wav binary

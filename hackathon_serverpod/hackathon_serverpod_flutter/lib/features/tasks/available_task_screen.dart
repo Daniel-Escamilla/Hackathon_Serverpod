@@ -7,6 +7,8 @@ import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
 import 'tasks_controller.dart';
 
 class AvailableTaskScreen extends StatelessWidget {
@@ -33,11 +35,7 @@ class AvailableTaskScreen extends StatelessWidget {
         InfoRow(icon: Icons.info_outline_rounded, text: l10n.notReserved),
       ],
       actions: [
-        FilledButton.icon(
-          onPressed: () => _markDone(context),
-          icon: const Icon(Icons.check_rounded),
-          label: Text(l10n.markDone),
-        ),
+        AppButton(label: l10n.markDone, onPressed: () => _markDone(context)),
       ],
     );
   }
@@ -61,7 +59,7 @@ class AvailableTaskScreen extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        showSnack(context, l10n.claimError);
+        showMessage(context, l10n.claimError, isError: true);
       }
     }
   }

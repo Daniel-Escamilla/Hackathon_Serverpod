@@ -3,9 +3,11 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
-import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/sounds.dart';
 import 'shop_controller.dart';
 
 class RewardVoteScreen extends StatelessWidget {
@@ -33,18 +35,15 @@ class RewardVoteScreen extends StatelessWidget {
         InfoRow(icon: Icons.description_rounded, text: reward.description),
       ],
       actions: [
-        FilledButton(
+        AppButton(
+          label: l10n.approveReward,
           onPressed: () => _vote(context, true),
-          child: Text(l10n.approveReward),
         ),
         const SizedBox(height: 10),
-        OutlinedButton(
+        AppButton(
+          label: l10n.reject,
+          kind: AppButtonKind.danger,
           onPressed: () => _vote(context, false),
-          style: OutlinedButton.styleFrom(
-            foregroundColor: AppColors.coral,
-            side: const BorderSide(color: AppColors.coral),
-          ),
-          child: Text(l10n.reject),
         ),
       ],
     );
@@ -56,14 +55,15 @@ class RewardVoteScreen extends StatelessWidget {
     try {
       await controller.voteReward(reward.id!, approve);
       if (context.mounted) {
-        showSnack(
+        showMessage(
           context,
           approve ? l10n.rewardApproved : l10n.rewardRejected,
+          sound: AppSound.success,
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (context.mounted) showSnack(context, l10n.voteError);
+      if (context.mounted) showMessage(context, l10n.voteError, isError: true);
     }
   }
 }

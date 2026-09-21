@@ -4,6 +4,7 @@ import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 
 class GroupSuccessScreen extends StatelessWidget {
   const GroupSuccessScreen({
@@ -50,15 +51,12 @@ class GroupSuccessScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              FilledButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.share_rounded),
-                label: Text(l10n.shareCode),
-              ),
+              AppButton(label: l10n.shareCode, onPressed: () {}),
               const SizedBox(height: 12),
-              OutlinedButton(
+              AppButton(
+                label: l10n.goToTasks,
+                kind: AppButtonKind.secondary,
                 onPressed: () => enterHome(context),
-                child: Text(l10n.goToTasks),
               ),
             ],
           ),

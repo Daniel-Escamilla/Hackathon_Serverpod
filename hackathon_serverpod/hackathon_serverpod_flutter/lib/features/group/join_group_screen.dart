@@ -5,6 +5,7 @@ import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 
 class JoinGroupScreen extends StatefulWidget {
   const JoinGroupScreen({super.key});
@@ -77,18 +78,10 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
           ),
         ],
         const SizedBox(height: 20),
-        FilledButton(
-          onPressed: _loading ? null : _submit,
-          child: _loading
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                )
-              : Text(l10n.joinGroupSubmit),
+        AppButton(
+          label: l10n.joinGroupSubmit,
+          loading: _loading,
+          onPressed: _submit,
         ),
       ],
     );

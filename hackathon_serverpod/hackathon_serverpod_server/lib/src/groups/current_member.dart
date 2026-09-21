@@ -8,6 +8,10 @@ import '../generated/protocol.dart';
 Future<GroupMember> currentGroupMember(Session session) async {
   final authUserId = session.authenticated?.authUserId;
   if (authUserId == null) {
+    // Unreachable through the API: every endpoint sets `requireLogin`, so
+    // Serverpod turns an anonymous call away before it gets here. A guard
+    // against misuse from server code, hence a plain error, not something the
+    // app is expected to handle.
     throw StateError('This endpoint requires an authenticated user.');
   }
 
@@ -16,7 +20,9 @@ Future<GroupMember> currentGroupMember(Session session) async {
     where: (t) => t.authUserId.equals(authUserId) & t.leftAt.equals(null),
   );
   if (member == null) {
-    throw StateError('No active group membership for the signed-in user.');
+    // Expected, and the app acts on it: it is how a signed-in user with no
+    // group yet is told to create or join one.
+    throw GroupException(reason: GroupErrorReason.noMembership);
   }
 
   return member;

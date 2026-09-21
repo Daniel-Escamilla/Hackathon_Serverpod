@@ -153,7 +153,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get joinGroupTitle => 'Unirme con un código';
 
   @override
-  String get joinGroupSubtitle => 'Introduce el código que te han compartido.';
+  String get joinGroupCardSubtitle => 'Entra en un grupo existente';
 
   @override
   String get createGroupHeadline => 'Crea vuestro grupo';
@@ -166,6 +166,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get profileCouple => 'Pareja';
+
+  @override
+  String get profileFamily => 'Familia';
 
   @override
   String get groupNameLabel => 'Nombre del grupo';
@@ -184,6 +187,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get joinGroupHeadline => 'Únete a tu gente';
+
+  @override
+  String get joinGroupSubtitle => 'Introduce el código que te han compartido.';
 
   @override
   String get joinGroupCodeHint => 'NIDO-482';
@@ -449,18 +455,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get rewardSubmitError => 'No se pudo enviar la recompensa';
 
   @override
-  String get sending => 'Enviando…';
-
-  @override
   String get whoWillFulfil => '¿Quién la cumplirá?';
 
   @override
-  String get membersEndpointNotice =>
-      'Elegir a quién le toca necesita el listado de miembros del grupo, que todavía no tiene endpoint.';
+  String get selectMember => 'Selecciona a una persona';
 
   @override
-  String get purchaseBlockedNotice =>
-      'La compra se activará en cuanto el backend lo exponga.';
+  String get noOtherMembers =>
+      'Todavía no hay nadie más en el grupo para cumplirla.';
+
+  @override
+  String get purchaseSentTitle => 'Compra enviada';
+
+  @override
+  String get purchaseSentMessage => 'Debe aceptar antes de cumplirla.';
+
+  @override
+  String get backToShop => 'Volver a la tienda';
+
+  @override
+  String get purchaseError => 'No se pudo completar la compra';
 
   @override
   String get walletLoadError => 'No se pudo cargar la cartera.';
@@ -486,4 +500,65 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reasonRefunded => 'Devolución';
+
+  @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get memberRoleAdmin => 'Admin';
+
+  @override
+  String get memberYou => 'Tú';
+
+  @override
+  String get expelAction => 'Expulsar';
+
+  @override
+  String expelTitle(String name) {
+    return '¿Expulsar a $name?';
+  }
+
+  @override
+  String get expelBody =>
+      'Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.';
+
+  @override
+  String expelDone(String name) {
+    return '$name ya no está en el grupo.';
+  }
+
+  @override
+  String get groupInviteRegenerate => 'Cambiar el código';
+
+  @override
+  String get groupInviteRegenerateTitle => '¿Cambiar el código?';
+
+  @override
+  String get groupInviteRegenerateBody =>
+      'El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.';
+
+  @override
+  String get groupInviteRegenerated =>
+      'Código cambiado. El anterior ya no sirve.';
+
+  @override
+  String get errorInviteCode =>
+      'Ese código no existe. Compruébalo con quien te lo pasó.';
+
+  @override
+  String get errorAlreadyInGroup =>
+      'Ya estás en un grupo. Sal de él antes de entrar en otro.';
+
+  @override
+  String get errorNotAdmin =>
+      'Solo quien administra el grupo puede hacer esto.';
+
+  @override
+  String get errorMemberNotFound => 'Esa persona ya no está en el grupo.';
+
+  @override
+  String get errorCannotExpelSelf => 'No puedes expulsarte a ti del grupo.';
+
+  @override
+  String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
 }

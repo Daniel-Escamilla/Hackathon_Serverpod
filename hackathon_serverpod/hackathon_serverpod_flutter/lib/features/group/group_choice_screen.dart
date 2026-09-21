@@ -42,7 +42,7 @@ class GroupChoiceScreen extends StatelessWidget {
                 color: AppColors.sky,
                 icon: Icons.confirmation_number_rounded,
                 title: l10n.joinGroupTitle,
-                subtitle: l10n.joinGroupSubtitle,
+                subtitle: l10n.joinGroupCardSubtitle,
                 onTap: () => pushPage(context, const JoinGroupScreen()),
               ),
             ],

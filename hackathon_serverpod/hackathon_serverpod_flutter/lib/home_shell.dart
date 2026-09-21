@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
 import 'common/navigation.dart';
+import 'features/group/group_controller.dart';
 import 'features/group/group_page.dart';
 import 'features/shop/shop_controller.dart';
 import 'features/shop/shop_page.dart';
@@ -27,12 +28,14 @@ class _HomeShellState extends State<HomeShell> {
   final _tasksController = TasksController()..load();
   final _shopController = ShopController()..load();
   final _walletController = WalletController()..load();
+  final _groupController = GroupController()..load();
 
   @override
   void dispose() {
     _tasksController.dispose();
     _shopController.dispose();
     _walletController.dispose();
+    _groupController.dispose();
     super.dispose();
   }
 
@@ -43,6 +46,7 @@ class _HomeShellState extends State<HomeShell> {
         ChangeNotifierProvider.value(value: _tasksController),
         ChangeNotifierProvider.value(value: _shopController),
         ChangeNotifierProvider.value(value: _walletController),
+        ChangeNotifierProvider.value(value: _groupController),
       ],
       child: Builder(
         builder: (context) {

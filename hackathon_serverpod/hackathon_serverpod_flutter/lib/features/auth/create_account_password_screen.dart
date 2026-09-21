@@ -6,6 +6,7 @@ import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 
 class CreateAccountPasswordScreen extends StatefulWidget {
   const CreateAccountPasswordScreen({
@@ -82,18 +83,10 @@ class _CreateAccountPasswordScreenState
           Text(_error!, style: const TextStyle(color: AppColors.coral)),
         ],
         const SizedBox(height: 18),
-        FilledButton(
-          onPressed: _loading ? null : _submit,
-          child: _loading
-              ? const SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: Colors.white,
-                  ),
-                )
-              : Text(l10n.createAccountButton),
+        AppButton(
+          label: l10n.createAccountButton,
+          loading: _loading,
+          onPressed: _submit,
         ),
       ],
     );

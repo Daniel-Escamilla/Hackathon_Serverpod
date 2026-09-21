@@ -1,79 +1,114 @@
-# Diseño
+# Estándar de diseño
 
-**Propuesta, no decisión.** La cierran Mayte y Juan; hasta entonces esto es el punto de partida para no
-empezar cada pantalla de cero. Escrito el 18 de septiembre de 2026.
+**Playful UI.** Es el estándar vigente desde el 21 de septiembre de 2026. Lo lleva Mayte, y este
+documento recoge cómo está hecho en el código para que cualquier pantalla nueva —la haga quien la
+haga, persona o agente— salga igual que las demás.
 
-El plan ([`PLAN.md`](PLAN.md)) pone el presupuesto de diseño donde toca: **el fichero del tema, una
-vez, esta semana**. El jurado no puntúa la presentación — "rough is fine, careless is not" — y lo que
-sí puntúa es que el ciclo funcione. Nada de rediseñar pantallas en la semana 3.
+La app es un juego de monedas entre gente que vive junta, y el "playful" sale de ahí: del **tacto**
+(los botones rebotan), del **sonido** (pops, un "bling" al cobrar) y de la **forma** (redondeada,
+colores planos). No sale de mascotas, confeti ni degradados.
 
-## El principio
+El jurado no puntúa la presentación, pero sí el acabado. El estándar existe para que el acabado
+salga gratis: está dentro de los componentes, así que no hay que acordarse de él en cada pantalla.
 
-**La moneda es la protagonista y no hay nada más gritando en pantalla.** Cada pantalla tiene una sola
-cosa fuerte: la cantidad. Todo lo demás, callado.
+---
 
-Sale del producto: esto no es una lista de tareas, es un mercado doméstico donde se pone precio, se
-negocia, se cobra y se multa. La personalidad viene de las apuestas y del recuento, no de la
-decoración. Y como el modo familia queda fuera del MVP y el vídeo se graba con el perfil de pareja, lo
-que se ve son dos adultos negociando, no un cuadro de tareas infantil.
+## Reglas para una pantalla nueva
 
-## Paleta
+1. **Botones: siempre `AppButton`.** Nunca un `FilledButton`, `OutlinedButton` o `TextButton` en una
+   pantalla. El rebote, la vibración y el sonido van dentro.
+2. **Algo que se toca y no es un botón** (una tarjeta de tarea, una recompensa): envuélvelo en
+   `Pressable`.
+3. **Cantidades de monedas: siempre `CoinAmount`**, para que se lean igual en todas partes.
+4. **Avisos: `showMessage`.** Lo que no se puede deshacer pasa antes por `confirmAction`, y su botón
+   dice lo que hace ("Expulsar", no "Sí").
+5. **Ningún texto escrito a mano**: todo va al ARB (`lib/l10n/app_es.arb`).
+6. **Colores y tipos, del tema** (`lib/theme.dart`), nunca un `Color(0x…)` suelto en una pantalla.
 
-| Token | Hex | RGB | Dónde |
+## Componentes (`lib/ui/`)
+
+| Componente | Para qué |
+|---|---|
+| `AppButton` | Todos los botones. Tipos abajo |
+| `Pressable` | Cualquier cosa tocable que no sea un botón: mismo rebote, vibración y sonido |
+| `CoinAmount` | Una cantidad de monedas con su icono y cifras tabulares |
+| `MovementRow` | Una línea del historial de la cartera |
+| `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
+| `confirmAction` | Pregunta antes de algo destructivo |
+
+### Los cuatro tipos de `AppButton`
+
+| Tipo | Aspecto | Cuándo | Suena |
 |---|---|---|---|
-| `tinta` | `#1A1636` | 26, 22, 54 | Texto y barra superior. Índigo muy oscuro, con fondo azul violáceo |
-| `jabón` | `#E8F0E9` | 232, 240, 233 | Fondo. Blanco roto con un verde muy lavado: la casa limpia es el tema |
-| `papel` | `#FFFFFF` | 255, 255, 255 | Tarjetas y hojas |
-| `moneda` | `#F5B21A` | 245, 178, 26 | **Solo** cantidades y cartera |
-| `multa` | `#C73E1D` | 199, 62, 29 | Multas y saldo en negativo |
+| `primary` | Relleno violeta | Lo que la pantalla existe para hacer. **Uno por pantalla** como mucho | pop |
+| `secondary` | Contorno violeta | Una alternativa real al principal | pop |
+| `quiet` | Solo texto | Lo de poco peso: "Cancelar", "Copiar", "Volver a intentarlo" | nada |
+| `danger` | Texto coral | Lo que destruye algo. Siempre detrás de `confirmAction` | nada |
 
-**La regla del ámbar:** `moneda` no toca ningún botón, icono ni borde que no sea una cantidad. En
-cuanto se usa para otra cosa deja de significar "monedas" y la pantalla pierde su único punto de
-atención.
+Dos variantes que se combinan con cualquiera:
 
-El fondo y el texto no compiten a propósito: un verde casi blanco contra un índigo casi negro. El
-único color saturado de la interfaz es el del dinero.
+- **`onBrand`**: el botón está sobre una superficie violeta y se vuelve blanco para verse.
+- **`compact`**: del ancho de su texto, para ir en fila con otros. Sin ella, el botón ocupa todo el
+  ancho, que es lo que marca el tema.
 
-## Tipografía
+Y `loading: true` cambia el texto por una ruedita y lo bloquea mientras hay una petición en marcha.
 
-**Sin decidir.** Archivo, que es lo que hay ahora, es una grotesca neutra que no dice nada. Tres
-opciones, todas en Google Fonts, que ya está en el `pubspec`:
+## Tokens (`lib/theme.dart`)
 
-| Opción | Cantidades | Interfaz | Por qué |
-|---|---|---|---|
-| **1. Mercado** (recomendada) | Fraunces | Hanken Grotesk | Una serif suave y variable, con ejes de *wonk* y *soft*. Un precio en serif se lee como el cartel de un puesto de mercado, que es justo lo que es la app |
-| **2. Una sola familia** | Bricolage Grotesque | Bricolage Grotesque | Grotesca con irregularidades deliberadas, de fino a muy negro. Juguetona por sus detalles raros, no por ser redondita. La más barata de mantener |
-| **3. La arriesgada** | Syne ExtraBold | Gabarito | Gabarito cálida y geométrica abajo; Syne da a los números una forma que no se olvida. La que más divide |
+| Token | Hex | Uso |
+|---|---|---|
+| `appInk` | `#12152A` | Texto |
+| `appViolet` | `#6558F5` | Marca: botón principal, tarjetas destacadas |
+| `appCream` | `#F7F4EC` | Fondo |
+| `appLime` | `#DDFB69` | Acento alegre: insignia de admin, lo positivo |
+| `appSky` | `#A8D7FF` | Acento suave: la insignia de "tú" |
+| `appCoral` | `#FF776D` | Error, multa, acción destructiva |
+| `appMuted` | `#687086` | Texto secundario |
 
-Descartadas de entrada: **Nunito, Quicksand, Baloo**. Son lo que sale al buscar "playful" y llevan
-directas al cuadro de tareas infantil.
-
-Dos reglas que valen para cualquiera de las tres:
-
-- **Cifras tabulares** (`FontFeature.tabularFigures()`). Sin eso, el historial de movimientos no
-  alinea en columna.
-- **Empaquetar el `.ttf` en `assets/fonts`** en vez de dejar que `google_fonts` lo descargue en
-  tiempo de ejecución. Si no, la primera carga enseña un instante la fuente del sistema — y eso pasa
-  en el vídeo y en la primera visita del jurado.
+**Tipografía**: Fredoka para los títulos (redondeada, es la que pone el tono) y Nunito Sans para
+todo lo demás. **Esquinas**: 20 en controles, 30 en tarjetas.
 
 ## Movimiento
 
-Solo dos momentos, y son los dos golpes del vídeo:
+**El rebote al pulsar.** El control se hunde al 94 % en 80 ms y vuelve con un pequeño sobrepaso
+(`easeOutBack`, 280 ms). Bajar rápido y subir con rebote es lo que se lee como juego y no como
+parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 
-1. El voto del otro que **llega por el stream**, sin recargar.
-2. Las **monedas entrando** en la cartera al validarse la tarea.
+**Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
+comprueba el propio componente.
 
-Nada de animaciones de entrada en cada tarjeta ni transiciones al pasar por encima de todo. Eso es lo
-que hace que una interfaz parezca generada.
+## Sonido
 
-## Lo que evitamos
+Cinco sonidos, y **cada uno significa siempre lo mismo**. Un sonido que se usa para dos cosas deja de
+significar ninguna.
 
-Mascota, confeti, degradados de adorno, y el kit de tarjetas redondeadas todas iguales con la misma
-sombra gris debajo de cada bloque.
+| Sonido | Suena como | Cuándo |
+|---|---|---|
+| `tap` | Un pop | Pulsar un botón `primary` o `secondary` (automático) |
+| `success` | Arpegio que sube | Algo que hizo el usuario ha salido: grupo creado, voto enviado, tarea propuesta |
+| `coin` | "Bling" de moneda | **Entran monedas.** El momento estrella del vídeo |
+| `fine` | "Womp" que baja | Salen monedas por una multa |
+| `error` | "Bonk" suave | Algo ha fallado (automático con `showMessage(isError: true)`) |
+
+Para hacer sonar uno a mano: `ref.read(uiSoundsProvider).play(AppSound.success)`.
+
+- **Menos es más.** Las acciones `quiet` y `danger` no suenan, y copiar o cancelar tampoco. Si todo
+  suena, nada destaca.
+- **Son nuestros.** Los genera `tool/generate_ui_sounds.dart` a partir de ondas simples. No hay nada
+  que licenciar, y el reglamento pide que el vídeo no lleve música de terceros. Para cambiar uno, se
+  toca su receta en ese fichero y se vuelve a ejecutar: `dart run tool/generate_ui_sounds.dart`.
+- **Nunca rompen nada.** Si el audio no carga, la app se queda en silencio y sigue funcionando.
+- **Hay un interruptor general** (`UiSounds.muted`). Todavía no tiene botón en ajustes.
+
+## Vibración
+
+Una vibración ligera (`lightImpact`) al pulsar un botón principal y un toque más fino
+(`selectionClick`) en el resto. En la web no hace nada, y no hace falta tratarlo.
 
 ## Pendiente
 
-- Elegir entre las tres opciones de tipografía.
-- `main.dart` tiene `themeMode` clavado en `ThemeMode.light` aunque define un `darkTheme`. Elegir uno
-  y cuidarlo; el otro, o se hace bien o se quita.
-- Mayte revisa la paleta y los mockups (#34 y sus sub-issues).
+- **`coin` y `fine` todavía no suenan en ningún sitio**: se enganchan cuando se cobra una tarea (#61)
+  y cuando llegan las multas (#63). Ahí es donde el sonido más se nota en el vídeo.
+- El botón de silenciar en ajustes.
+- `prototype_app.dart` lleva su propia copia del tema. Cuando deje de cambiar, se apunta a
+  `lib/theme.dart` y se borra la copia.

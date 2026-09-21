@@ -6,6 +6,7 @@ import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 import 'available_task_screen.dart';
 import 'counter_offer_decision_screen.dart';
 import 'task_vote_screen.dart';
@@ -47,9 +48,10 @@ class _Body extends StatelessWidget {
             children: [
               Text(l10n.tasksLoadError),
               const SizedBox(height: 12),
-              FilledButton(
+              AppButton(
+                label: l10n.retry,
+                kind: AppButtonKind.secondary,
                 onPressed: controller.load,
-                child: Text(l10n.retry),
               ),
             ],
           ),

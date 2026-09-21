@@ -1,3 +1,4 @@
+import 'package:hackathon_serverpod_server/src/generated/protocol.dart';
 import 'package:hackathon_serverpod_server/src/groups/current_member.dart';
 import 'package:test/test.dart';
 
@@ -30,7 +31,13 @@ void main() {
 
         await expectLater(
           currentGroupMember(session),
-          throwsA(isA<StateError>()),
+          throwsA(
+            isA<GroupException>().having(
+              (e) => e.reason,
+              'reason',
+              GroupErrorReason.noMembership,
+            ),
+          ),
         );
       },
     );

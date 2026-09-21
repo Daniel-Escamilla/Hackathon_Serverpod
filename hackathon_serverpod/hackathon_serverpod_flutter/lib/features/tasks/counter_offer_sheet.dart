@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 
 class CounterOfferSheet extends StatefulWidget {
   const CounterOfferSheet({required this.initialValue, super.key});
@@ -82,9 +83,9 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
             text: l10n.counterOfferPauseNotice,
           ),
           const SizedBox(height: 20),
-          FilledButton(
+          AppButton(
+            label: l10n.sendCounterOffer,
             onPressed: () => Navigator.pop(context, _value),
-            child: Text(l10n.sendCounterOffer),
           ),
         ],
       ),

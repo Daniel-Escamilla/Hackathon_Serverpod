@@ -21,6 +21,11 @@ jobs:
         working-directory: hackathon_serverpod
         run: flutter pub get
 
-      - name: Check formatting
+      - name: Check the server's formatting
         working-directory: hackathon_serverpod/hackathon_serverpod_server
+        run: dart format --set-exit-if-changed .
+
+      - name: Check the app's formatting
+        if: ${{ !cancelled() }}
+        working-directory: hackathon_serverpod/hackathon_serverpod_flutter
         run: dart format --set-exit-if-changed .

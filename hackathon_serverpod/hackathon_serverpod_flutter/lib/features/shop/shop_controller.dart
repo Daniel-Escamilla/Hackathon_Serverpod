@@ -38,4 +38,10 @@ class ShopController extends ChangeNotifier {
     await client.shop.voteReward(itemId, approve);
     await load();
   }
+
+  Future<Purchase> purchaseReward(int itemId, int providerId) async {
+    final purchase = await client.shop.purchaseReward(itemId, providerId);
+    await load();
+    return purchase;
+  }
 }

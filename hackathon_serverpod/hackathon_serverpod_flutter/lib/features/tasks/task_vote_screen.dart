@@ -6,6 +6,9 @@ import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/sounds.dart';
 import 'counter_offer_decision_screen.dart';
 import 'counter_offer_sheet.dart';
 import 'tasks_controller.dart';
@@ -42,21 +45,17 @@ class TaskVoteScreen extends StatelessWidget {
         ],
       ],
       actions: [
-        FilledButton.icon(
-          onPressed: () => _vote(context, true),
-          icon: const Icon(Icons.thumb_up_alt_rounded),
-          label: Text(l10n.approve),
-        ),
+        AppButton(label: l10n.approve, onPressed: () => _vote(context, true)),
         const SizedBox(height: 10),
-        OutlinedButton.icon(
+        AppButton(
+          label: l10n.counterOffer,
+          kind: AppButtonKind.secondary,
           onPressed: () => _counterOffer(context),
-          icon: const Icon(Icons.swap_horiz_rounded),
-          label: Text(l10n.counterOffer),
         ),
-        TextButton(
+        AppButton(
+          label: l10n.reject,
+          kind: AppButtonKind.danger,
           onPressed: () => _vote(context, false),
-          style: TextButton.styleFrom(foregroundColor: AppColors.coral),
-          child: Text(l10n.reject),
         ),
       ],
     );
@@ -74,14 +73,15 @@ class TaskVoteScreen extends StatelessWidget {
     try {
       await controller.voteTaskProposal(task.id!, approve);
       if (context.mounted) {
-        showSnack(
+        showMessage(
           context,
           approve ? l10n.voteApproved : l10n.voteRejected,
+          sound: AppSound.success,
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (context.mounted) showSnack(context, l10n.voteError);
+      if (context.mounted) showMessage(context, l10n.voteError, isError: true);
     }
   }
 
@@ -102,7 +102,7 @@ class TaskVoteScreen extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        showSnack(context, l10n.counterOfferError);
+        showMessage(context, l10n.counterOfferError, isError: true);
       }
     }
   }

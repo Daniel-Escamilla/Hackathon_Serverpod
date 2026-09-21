@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/feedback.dart';
+import '../../ui/sounds.dart';
 import 'shop_controller.dart';
 
 class ProposeRewardScreen extends StatefulWidget {
@@ -31,7 +32,7 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
     final l10n = AppLocalizations.of(context);
     final title = _titleController.text.trim();
     if (title.isEmpty) {
-      showSnack(context, l10n.rewardTitleEmptyError);
+      showMessage(context, l10n.rewardTitleEmptyError, isError: true);
       return;
     }
     setState(() => _loading = true);
@@ -43,11 +44,11 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
         _price,
       );
       if (mounted) {
-        showSnack(context, l10n.rewardSentToVote);
+        showMessage(context, l10n.rewardSentToVote, sound: AppSound.success);
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (mounted) showSnack(context, l10n.rewardSubmitError);
+      if (mounted) showMessage(context, l10n.rewardSubmitError, isError: true);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -83,7 +84,8 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
           text: l10n.rewardVotingNotice,
         ),
       ],
-      button: _loading ? l10n.sending : l10n.submitToVote,
+      button: l10n.submitToVote,
+      loading: _loading,
       onSubmit: _submit,
     );
   }

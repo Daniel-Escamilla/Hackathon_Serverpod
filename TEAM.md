@@ -10,14 +10,16 @@ feature lands.
 
 | Name | GitHub | Repo role |
 |---|---|---|
-| Descamil (Segovia) | [@Daniel-Escamilla](https://github.com/Daniel-Escamilla) | admin (owner) |
+| Descamil (Daniel) | [@Daniel-Escamilla](https://github.com/Daniel-Escamilla) | admin (owner) |
 | Volmer42 (Juan) | [@VolmerES](https://github.com/VolmerES) | write |
-| Daniel | [@dperez-a](https://github.com/dperez-a) | write |
+| Segovia | [@dperez-a](https://github.com/dperez-a) | write |
 | Mayte | [@madel-04](https://github.com/madel-04) | _(not yet added as a collaborator)_ |
 
-There are two Daniels on the team: `Daniel-Escamilla` goes by "Segovia" here to
-tell them apart from `dperez-a`. Fill in the last row's role once madel-04
-accepts the pending collaborator invite.
+Both Daniels go by a different name day to day: `Daniel-Escamilla` is "Descamil"
+(his GitHub display name, and the author of the merge commits) and `dperez-a` is
+"Segovia". Getting this backwards puts the work on the wrong person, so use the
+handles when it matters. Fill in the last row's role once madel-04 accepts the
+pending collaborator invite.
 
 Four is the maximum the rules allow (§3: *"A Team may have a maximum of four (4) members"*).
 

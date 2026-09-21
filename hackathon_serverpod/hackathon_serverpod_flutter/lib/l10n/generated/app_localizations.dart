@@ -370,11 +370,11 @@ abstract class AppLocalizations {
   /// **'Unirme con un código'**
   String get joinGroupTitle;
 
-  /// No description provided for @joinGroupSubtitle.
+  /// No description provided for @joinGroupCardSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Introduce el código que te han compartido.'**
-  String get joinGroupSubtitle;
+  /// **'Entra en un grupo existente'**
+  String get joinGroupCardSubtitle;
 
   /// No description provided for @createGroupHeadline.
   ///
@@ -399,6 +399,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Pareja'**
   String get profileCouple;
+
+  /// No description provided for @profileFamily.
+  ///
+  /// In es, this message translates to:
+  /// **'Familia'**
+  String get profileFamily;
 
   /// No description provided for @groupNameLabel.
   ///
@@ -435,6 +441,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Únete a tu gente'**
   String get joinGroupHeadline;
+
+  /// No description provided for @joinGroupSubtitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Introduce el código que te han compartido.'**
+  String get joinGroupSubtitle;
 
   /// No description provided for @joinGroupCodeHint.
   ///
@@ -934,29 +946,47 @@ abstract class AppLocalizations {
   /// **'No se pudo enviar la recompensa'**
   String get rewardSubmitError;
 
-  /// No description provided for @sending.
-  ///
-  /// In es, this message translates to:
-  /// **'Enviando…'**
-  String get sending;
-
   /// No description provided for @whoWillFulfil.
   ///
   /// In es, this message translates to:
   /// **'¿Quién la cumplirá?'**
   String get whoWillFulfil;
 
-  /// No description provided for @membersEndpointNotice.
+  /// No description provided for @selectMember.
   ///
   /// In es, this message translates to:
-  /// **'Elegir a quién le toca necesita el listado de miembros del grupo, que todavía no tiene endpoint.'**
-  String get membersEndpointNotice;
+  /// **'Selecciona a una persona'**
+  String get selectMember;
 
-  /// No description provided for @purchaseBlockedNotice.
+  /// No description provided for @noOtherMembers.
   ///
   /// In es, this message translates to:
-  /// **'La compra se activará en cuanto el backend lo exponga.'**
-  String get purchaseBlockedNotice;
+  /// **'Todavía no hay nadie más en el grupo para cumplirla.'**
+  String get noOtherMembers;
+
+  /// No description provided for @purchaseSentTitle.
+  ///
+  /// In es, this message translates to:
+  /// **'Compra enviada'**
+  String get purchaseSentTitle;
+
+  /// No description provided for @purchaseSentMessage.
+  ///
+  /// In es, this message translates to:
+  /// **'Debe aceptar antes de cumplirla.'**
+  String get purchaseSentMessage;
+
+  /// No description provided for @backToShop.
+  ///
+  /// In es, this message translates to:
+  /// **'Volver a la tienda'**
+  String get backToShop;
+
+  /// No description provided for @purchaseError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo completar la compra'**
+  String get purchaseError;
 
   /// No description provided for @walletLoadError.
   ///
@@ -1005,6 +1035,108 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Devolución'**
   String get reasonRefunded;
+
+  /// Dismisses a confirmation without doing anything
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get cancel;
+
+  /// Badge on the member who administers the group
+  ///
+  /// In es, this message translates to:
+  /// **'Admin'**
+  String get memberRoleAdmin;
+
+  /// Badge on the signed-in user's own row
+  ///
+  /// In es, this message translates to:
+  /// **'Tú'**
+  String get memberYou;
+
+  /// Admin action that removes a member from the group
+  ///
+  /// In es, this message translates to:
+  /// **'Expulsar'**
+  String get expelAction;
+
+  /// Title of the confirmation before expelling a member
+  ///
+  /// In es, this message translates to:
+  /// **'¿Expulsar a {name}?'**
+  String expelTitle(String name);
+
+  /// Explains the consequences of expelling a member
+  ///
+  /// In es, this message translates to:
+  /// **'Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.'**
+  String get expelBody;
+
+  /// Confirmation after a member is expelled
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ya no está en el grupo.'**
+  String expelDone(String name);
+
+  /// Admin button that replaces the invite code
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar el código'**
+  String get groupInviteRegenerate;
+
+  /// Title of the confirmation before replacing the invite code
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cambiar el código?'**
+  String get groupInviteRegenerateTitle;
+
+  /// Explains what replacing the invite code does and does not affect
+  ///
+  /// In es, this message translates to:
+  /// **'El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.'**
+  String get groupInviteRegenerateBody;
+
+  /// Confirmation after the invite code is replaced
+  ///
+  /// In es, this message translates to:
+  /// **'Código cambiado. El anterior ya no sirve.'**
+  String get groupInviteRegenerated;
+
+  /// Shown when no group matches the invite code
+  ///
+  /// In es, this message translates to:
+  /// **'Ese código no existe. Compruébalo con quien te lo pasó.'**
+  String get errorInviteCode;
+
+  /// Shown when the user already has an active membership
+  ///
+  /// In es, this message translates to:
+  /// **'Ya estás en un grupo. Sal de él antes de entrar en otro.'**
+  String get errorAlreadyInGroup;
+
+  /// Shown when a non-admin tries an admin-only action
+  ///
+  /// In es, this message translates to:
+  /// **'Solo quien administra el grupo puede hacer esto.'**
+  String get errorNotAdmin;
+
+  /// Shown when the member to act on has left or is in another group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa persona ya no está en el grupo.'**
+  String get errorMemberNotFound;
+
+  /// Shown when the admin tries to expel themselves
+  ///
+  /// In es, this message translates to:
+  /// **'No puedes expulsarte a ti del grupo.'**
+  String get errorCannotExpelSelf;
+
+  /// No description provided for @errorGeneric.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo ha fallado. Inténtalo otra vez.'**
+  String get errorGeneric;
 }
 
 class _AppLocalizationsDelegate

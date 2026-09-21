@@ -38,9 +38,16 @@ jobs:
         working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: serverpod generate
 
-      - name: Run tests
+      - name: Run the server tests
         working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: dart test
+
+      # Widget tests need no server and no containers: the app is tested
+      # against fakes, and a UI sound never plays in them.
+      - name: Run the app tests
+        if: ${{ !cancelled() }}
+        working-directory: hackathon_serverpod/hackathon_serverpod_flutter
+        run: flutter test
 
       - name: Stop containers
         if: always()

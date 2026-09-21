@@ -61,8 +61,8 @@ git config core.hooksPath .githooks
 ```
 
 `.githooks/pre-commit` runs `dart format`/`dart analyze --fatal-infos`, `.githooks/pre-push` runs
-`dart test` — both scoped to `hackathon_serverpod_server`, the same checks CI
-(`.github/workflows/`) runs again server-side either way.
+`dart test` — both on `hackathon_serverpod_server` only. CI (`.github/workflows/`) runs those
+again, and the same three checks on the Flutter app, on every push and pull request.
 
 **Windows:** if the clone fails with `Filename too long`, run
 `git config --global core.longpaths true` and clone again — the Android sources are nested deep
@@ -152,8 +152,9 @@ serverpod create-migration     # only when a model with a `table` changed
   language. Written 2026-09-17.
 - [`docs/PLAN.md`](docs/PLAN.md) — when and who: the MVP cut, the video script that defines it, the
   four weeks task by task and the dates that do not move. In Spanish. Written 2026-09-18.
-- [`docs/DESIGN.md`](docs/DESIGN.md) — the palette, the typography options still open and the two
-  moments that get motion. A proposal for Mayte and Juan to close. In Spanish.
+- [`docs/DESIGN.md`](docs/DESIGN.md) — the design standard, Playful UI: the rules for a new screen,
+  the `lib/ui/` components, colour and type tokens, the press bounce, and the five UI sounds and what
+  each one means. In Spanish.
 - [`docs/FEEDBACK.md`](docs/FEEDBACK.md) — Serverpod friction as we hit it, for the Most Valuable
   Feedback prize. In English, because that is what goes into the form.
 - [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 import 'create_account_email_screen.dart';
 import 'sign_in_screen.dart';
 
@@ -38,16 +39,16 @@ class WelcomeScreen extends StatelessWidget {
                     ),
               ),
               const Spacer(),
-              FilledButton.icon(
+              AppButton(
+                label: l10n.welcomeSignIn,
                 onPressed: () => pushPage(context, const SignInScreen()),
-                icon: const Icon(Icons.mail_outline_rounded),
-                label: Text(l10n.welcomeSignIn),
               ),
               const SizedBox(height: 8),
-              TextButton(
+              AppButton(
+                label: l10n.welcomeCreateAccount,
+                kind: AppButtonKind.quiet,
                 onPressed: () =>
                     pushPage(context, const CreateAccountEmailScreen()),
-                child: Text(l10n.welcomeCreateAccount),
               ),
             ],
           ),

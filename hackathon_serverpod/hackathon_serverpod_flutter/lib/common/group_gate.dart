@@ -4,6 +4,7 @@ import '../client.dart';
 import '../features/group/group_choice_screen.dart';
 import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
+import '../ui/app_button.dart';
 
 /// There is no endpoint yet to ask "does the signed-in user have a group" —
 /// GroupEndpoint only has createGroup/joinGroup. Every member-scoped
@@ -51,10 +52,11 @@ class _GroupGateState extends State<GroupGate> {
                   children: [
                     Text(AppLocalizations.of(context).groupCheckError),
                     const SizedBox(height: 12),
-                    FilledButton(
+                    AppButton(
+                      label: AppLocalizations.of(context).retry,
+                      kind: AppButtonKind.secondary,
                       onPressed: () =>
                           setState(() => _hasGroup = _checkMembership()),
-                      child: Text(AppLocalizations.of(context).retry),
                     ),
                   ],
                 ),

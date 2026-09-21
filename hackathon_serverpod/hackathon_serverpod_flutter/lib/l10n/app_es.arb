@@ -62,12 +62,13 @@
   "createGroupTitle": "Crear un grupo",
   "createGroupSubtitle": "Prepara vuestro espacio",
   "joinGroupTitle": "Unirme con un código",
-  "joinGroupSubtitle": "Entra en un grupo existente",
+  "joinGroupCardSubtitle": "Entra en un grupo existente",
 
   "createGroupHeadline": "Crea vuestro grupo",
   "createGroupHint": "Elige cómo compartís casa",
   "profileSharedFlat": "Piso compartido",
   "profileCouple": "Pareja",
+  "profileFamily": "Familia",
   "groupNameLabel": "Nombre del grupo",
   "groupNameHint": "Casa de Mayte y Juan",
   "createGroupSubmit": "Crear grupo",
@@ -188,11 +189,14 @@
   "rewardTitleEmptyError": "Ponle un título a la recompensa.",
   "rewardSentToVote": "Recompensa enviada a votación",
   "rewardSubmitError": "No se pudo enviar la recompensa",
-  "sending": "Enviando…",
 
   "whoWillFulfil": "¿Quién la cumplirá?",
-  "membersEndpointNotice": "Elegir a quién le toca necesita el listado de miembros del grupo, que todavía no tiene endpoint.",
-  "purchaseBlockedNotice": "La compra se activará en cuanto el backend lo exponga.",
+  "selectMember": "Selecciona a una persona",
+  "noOtherMembers": "Todavía no hay nadie más en el grupo para cumplirla.",
+  "purchaseSentTitle": "Compra enviada",
+  "purchaseSentMessage": "Debe aceptar antes de cumplirla.",
+  "backToShop": "Volver a la tienda",
+  "purchaseError": "No se pudo completar la compra",
 
   "walletLoadError": "No se pudo cargar la cartera.",
   "negativeBalanceNotice": "Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.",
@@ -201,5 +205,79 @@
   "reasonEarned": "Tarea completada",
   "reasonFined": "Multa",
   "reasonSpent": "Compra en la tienda",
-  "reasonRefunded": "Devolución"
+  "reasonRefunded": "Devolución",
+
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Dismisses a confirmation without doing anything"
+  },
+
+  "memberRoleAdmin": "Admin",
+  "@memberRoleAdmin": {
+    "description": "Badge on the member who administers the group"
+  },
+  "memberYou": "Tú",
+  "@memberYou": {
+    "description": "Badge on the signed-in user's own row"
+  },
+  "expelAction": "Expulsar",
+  "@expelAction": {
+    "description": "Admin action that removes a member from the group"
+  },
+  "expelTitle": "¿Expulsar a {name}?",
+  "@expelTitle": {
+    "description": "Title of the confirmation before expelling a member",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "expelBody": "Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.",
+  "@expelBody": {
+    "description": "Explains the consequences of expelling a member"
+  },
+  "expelDone": "{name} ya no está en el grupo.",
+  "@expelDone": {
+    "description": "Confirmation after a member is expelled",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "groupInviteRegenerate": "Cambiar el código",
+  "@groupInviteRegenerate": {
+    "description": "Admin button that replaces the invite code"
+  },
+  "groupInviteRegenerateTitle": "¿Cambiar el código?",
+  "@groupInviteRegenerateTitle": {
+    "description": "Title of the confirmation before replacing the invite code"
+  },
+  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.",
+  "@groupInviteRegenerateBody": {
+    "description": "Explains what replacing the invite code does and does not affect"
+  },
+  "groupInviteRegenerated": "Código cambiado. El anterior ya no sirve.",
+  "@groupInviteRegenerated": {
+    "description": "Confirmation after the invite code is replaced"
+  },
+
+  "errorInviteCode": "Ese código no existe. Compruébalo con quien te lo pasó.",
+  "@errorInviteCode": {
+    "description": "Shown when no group matches the invite code"
+  },
+  "errorAlreadyInGroup": "Ya estás en un grupo. Sal de él antes de entrar en otro.",
+  "@errorAlreadyInGroup": {
+    "description": "Shown when the user already has an active membership"
+  },
+  "errorNotAdmin": "Solo quien administra el grupo puede hacer esto.",
+  "@errorNotAdmin": {
+    "description": "Shown when a non-admin tries an admin-only action"
+  },
+  "errorMemberNotFound": "Esa persona ya no está en el grupo.",
+  "@errorMemberNotFound": {
+    "description": "Shown when the member to act on has left or is in another group"
+  },
+  "errorCannotExpelSelf": "No puedes expulsarte a ti del grupo.",
+  "@errorCannotExpelSelf": {
+    "description": "Shown when the admin tries to expel themselves"
+  },
+  "errorGeneric": "Algo ha fallado. Inténtalo otra vez."
 }

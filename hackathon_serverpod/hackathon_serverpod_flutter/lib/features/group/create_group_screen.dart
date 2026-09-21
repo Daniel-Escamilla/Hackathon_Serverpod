@@ -6,6 +6,7 @@ import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
 import 'group_success_screen.dart';
 
 class CreateGroupScreen extends StatefulWidget {
@@ -107,18 +108,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             Text(_error!, style: const TextStyle(color: AppColors.coral)),
           ],
           const SizedBox(height: 24),
-          FilledButton(
-            onPressed: _loading ? null : _submit,
-            child: _loading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2,
-                      color: Colors.white,
-                    ),
-                  )
-                : Text(l10n.createGroupSubmit),
+          AppButton(
+            label: l10n.createGroupSubmit,
+            loading: _loading,
+            onPressed: _submit,
           ),
         ],
       ),

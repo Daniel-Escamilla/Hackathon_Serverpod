@@ -4,6 +4,7 @@ import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/feedback.dart';
 import 'task_review_screen.dart';
 
 class ProposeTaskScreen extends StatefulWidget {
@@ -29,7 +30,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
     final l10n = AppLocalizations.of(context);
     final title = _titleController.text.trim();
     if (title.isEmpty) {
-      showSnack(context, l10n.taskTitleEmptyError);
+      showMessage(context, l10n.taskTitleEmptyError, isError: true);
       return;
     }
     pushPage(

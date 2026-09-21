@@ -6,6 +6,8 @@ import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
 import 'tasks_controller.dart';
 
 class TaskReviewScreen extends StatelessWidget {
@@ -39,10 +41,7 @@ class TaskReviewScreen extends StatelessWidget {
         InfoRow(icon: Icons.warning_amber_rounded, text: l10n.rejectFineNotice),
       ],
       actions: [
-        FilledButton(
-          onPressed: () => _submit(context),
-          child: Text(l10n.submitToVote),
-        ),
+        AppButton(label: l10n.submitToVote, onPressed: () => _submit(context)),
       ],
     );
   }
@@ -65,7 +64,8 @@ class TaskReviewScreen extends StatelessWidget {
         );
       }
     } catch (e) {
-      if (context.mounted) showSnack(context, l10n.proposeError);
+      if (context.mounted)
+        showMessage(context, l10n.proposeError, isError: true);
     }
   }
 }
