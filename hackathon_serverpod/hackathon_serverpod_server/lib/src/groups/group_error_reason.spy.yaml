@@ -1,0 +1,10 @@
+### Why a group call was refused. The app picks the sentence it shows from this,
+### so the server never sends display text (PRODUCT.md §7).
+enum: GroupErrorReason
+values:
+  ### No group has that invite code.
+  - inviteCodeNotFound
+  ### The caller already has an active membership. One group per person.
+  - alreadyInGroup
+  ### The caller belongs to no group, so the call was refused.
+  - noMembership

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import '../generated/protocol.dart';
 import '../shop/shop_service.dart';
+import 'current_member.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
 
@@ -30,13 +31,16 @@ class GroupEndpoint extends Endpoint {
     await _requireNoActiveMembership(session, authUserId);
     final resolvedDisplayName =
         displayName ?? await _defaultDisplayName(session);
+    // Picked before the transaction opens: retrying a failed insert inside it
+    // cannot work, because Postgres aborts the whole transaction on the first
+    // error and refuses every statement after it.
+    final inviteCode = await _freeInviteCode(session);
 
     return session.db.transaction((transaction) async {
-      final group = await _insertWithUniqueInviteCode(
+      final group = await Group.db.insertRow(
         session,
-        name,
-        type,
-        transaction,
+        Group(name: name, type: type, inviteCode: inviteCode),
+        transaction: transaction,
       );
 
       final admin = await GroupMember.db.insertRow(
@@ -76,7 +80,7 @@ class GroupEndpoint extends Endpoint {
       where: (t) => t.inviteCode.equals(inviteCode.toUpperCase()),
     );
     if (group == null) {
-      throw StateError('No group found for that invite code.');
+      throw GroupException(reason: GroupErrorReason.inviteCodeNotFound);
     }
 
     final resolvedDisplayName =
@@ -93,6 +97,30 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The signed-in member's group: its name, profile and invite code.
+  ///
+  /// `joinGroup` returns the membership, not the group, so without this a
+  /// member who joined could never read the code to pass on to anyone else.
+  Future<Group> myGroup(Session session) async {
+    final member = await currentGroupMember(session);
+    final group = await Group.db.findById(session, member.groupId);
+    if (group == null) {
+      throw GroupException(reason: GroupErrorReason.noMembership);
+    }
+    return group;
+  }
+
+  /// Everyone currently in the caller's group, oldest first — the order the
+  /// admin role passes down in when an admin leaves (PRODUCT.md §7).
+  Future<List<GroupMember>> listMembers(Session session) async {
+    final member = await currentGroupMember(session);
+    return GroupMember.db.find(
+      session,
+      where: (t) => t.groupId.equals(member.groupId) & t.leftAt.equals(null),
+      orderBy: (t) => t.joinedAt,
+    );
+  }
+
   Future<void> _requireNoActiveMembership(
     Session session,
     UuidValue authUserId,
@@ -102,7 +130,7 @@ class GroupEndpoint extends Endpoint {
       where: (t) => t.authUserId.equals(authUserId) & t.leftAt.equals(null),
     );
     if (existing != null) {
-      throw StateError('You already belong to a group.');
+      throw GroupException(reason: GroupErrorReason.alreadyInGroup);
     }
   }
 
@@ -123,23 +151,21 @@ class GroupEndpoint extends Endpoint {
         'Miembro';
   }
 
-  Future<Group> _insertWithUniqueInviteCode(
-    Session session,
-    String name,
-    GroupType type,
-    Transaction transaction,
-  ) async {
+  /// A code no group has yet. The `unique` constraint on `inviteCode` remains
+  /// the final guard: two groups picking the same code between this check and
+  /// their insert would need a collision in about 887 million, and the loser's
+  /// transaction fails cleanly rather than half-creating a group.
+  Future<String> _freeInviteCode(Session session) async {
     for (var attempt = 0; attempt < 5; attempt++) {
-      try {
-        return await Group.db.insertRow(
-          session,
-          Group(name: name, type: type, inviteCode: _generateInviteCode()),
-          transaction: transaction,
-        );
-      } on DatabaseUniqueViolationException {
-        continue;
-      }
+      final code = _generateInviteCode();
+      final taken = await Group.db.findFirstRow(
+        session,
+        where: (t) => t.inviteCode.equals(code),
+      );
+      if (taken == null) return code;
     }
+    // Five collisions in a row out of 887 million codes is not bad luck. It is
+    // a server fault, so it stays a plain error rather than a GroupException.
     throw StateError('Could not generate a unique invite code.');
   }
 

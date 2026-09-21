@@ -5,6 +5,13 @@ import 'test_tools/serverpod_test_tools.dart';
 
 const _aliceAuthUserId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const _bobAuthUserId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
+const _carolAuthUserId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+
+/// A refusal the app can act on: the right exception type *and* the right
+/// reason, since the reason is what picks the sentence the user sees.
+Matcher _throwsGroupError(GroupErrorReason reason) => throwsA(
+  isA<GroupException>().having((e) => e.reason, 'reason', reason),
+);
 
 void main() {
   withServerpod('Given the group endpoint', (sessionBuilder, endpoints) {
@@ -61,7 +68,7 @@ void main() {
               'Otro piso',
               GroupType.couple,
             ),
-            throwsA(isA<StateError>()),
+            _throwsGroupError(GroupErrorReason.alreadyInGroup),
           );
         },
       );
@@ -102,7 +109,7 @@ void main() {
       test('then an unknown code fails', () async {
         await expectLater(
           endpoints.group.joinGroup(sessionOf(_bobAuthUserId), 'ZZZZZZ'),
-          throwsA(isA<StateError>()),
+          _throwsGroupError(GroupErrorReason.inviteCodeNotFound),
         );
       });
 
@@ -112,7 +119,53 @@ void main() {
             sessionOf(_aliceAuthUserId),
             createdGroup.inviteCode,
           ),
-          throwsA(isA<StateError>()),
+          _throwsGroupError(GroupErrorReason.alreadyInGroup),
+        );
+      });
+
+      test(
+        'then the joiner can read the group back, invite code included',
+        () async {
+          await endpoints.group.joinGroup(
+            sessionOf(_bobAuthUserId),
+            createdGroup.inviteCode,
+            displayName: 'Bob',
+          );
+
+          final group = await endpoints.group.myGroup(
+            sessionOf(_bobAuthUserId),
+          );
+          expect(group.id, createdGroup.id);
+          expect(group.inviteCode, createdGroup.inviteCode);
+        },
+      );
+
+      test('then listMembers returns everyone, oldest first', () async {
+        await endpoints.group.joinGroup(
+          sessionOf(_bobAuthUserId),
+          createdGroup.inviteCode,
+          displayName: 'Bob',
+        );
+
+        final members = await endpoints.group.listMembers(
+          sessionOf(_bobAuthUserId),
+        );
+        expect(members.map((m) => m.displayName), ['Alice', 'Bob']);
+      });
+    });
+
+    group('when the caller belongs to no group', () {
+      test('then myGroup is refused with noMembership', () async {
+        await expectLater(
+          endpoints.group.myGroup(sessionOf(_carolAuthUserId)),
+          _throwsGroupError(GroupErrorReason.noMembership),
+        );
+      });
+
+      test('then listMembers is refused with noMembership', () async {
+        await expectLater(
+          endpoints.group.listMembers(sessionOf(_carolAuthUserId)),
+          _throwsGroupError(GroupErrorReason.noMembership),
         );
       });
     });

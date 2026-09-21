@@ -14,6 +14,8 @@ greeting:
 group:
   - createGroup:
   - joinGroup:
+  - myGroup:
+  - listMembers:
 shop:
   - listRewards:
   - proposeReward:
