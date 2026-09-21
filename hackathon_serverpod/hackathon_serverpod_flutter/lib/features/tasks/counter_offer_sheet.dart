@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class CounterOfferSheet extends StatefulWidget {
   const CounterOfferSheet({required this.initialValue, super.key});
@@ -17,6 +18,7 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Container(
       padding: EdgeInsets.fromLTRB(
         24,
@@ -41,13 +43,13 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
           ),
           const SizedBox(height: 24),
           Text(
-            'Haz una contraoferta',
+            l10n.counterOfferSheetTitle,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
-          const Text(
-            '¿Cuántas monedas te parecerían justas?',
-            style: TextStyle(color: AppColors.muted),
+          Text(
+            l10n.counterOfferSheetSubtitle,
+            style: const TextStyle(color: AppColors.muted),
           ),
           const SizedBox(height: 26),
           Row(
@@ -75,14 +77,14 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
             ],
           ),
           const SizedBox(height: 20),
-          const InfoRow(
+          InfoRow(
             icon: Icons.pause_circle_rounded,
-            text: 'La votación se pausará hasta que el autor responda',
+            text: l10n.counterOfferPauseNotice,
           ),
           const SizedBox(height: 20),
           FilledButton(
             onPressed: () => Navigator.pop(context, _value),
-            child: const Text('Enviar contraoferta'),
+            child: Text(l10n.sendCounterOffer),
           ),
         ],
       ),

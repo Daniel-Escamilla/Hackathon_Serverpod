@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'available_task_screen.dart';
 import 'counter_offer_decision_screen.dart';
 import 'task_vote_screen.dart';
@@ -19,7 +20,7 @@ class TasksPage extends StatelessWidget {
     final controller = context.watch<TasksController>();
     return Column(
       children: [
-        const PageHeader(title: 'Tareas'),
+        PageHeader(title: AppLocalizations.of(context).navTasks),
         Expanded(child: _Body(controller: controller)),
       ],
     );
@@ -33,6 +34,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (controller.loading && controller.tasks.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -43,11 +45,11 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('No se pudieron cargar las tareas.'),
+              Text(l10n.tasksLoadError),
               const SizedBox(height: 12),
               FilledButton(
                 onPressed: controller.load,
-                child: const Text('Reintentar'),
+                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -72,9 +74,9 @@ class _Body extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: controller.load,
         child: ListView(
-          children: const [
-            SizedBox(height: 140),
-            Center(child: Text('Todavía no hay tareas. Propón la primera.')),
+          children: [
+            const SizedBox(height: 140),
+            Center(child: Text(l10n.tasksEmpty)),
           ],
         ),
       );
@@ -86,42 +88,42 @@ class _Body extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
         children: [
           if (proposed.isNotEmpty) ...[
-            _SectionTitle('Esperan un voto'),
+            _SectionTitle(l10n.sectionAwaitingVote),
             for (final task in proposed)
               _TaskCard(
                 task: task,
-                statusLabel: 'Propuesta',
+                statusLabel: l10n.statusProposal,
                 statusColor: AppColors.sky,
                 onTap: () => pushPage(context, TaskVoteScreen(task: task)),
               ),
           ],
           if (counterOffered.isNotEmpty) ...[
-            _SectionTitle('Contraofertadas'),
+            _SectionTitle(l10n.sectionCounterOffered),
             for (final task in counterOffered)
               _TaskCard(
                 task: task,
-                statusLabel: 'Contraoferta',
+                statusLabel: l10n.statusCounterOffer,
                 statusColor: const Color(0xFFFFDFA0),
                 onTap: () =>
                     pushPage(context, CounterOfferDecisionScreen(task: task)),
               ),
           ],
           if (open.isNotEmpty) ...[
-            _SectionTitle('Disponibles'),
+            _SectionTitle(l10n.sectionAvailable),
             for (final task in open)
               _TaskCard(
                 task: task,
-                statusLabel: 'Disponible',
+                statusLabel: l10n.statusAvailable,
                 statusColor: AppColors.lime,
                 onTap: () => pushPage(context, AvailableTaskScreen(task: task)),
               ),
           ],
           if (inValidation.isNotEmpty) ...[
-            _SectionTitle('En validación'),
+            _SectionTitle(l10n.sectionInValidation),
             for (final task in inValidation)
               _TaskCard(
                 task: task,
-                statusLabel: 'Validación',
+                statusLabel: l10n.statusValidation,
                 statusColor: AppColors.coral.withValues(alpha: .35),
                 onTap: () => pushPage(context, ValidationScreen(task: task)),
               ),
@@ -191,7 +193,7 @@ class _TaskCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    '🪙 ${task.reward} monedas',
+                    '🪙 ${AppLocalizations.of(context).rewardAmount(task.reward)}',
                     style: const TextStyle(
                       fontWeight: FontWeight.w800,
                       fontFeatures: AppFonts.tabularFigures,

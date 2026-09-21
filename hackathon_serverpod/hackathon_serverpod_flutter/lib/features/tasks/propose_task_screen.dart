@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'task_review_screen.dart';
 
 class ProposeTaskScreen extends StatefulWidget {
@@ -25,9 +26,10 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
   }
 
   void _submit() {
+    final l10n = AppLocalizations.of(context);
     final title = _titleController.text.trim();
     if (title.isEmpty) {
-      showSnack(context, 'Ponle un título a la tarea.');
+      showSnack(context, l10n.taskTitleEmptyError);
       return;
     }
     pushPage(
@@ -42,37 +44,36 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return FormScaffold(
-      title: 'Nueva tarea',
+      title: l10n.newTaskTitle,
       fields: [
-        const FieldLabel('Título'),
+        FieldLabel(l10n.titleFieldLabel),
         TextField(
           controller: _titleController,
-          decoration: const InputDecoration(hintText: 'Limpiar el baño'),
+          decoration: InputDecoration(hintText: l10n.taskTitleHint),
         ),
         const SizedBox(height: 18),
-        const FieldLabel('Descripción'),
+        FieldLabel(l10n.descriptionLabel),
         TextField(
           controller: _descriptionController,
           maxLines: 3,
-          decoration: const InputDecoration(
-            hintText: 'Ducha, lavabo, espejo y suelo',
-          ),
+          decoration: InputDecoration(hintText: l10n.taskDescriptionHint),
         ),
         const SizedBox(height: 18),
-        const FieldLabel('Recompensa'),
+        FieldLabel(l10n.rewardLabel),
         StepperValue(
           value: _reward,
           onChanged: (v) => setState(() => _reward = v),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'Una tarea normal suele valer 10',
+        Text(
+          l10n.rewardHintNote,
           textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.muted),
+          style: const TextStyle(color: AppColors.muted),
         ),
       ],
-      button: 'Revisar propuesta',
+      button: l10n.reviewProposal,
       onSubmit: _submit,
     );
   }

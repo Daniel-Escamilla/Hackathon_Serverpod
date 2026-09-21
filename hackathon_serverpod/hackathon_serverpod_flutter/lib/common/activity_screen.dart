@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
+import '../l10n/generated/app_localizations.dart';
 
 /// The notification feed had canned, hardcoded entries pointing at task/shop
 /// detail screens that now require a real Task/RewardItem. There's no
@@ -11,24 +12,25 @@ class ActivityScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: const Text('Actividad')),
-      body: const Center(
+      appBar: AppBar(title: Text(l10n.activityTitle)),
+      body: Center(
         child: Padding(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.notifications_none_rounded,
                 size: 48,
                 color: AppColors.muted,
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               Text(
-                'Todavía no hay un listado de actividad del servidor.',
+                l10n.activityEmptyMessage,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.muted),
+                style: const TextStyle(color: AppColors.muted),
               ),
             ],
           ),

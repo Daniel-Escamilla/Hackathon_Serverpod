@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'create_account_email_screen.dart';
 import 'sign_in_screen.dart';
 
@@ -10,6 +11,7 @@ class WelcomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -21,12 +23,12 @@ class WelcomeScreen extends StatelessWidget {
               const _HouseHero(),
               const SizedBox(height: 38),
               Text(
-                'Las tareas,\npor fin justas.',
+                l10n.welcomeHeadline,
                 style: Theme.of(context).textTheme.displaySmall,
               ),
               const SizedBox(height: 14),
               Text(
-                'Los acuerdos de casa se deciden entre todos.',
+                l10n.welcomeSubtitle,
                 style:
                     Theme.of(
                       context,
@@ -39,13 +41,13 @@ class WelcomeScreen extends StatelessWidget {
               FilledButton.icon(
                 onPressed: () => pushPage(context, const SignInScreen()),
                 icon: const Icon(Icons.mail_outline_rounded),
-                label: const Text('Entrar con email'),
+                label: Text(l10n.welcomeSignIn),
               ),
               const SizedBox(height: 8),
               TextButton(
                 onPressed: () =>
                     pushPage(context, const CreateAccountEmailScreen()),
-                child: const Text('Crear una cuenta'),
+                child: Text(l10n.welcomeCreateAccount),
               ),
             ],
           ),

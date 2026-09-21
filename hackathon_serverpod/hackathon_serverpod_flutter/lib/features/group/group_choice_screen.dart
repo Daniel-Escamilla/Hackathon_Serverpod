@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'create_group_screen.dart';
 import 'join_group_screen.dart';
 
@@ -10,6 +11,7 @@ class GroupChoiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false),
       body: SafeArea(
@@ -18,26 +20,29 @@ class GroupChoiceScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('¡Hola!', style: Theme.of(context).textTheme.titleLarge),
+              Text(
+                l10n.groupChoiceGreeting,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 8),
               Text(
-                '¿Cómo quieres\nempezar?',
+                l10n.groupChoiceQuestion,
                 style: Theme.of(context).textTheme.displaySmall,
               ),
               const SizedBox(height: 34),
               _ChoiceCard(
                 color: AppColors.lime,
                 icon: Icons.home_rounded,
-                title: 'Crear un grupo',
-                subtitle: 'Prepara vuestro espacio',
+                title: l10n.createGroupTitle,
+                subtitle: l10n.createGroupSubtitle,
                 onTap: () => pushPage(context, const CreateGroupScreen()),
               ),
               const SizedBox(height: 16),
               _ChoiceCard(
                 color: AppColors.sky,
                 icon: Icons.confirmation_number_rounded,
-                title: 'Unirme con un código',
-                subtitle: 'Entra en un grupo existente',
+                title: l10n.joinGroupTitle,
+                subtitle: l10n.joinGroupSubtitle,
                 onTap: () => pushPage(context, const JoinGroupScreen()),
               ),
             ],

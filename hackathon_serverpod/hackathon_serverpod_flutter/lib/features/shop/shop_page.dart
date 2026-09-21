@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'buy_reward_screen.dart';
 import 'propose_reward_screen.dart';
 import 'reward_vote_screen.dart';
@@ -16,12 +17,10 @@ class ShopPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<ShopController>();
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
-        const PageHeader(
-          title: 'Tienda',
-          subtitle: 'Convierte tus monedas en planes',
-        ),
+        PageHeader(title: l10n.navShop, subtitle: l10n.shopSubtitle),
         Expanded(child: _Body(controller: controller)),
       ],
     );
@@ -35,6 +34,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (controller.loading && controller.rewards.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -45,11 +45,11 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('No se pudo cargar la tienda.'),
+              Text(l10n.shopLoadError),
               const SizedBox(height: 12),
               FilledButton(
                 onPressed: controller.load,
-                child: const Text('Reintentar'),
+                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -78,11 +78,9 @@ class _Body extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           if (active.isEmpty && proposed.isEmpty)
-            const Padding(
-              padding: EdgeInsets.only(top: 60),
-              child: Center(
-                child: Text('Todavía no hay recompensas. Propón la primera.'),
-              ),
+            Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Center(child: Text(l10n.shopEmpty)),
             ),
           for (final reward in active)
             Padding(
@@ -97,7 +95,7 @@ class _Body extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 10, top: 6),
               child: Text(
-                'Esperando votación',
+                l10n.awaitingVoteSection,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
@@ -161,7 +159,7 @@ class _RewardCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '🪙 ${reward.price} monedas',
+                  '🪙 ${AppLocalizations.of(context).rewardAmount(reward.price)}',
                   style: const TextStyle(
                     fontWeight: FontWeight.w900,
                     fontFeatures: AppFonts.tabularFigures,

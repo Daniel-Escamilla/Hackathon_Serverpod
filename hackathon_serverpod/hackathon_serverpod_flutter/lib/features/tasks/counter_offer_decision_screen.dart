@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'tasks_controller.dart';
 
 /// Shown to a task's author to accept or withdraw a pending counter-offer.
@@ -17,48 +18,48 @@ class CounterOfferDecisionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return DetailScaffold(
-      status: const StatusPill(
-        label: 'Votación pausada',
-        color: Color(0xFFFFDFA0),
+      status: StatusPill(
+        label: l10n.counterOfferPausedStatus,
+        color: const Color(0xFFFFDFA0),
       ),
       title: task.title,
-      content: const [
+      content: [
         InfoRow(
           icon: Icons.restart_alt_rounded,
-          text:
-              'Han contraofertado un nuevo precio para esta tarea. Si '
-              'aceptas, la votación empieza de cero con esa cifra.',
+          text: l10n.counterOfferDecisionNotice,
         ),
       ],
       actions: [
         FilledButton(
           onPressed: () => _respond(context, true),
-          child: const Text('Aceptar la contraoferta'),
+          child: Text(l10n.acceptCounterOffer),
         ),
         const SizedBox(height: 10),
         OutlinedButton(
           onPressed: () => _respond(context, false),
-          child: const Text('Retirar sin multa'),
+          child: Text(l10n.withdrawNoFine),
         ),
       ],
     );
   }
 
   Future<void> _respond(BuildContext context, bool accept) async {
+    final l10n = AppLocalizations.of(context);
     final controller = context.read<TasksController>();
     try {
       await controller.respondToCounterOffer(task.id!, accept);
       if (context.mounted) {
         showSnack(
           context,
-          accept ? 'Contraoferta aceptada' : 'Propuesta retirada',
+          accept ? l10n.counterOfferAccepted : l10n.proposalWithdrawn,
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
       if (context.mounted) {
-        showSnack(context, 'No se pudo procesar tu decisión');
+        showSnack(context, l10n.counterOfferDecisionError);
       }
     }
   }

@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'create_account_code_screen.dart';
 
 class CreateAccountEmailScreen extends StatefulWidget {
@@ -28,6 +29,7 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     final email = _emailController.text.trim();
     setState(() {
       _loading = true;
@@ -50,13 +52,12 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
       setState(
         () => _error = switch (e.reason) {
           EmailAccountRequestExceptionReason.tooManyAttempts =>
-            'Demasiados intentos. Prueba en unos minutos.',
-          _ =>
-            'No se pudo empezar el registro. ¿Ya tienes cuenta con ese email?',
+            l10n.authErrorTooManyAttempts,
+          _ => l10n.createAccountErrorGeneric,
         },
       );
     } catch (e) {
-      setState(() => _error = 'No se pudo empezar el registro.');
+      setState(() => _error = l10n.createAccountErrorStart);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -64,19 +65,20 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SimpleFormPage(
-      title: 'Crea tu cuenta',
+      title: l10n.createAccountTitle,
       art: const RoundIcon(
         icon: Icons.alternate_email_rounded,
         color: AppColors.sky,
       ),
       children: [
-        const FieldLabel('Email'),
+        FieldLabel(l10n.emailFieldLabel),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           onSubmitted: (_) => _submit(),
-          decoration: const InputDecoration(hintText: 'mayte@email.com'),
+          decoration: InputDecoration(hintText: l10n.emailHint),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
@@ -94,7 +96,7 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
                     color: Colors.white,
                   ),
                 )
-              : const Text('Continuar'),
+              : Text(l10n.createAccountContinue),
         ),
       ],
     );

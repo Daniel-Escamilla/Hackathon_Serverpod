@@ -3,6 +3,7 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 /// There is no endpoint yet for the completion vote — TaskEndpoint's
 /// voteTaskProposal only accepts tasks in `proposed` status, so it can't be
@@ -15,24 +16,23 @@ class ValidationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return DetailScaffold(
-      status: const StatusPill(label: 'Validación', color: AppColors.lime),
+      status: StatusPill(label: l10n.statusValidation, color: AppColors.lime),
       title: task.title,
       content: [
         BigValueCard(
           color: AppColors.lime,
           value: '${task.reward}',
-          label: 'monedas',
+          label: l10n.coinsLabel,
           icon: '🪙',
         ),
         const SizedBox(height: 16),
         InfoRow(icon: Icons.description_rounded, text: task.description),
         const SizedBox(height: 16),
-        const InfoRow(
+        InfoRow(
           icon: Icons.construction_rounded,
-          text:
-              'Todavía no se puede votar la validación: falta el endpoint '
-              'en el backend.',
+          text: l10n.validationPendingNotice,
         ),
       ],
       actions: const [],

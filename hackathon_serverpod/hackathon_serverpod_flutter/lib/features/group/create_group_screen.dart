@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'group_success_screen.dart';
 
 class CreateGroupScreen extends StatefulWidget {
@@ -28,9 +29,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     final name = _nameController.text.trim();
     if (name.isEmpty) {
-      setState(() => _error = 'Ponle un nombre al grupo.');
+      setState(() => _error = l10n.createGroupErrorEmpty);
       return;
     }
     setState(() {
@@ -49,7 +51,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
         );
       }
     } catch (e) {
-      setState(() => _error = 'No se pudo crear el grupo.');
+      setState(() => _error = l10n.createGroupErrorGeneric);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -57,19 +59,20 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(24, 4, 24, 30),
         children: [
           Text(
-            'Crea vuestro grupo',
+            l10n.createGroupHeadline,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 8),
-          const Text(
-            'Elige cómo compartís casa',
-            style: TextStyle(color: AppColors.muted),
+          Text(
+            l10n.createGroupHint,
+            style: const TextStyle(color: AppColors.muted),
           ),
           const SizedBox(height: 28),
           Row(
@@ -77,7 +80,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               Expanded(
                 child: _ProfileCard(
                   emoji: '🏠',
-                  label: 'Piso compartido',
+                  label: l10n.profileSharedFlat,
                   selected: _type == GroupType.sharedFlat,
                   onTap: () => setState(() => _type = GroupType.sharedFlat),
                 ),
@@ -86,7 +89,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               Expanded(
                 child: _ProfileCard(
                   emoji: '💜',
-                  label: 'Pareja',
+                  label: l10n.profileCouple,
                   selected: _type == GroupType.couple,
                   onTap: () => setState(() => _type = GroupType.couple),
                 ),
@@ -94,10 +97,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
             ],
           ),
           const SizedBox(height: 30),
-          const FieldLabel('Nombre del grupo'),
+          FieldLabel(l10n.groupNameLabel),
           TextField(
             controller: _nameController,
-            decoration: const InputDecoration(hintText: 'Casa de Mayte y Juan'),
+            decoration: InputDecoration(hintText: l10n.groupNameHint),
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
@@ -115,7 +118,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                       color: Colors.white,
                     ),
                   )
-                : const Text('Crear grupo'),
+                : Text(l10n.createGroupSubmit),
           ),
         ],
       ),

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import '../tasks/tasks_controller.dart';
 import 'wallet_controller.dart';
 
@@ -16,7 +17,10 @@ class WalletPage extends StatelessWidget {
     final tasks = context.watch<TasksController>();
     return Column(
       children: [
-        const PageHeader(title: 'Cartera', showBalance: false),
+        PageHeader(
+          title: AppLocalizations.of(context).navWallet,
+          showBalance: false,
+        ),
         Expanded(
           child: _Body(wallet: wallet, tasks: tasks),
         ),
@@ -33,6 +37,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     if (wallet.loading && wallet.history.isEmpty) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -43,11 +48,11 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Text('No se pudo cargar la cartera.'),
+              Text(l10n.walletLoadError),
               const SizedBox(height: 12),
               FilledButton(
                 onPressed: wallet.load,
-                child: const Text('Reintentar'),
+                child: Text(l10n.retry),
               ),
             ],
           ),
@@ -80,9 +85,9 @@ class _Body extends StatelessWidget {
                           fontFeatures: AppFonts.tabularFigures,
                         ),
                       ),
-                      const Text(
-                        'monedas',
-                        style: TextStyle(
+                      Text(
+                        l10n.coinsLabel,
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 22,
                           fontWeight: FontWeight.w800,
@@ -97,14 +102,14 @@ class _Body extends StatelessWidget {
           ),
           const SizedBox(height: 28),
           Text(
-            'Últimos movimientos',
+            l10n.recentMovements,
             style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(height: 12),
           if (wallet.history.isEmpty)
-            const Padding(
-              padding: EdgeInsets.only(top: 40),
-              child: Center(child: Text('Todavía no hay movimientos.')),
+            Padding(
+              padding: const EdgeInsets.only(top: 40),
+              child: Center(child: Text(l10n.noMovements)),
             ),
           for (final entry in wallet.history)
             _MovementRow(
@@ -147,7 +152,7 @@ class _MovementRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    taskTitle ?? _label,
+                    taskTitle ?? _label(AppLocalizations.of(context)),
                     style: const TextStyle(fontWeight: FontWeight.w900),
                   ),
                   Text(
@@ -182,11 +187,11 @@ class _MovementRow extends StatelessWidget {
     CoinTransactionReason.refunded => Icons.replay_rounded,
   };
 
-  String get _label => switch (entry.reason) {
-    CoinTransactionReason.earned => 'Tarea completada',
-    CoinTransactionReason.fined => 'Multa',
-    CoinTransactionReason.spent => 'Compra en la tienda',
-    CoinTransactionReason.refunded => 'Devolución',
+  String _label(AppLocalizations l10n) => switch (entry.reason) {
+    CoinTransactionReason.earned => l10n.reasonEarned,
+    CoinTransactionReason.fined => l10n.reasonFined,
+    CoinTransactionReason.spent => l10n.reasonSpent,
+    CoinTransactionReason.refunded => l10n.reasonRefunded,
   };
 
   String _formatDate(DateTime date) {

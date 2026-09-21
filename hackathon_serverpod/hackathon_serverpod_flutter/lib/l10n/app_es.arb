@@ -1,0 +1,204 @@
+{
+  "@@locale": "es",
+
+  "appTitle": "Prototipo de tareas",
+
+  "retry": "Reintentar",
+  "coinsLabel": "monedas",
+  "reject": "Rechazar",
+
+  "navTasks": "Tareas",
+  "navShop": "Tienda",
+  "navWallet": "Cartera",
+  "navGroup": "Grupo",
+  "proposeTask": "Proponer",
+
+  "activityTitle": "Actividad",
+  "activityEmptyMessage": "Todavía no hay un listado de actividad del servidor.",
+
+  "groupCheckError": "No se pudo comprobar tu grupo.",
+
+  "welcomeHeadline": "Las tareas,\npor fin justas.",
+  "welcomeSubtitle": "Los acuerdos de casa se deciden entre todos.",
+  "welcomeSignIn": "Entrar con email",
+  "welcomeCreateAccount": "Crear una cuenta",
+
+  "signInTitle": "Entra en tu cuenta",
+  "emailFieldLabel": "Email",
+  "emailHint": "mayte@email.com",
+  "passwordFieldLabel": "Contraseña",
+  "passwordHint": "••••••••",
+  "signInSubmit": "Entrar",
+  "signInErrorInvalidCredentials": "Email o contraseña incorrectos.",
+  "authErrorTooManyAttempts": "Demasiados intentos. Prueba en unos minutos.",
+  "signInErrorUnknown": "No se pudo iniciar sesión.",
+
+  "createAccountTitle": "Crea tu cuenta",
+  "createAccountContinue": "Continuar",
+  "createAccountErrorGeneric": "No se pudo empezar el registro. ¿Ya tienes cuenta con ese email?",
+  "createAccountErrorStart": "No se pudo empezar el registro.",
+
+  "verifyEmailTitle": "Revisa tu email",
+  "verifyEmailSubtitle": "Hemos enviado un código de verificación a {email}.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "codeHint": "284619",
+  "verifyButton": "Verificar",
+  "codeErrorExpired": "El código ha caducado. Vuelve a empezar.",
+  "codeErrorInvalid": "Código incorrecto.",
+  "codeErrorGeneric": "No se pudo verificar el código.",
+
+  "choosePasswordTitle": "Elige una contraseña",
+  "createAccountButton": "Crear cuenta",
+  "passwordErrorPolicy": "La contraseña no cumple los requisitos.",
+  "passwordErrorExpired": "La sesión de registro ha caducado. Vuelve a empezar.",
+  "passwordErrorGeneric": "No se pudo crear la cuenta.",
+
+  "groupChoiceGreeting": "¡Hola!",
+  "groupChoiceQuestion": "¿Cómo quieres\nempezar?",
+  "createGroupTitle": "Crear un grupo",
+  "createGroupSubtitle": "Prepara vuestro espacio",
+  "joinGroupTitle": "Unirme con un código",
+  "joinGroupSubtitle": "Entra en un grupo existente",
+
+  "createGroupHeadline": "Crea vuestro grupo",
+  "createGroupHint": "Elige cómo compartís casa",
+  "profileSharedFlat": "Piso compartido",
+  "profileCouple": "Pareja",
+  "groupNameLabel": "Nombre del grupo",
+  "groupNameHint": "Casa de Mayte y Juan",
+  "createGroupSubmit": "Crear grupo",
+  "createGroupErrorEmpty": "Ponle un nombre al grupo.",
+  "createGroupErrorGeneric": "No se pudo crear el grupo.",
+
+  "joinGroupHeadline": "Únete a tu gente",
+  "joinGroupSubtitle": "Introduce el código que te han compartido.",
+  "joinGroupCodeHint": "NIDO-482",
+  "joinGroupCaseNote": "El código no distingue mayúsculas",
+  "joinGroupSubmit": "Entrar al grupo",
+  "joinGroupError": "No se encontró ningún grupo con ese código.",
+
+  "groupSuccessTitle": "¡Ya tenéis casa!",
+  "groupCodeLabel": "Código del grupo",
+  "shareCode": "Compartir código",
+  "goToTasks": "Ir a las tareas",
+
+  "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.",
+  "membersTitle": "Miembros",
+  "groupSettings": "Configuración del grupo",
+  "codeCopied": "Código copiado",
+
+  "tasksLoadError": "No se pudieron cargar las tareas.",
+  "tasksEmpty": "Todavía no hay tareas. Propón la primera.",
+  "sectionAwaitingVote": "Esperan un voto",
+  "sectionCounterOffered": "Contraofertadas",
+  "sectionAvailable": "Disponibles",
+  "sectionInValidation": "En validación",
+  "statusProposal": "Propuesta",
+  "statusCounterOffer": "Contraoferta",
+  "statusAvailable": "Disponible",
+  "statusValidation": "Validación",
+
+  "waitingYourVote": "Esperando tu voto",
+  "votingClosingSoon": "La votación está a punto de cerrar",
+  "remainingTime": "Quedan {hours} h {minutes} min",
+  "@remainingTime": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "approve": "Aprobar",
+  "counterOffer": "Contraofertar",
+  "voteApproved": "Has aprobado la propuesta",
+  "voteRejected": "Propuesta rechazada",
+  "voteError": "No se pudo registrar tu voto",
+  "counterOfferError": "No se pudo enviar la contraoferta",
+
+  "counterOfferSheetTitle": "Haz una contraoferta",
+  "counterOfferSheetSubtitle": "¿Cuántas monedas te parecerían justas?",
+  "counterOfferPauseNotice": "La votación se pausará hasta que el autor responda",
+  "sendCounterOffer": "Enviar contraoferta",
+
+  "counterOfferPausedStatus": "Votación pausada",
+  "counterOfferDecisionNotice": "Han contraofertado un nuevo precio para esta tarea. Si aceptas, la votación empieza de cero con esa cifra.",
+  "acceptCounterOffer": "Aceptar la contraoferta",
+  "withdrawNoFine": "Retirar sin multa",
+  "counterOfferAccepted": "Contraoferta aceptada",
+  "proposalWithdrawn": "Propuesta retirada",
+  "counterOfferDecisionError": "No se pudo procesar tu decisión",
+
+  "notReserved": "No se reserva: reclama cuando esté hecha",
+  "markDone": "Ya está hecha",
+  "claimedTitle": "¡Reclamada!",
+  "claimedMessage": "Ahora el grupo debe confirmar que está hecha.",
+  "inValidationValue": "En validación · {reward} monedas",
+  "@inValidationValue": {
+    "placeholders": {
+      "reward": { "type": "int" }
+    }
+  },
+  "backToTasks": "Volver a tareas",
+  "claimError": "No se pudo reclamar. Puede que ya la haya cogido otra persona.",
+
+  "validationPendingNotice": "Todavía no se puede votar la validación: falta el endpoint en el backend.",
+
+  "newTaskTitle": "Nueva tarea",
+  "titleFieldLabel": "Título",
+  "taskTitleHint": "Limpiar el baño",
+  "descriptionLabel": "Descripción",
+  "taskDescriptionHint": "Ducha, lavabo, espejo y suelo",
+  "rewardLabel": "Recompensa",
+  "rewardHintNote": "Una tarea normal suele valer 10",
+  "reviewProposal": "Revisar propuesta",
+  "taskTitleEmptyError": "Ponle un título a la tarea.",
+
+  "reviewDealStatus": "Revisa el trato",
+  "voteWindowNotice": "El grupo tendrá 24 horas para votar",
+  "rejectFineNotice": "Si la rechazan, recibirás una multa sobre estas monedas",
+  "submitToVote": "Enviar a votación",
+  "sentToVoteTitle": "Enviada a votación",
+  "sentToVoteMessage": "Avisaremos al grupo para que decida el trato.",
+  "rewardAmount": "{reward} monedas",
+  "@rewardAmount": {
+    "placeholders": {
+      "reward": { "type": "int" }
+    }
+  },
+  "proposeError": "No se pudo enviar la propuesta",
+
+  "shopSubtitle": "Convierte tus monedas en planes",
+  "shopLoadError": "No se pudo cargar la tienda.",
+  "shopEmpty": "Todavía no hay recompensas. Propón la primera.",
+  "awaitingVoteSection": "Esperando votación",
+
+  "awaitingYourVote": "Espera tu voto",
+  "approveReward": "Aprobar recompensa",
+  "rewardApproved": "Recompensa aprobada",
+  "rewardRejected": "Recompensa rechazada",
+
+  "newRewardTitle": "Nueva recompensa",
+  "rewardTitleHint": "Desayuno en la cama",
+  "rewardDescriptionHint": "Café, tostadas y fruta",
+  "priceLabel": "Precio",
+  "rewardVotingNotice": "El grupo votará antes de publicarla",
+  "rewardTitleEmptyError": "Ponle un título a la recompensa.",
+  "rewardSentToVote": "Recompensa enviada a votación",
+  "rewardSubmitError": "No se pudo enviar la recompensa",
+  "sending": "Enviando…",
+
+  "whoWillFulfil": "¿Quién la cumplirá?",
+  "membersEndpointNotice": "Elegir a quién le toca necesita el listado de miembros del grupo, que todavía no tiene endpoint.",
+  "purchaseBlockedNotice": "La compra se activará en cuanto el backend lo exponga.",
+
+  "walletLoadError": "No se pudo cargar la cartera.",
+  "recentMovements": "Últimos movimientos",
+  "noMovements": "Todavía no hay movimientos.",
+  "reasonEarned": "Tarea completada",
+  "reasonFined": "Multa",
+  "reasonSpent": "Compra en la tienda",
+  "reasonRefunded": "Devolución"
+}

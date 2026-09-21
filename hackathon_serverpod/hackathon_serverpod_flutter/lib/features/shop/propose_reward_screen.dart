@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'shop_controller.dart';
 
 class ProposeRewardScreen extends StatefulWidget {
@@ -27,9 +28,10 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     final title = _titleController.text.trim();
     if (title.isEmpty) {
-      showSnack(context, 'Ponle un título a la recompensa.');
+      showSnack(context, l10n.rewardTitleEmptyError);
       return;
     }
     setState(() => _loading = true);
@@ -41,11 +43,11 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
         _price,
       );
       if (mounted) {
-        showSnack(context, 'Recompensa enviada a votación');
+        showSnack(context, l10n.rewardSentToVote);
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (mounted) showSnack(context, 'No se pudo enviar la recompensa');
+      if (mounted) showSnack(context, l10n.rewardSubmitError);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -53,34 +55,35 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return FormScaffold(
-      title: 'Nueva recompensa',
+      title: l10n.newRewardTitle,
       fields: [
-        const FieldLabel('Título'),
+        FieldLabel(l10n.titleFieldLabel),
         TextField(
           controller: _titleController,
-          decoration: const InputDecoration(hintText: 'Desayuno en la cama'),
+          decoration: InputDecoration(hintText: l10n.rewardTitleHint),
         ),
         const SizedBox(height: 18),
-        const FieldLabel('Descripción'),
+        FieldLabel(l10n.descriptionLabel),
         TextField(
           controller: _descriptionController,
           maxLines: 3,
-          decoration: const InputDecoration(hintText: 'Café, tostadas y fruta'),
+          decoration: InputDecoration(hintText: l10n.rewardDescriptionHint),
         ),
         const SizedBox(height: 18),
-        const FieldLabel('Precio'),
+        FieldLabel(l10n.priceLabel),
         StepperValue(
           value: _price,
           onChanged: (v) => setState(() => _price = v),
         ),
         const SizedBox(height: 18),
-        const InfoRow(
+        InfoRow(
           icon: Icons.how_to_vote_rounded,
-          text: 'El grupo votará antes de publicarla',
+          text: l10n.rewardVotingNotice,
         ),
       ],
-      button: _loading ? 'Enviando…' : 'Enviar a votación',
+      button: _loading ? l10n.sending : l10n.submitToVote,
       onSubmit: _submit,
     );
   }

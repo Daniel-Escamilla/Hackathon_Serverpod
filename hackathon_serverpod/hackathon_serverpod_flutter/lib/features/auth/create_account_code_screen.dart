@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'create_account_password_screen.dart';
 
 class CreateAccountCodeScreen extends StatefulWidget {
@@ -35,6 +36,7 @@ class _CreateAccountCodeScreenState extends State<CreateAccountCodeScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     setState(() {
       _loading = true;
       _error = null;
@@ -53,16 +55,15 @@ class _CreateAccountCodeScreenState extends State<CreateAccountCodeScreen> {
     } on EmailAccountRequestException catch (e) {
       setState(
         () => _error = switch (e.reason) {
-          EmailAccountRequestExceptionReason.expired =>
-            'El código ha caducado. Vuelve a empezar.',
-          EmailAccountRequestExceptionReason.invalid => 'Código incorrecto.',
+          EmailAccountRequestExceptionReason.expired => l10n.codeErrorExpired,
+          EmailAccountRequestExceptionReason.invalid => l10n.codeErrorInvalid,
           EmailAccountRequestExceptionReason.tooManyAttempts =>
-            'Demasiados intentos. Prueba en unos minutos.',
-          _ => 'No se pudo verificar el código.',
+            l10n.authErrorTooManyAttempts,
+          _ => l10n.codeErrorGeneric,
         },
       );
     } catch (e) {
-      setState(() => _error = 'No se pudo verificar el código.');
+      setState(() => _error = l10n.codeErrorGeneric);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -70,9 +71,10 @@ class _CreateAccountCodeScreenState extends State<CreateAccountCodeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SimpleFormPage(
-      title: 'Revisa tu email',
-      subtitle: 'Hemos enviado un código de verificación a ${widget.email}.',
+      title: l10n.verifyEmailTitle,
+      subtitle: l10n.verifyEmailSubtitle(widget.email),
       art: const RoundIcon(
         icon: Icons.mark_email_read_rounded,
         color: AppColors.lime,
@@ -88,7 +90,7 @@ class _CreateAccountCodeScreenState extends State<CreateAccountCodeScreen> {
             letterSpacing: 14,
             fontWeight: FontWeight.w800,
           ),
-          decoration: const InputDecoration(hintText: '284619'),
+          decoration: InputDecoration(hintText: l10n.codeHint),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
@@ -110,7 +112,7 @@ class _CreateAccountCodeScreenState extends State<CreateAccountCodeScreen> {
                     color: Colors.white,
                   ),
                 )
-              : const Text('Verificar'),
+              : Text(l10n.verifyButton),
         ),
       ],
     );

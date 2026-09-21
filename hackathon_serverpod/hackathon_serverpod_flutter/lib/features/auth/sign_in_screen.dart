@@ -5,6 +5,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -28,6 +29,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     setState(() {
       _loading = true;
       _error = null;
@@ -43,15 +45,14 @@ class _SignInScreenState extends State<SignInScreen> {
       setState(
         () => _error = switch (e.reason) {
           EmailAccountLoginExceptionReason.invalidCredentials =>
-            'Email o contraseña incorrectos.',
+            l10n.signInErrorInvalidCredentials,
           EmailAccountLoginExceptionReason.tooManyAttempts =>
-            'Demasiados intentos. Prueba en unos minutos.',
-          EmailAccountLoginExceptionReason.unknown =>
-            'No se pudo iniciar sesión.',
+            l10n.authErrorTooManyAttempts,
+          EmailAccountLoginExceptionReason.unknown => l10n.signInErrorUnknown,
         },
       );
     } catch (e) {
-      setState(() => _error = 'No se pudo iniciar sesión.');
+      setState(() => _error = l10n.signInErrorUnknown);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -59,26 +60,27 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SimpleFormPage(
-      title: 'Entra en tu cuenta',
+      title: l10n.signInTitle,
       art: const RoundIcon(
         icon: Icons.alternate_email_rounded,
         color: AppColors.sky,
       ),
       children: [
-        const FieldLabel('Email'),
+        FieldLabel(l10n.emailFieldLabel),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
-          decoration: const InputDecoration(hintText: 'mayte@email.com'),
+          decoration: InputDecoration(hintText: l10n.emailHint),
         ),
         const SizedBox(height: 18),
-        const FieldLabel('Contraseña'),
+        FieldLabel(l10n.passwordFieldLabel),
         TextField(
           controller: _passwordController,
           obscureText: true,
           onSubmitted: (_) => _submit(),
-          decoration: const InputDecoration(hintText: '••••••••'),
+          decoration: InputDecoration(hintText: l10n.passwordHint),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
@@ -96,7 +98,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     color: Colors.white,
                   ),
                 )
-              : const Text('Entrar'),
+              : Text(l10n.signInSubmit),
         ),
       ],
     );

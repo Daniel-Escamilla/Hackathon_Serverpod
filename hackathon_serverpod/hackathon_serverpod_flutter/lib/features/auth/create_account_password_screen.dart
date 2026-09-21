@@ -5,6 +5,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class CreateAccountPasswordScreen extends StatefulWidget {
   const CreateAccountPasswordScreen({
@@ -33,6 +34,7 @@ class _CreateAccountPasswordScreenState
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     setState(() {
       _loading = true;
       _error = null;
@@ -48,14 +50,14 @@ class _CreateAccountPasswordScreenState
       setState(
         () => _error = switch (e.reason) {
           EmailAccountRequestExceptionReason.policyViolation =>
-            'La contraseña no cumple los requisitos.',
+            l10n.passwordErrorPolicy,
           EmailAccountRequestExceptionReason.expired =>
-            'La sesión de registro ha caducado. Vuelve a empezar.',
-          _ => 'No se pudo crear la cuenta.',
+            l10n.passwordErrorExpired,
+          _ => l10n.passwordErrorGeneric,
         },
       );
     } catch (e) {
-      setState(() => _error = 'No se pudo crear la cuenta.');
+      setState(() => _error = l10n.passwordErrorGeneric);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -63,16 +65,17 @@ class _CreateAccountPasswordScreenState
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SimpleFormPage(
-      title: 'Elige una contraseña',
+      title: l10n.choosePasswordTitle,
       art: const RoundIcon(icon: Icons.lock_rounded, color: AppColors.lime),
       children: [
-        const FieldLabel('Contraseña'),
+        FieldLabel(l10n.passwordFieldLabel),
         TextField(
           controller: _passwordController,
           obscureText: true,
           onSubmitted: (_) => _submit(),
-          decoration: const InputDecoration(hintText: '••••••••'),
+          decoration: InputDecoration(hintText: l10n.passwordHint),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
@@ -90,7 +93,7 @@ class _CreateAccountPasswordScreenState
                     color: Colors.white,
                   ),
                 )
-              : const Text('Crear cuenta'),
+              : Text(l10n.createAccountButton),
         ),
       ],
     );

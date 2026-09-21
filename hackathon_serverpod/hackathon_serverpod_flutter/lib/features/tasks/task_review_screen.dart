@@ -5,6 +5,7 @@ import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'tasks_controller.dart';
 
 class TaskReviewScreen extends StatelessWidget {
@@ -21,37 +22,33 @@ class TaskReviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return DetailScaffold(
-      status: const StatusPill(label: 'Revisa el trato', color: AppColors.sky),
+      status: StatusPill(label: l10n.reviewDealStatus, color: AppColors.sky),
       title: title,
       content: [
         BigValueCard(
           color: AppColors.lime,
           value: '$reward',
-          label: 'monedas',
+          label: l10n.coinsLabel,
           icon: '🪙',
         ),
         const SizedBox(height: 16),
-        const InfoRow(
-          icon: Icons.schedule_rounded,
-          text: 'El grupo tendrá 24 horas para votar',
-        ),
+        InfoRow(icon: Icons.schedule_rounded, text: l10n.voteWindowNotice),
         const SizedBox(height: 10),
-        const InfoRow(
-          icon: Icons.warning_amber_rounded,
-          text: 'Si la rechazan, recibirás una multa sobre estas monedas',
-        ),
+        InfoRow(icon: Icons.warning_amber_rounded, text: l10n.rejectFineNotice),
       ],
       actions: [
         FilledButton(
           onPressed: () => _submit(context),
-          child: const Text('Enviar a votación'),
+          child: Text(l10n.submitToVote),
         ),
       ],
     );
   }
 
   Future<void> _submit(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
     final controller = context.read<TasksController>();
     try {
       await controller.proposeTask(title, description, reward);
@@ -60,15 +57,15 @@ class TaskReviewScreen extends StatelessWidget {
           context,
           ResultScreen(
             emoji: '🗳️',
-            title: 'Enviada a votación',
-            message: 'Avisaremos al grupo para que decida el trato.',
-            value: '$reward monedas',
-            button: 'Volver a tareas',
+            title: l10n.sentToVoteTitle,
+            message: l10n.sentToVoteMessage,
+            value: l10n.rewardAmount(reward),
+            button: l10n.backToTasks,
           ),
         );
       }
     } catch (e) {
-      if (context.mounted) showSnack(context, 'No se pudo enviar la propuesta');
+      if (context.mounted) showSnack(context, l10n.proposeError);
     }
   }
 }

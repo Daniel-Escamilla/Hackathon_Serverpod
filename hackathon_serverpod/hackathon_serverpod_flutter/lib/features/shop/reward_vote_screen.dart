@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 import 'shop_controller.dart';
 
 class RewardVoteScreen extends StatelessWidget {
@@ -14,17 +15,18 @@ class RewardVoteScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return DetailScaffold(
-      status: const StatusPill(
-        label: 'Espera tu voto',
-        color: Color(0xFFE2DCFF),
+      status: StatusPill(
+        label: l10n.awaitingYourVote,
+        color: const Color(0xFFE2DCFF),
       ),
       title: reward.title,
       content: [
         BigValueCard(
           color: AppColors.sky,
           value: '${reward.price}',
-          label: 'monedas',
+          label: l10n.coinsLabel,
           icon: '🪙',
         ),
         const SizedBox(height: 14),
@@ -33,7 +35,7 @@ class RewardVoteScreen extends StatelessWidget {
       actions: [
         FilledButton(
           onPressed: () => _vote(context, true),
-          child: const Text('Aprobar recompensa'),
+          child: Text(l10n.approveReward),
         ),
         const SizedBox(height: 10),
         OutlinedButton(
@@ -42,25 +44,26 @@ class RewardVoteScreen extends StatelessWidget {
             foregroundColor: AppColors.coral,
             side: const BorderSide(color: AppColors.coral),
           ),
-          child: const Text('Rechazar'),
+          child: Text(l10n.reject),
         ),
       ],
     );
   }
 
   Future<void> _vote(BuildContext context, bool approve) async {
+    final l10n = AppLocalizations.of(context);
     final controller = context.read<ShopController>();
     try {
       await controller.voteReward(reward.id!, approve);
       if (context.mounted) {
         showSnack(
           context,
-          approve ? 'Recompensa aprobada' : 'Recompensa rechazada',
+          approve ? l10n.rewardApproved : l10n.rewardRejected,
         );
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (context.mounted) showSnack(context, 'No se pudo registrar tu voto');
+      if (context.mounted) showSnack(context, l10n.voteError);
     }
   }
 }

@@ -4,6 +4,7 @@ import '../../app_theme.dart';
 import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class JoinGroupScreen extends StatefulWidget {
   const JoinGroupScreen({super.key});
@@ -25,6 +26,7 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
 
   Future<void> _submit() async {
     if (_loading) return;
+    final l10n = AppLocalizations.of(context);
     final code = _codeController.text.trim();
     setState(() {
       _loading = true;
@@ -34,7 +36,7 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
       await client.group.joinGroup(code);
       if (mounted) enterHome(context);
     } catch (e) {
-      setState(() => _error = 'No se encontró ningún grupo con ese código.');
+      setState(() => _error = l10n.joinGroupError);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
@@ -42,9 +44,10 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SimpleFormPage(
-      title: 'Únete a tu gente',
-      subtitle: 'Introduce el código que te han compartido.',
+      title: l10n.joinGroupHeadline,
+      subtitle: l10n.joinGroupSubtitle,
       art: const RoundIcon(icon: Icons.groups_rounded, color: AppColors.sky),
       children: [
         TextField(
@@ -57,13 +60,13 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
             fontWeight: FontWeight.w900,
             letterSpacing: 3,
           ),
-          decoration: const InputDecoration(hintText: 'NIDO-482'),
+          decoration: InputDecoration(hintText: l10n.joinGroupCodeHint),
         ),
         const SizedBox(height: 8),
-        const Text(
-          'El código no distingue mayúsculas',
+        Text(
+          l10n.joinGroupCaseNote,
           textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.muted),
+          style: const TextStyle(color: AppColors.muted),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
@@ -85,7 +88,7 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
                     color: Colors.white,
                   ),
                 )
-              : const Text('Entrar al grupo'),
+              : Text(l10n.joinGroupSubmit),
         ),
       ],
     );

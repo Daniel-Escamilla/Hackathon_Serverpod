@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../client.dart';
 import '../features/group/group_choice_screen.dart';
 import '../home_shell.dart';
+import '../l10n/generated/app_localizations.dart';
 
 /// There is no endpoint yet to ask "does the signed-in user have a group" —
 /// GroupEndpoint only has createGroup/joinGroup. Every member-scoped
@@ -48,12 +49,12 @@ class _GroupGateState extends State<GroupGate> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const Text('No se pudo comprobar tu grupo.'),
+                    Text(AppLocalizations.of(context).groupCheckError),
                     const SizedBox(height: 12),
                     FilledButton(
                       onPressed: () =>
                           setState(() => _hasGroup = _checkMembership()),
-                      child: const Text('Reintentar'),
+                      child: Text(AppLocalizations.of(context).retry),
                     ),
                   ],
                 ),

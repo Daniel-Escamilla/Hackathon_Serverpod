@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class GroupSuccessScreen extends StatelessWidget {
   const GroupSuccessScreen({
@@ -16,6 +17,7 @@ class GroupSuccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -26,7 +28,7 @@ class GroupSuccessScreen extends StatelessWidget {
               const RoundIcon(icon: Icons.home_rounded, color: AppColors.lime),
               const SizedBox(height: 30),
               Text(
-                '¡Ya tenéis casa!',
+                l10n.groupSuccessTitle,
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 8),
@@ -35,9 +37,9 @@ class GroupSuccessScreen extends StatelessWidget {
               SoftCard(
                 child: Column(
                   children: [
-                    const Text(
-                      'Código del grupo',
-                      style: TextStyle(color: AppColors.muted),
+                    Text(
+                      l10n.groupCodeLabel,
+                      style: const TextStyle(color: AppColors.muted),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -51,12 +53,12 @@ class GroupSuccessScreen extends StatelessWidget {
               FilledButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.share_rounded),
-                label: const Text('Compartir código'),
+                label: Text(l10n.shareCode),
               ),
               const SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () => enterHome(context),
-                child: const Text('Ir a las tareas'),
+                child: Text(l10n.goToTasks),
               ),
             ],
           ),

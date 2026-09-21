@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       children: [
-        const PageHeader(title: 'Grupo'),
+        PageHeader(title: l10n.navGroup),
         Expanded(
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
             children: [
-              const InfoRow(
+              InfoRow(
                 icon: Icons.construction_rounded,
-                text:
-                    'Datos de ejemplo: falta un endpoint para pedir tu grupo '
-                    'y sus miembros al servidor.',
+                text: l10n.groupPendingNotice,
               ),
               const SizedBox(height: 14),
               SoftCard(
@@ -38,13 +38,16 @@ class GroupPage extends StatelessWidget {
                             style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
-                        const StatusPill(label: 'Pareja', color: Colors.white),
+                        StatusPill(
+                          label: l10n.profileCouple,
+                          color: Colors.white,
+                        ),
                       ],
                     ),
                     const Divider(height: 28),
-                    const Text(
-                      'Código del grupo',
-                      style: TextStyle(color: AppColors.muted),
+                    Text(
+                      l10n.groupCodeLabel,
+                      style: const TextStyle(color: AppColors.muted),
                     ),
                     Row(
                       children: [
@@ -55,7 +58,7 @@ class GroupPage extends StatelessWidget {
                           ),
                         ),
                         IconButton(
-                          onPressed: () => showSnack(context, 'Código copiado'),
+                          onPressed: () => showSnack(context, l10n.codeCopied),
                           icon: const Icon(Icons.copy_rounded),
                         ),
                       ],
@@ -64,23 +67,26 @@ class GroupPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 26),
-              Text('Miembros', style: Theme.of(context).textTheme.titleLarge),
+              Text(
+                l10n.membersTitle,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
               const SizedBox(height: 10),
               const _MemberRow(emoji: '👩🏽', name: 'Mayte', badge: 'Admin'),
               const _MemberRow(emoji: '👨🏽', name: 'Juan'),
               const SizedBox(height: 16),
-              const SoftCard(
+              SoftCard(
                 child: Row(
                   children: [
-                    Icon(Icons.settings_rounded),
-                    SizedBox(width: 12),
+                    const Icon(Icons.settings_rounded),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
-                        'Configuración del grupo',
-                        style: TextStyle(fontWeight: FontWeight.w800),
+                        l10n.groupSettings,
+                        style: const TextStyle(fontWeight: FontWeight.w800),
                       ),
                     ),
-                    Icon(Icons.chevron_right_rounded),
+                    const Icon(Icons.chevron_right_rounded),
                   ],
                 ),
               ),

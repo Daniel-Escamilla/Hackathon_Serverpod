@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
+import '../l10n/generated/app_localizations.dart';
 import 'activity_screen.dart';
 import 'navigation.dart';
 
@@ -366,7 +367,7 @@ class StepperValue extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              '$value monedas',
+              AppLocalizations.of(context).rewardAmount(value),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontFeatures: AppFonts.tabularFigures,

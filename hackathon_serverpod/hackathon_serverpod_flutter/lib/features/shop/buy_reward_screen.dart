@@ -3,6 +3,7 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
+import '../../l10n/generated/app_localizations.dart';
 
 /// Buying needs to pick who fulfils the reward, which needs the group's
 /// member list — GroupEndpoint has no read endpoint for that yet (see
@@ -15,13 +16,14 @@ class BuyRewardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 28),
         children: [
           Text(
-            '¿Quién la cumplirá?',
+            l10n.whoWillFulfil,
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           const SizedBox(height: 22),
@@ -52,17 +54,15 @@ class BuyRewardScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 24),
-          const InfoRow(
+          InfoRow(
             icon: Icons.construction_rounded,
-            text:
-                'Elegir a quién le toca necesita el listado de miembros del '
-                'grupo, que todavía no tiene endpoint.',
+            text: l10n.membersEndpointNotice,
           ),
           const SizedBox(height: 8),
-          const Text(
-            'La compra se activará en cuanto el backend lo exponga.',
+          Text(
+            l10n.purchaseBlockedNotice,
             textAlign: TextAlign.center,
-            style: TextStyle(color: AppColors.muted),
+            style: const TextStyle(color: AppColors.muted),
           ),
         ],
       ),

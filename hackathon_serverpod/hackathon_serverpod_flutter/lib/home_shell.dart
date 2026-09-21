@@ -11,6 +11,7 @@ import 'features/tasks/tasks_controller.dart';
 import 'features/tasks/tasks_page.dart';
 import 'features/wallet/wallet_controller.dart';
 import 'features/wallet/wallet_page.dart';
+import 'l10n/generated/app_localizations.dart';
 
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key, this.initialIndex = 0});
@@ -45,6 +46,7 @@ class _HomeShellState extends State<HomeShell> {
       ],
       child: Builder(
         builder: (context) {
+          final l10n = AppLocalizations.of(context);
           const pages = [
             TasksPage(),
             ShopPage(),
@@ -60,22 +62,22 @@ class _HomeShellState extends State<HomeShell> {
               onDestinationSelected: (value) => setState(() => _index = value),
               backgroundColor: Colors.white,
               indicatorColor: AppColors.violet.withValues(alpha: .14),
-              destinations: const [
+              destinations: [
                 NavigationDestination(
-                  icon: Icon(Icons.task_alt_rounded),
-                  label: 'Tareas',
+                  icon: const Icon(Icons.task_alt_rounded),
+                  label: l10n.navTasks,
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.storefront_rounded),
-                  label: 'Tienda',
+                  icon: const Icon(Icons.storefront_rounded),
+                  label: l10n.navShop,
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.account_balance_wallet_rounded),
-                  label: 'Cartera',
+                  icon: const Icon(Icons.account_balance_wallet_rounded),
+                  label: l10n.navWallet,
                 ),
                 NavigationDestination(
-                  icon: Icon(Icons.groups_rounded),
-                  label: 'Grupo',
+                  icon: const Icon(Icons.groups_rounded),
+                  label: l10n.navGroup,
                 ),
               ],
             ),
@@ -86,7 +88,7 @@ class _HomeShellState extends State<HomeShell> {
                     backgroundColor: AppColors.violet,
                     foregroundColor: Colors.white,
                     icon: const Icon(Icons.add_rounded),
-                    label: const Text('Proponer'),
+                    label: Text(l10n.proposeTask),
                   )
                 : null,
           );
