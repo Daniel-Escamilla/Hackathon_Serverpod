@@ -5,8 +5,10 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import '../data/group_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
+import '../ui/app_button.dart';
 import '../ui/failure_messages.dart';
 import '../ui/feedback.dart';
+import '../ui/sounds.dart';
 
 /// Creates a group against `GroupEndpoint.createGroup` and shows the invite
 /// code it comes back with.
@@ -44,6 +46,7 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
           .read(groupRepositoryProvider)
           .create(name: _name.text.trim(), type: _type);
       if (!mounted) return;
+      ref.read(uiSoundsProvider).play(AppSound.success);
       await navigator.push<void>(
         MaterialPageRoute(builder: (_) => _InviteCodeScreen(group: group)),
       );
@@ -86,17 +89,10 @@ class _CreateGroupScreenState extends ConsumerState<CreateGroupScreen> {
                 onChanged: (type) => setState(() => _type = type),
               ),
               const SizedBox(height: 32),
-              FilledButton(
-                onPressed: _submitting ? null : _submit,
-                child: _submitting
-                    ? const SizedBox.square(
-                        dimension: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Text(l10n.createGroupSubmit),
+              AppButton(
+                label: l10n.createGroupSubmit,
+                loading: _submitting,
+                onPressed: _submit,
               ),
             ],
           ),
@@ -167,9 +163,9 @@ class _InviteCodeScreen extends StatelessWidget {
                 style: text.displaySmall?.copyWith(letterSpacing: 8),
               ),
               const SizedBox(height: 40),
-              FilledButton(
+              AppButton(
+                label: l10n.groupReadyDone,
                 onPressed: () => Navigator.of(context).pop(),
-                child: Text(l10n.groupReadyDone),
               ),
             ],
           ),

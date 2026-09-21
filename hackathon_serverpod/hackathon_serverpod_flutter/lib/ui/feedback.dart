@@ -1,11 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
+import 'app_button.dart';
+import 'sounds.dart';
 
 /// A short message at the bottom of the screen. Every screen uses this one, so
-/// a confirmation and an error look the same wherever they appear.
-void showMessage(BuildContext context, String message, {bool isError = false}) {
+/// a confirmation and an error look — and sound — the same wherever they
+/// appear. An error plays the "bonk" on its own; pass [sound] for anything
+/// else worth hearing.
+void showMessage(
+  BuildContext context,
+  String message, {
+  bool isError = false,
+  AppSound? sound,
+}) {
+  final play = sound ?? (isError ? AppSound.error : null);
+  if (play != null) {
+    ProviderScope.containerOf(
+      context,
+      listen: false,
+    ).read(uiSoundsProvider).play(play);
+  }
+
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message, style: const TextStyle(color: Colors.white)),
@@ -33,16 +51,15 @@ Future<bool> confirmAction(
       title: Text(title),
       content: Text(body),
       actions: [
-        TextButton(
+        AppButton(
+          label: l10n.cancel,
+          kind: AppButtonKind.quiet,
           onPressed: () => Navigator.of(context).pop(false),
-          child: Text(l10n.cancel),
         ),
-        TextButton(
+        AppButton(
+          label: action,
+          kind: destructive ? AppButtonKind.danger : AppButtonKind.quiet,
           onPressed: () => Navigator.of(context).pop(true),
-          style: destructive
-              ? TextButton.styleFrom(foregroundColor: appCoral)
-              : null,
-          child: Text(action),
         ),
       ],
     ),

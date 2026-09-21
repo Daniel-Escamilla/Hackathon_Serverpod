@@ -6,11 +6,20 @@ import 'l10n/app_localizations.dart';
 import 'screens/home_screen.dart';
 import 'screens/sign_in_screen.dart';
 import 'theme.dart';
+import 'ui/sounds.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeClient();
-  runApp(const ProviderScope(child: HackathonApp()));
+  // Loaded before the first frame so the very first tap already has its pop.
+  // Never throws: without audio the app just stays quiet.
+  final sounds = await UiSounds.load();
+  runApp(
+    ProviderScope(
+      overrides: [uiSoundsProvider.overrideWithValue(sounds)],
+      child: const HackathonApp(),
+    ),
+  );
 }
 
 /// The real app: it signs in against Serverpod and reads its data from the

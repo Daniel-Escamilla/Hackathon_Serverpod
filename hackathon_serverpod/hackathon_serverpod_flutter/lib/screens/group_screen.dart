@@ -6,8 +6,10 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import '../data/group_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
+import '../ui/app_button.dart';
 import '../ui/failure_messages.dart';
 import '../ui/feedback.dart';
+import '../ui/sounds.dart';
 
 /// The group: its invite code, who is in it, and — for the admin — the two
 /// things that protect it when a code leaks: expelling a member and replacing
@@ -103,7 +105,13 @@ class _InviteCard extends ConsumerWidget {
     try {
       await ref.read(groupRepositoryProvider).regenerateInviteCode();
       ref.invalidate(myGroupProvider);
-      if (context.mounted) showMessage(context, l10n.groupInviteRegenerated);
+      if (context.mounted) {
+        showMessage(
+          context,
+          l10n.groupInviteRegenerated,
+          sound: AppSound.success,
+        );
+      }
     } catch (error) {
       if (context.mounted) {
         showMessage(context, failureMessage(error, l10n), isError: true);
@@ -149,26 +157,24 @@ class _InviteCard extends ConsumerWidget {
             spacing: 8,
             runSpacing: 8,
             children: [
-              FilledButton.tonal(
+              AppButton(
+                label: l10n.groupInviteCopy,
+                onBrand: true,
+                compact: true,
                 onPressed: () async {
                   await Clipboard.setData(ClipboardData(text: code));
                   if (context.mounted) {
                     showMessage(context, l10n.groupInviteCopied);
                   }
                 },
-                style: FilledButton.styleFrom(
-                  minimumSize: const Size(0, 44),
-                ),
-                child: Text(l10n.groupInviteCopy),
               ),
               if (canRegenerate)
-                TextButton(
+                AppButton(
+                  label: l10n.groupInviteRegenerate,
+                  kind: AppButtonKind.quiet,
+                  onBrand: true,
+                  compact: true,
                   onPressed: () => _regenerate(context, ref),
-                  style: TextButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    minimumSize: const Size(0, 44),
-                  ),
-                  child: Text(l10n.groupInviteRegenerate),
                 ),
             ],
           ),
@@ -235,10 +241,11 @@ class _MemberRow extends ConsumerWidget {
             ),
           ),
           if (canExpel)
-            TextButton(
+            AppButton(
+              label: l10n.expelAction,
+              kind: AppButtonKind.danger,
+              compact: true,
               onPressed: () => _expel(context, ref),
-              style: TextButton.styleFrom(foregroundColor: appCoral),
-              child: Text(l10n.expelAction),
             ),
         ],
       ),
