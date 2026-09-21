@@ -58,6 +58,7 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
             children: [
               IconButton.filledTonal(
                 onPressed: _value > 1 ? () => setState(() => _value--) : null,
+                tooltip: l10n.decreaseAmount,
                 icon: const Icon(Icons.remove_rounded),
               ),
               Padding(
@@ -73,6 +74,7 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
               ),
               IconButton.filled(
                 onPressed: () => setState(() => _value++),
+                tooltip: l10n.increaseAmount,
                 icon: const Icon(Icons.add_rounded),
               ),
             ],

@@ -75,6 +75,7 @@ class _Body extends StatelessWidget {
             alignment: Alignment.centerRight,
             child: IconButton.filled(
               onPressed: () => pushPage(context, const ProposeRewardScreen()),
+              tooltip: l10n.newRewardTitle,
               icon: const Icon(Icons.add_rounded),
             ),
           ),

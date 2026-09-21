@@ -116,6 +116,7 @@ class _Body extends StatelessWidget {
                     ),
                     IconButton(
                       onPressed: () => _copyCode(context, group.inviteCode),
+                      tooltip: l10n.copyCode,
                       icon: const Icon(Icons.copy_rounded),
                     ),
                   ],

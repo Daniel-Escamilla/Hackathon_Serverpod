@@ -6,6 +6,8 @@
   "retry": "Reintentar",
   "coinsLabel": "monedas",
   "reject": "Rechazar",
+  "decreaseAmount": "Restar",
+  "increaseAmount": "Sumar",
 
   "navTasks": "Tareas",
   "navShop": "Tienda",
@@ -91,6 +93,7 @@
   "membersTitle": "Miembros",
   "groupSettings": "Configuración del grupo",
   "codeCopied": "Código copiado",
+  "copyCode": "Copiar código",
 
   "tasksLoadError": "No se pudieron cargar las tareas.",
   "tasksEmpty": "Todavía no hay tareas. Propón la primera.",

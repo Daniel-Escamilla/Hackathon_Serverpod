@@ -118,6 +118,18 @@ abstract class AppLocalizations {
   /// **'Rechazar'**
   String get reject;
 
+  /// No description provided for @decreaseAmount.
+  ///
+  /// In es, this message translates to:
+  /// **'Restar'**
+  String get decreaseAmount;
+
+  /// No description provided for @increaseAmount.
+  ///
+  /// In es, this message translates to:
+  /// **'Sumar'**
+  String get increaseAmount;
+
   /// No description provided for @navTasks.
   ///
   /// In es, this message translates to:
@@ -519,6 +531,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Código copiado'**
   String get codeCopied;
+
+  /// No description provided for @copyCode.
+  ///
+  /// In es, this message translates to:
+  /// **'Copiar código'**
+  String get copyCode;
 
   /// No description provided for @tasksLoadError.
   ///

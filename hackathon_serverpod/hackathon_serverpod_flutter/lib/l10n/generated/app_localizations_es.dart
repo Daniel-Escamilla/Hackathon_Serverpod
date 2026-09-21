@@ -21,6 +21,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reject => 'Rechazar';
 
   @override
+  String get decreaseAmount => 'Restar';
+
+  @override
+  String get increaseAmount => 'Sumar';
+
+  @override
   String get navTasks => 'Tareas';
 
   @override
@@ -227,6 +233,9 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get codeCopied => 'Código copiado';
+
+  @override
+  String get copyCode => 'Copiar código';
 
   @override
   String get tasksLoadError => 'No se pudieron cargar las tareas.';

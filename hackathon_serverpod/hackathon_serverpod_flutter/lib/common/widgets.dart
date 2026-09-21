@@ -45,6 +45,7 @@ class PageHeader extends StatelessWidget {
           if (showBalance) const _BalancePill(),
           IconButton(
             onPressed: () => pushPage(context, const ActivityScreen()),
+            tooltip: AppLocalizations.of(context).activityTitle,
             icon: const Badge(
               backgroundColor: AppColors.coral,
               child: Icon(Icons.notifications_none_rounded),
@@ -387,6 +388,7 @@ class StepperValue extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return SoftCard(
       child: Row(
         children: [
@@ -394,11 +396,12 @@ class StepperValue extends StatelessWidget {
             onPressed: onChanged == null || value <= step
                 ? null
                 : () => onChanged!(value - step),
+            tooltip: l10n.decreaseAmount,
             icon: const Icon(Icons.remove_rounded),
           ),
           Expanded(
             child: Text(
-              AppLocalizations.of(context).rewardAmount(value),
+              l10n.rewardAmount(value),
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 fontFeatures: AppFonts.tabularFigures,
@@ -409,6 +412,7 @@ class StepperValue extends StatelessWidget {
             onPressed: onChanged == null
                 ? null
                 : () => onChanged!(value + step),
+            tooltip: l10n.increaseAmount,
             icon: const Icon(Icons.add_rounded),
           ),
         ],
