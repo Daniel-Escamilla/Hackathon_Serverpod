@@ -21,6 +21,7 @@ pesa un 30 %.
 |---|---|
 | Entrada | Registro e inicio de sesión con email (ya está montado) |
 | Grupo | Crear grupo **piso o pareja**, unirse con código, ver miembros y el código |
+| Proteger el grupo | El admin **expulsa** a un miembro y **cambia el código**. Se entra sin aprobación, así que es lo único que protege un grupo cuyo código se filtra (añadido el 21 de septiembre) |
 | Ciclo | Proponer → votar → contraoferta → hacer y reclamar → validar → cobrar |
 | Multas | Propuesta denegada, validación denegada y votación expirada |
 | Plazos | Cierre automático de votaciones con `FutureCall`, **con la ventana configurable** |
@@ -37,7 +38,7 @@ pareja y con las horas que hay no cabe. `Group.type` deja hueco para `family`, p
 solo se ofrecen piso y pareja.
 
 Tampoco entran, por este orden si sobrara tiempo: **misiones periódicas**, **ranking semanal**,
-**expulsar, ceder el cargo y salir del grupo**, **unidades de stock**, **catálogo de tareas típicas**.
+**ceder el cargo y salir del grupo**, **unidades de stock**, **catálogo de tareas típicas**.
 
 Fuera del todo: ruleta, registro con Google, invitación por QR, notificaciones push, **iOS** y dibujar
 la casa. iOS se descarta a propósito: la revisión de TestFlight no cabe en el calendario.

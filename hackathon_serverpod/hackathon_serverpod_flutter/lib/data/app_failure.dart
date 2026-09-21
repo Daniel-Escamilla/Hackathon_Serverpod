@@ -1,3 +1,5 @@
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+
 /// What went wrong, in terms the interface can act on.
 ///
 /// Repositories translate whatever the server threw into one of these, so no
@@ -12,6 +14,15 @@ enum AppFailure {
 
   /// The caller belongs to no group, so the call was refused.
   noGroup,
+
+  /// Only the admin may do that.
+  notAdmin,
+
+  /// That member is not in the group, or has already left it.
+  memberNotFound,
+
+  /// The admin tried to expel themselves.
+  cannotExpelSelf,
 
   /// Anything we cannot be specific about.
   unknown,
@@ -28,21 +39,22 @@ class AppException implements Exception {
 
 /// Maps a server error onto an [AppFailure].
 ///
-/// The endpoints still signal these cases with `StateError`, which is not
-/// serialisable, so all the client gets back is the message text. Matching on
-/// it is brittle, and deliberately confined to this one function: once the
-/// server declares real exceptions in its `.spy.yaml`, this becomes a `switch`
-/// on their types and nothing else in the app changes.
-AppException mapServerError(Object error) {
-  final text = error.toString();
-  if (text.contains('No group found for that invite code')) {
-    return const AppException(AppFailure.inviteCodeNotFound);
-  }
-  if (text.contains('already belong to a group')) {
-    return const AppException(AppFailure.alreadyInGroup);
-  }
-  if (text.contains('No active group membership')) {
-    return const AppException(AppFailure.noGroup);
-  }
-  return const AppException(AppFailure.unknown);
-}
+/// Only serialisable exceptions carry a reason across the wire: anything else
+/// arrives as a generic failure and becomes [AppFailure.unknown]. The group
+/// endpoints declare `GroupException`; the task and shop endpoints still throw
+/// plain errors, so their refusals read as the generic message until they get
+/// exceptions of their own.
+///
+/// The inner switch has no wildcard on purpose: a reason added on the server
+/// fails the build here until the app decides what it means.
+AppException mapServerError(Object error) => switch (error) {
+  GroupException(:final reason) => AppException(switch (reason) {
+    GroupErrorReason.inviteCodeNotFound => AppFailure.inviteCodeNotFound,
+    GroupErrorReason.alreadyInGroup => AppFailure.alreadyInGroup,
+    GroupErrorReason.noMembership => AppFailure.noGroup,
+    GroupErrorReason.notAdmin => AppFailure.notAdmin,
+    GroupErrorReason.memberNotFound => AppFailure.memberNotFound,
+    GroupErrorReason.cannotExpelSelf => AppFailure.cannotExpelSelf,
+  }),
+  _ => const AppException(AppFailure.unknown),
+};

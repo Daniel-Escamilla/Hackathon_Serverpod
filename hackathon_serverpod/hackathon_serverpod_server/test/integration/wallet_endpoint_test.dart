@@ -148,6 +148,84 @@ void main() {
           expect(history.last.reason, CoinTransactionReason.earned);
         },
       );
+
+      test(
+        'then each movement carries the title of the task or reward behind it',
+        () async {
+          final task = await Task.db.insertRow(
+            session,
+            Task(
+              groupId: householdGroup.id!,
+              title: 'Limpiar el baño',
+              description: '',
+              reward: 20,
+              proposedById: bob.id!,
+            ),
+          );
+          final reward = await RewardItem.db.insertRow(
+            session,
+            RewardItem(
+              groupId: householdGroup.id!,
+              title: 'Elijo yo la serie esta noche',
+              description: '',
+              price: 20,
+              status: RewardItemStatus.active,
+              createdById: bob.id!,
+            ),
+          );
+          final purchase = await Purchase.db.insertRow(
+            session,
+            Purchase(
+              groupId: householdGroup.id!,
+              itemId: reward.id!,
+              buyerId: alice.id!,
+              providerId: bob.id!,
+            ),
+          );
+
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: 20,
+            reason: CoinTransactionReason.earned,
+            taskId: task.id,
+          );
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: -20,
+            reason: CoinTransactionReason.spent,
+            purchaseId: purchase.id,
+          );
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: -3,
+            reason: CoinTransactionReason.fined,
+          );
+
+          final history = await endpoints.wallet.getHistory(
+            sessionBuilder.copyWith(
+              authentication: AuthenticationOverride.authenticationInfo(
+                aliceAuthUserId,
+                {},
+              ),
+            ),
+            limit: 50,
+            offset: 0,
+          );
+
+          expect(history.map((m) => m.title), [
+            // Most recent first. A fine that points at nothing has no title.
+            null,
+            'Elijo yo la serie esta noche',
+            'Limpiar el baño',
+          ]);
+        },
+      );
     });
 
     group('when computing the weekly ranking', () {

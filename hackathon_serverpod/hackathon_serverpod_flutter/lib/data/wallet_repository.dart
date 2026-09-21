@@ -19,12 +19,9 @@ class WalletRepository {
     }
   }
 
-  /// The caller's coin movements, most recent first.
-  ///
-  /// A movement carries its reason and the id of the task or purchase behind
-  /// it, but not their titles, so the list can say what kind of movement it
-  /// was and not which task it was for.
-  Future<List<CoinTransaction>> history({
+  /// The caller's coin movements, most recent first, each with the title of
+  /// the task or reward behind it.
+  Future<List<CoinMovement>> history({
     int limit = 50,
     int offset = 0,
   }) async {
@@ -49,6 +46,6 @@ final walletBalanceProvider = FutureProvider<int>(
 
 /// The movement history. Invalidated alongside the balance, since anything
 /// that changes one changes the other.
-final walletHistoryProvider = FutureProvider<List<CoinTransaction>>(
+final walletHistoryProvider = FutureProvider<List<CoinMovement>>(
   (ref) => ref.watch(walletRepositoryProvider).history(),
 );

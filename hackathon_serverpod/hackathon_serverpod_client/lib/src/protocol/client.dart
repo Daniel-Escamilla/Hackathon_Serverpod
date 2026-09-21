@@ -25,8 +25,8 @@ import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
     as _ibcsn808;
 import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
     as _i7vt05yn;
-import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_transaction.dart'
-    as _izus2l2b;
+import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_movement.dart'
+    as _ibr29qpn;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
     as _ixil0pu8;
 import 'package:http/http.dart' as _i85jenna;
@@ -318,6 +318,54 @@ class EndpointGroup extends _isc.EndpointRef {
       'displayName': displayName,
     },
   );
+
+  /// The signed-in member's group: its name, profile and invite code.
+  ///
+  /// `joinGroup` returns the membership, not the group, so without this a
+  /// member who joined could never read the code to pass on to anyone else.
+  _ida.Future<_iubjh9pq.Group> myGroup() =>
+      caller.callServerEndpoint<_iubjh9pq.Group>(
+        'group',
+        'myGroup',
+        {},
+      );
+
+  /// Everyone currently in the caller's group, oldest first — the order the
+  /// admin role passes down in when an admin leaves (PRODUCT.md §7).
+  _ida.Future<List<_ir4oz66a.GroupMember>> listMembers() =>
+      caller.callServerEndpoint<List<_ir4oz66a.GroupMember>>(
+        'group',
+        'listMembers',
+        {},
+      );
+
+  /// The admin removes [memberId] from the group (PRODUCT.md §7).
+  ///
+  /// Entry is direct with the code, so this is what protects a group whose
+  /// code has leaked: whoever got in without being wanted can be put out.
+  ///
+  /// The row is kept with `leftAt` set, so the tasks they did and the coins
+  /// they moved stay in everyone's history. Their balance is lost, as §4.6
+  /// says, without touching the ledger: no call ever reaches a membership that
+  /// has left, and joining again later starts a new one at zero.
+  _ida.Future<void> expelMember(int memberId) =>
+      caller.callServerEndpoint<void>(
+        'group',
+        'expelMember',
+        {'memberId': memberId},
+      );
+
+  /// The admin replaces the invite code. The old one stops working at once;
+  /// nobody already in the group is affected.
+  ///
+  /// The other half of what expelling covers: this stops a leaked code from
+  /// letting anyone else in, expelling removes whoever already used it.
+  _ida.Future<_iubjh9pq.Group> regenerateInviteCode() =>
+      caller.callServerEndpoint<_iubjh9pq.Group>(
+        'group',
+        'regenerateInviteCode',
+        {},
+      );
 }
 
 /// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).
@@ -526,11 +574,15 @@ class EndpointWallet extends _isc.EndpointRef {
     {},
   );
 
-  /// Movement history (earned/fined/spent/refunded), most recent first.
-  _ida.Future<List<_izus2l2b.CoinTransaction>> getHistory({
+  /// Movement history (earned/fined/spent/refunded), most recent first, each
+  /// with the title of the task or reward behind it.
+  ///
+  /// Three queries whatever the page size — the transactions, then every task
+  /// and every reward they point at in one go each — rather than one per row.
+  _ida.Future<List<_ibr29qpn.CoinMovement>> getHistory({
     required int limit,
     required int offset,
-  }) => caller.callServerEndpoint<List<_izus2l2b.CoinTransaction>>(
+  }) => caller.callServerEndpoint<List<_ibr29qpn.CoinMovement>>(
     'wallet',
     'getHistory',
     {

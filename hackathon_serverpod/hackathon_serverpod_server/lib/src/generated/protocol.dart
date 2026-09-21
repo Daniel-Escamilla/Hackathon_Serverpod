@@ -11,12 +11,14 @@
 // ignore_for_file: dead_code, unnecessary_type_check
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/groups/group_member.dart'
+    as _is20wtgg;
 import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
 import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
     as _i0sdpywk;
-import 'package:hackathon_serverpod_server/src/generated/wallet/coin_transaction.dart'
-    as _ixmfvg9y;
+import 'package:hackathon_serverpod_server/src/generated/wallet/coin_movement.dart'
+    as _ijihwky5;
 import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
     as _ie8onyv8;
 import 'package:serverpod/protocol.dart' as _isp;
@@ -27,6 +29,8 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import 'greetings/greeting.dart' as _izw8z7ou;
 import 'groups/group.dart' as _i9ztykbt;
+import 'groups/group_error_reason.dart' as _i7quka6t;
+import 'groups/group_exception.dart' as _i3la3wci;
 import 'groups/group_member.dart' as _iio6btzp;
 import 'groups/group_member_role.dart' as _ixnaxhon;
 import 'groups/group_member_status.dart' as _ivrm4l0w;
@@ -42,11 +46,14 @@ import 'tasks/task_recurrence.dart' as _ieirl7mq;
 import 'tasks/task_status.dart' as _i65tv1la;
 import 'tasks/task_vote.dart' as _ikgry9hi;
 import 'tasks/task_vote_phase.dart' as _i40o7ktz;
+import 'wallet/coin_movement.dart' as _ii2179p0;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
 export 'greetings/greeting.dart';
 export 'groups/group.dart';
+export 'groups/group_error_reason.dart';
+export 'groups/group_exception.dart';
 export 'groups/group_member.dart';
 export 'groups/group_member_role.dart';
 export 'groups/group_member_status.dart';
@@ -62,6 +69,7 @@ export 'tasks/task_recurrence.dart';
 export 'tasks/task_status.dart';
 export 'tasks/task_vote.dart';
 export 'tasks/task_vote_phase.dart';
+export 'wallet/coin_movement.dart';
 export 'wallet/coin_transaction.dart';
 export 'wallet/coin_transaction_reason.dart';
 export 'wallet/ranking_entry.dart';
@@ -948,6 +956,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _i9ztykbt.Group) {
       return _i9ztykbt.Group.fromJson(data) as T;
     }
+    if (t == _i7quka6t.GroupErrorReason) {
+      return _i7quka6t.GroupErrorReason.fromJson(data) as T;
+    }
+    if (t == _i3la3wci.GroupException) {
+      return _i3la3wci.GroupException.fromJson(data) as T;
+    }
     if (t == _iio6btzp.GroupMember) {
       return _iio6btzp.GroupMember.fromJson(data) as T;
     }
@@ -993,6 +1007,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _i40o7ktz.TaskVotePhase) {
       return _i40o7ktz.TaskVotePhase.fromJson(data) as T;
     }
+    if (t == _ii2179p0.CoinMovement) {
+      return _ii2179p0.CoinMovement.fromJson(data) as T;
+    }
     if (t == _iyltnat0.CoinTransaction) {
       return _iyltnat0.CoinTransaction.fromJson(data) as T;
     }
@@ -1007,6 +1024,14 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_i9ztykbt.Group?>()) {
       return (data != null ? _i9ztykbt.Group.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_i7quka6t.GroupErrorReason?>()) {
+      return (data != null ? _i7quka6t.GroupErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_i3la3wci.GroupException?>()) {
+      return (data != null ? _i3la3wci.GroupException.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_iio6btzp.GroupMember?>()) {
       return (data != null ? _iio6btzp.GroupMember.fromJson(data) : null) as T;
@@ -1059,6 +1084,9 @@ class Protocol extends _is.DatabaseSerializationManager {
       return (data != null ? _i40o7ktz.TaskVotePhase.fromJson(data) : null)
           as T;
     }
+    if (t == _is.getType<_ii2179p0.CoinMovement?>()) {
+      return (data != null ? _ii2179p0.CoinMovement.fromJson(data) : null) as T;
+    }
     if (t == _is.getType<_iyltnat0.CoinTransaction?>()) {
       return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
           as T;
@@ -1072,6 +1100,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _is.getType<_izo0hjq0.RankingEntry?>()) {
       return (data != null ? _izo0hjq0.RankingEntry.fromJson(data) : null) as T;
     }
+    if (t == List<_is20wtgg.GroupMember>) {
+      return (data as List)
+              .map((e) => deserialize<_is20wtgg.GroupMember>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_iub5jn2z.RewardItem>) {
       return (data as List)
               .map((e) => deserialize<_iub5jn2z.RewardItem>(e))
@@ -1082,9 +1116,9 @@ class Protocol extends _is.DatabaseSerializationManager {
       return (data as List).map((e) => deserialize<_i0sdpywk.Task>(e)).toList()
           as T;
     }
-    if (t == List<_ixmfvg9y.CoinTransaction>) {
+    if (t == List<_ijihwky5.CoinMovement>) {
       return (data as List)
-              .map((e) => deserialize<_ixmfvg9y.CoinTransaction>(e))
+              .map((e) => deserialize<_ijihwky5.CoinMovement>(e))
               .toList()
           as T;
     }
@@ -1110,6 +1144,8 @@ class Protocol extends _is.DatabaseSerializationManager {
     return switch (type) {
       _izw8z7ou.Greeting => 'Greeting',
       _i9ztykbt.Group => 'Group',
+      _i7quka6t.GroupErrorReason => 'GroupErrorReason',
+      _i3la3wci.GroupException => 'GroupException',
       _iio6btzp.GroupMember => 'GroupMember',
       _ixnaxhon.GroupMemberRole => 'GroupMemberRole',
       _ivrm4l0w.GroupMemberStatus => 'GroupMemberStatus',
@@ -1125,6 +1161,7 @@ class Protocol extends _is.DatabaseSerializationManager {
       _i65tv1la.TaskStatus => 'TaskStatus',
       _ikgry9hi.TaskVote => 'TaskVote',
       _i40o7ktz.TaskVotePhase => 'TaskVotePhase',
+      _ii2179p0.CoinMovement => 'CoinMovement',
       _iyltnat0.CoinTransaction => 'CoinTransaction',
       _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
       _izo0hjq0.RankingEntry => 'RankingEntry',
@@ -1149,6 +1186,10 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'Greeting';
       case _i9ztykbt.Group():
         return 'Group';
+      case _i7quka6t.GroupErrorReason():
+        return 'GroupErrorReason';
+      case _i3la3wci.GroupException():
+        return 'GroupException';
       case _iio6btzp.GroupMember():
         return 'GroupMember';
       case _ixnaxhon.GroupMemberRole():
@@ -1179,6 +1220,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'TaskVote';
       case _i40o7ktz.TaskVotePhase():
         return 'TaskVotePhase';
+      case _ii2179p0.CoinMovement():
+        return 'CoinMovement';
       case _iyltnat0.CoinTransaction():
         return 'CoinTransaction';
       case _inbrsz7i.CoinTransactionReason():
@@ -1216,6 +1259,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'Group') {
       return deserialize<_i9ztykbt.Group>(data['data']);
+    }
+    if (dataClassName == 'GroupErrorReason') {
+      return deserialize<_i7quka6t.GroupErrorReason>(data['data']);
+    }
+    if (dataClassName == 'GroupException') {
+      return deserialize<_i3la3wci.GroupException>(data['data']);
     }
     if (dataClassName == 'GroupMember') {
       return deserialize<_iio6btzp.GroupMember>(data['data']);
@@ -1261,6 +1310,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'TaskVotePhase') {
       return deserialize<_i40o7ktz.TaskVotePhase>(data['data']);
+    }
+    if (dataClassName == 'CoinMovement') {
+      return deserialize<_ii2179p0.CoinMovement>(data['data']);
     }
     if (dataClassName == 'CoinTransaction') {
       return deserialize<_iyltnat0.CoinTransaction>(data['data']);

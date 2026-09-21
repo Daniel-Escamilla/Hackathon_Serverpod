@@ -55,3 +55,38 @@ moved there when the project is not the repository root.
 
 **Before filing:** confirm the two files come from the template by running `serverpod create` on a
 clean machine. We only know for certain that they arrived with our scaffold commit.
+
+---
+
+## 2. `inSet` on a nullable `id` column fails at runtime with an inline set literal
+
+**Date:** 2026-09-21 · **Area:** ORM, `serverpod_database` column expressions
+
+**What happened.** Every generated table has `id` as a nullable column. Passing a set literal
+straight into `inSet` compiles, and then fails at runtime:
+
+```dart
+// Compiles. Throws when the query runs.
+final items = await RewardItem.db.find(
+  session,
+  where: (t) => t.id.inSet({for (final p in purchases) p.itemId}),
+);
+```
+
+```
+type '_Set<int?>' is not a subtype of type 'Set<int>' of 'values'
+package:serverpod_database/src/concepts/columns.dart 681:27  _NullableColumnDefaultOperations.inSet
+```
+
+`p.itemId` is a non-nullable `int`, but the literal takes its element type from the context:
+`inSet`'s parameter on a nullable column, so Dart builds a `Set<int?>`. Serverpod then needs a
+`Set<int>` further in. The same set, built first as a variable, works — which makes it look
+arbitrary: of three `inSet` calls in the same function, only the inline one broke.
+
+**Workaround.** Type the set explicitly before passing it: `final ids = <int>{...};`.
+
+**Suggested fix.** Either accept `Set<T?>` all the way down on nullable columns and drop the
+nulls, or type `inSet`'s parameter so the inline literal is inferred as `Set<int>`. A compile error
+would also beat a runtime one here — this only surfaced because a test happened to reach it.
+
+**Environment.** Serverpod 4.0.0, `serverpod_database` 4.0.0, Dart 3.12.2.

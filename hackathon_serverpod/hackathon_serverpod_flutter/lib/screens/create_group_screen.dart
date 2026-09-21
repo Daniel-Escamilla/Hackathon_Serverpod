@@ -139,9 +139,9 @@ class _TypeChoice extends StatelessWidget {
   }
 }
 
-/// The code the others need to get in. Created groups are the only place it is
-/// handed out today: `joinGroup` returns the membership, not the group, so a
-/// member who joined cannot read it back yet.
+/// The code the others need to get in, shown once right after creating the
+/// group. Anyone in the group can read it again later through
+/// `GroupRepository.myGroup`.
 class _InviteCodeScreen extends StatelessWidget {
   const _InviteCodeScreen({required this.group});
 

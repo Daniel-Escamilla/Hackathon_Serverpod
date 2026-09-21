@@ -14,6 +14,10 @@ greeting:
 group:
   - createGroup:
   - joinGroup:
+  - myGroup:
+  - listMembers:
+  - expelMember:
+  - regenerateInviteCode:
 shop:
   - listRewards:
   - proposeReward:

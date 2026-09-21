@@ -8,6 +8,9 @@ extension AppFailureMessage on AppFailure {
   String message(AppLocalizations l10n) => switch (this) {
     AppFailure.inviteCodeNotFound => l10n.errorInviteCode,
     AppFailure.alreadyInGroup => l10n.errorAlreadyInGroup,
+    AppFailure.notAdmin => l10n.errorNotAdmin,
+    AppFailure.memberNotFound => l10n.errorMemberNotFound,
+    AppFailure.cannotExpelSelf => l10n.errorCannotExpelSelf,
     AppFailure.noGroup || AppFailure.unknown => l10n.errorGeneric,
   };
 }

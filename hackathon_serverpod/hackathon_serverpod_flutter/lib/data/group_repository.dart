@@ -28,6 +28,42 @@ class GroupRepository {
       throw mapServerError(error);
     }
   }
+
+  /// The caller's group, invite code included.
+  Future<Group> myGroup() async {
+    try {
+      return await _client.group.myGroup();
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
+
+  /// Everyone in the caller's group, oldest first.
+  Future<List<GroupMember>> members() async {
+    try {
+      return await _client.group.listMembers();
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
+
+  /// Admin only: removes someone from the group. Their history stays.
+  Future<void> expel(int memberId) async {
+    try {
+      await _client.group.expelMember(memberId);
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
+
+  /// Admin only: replaces the invite code. The old one stops working at once.
+  Future<Group> regenerateInviteCode() async {
+    try {
+      return await _client.group.regenerateInviteCode();
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
 }
 
 final clientProvider = Provider<Client>((ref) => client);
