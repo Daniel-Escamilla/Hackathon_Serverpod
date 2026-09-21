@@ -125,7 +125,7 @@ class _HouseHero extends StatelessWidget {
                 ],
               ),
               child: const Icon(
-                Icons.handshake_rounded,
+                Icons.groups_rounded,
                 color: AppColors.violet,
                 size: 64,
               ),
