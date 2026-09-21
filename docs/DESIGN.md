@@ -23,7 +23,7 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 4. **Avisos: `showMessage`.** Lo que no se puede deshacer pasa antes por `confirmAction`, y su botón
    dice lo que hace ("Expulsar", no "Sí").
 5. **Ningún texto escrito a mano**: todo va al ARB (`lib/l10n/app_es.arb`).
-6. **Colores y tipos, del tema** (`lib/theme.dart`), nunca un `Color(0x…)` suelto en una pantalla.
+6. **Colores y tipos, del tema** (`lib/app_theme.dart`), nunca un `Color(0x…)` suelto en una pantalla.
 
 ## Componentes (`lib/ui/`)
 
@@ -32,7 +32,6 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 | `AppButton` | Todos los botones. Tipos abajo |
 | `Pressable` | Cualquier cosa tocable que no sea un botón: mismo rebote, vibración y sonido |
 | `CoinAmount` | Una cantidad de monedas con su icono y cifras tabulares |
-| `MovementRow` | Una línea del historial de la cartera |
 | `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
 | `confirmAction` | Pregunta antes de algo destructivo |
 
@@ -53,7 +52,7 @@ Dos variantes que se combinan con cualquiera:
 
 Y `loading: true` cambia el texto por una ruedita y lo bloquea mientras hay una petición en marcha.
 
-## Tokens (`lib/theme.dart`)
+## Tokens (`lib/app_theme.dart`)
 
 | Token | Hex | Uso |
 |---|---|---|
@@ -90,7 +89,7 @@ significar ninguna.
 | `fine` | "Womp" que baja | Salen monedas por una multa |
 | `error` | "Bonk" suave | Algo ha fallado (automático con `showMessage(isError: true)`) |
 
-Para hacer sonar uno a mano: `ref.read(uiSoundsProvider).play(AppSound.success)`.
+Para hacer sonar uno a mano: `uiSounds.play(AppSound.success)`.
 
 - **Menos es más.** Las acciones `quiet` y `danger` no suenan, y copiar o cancelar tampoco. Si todo
   suena, nada destaca.
@@ -105,10 +104,16 @@ Para hacer sonar uno a mano: `ref.read(uiSoundsProvider).play(AppSound.success)`
 Una vibración ligera (`lightImpact`) al pulsar un botón principal y un toque más fino
 (`selectionClick`) en el resto. En la web no hace nada, y no hace falta tratarlo.
 
+**`coin` y `fine` suenan al abrir la cartera**, no en el momento del voto: quien paga o multa a
+alguien no es esa persona, y no hay stream, así que la cartera es el primer momento en que el
+afectado ve el movimiento. `WalletController` compara el historial contra la última carga y suena
+una vez si aparece algo `earned` o `fined` desde entonces; la primera carga nunca suena, porque todo
+parecería "nuevo".
+
 ## Pendiente
 
-- **`coin` y `fine` todavía no suenan en ningún sitio**: se enganchan cuando se cobra una tarea (#61)
-  y cuando llegan las multas (#63). Ahí es donde el sonido más se nota en el vídeo.
 - El botón de silenciar en ajustes.
-- `prototype_app.dart` lleva su propia copia del tema. Cuando deje de cambiar, se apunta a
-  `lib/theme.dart` y se borra la copia.
+- **`appCoral` no pasa contraste WCAG sobre `appCream`** (~2.36:1, se pide 3:1 hasta para texto
+  grande): lo usan el botón `danger` ("Rechazar", "Expulsar") y el aviso de saldo negativo.
+  `appMuted` también está justo al límite (~4.42:1 de 4.5:1). Detectado el 22 de septiembre de
+  2026; queda para más adelante, lo deciden Mayte y Juan.

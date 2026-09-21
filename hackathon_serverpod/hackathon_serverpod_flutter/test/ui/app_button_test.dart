@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_flutter/ui/app_button.dart';
 import 'package:hackathon_serverpod_flutter/ui/sounds.dart';
@@ -20,15 +19,17 @@ void main() {
 
   setUp(() {
     sounds = _RecordingSounds();
+    uiSounds = sounds;
     presses = 0;
   });
 
+  tearDown(() {
+    uiSounds = UiSounds.silent();
+  });
+
   Future<void> pump(WidgetTester tester, AppButton button) => tester.pumpWidget(
-    ProviderScope(
-      overrides: [uiSoundsProvider.overrideWithValue(sounds)],
-      child: MaterialApp(
-        home: Scaffold(body: Center(child: button)),
-      ),
+    MaterialApp(
+      home: Scaffold(body: Center(child: button)),
     ),
   );
 

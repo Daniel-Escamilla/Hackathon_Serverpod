@@ -1,6 +1,5 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// The app's five UI sounds. Each one means one thing, everywhere — see
 /// docs/DESIGN.md for when each is used. The files live in assets/sounds/ and
@@ -64,5 +63,7 @@ class UiSounds {
   }
 }
 
-/// The app-wide player. Silent unless `main` overrides it with a loaded one.
-final uiSoundsProvider = Provider<UiSounds>((ref) => UiSounds.silent());
+/// The app-wide player, a deliberate global like `client` in `client.dart`.
+/// Silent until `main` replaces it with a loaded one; tests can swap it for
+/// a recording fake.
+UiSounds uiSounds = UiSounds.silent();

@@ -1,5 +1,5 @@
 import '../data/app_failure.dart';
-import '../l10n/app_localizations.dart';
+import '../l10n/generated/app_localizations.dart';
 
 /// Turns a failure into the sentence a person reads. Kept out of the
 /// repositories so the data layer never holds display text, and out of the

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../l10n/app_localizations.dart';
-import '../theme.dart';
+import '../app_theme.dart';
+import '../l10n/generated/app_localizations.dart';
 import 'app_button.dart';
 import 'sounds.dart';
 
@@ -17,17 +16,12 @@ void showMessage(
   AppSound? sound,
 }) {
   final play = sound ?? (isError ? AppSound.error : null);
-  if (play != null) {
-    ProviderScope.containerOf(
-      context,
-      listen: false,
-    ).read(uiSoundsProvider).play(play);
-  }
+  if (play != null) uiSounds.play(play);
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(message, style: const TextStyle(color: Colors.white)),
-      backgroundColor: isError ? appCoral : appInk,
+      backgroundColor: isError ? AppColors.coral : AppColors.ink,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 5),
     ),

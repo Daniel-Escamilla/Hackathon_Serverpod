@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'sounds.dart';
 
@@ -54,7 +53,7 @@ class _PressScaleState extends State<PressScale> {
 
 /// Anything tappable that is not a button — a task card, a reward tile — with
 /// the same press, haptic and sound a button has.
-class Pressable extends ConsumerWidget {
+class Pressable extends StatelessWidget {
   const Pressable({
     super.key,
     required this.child,
@@ -73,7 +72,7 @@ class Pressable extends ConsumerWidget {
   final BorderRadius borderRadius;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final tap = onTap;
 
     return PressScale(
@@ -86,7 +85,7 @@ class Pressable extends ConsumerWidget {
               ? null
               : () {
                   HapticFeedback.selectionClick();
-                  if (sound case final s?) ref.read(uiSoundsProvider).play(s);
+                  if (sound case final s?) uiSounds.play(s);
                   tap();
                 },
           child: child,

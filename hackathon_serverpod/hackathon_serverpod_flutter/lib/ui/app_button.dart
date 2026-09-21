@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../theme.dart';
+import '../app_theme.dart';
 import 'pressable.dart';
 import 'sounds.dart';
 
@@ -29,9 +28,9 @@ enum AppButtonKind {
 /// Never build a `FilledButton`, `OutlinedButton` or `TextButton` in a screen;
 /// use this.
 ///
-/// The look still comes from the theme (`lib/theme.dart`), so changing a
+/// The look still comes from the theme (`lib/app_theme.dart`), so changing a
 /// button's shape or colour there changes it everywhere.
-class AppButton extends ConsumerWidget {
+class AppButton extends StatelessWidget {
   const AppButton({
     super.key,
     required this.label,
@@ -79,7 +78,7 @@ class AppButton extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final action = onPressed;
     final enabled = action != null && !loading;
 
@@ -87,7 +86,7 @@ class AppButton extends ConsumerWidget {
       kind == AppButtonKind.primary
           ? HapticFeedback.lightImpact()
           : HapticFeedback.selectionClick();
-      if (_sound case final s?) ref.read(uiSoundsProvider).play(s);
+      if (_sound case final s?) uiSounds.play(s);
       action!();
     }
 
@@ -100,7 +99,7 @@ class AppButton extends ConsumerWidget {
               strokeWidth: 2.5,
               color: kind == AppButtonKind.primary && !onBrand
                   ? Colors.white
-                  : appViolet,
+                  : AppColors.violet,
             ),
           )
         : Text(label);
@@ -113,7 +112,7 @@ class AppButton extends ConsumerWidget {
           style: FilledButton.styleFrom(
             minimumSize: minimumSize,
             backgroundColor: onBrand ? Colors.white : null,
-            foregroundColor: onBrand ? appViolet : null,
+            foregroundColor: onBrand ? AppColors.violet : null,
           ),
           child: child,
         ),
@@ -140,7 +139,7 @@ class AppButton extends ConsumerWidget {
           onPressed: onTap,
           style: TextButton.styleFrom(
             minimumSize: minimumSize,
-            foregroundColor: appCoral,
+            foregroundColor: AppColors.coral,
           ),
           child: child,
         ),

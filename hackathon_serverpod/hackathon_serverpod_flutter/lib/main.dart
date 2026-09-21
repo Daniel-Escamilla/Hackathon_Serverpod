@@ -1,43 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'app_theme.dart';
 import 'client.dart';
-import 'l10n/app_localizations.dart';
-import 'screens/home_screen.dart';
-import 'screens/sign_in_screen.dart';
-import 'theme.dart';
+import 'prototype_app.dart';
 import 'ui/sounds.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeClient();
   // Loaded before the first frame so the very first tap already has its pop.
-  // Never throws: without audio the app just stays quiet.
-  final sounds = await UiSounds.load();
-  runApp(
-    ProviderScope(
-      overrides: [uiSoundsProvider.overrideWithValue(sounds)],
-      child: const HackathonApp(),
+  // Never throws: without audio the app just stays quiet (see UiSounds.load).
+  uiSounds = await UiSounds.load();
+  // Flutter's default is its red error screen with a raw stack trace, shown
+  // to whoever is using the app — including a judge. This builder has no
+  // BuildContext to reach AppLocalizations, so the one string here is
+  // hardcoded rather than pulled from the ARB, same as UiSounds.load's catch.
+  ErrorWidget.builder = (details) => Directionality(
+    textDirection: TextDirection.ltr,
+    child: Container(
+      color: AppColors.cream,
+      alignment: Alignment.center,
+      padding: const EdgeInsets.all(24),
+      child: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.error_outline_rounded, size: 48, color: AppColors.coral),
+          SizedBox(height: 12),
+          Text('Algo salió mal.', textAlign: TextAlign.center),
+        ],
+      ),
     ),
   );
-}
-
-/// The real app: it signs in against Serverpod and reads its data from the
-/// server. `prototype_app.dart` stays in the repository as the design
-/// reference it was built to be — it holds no live data and is not wired up
-/// here on purpose.
-class HackathonApp extends StatelessWidget {
-  const HackathonApp({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      onGenerateTitle: (context) => AppLocalizations.of(context).appTitle,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: buildAppTheme(),
-      home: const SignInScreen(child: HomeScreen()),
-    );
-  }
+  runApp(const PrototypeApp());
 }
