@@ -9,6 +9,7 @@ import '../ui/coin_amount.dart';
 import '../ui/failure_messages.dart';
 import 'create_group_screen.dart';
 import 'join_group_screen.dart';
+import 'wallet_screen.dart';
 
 /// What a signed-in member sees. Everything here comes from the server: the
 /// balance is `WalletEndpoint.getBalance`, not a number typed into the widget.
@@ -24,7 +25,29 @@ class HomeScreen extends ConsumerWidget {
     final balance = ref.watch(walletBalanceProvider);
 
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.appTitle)),
+      appBar: AppBar(
+        title: Text(l10n.appTitle),
+        actions: [
+          // The balance rides the app bar wherever you are (PRODUCT.md §11),
+          // and opens the wallet. It only appears once there is a figure:
+          // before that there is nothing true to show.
+          if (balance.value case final coins?)
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: IconButton(
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const WalletScreen()),
+                ),
+                tooltip: l10n.walletTitle,
+                icon: CoinAmount(
+                  coins: coins,
+                  size: 20,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+              ),
+            ),
+        ],
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -44,7 +67,10 @@ class HomeScreen extends ConsumerWidget {
   Widget _onError(BuildContext context, WidgetRef ref, Object error) {
     final noGroup =
         error is AppException && error.failure == AppFailure.noGroup;
-    void reload() => ref.invalidate(walletBalanceProvider);
+    void reload() {
+      ref.invalidate(walletBalanceProvider);
+      ref.invalidate(walletHistoryProvider);
+    }
 
     return noGroup
         ? _NoGroupYet(onJoined: reload)

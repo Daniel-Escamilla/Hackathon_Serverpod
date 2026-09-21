@@ -132,5 +132,46 @@
   "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
   "@errorGeneric": {
     "description": "Fallback for a server error we cannot be specific about"
+  },
+
+  "walletTitle": "Cartera",
+  "@walletTitle": {
+    "description": "Title of the wallet screen"
+  },
+  "walletMovements": "Últimos movimientos",
+  "@walletMovements": {
+    "description": "Heading above the list of coin movements"
+  },
+  "walletEmpty": "Todavía no hay movimientos. Haz una tarea y cobra.",
+  "@walletEmpty": {
+    "description": "Shown when the member has no coin movements yet"
+  },
+  "reasonEarned": "Tarea cobrada",
+  "@reasonEarned": {
+    "description": "Movement reason: coins earned by completing a task"
+  },
+  "reasonFined": "Multa",
+  "@reasonFined": {
+    "description": "Movement reason: coins taken as a penalty"
+  },
+  "reasonSpent": "Compra en la tienda",
+  "@reasonSpent": {
+    "description": "Movement reason: coins spent on a reward"
+  },
+  "reasonRefunded": "Compra devuelta",
+  "@reasonRefunded": {
+    "description": "Movement reason: coins returned after a refused purchase"
+  },
+  "movementAt": "{date}, {time}",
+  "@movementAt": {
+    "description": "When a movement happened, as date and time",
+    "placeholders": {
+      "date": {
+        "type": "String"
+      },
+      "time": {
+        "type": "String"
+      }
+    }
   }
 }
