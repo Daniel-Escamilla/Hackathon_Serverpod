@@ -113,3 +113,7 @@ parecería "nuevo".
 ## Pendiente
 
 - El botón de silenciar en ajustes.
+- **`appCoral` no pasa contraste WCAG sobre `appCream`** (~2.36:1, se pide 3:1 hasta para texto
+  grande): lo usan el botón `danger` ("Rechazar", "Expulsar") y el aviso de saldo negativo.
+  `appMuted` también está justo al límite (~4.42:1 de 4.5:1). Detectado el 22 de septiembre de
+  2026; queda para más adelante, lo deciden Mayte y Juan.
