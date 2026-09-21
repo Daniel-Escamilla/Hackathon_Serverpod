@@ -128,6 +128,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reasonRefunded => 'Compra devuelta';
 
   @override
+  String movementDetail(String reason, String when) {
+    return '$reason · $when';
+  }
+
+  @override
   String movementAt(String date, String time) {
     return '$date, $time';
   }

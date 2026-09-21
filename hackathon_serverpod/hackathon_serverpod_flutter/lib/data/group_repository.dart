@@ -28,6 +28,24 @@ class GroupRepository {
       throw mapServerError(error);
     }
   }
+
+  /// The caller's group, invite code included.
+  Future<Group> myGroup() async {
+    try {
+      return await _client.group.myGroup();
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
+
+  /// Everyone in the caller's group, oldest first.
+  Future<List<GroupMember>> members() async {
+    try {
+      return await _client.group.listMembers();
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
 }
 
 final clientProvider = Provider<Client>((ref) => client);

@@ -162,6 +162,18 @@
   "@reasonRefunded": {
     "description": "Movement reason: coins returned after a refused purchase"
   },
+  "movementDetail": "{reason} · {when}",
+  "@movementDetail": {
+    "description": "Second line of a movement that has a title: what kind of movement, then when",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      },
+      "when": {
+        "type": "String"
+      }
+    }
+  },
   "movementAt": "{date}, {time}",
   "@movementAt": {
     "description": "When a movement happened, as date and time",

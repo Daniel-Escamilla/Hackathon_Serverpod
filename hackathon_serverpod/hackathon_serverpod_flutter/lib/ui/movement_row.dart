@@ -4,16 +4,16 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
 
-/// One line of the coin history: what kind of movement it was, when, and how
-/// much it moved.
+/// One line of the coin history: what it was for, what kind of movement, when,
+/// and how much it moved.
 ///
-/// The server sends the reason and the id of the task or purchase behind it,
-/// but not their titles, so this says "Tarea cobrada" rather than naming the
-/// task. Give it a richer row the day the endpoint returns one.
+/// The title is the task's or the reward's. A movement that points at nothing
+/// — a fine for letting a vote expire — has none, and leads with its kind
+/// instead.
 class MovementRow extends StatelessWidget {
   const MovementRow({super.key, required this.movement});
 
-  final CoinTransaction movement;
+  final CoinMovement movement;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +23,13 @@ class MovementRow extends StatelessWidget {
     final at = movement.createdAt.toLocal();
     final positive = movement.amount >= 0;
 
+    final reason = _reason(l10n);
+    final when = l10n.movementAt(
+      materialL10n.formatShortDate(at),
+      materialL10n.formatTimeOfDay(TimeOfDay.fromDateTime(at)),
+    );
+    final title = movement.title;
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
       child: Row(
@@ -31,13 +38,10 @@ class MovementRow extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(_reason(l10n), style: text.titleMedium),
+                Text(title ?? reason, style: text.titleMedium),
                 const SizedBox(height: 2),
                 Text(
-                  l10n.movementAt(
-                    materialL10n.formatShortDate(at),
-                    materialL10n.formatTimeOfDay(TimeOfDay.fromDateTime(at)),
-                  ),
+                  title == null ? when : l10n.movementDetail(reason, when),
                   style: text.bodyLarge?.copyWith(
                     fontSize: 14,
                     color: appMuted,

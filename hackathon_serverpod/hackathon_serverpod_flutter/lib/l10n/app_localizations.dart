@@ -316,6 +316,12 @@ abstract class AppLocalizations {
   /// **'Compra devuelta'**
   String get reasonRefunded;
 
+  /// Second line of a movement that has a title: what kind of movement, then when
+  ///
+  /// In es, this message translates to:
+  /// **'{reason} · {when}'**
+  String movementDetail(String reason, String when);
+
   /// When a movement happened, as date and time
   ///
   /// In es, this message translates to:
