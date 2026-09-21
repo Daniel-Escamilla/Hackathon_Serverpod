@@ -557,6 +557,21 @@ class EndpointTask extends _isc.EndpointRef {
         'markTaskDone',
         {'taskId': taskId},
       );
+
+  /// Vote on whether a claimed task was actually done. Approval pays the
+  /// claimant; denial fines them and reopens the task for someone else
+  /// (PRODUCT.md §3).
+  _ida.Future<_i7vt05yn.Task> voteTaskCompletion(
+    int taskId,
+    bool approve,
+  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    'task',
+    'voteTaskCompletion',
+    {
+      'taskId': taskId,
+      'approve': approve,
+    },
+  );
 }
 
 /// Balance, history and ranking (PRODUCT.md §10.3, §4.6).

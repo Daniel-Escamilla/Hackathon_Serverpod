@@ -750,6 +750,31 @@ class Endpoints extends _is.EndpointDispatch {
                     params['taskId'],
                   ),
         ),
+        'voteTaskCompletion': _is.MethodConnector(
+          name: 'voteTaskCompletion',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'approve': _is.ParameterDescription(
+              name: 'approve',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .voteTaskCompletion(
+                    session,
+                    params['taskId'],
+                    params['approve'],
+                  ),
+        ),
       },
     );
     connectors['wallet'] = _is.EndpointConnector(
