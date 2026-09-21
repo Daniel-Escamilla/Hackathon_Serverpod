@@ -44,6 +44,61 @@ class AppLocalizationsEs extends AppLocalizations {
   String get retry => 'Volver a intentarlo';
 
   @override
+  String get cancel => 'Cancelar';
+
+  @override
+  String get groupTitle => 'Grupo';
+
+  @override
+  String get groupInviteLabel => 'Código para entrar';
+
+  @override
+  String get groupInviteCopy => 'Copiar';
+
+  @override
+  String get groupInviteCopied => 'Código copiado. Pásalo por donde quieras.';
+
+  @override
+  String get groupInviteRegenerate => 'Cambiar el código';
+
+  @override
+  String get groupInviteRegenerateTitle => '¿Cambiar el código?';
+
+  @override
+  String get groupInviteRegenerateBody =>
+      'El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.';
+
+  @override
+  String get groupInviteRegenerated =>
+      'Código cambiado. El anterior ya no sirve.';
+
+  @override
+  String get groupMembers => 'Miembros';
+
+  @override
+  String get memberRoleAdmin => 'Admin';
+
+  @override
+  String get memberYou => 'Tú';
+
+  @override
+  String get expelAction => 'Expulsar';
+
+  @override
+  String expelTitle(String name) {
+    return '¿Expulsar a $name?';
+  }
+
+  @override
+  String get expelBody =>
+      'Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.';
+
+  @override
+  String expelDone(String name) {
+    return '$name ya no está en el grupo.';
+  }
+
+  @override
   String get createGroupAction => 'Crear un grupo';
 
   @override

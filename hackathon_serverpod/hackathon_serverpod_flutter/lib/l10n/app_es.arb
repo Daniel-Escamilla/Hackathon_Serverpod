@@ -49,6 +49,81 @@
   "@retry": {
     "description": "Button that runs the failed request again"
   },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Dismisses a confirmation without doing anything"
+  },
+
+  "groupTitle": "Grupo",
+  "@groupTitle": {
+    "description": "Title of the group screen, and of its tab"
+  },
+  "groupInviteLabel": "Código para entrar",
+  "@groupInviteLabel": {
+    "description": "Label above the invite code on the group screen"
+  },
+  "groupInviteCopy": "Copiar",
+  "@groupInviteCopy": {
+    "description": "Button that copies the invite code to the clipboard"
+  },
+  "groupInviteCopied": "Código copiado. Pásalo por donde quieras.",
+  "@groupInviteCopied": {
+    "description": "Confirmation after copying the invite code"
+  },
+  "groupInviteRegenerate": "Cambiar el código",
+  "@groupInviteRegenerate": {
+    "description": "Admin button that replaces the invite code"
+  },
+  "groupInviteRegenerateTitle": "¿Cambiar el código?",
+  "@groupInviteRegenerateTitle": {
+    "description": "Title of the confirmation before replacing the invite code"
+  },
+  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.",
+  "@groupInviteRegenerateBody": {
+    "description": "Explains what replacing the invite code does and does not affect"
+  },
+  "groupInviteRegenerated": "Código cambiado. El anterior ya no sirve.",
+  "@groupInviteRegenerated": {
+    "description": "Confirmation after the invite code is replaced"
+  },
+  "groupMembers": "Miembros",
+  "@groupMembers": {
+    "description": "Heading above the list of group members"
+  },
+  "memberRoleAdmin": "Admin",
+  "@memberRoleAdmin": {
+    "description": "Badge on the member who administers the group"
+  },
+  "memberYou": "Tú",
+  "@memberYou": {
+    "description": "Badge on the signed-in user's own row"
+  },
+  "expelAction": "Expulsar",
+  "@expelAction": {
+    "description": "Admin action that removes a member from the group"
+  },
+  "expelTitle": "¿Expulsar a {name}?",
+  "@expelTitle": {
+    "description": "Title of the confirmation before expelling a member",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "expelBody": "Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.",
+  "@expelBody": {
+    "description": "Explains the consequences of expelling a member"
+  },
+  "expelDone": "{name} ya no está en el grupo.",
+  "@expelDone": {
+    "description": "Confirmation after a member is expelled",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
 
   "createGroupAction": "Crear un grupo",
   "@createGroupAction": {
