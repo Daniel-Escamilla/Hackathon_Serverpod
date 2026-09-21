@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:serverpod/serverpod.dart';
 
+import '../events/event_service.dart';
 import '../generated/future_calls.dart' show ServerpodFutureCallsGetter;
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
@@ -23,9 +24,13 @@ Duration _voteWindow(Session session) {
 
 /// Proposing and voting on tasks (PRODUCT.md §3, §4.1, §4.4).
 class TaskService {
-  const TaskService({this.walletService = const WalletService()});
+  const TaskService({
+    this.walletService = const WalletService(),
+    this.eventService = const EventService(),
+  });
 
   final WalletService walletService;
+  final EventService eventService;
 
   /// Starts a new task as `proposed`, open to a proposal vote.
   Future<Task> proposeTask(
@@ -47,6 +52,12 @@ class TaskService {
       ),
     );
     await _scheduleVoteExpiry(session, task);
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskProposed,
+      taskId: task.id,
+    );
     return task;
   }
 
@@ -104,6 +115,12 @@ class TaskService {
         existingVote.copyWith(approve: approve),
       );
     }
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskVoteCast,
+      taskId: task.id,
+    );
 
     final otherMembers = await GroupMember.db.count(
       session,
@@ -175,10 +192,17 @@ class TaskService {
       );
     }
 
-    return Task.db.updateRow(
+    final countered = await Task.db.updateRow(
       session,
       task.copyWith(status: TaskStatus.counterOffered),
     );
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskCounterOffered,
+      taskId: task.id,
+    );
+    return countered;
   }
 
   /// [author] accepts or withdraws the pending counter-offer on [task]
@@ -344,6 +368,12 @@ class TaskService {
         existingVote.copyWith(approve: approve),
       );
     }
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskValidated,
+      taskId: task.id,
+    );
 
     final otherMembers = await GroupMember.db.count(
       session,
