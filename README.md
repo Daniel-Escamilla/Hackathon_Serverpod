@@ -61,8 +61,8 @@ git config core.hooksPath .githooks
 ```
 
 `.githooks/pre-commit` runs `dart format`/`dart analyze --fatal-infos`, `.githooks/pre-push` runs
-`dart test` — both scoped to `hackathon_serverpod_server`, the same checks CI
-(`.github/workflows/`) runs again server-side either way.
+`dart test` — both on `hackathon_serverpod_server` only. CI (`.github/workflows/`) runs those
+again, and the same three checks on the Flutter app, on every push and pull request.
 
 **Windows:** if the clone fails with `Filename too long`, run
 `git config --global core.longpaths true` and clone again — the Android sources are nested deep

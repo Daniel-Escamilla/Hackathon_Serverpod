@@ -21,6 +21,13 @@ jobs:
         working-directory: hackathon_serverpod
         run: flutter pub get
 
-      - name: Analyze
+      - name: Analyze the server
         working-directory: hackathon_serverpod/hackathon_serverpod_server
         run: dart analyze --fatal-infos
+
+      # The app, held to the same bar as the server. Runs even when the server
+      # step fails, so one PR reports every broken package at once.
+      - name: Analyze the app
+        if: ${{ !cancelled() }}
+        working-directory: hackathon_serverpod/hackathon_serverpod_flutter
+        run: flutter analyze --fatal-infos

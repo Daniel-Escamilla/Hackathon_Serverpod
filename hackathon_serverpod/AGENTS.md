@@ -58,13 +58,13 @@ Still-unused scaffold leftovers: the `Greeting` model/endpoint/test, and `screen
 
 On a fresh clone, `dart run tool/init_local_secrets.dart` in the server package creates the git-ignored `config/passwords.yaml` and `.env`; without them neither `serverpod start` nor `dart test` can start. It never overwrites, and nobody should delete an existing `passwords.yaml` — the local embedded database was initialised with that password.
 
-There are two layers enforcing this, both scoped to the server package only:
-- **Git hooks** (`.githooks/pre-commit`, `.githooks/pre-push`) run `dart format`/`dart analyze --fatal-infos` before a commit and `dart test` before a push. They only run once enabled per clone with `git config core.hooksPath .githooks`; run the format/analyze/test commands yourself regardless of whether that's set, rather than relying on the hook to catch it.
-- **CI** (`.github/workflows/{format,analyze,tests}.yml`, at the repo root) re-checks the same things server-side on every push to `main` or `develop` and on every pull request, so a bypassed or unconfigured hook (`--no-verify`, or `core.hooksPath` never set) still gets caught.
+There are two layers enforcing this:
+- **Git hooks** (`.githooks/pre-commit`, `.githooks/pre-push`) run `dart format`/`dart analyze --fatal-infos` before a commit and `dart test` before a push — **on the server package only**. They only run once enabled per clone with `git config core.hooksPath .githooks`; run the format/analyze/test commands yourself regardless of whether that's set, rather than relying on the hook to catch it.
+- **CI** (`.github/workflows/{format,analyze,tests}.yml`, at the repo root) checks **both packages**, server and app, on every push to `main` or `develop` and on every pull request, so a bypassed or unconfigured hook still gets caught. Each workflow checks the server first and the app second, and runs the app step even when the server one fails, so one PR shows every broken package at once. These are the checks `main`'s protection requires, so the app is held to them too.
 
 Commits go on `develop`; `main` is production. The branch flow is in the [root `AGENTS.md`](../AGENTS.md#branches).
 
-Run each check from the package it covers. CI (the repo root's `.github/workflows/`) gates only the server package, and analysis is stricter there than the default:
+Run each check from the package it covers — these are exactly what CI runs, so passing them locally means passing CI:
 
 ```sh
 cd hackathon_serverpod_server
@@ -76,7 +76,8 @@ dart test -n 'returned greeting includes name'               # one test by name
 dart test -t integration                                     # the only declared tag (dart_test.yaml)
 
 cd ../hackathon_serverpod_flutter
-flutter analyze
+flutter analyze --fatal-infos
+dart format --set-exit-if-changed .
 flutter test
 ```
 
