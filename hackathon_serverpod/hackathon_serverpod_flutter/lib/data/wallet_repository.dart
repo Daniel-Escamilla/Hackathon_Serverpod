@@ -18,6 +18,22 @@ class WalletRepository {
       throw mapServerError(error);
     }
   }
+
+  /// The caller's coin movements, most recent first.
+  ///
+  /// A movement carries its reason and the id of the task or purchase behind
+  /// it, but not their titles, so the list can say what kind of movement it
+  /// was and not which task it was for.
+  Future<List<CoinTransaction>> history({
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    try {
+      return await _client.wallet.getHistory(limit: limit, offset: offset);
+    } catch (error) {
+      throw mapServerError(error);
+    }
+  }
 }
 
 final walletRepositoryProvider = Provider<WalletRepository>(
@@ -29,4 +45,10 @@ final walletRepositoryProvider = Provider<WalletRepository>(
 /// rather than each screen asking for it again.
 final walletBalanceProvider = FutureProvider<int>(
   (ref) => ref.watch(walletRepositoryProvider).balance(),
+);
+
+/// The movement history. Invalidated alongside the balance, since anything
+/// that changes one changes the other.
+final walletHistoryProvider = FutureProvider<List<CoinTransaction>>(
+  (ref) => ref.watch(walletRepositoryProvider).history(),
 );

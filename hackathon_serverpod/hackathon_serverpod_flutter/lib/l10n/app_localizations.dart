@@ -273,6 +273,54 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Algo ha fallado. Inténtalo otra vez.'**
   String get errorGeneric;
+
+  /// Title of the wallet screen
+  ///
+  /// In es, this message translates to:
+  /// **'Cartera'**
+  String get walletTitle;
+
+  /// Heading above the list of coin movements
+  ///
+  /// In es, this message translates to:
+  /// **'Últimos movimientos'**
+  String get walletMovements;
+
+  /// Shown when the member has no coin movements yet
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no hay movimientos. Haz una tarea y cobra.'**
+  String get walletEmpty;
+
+  /// Movement reason: coins earned by completing a task
+  ///
+  /// In es, this message translates to:
+  /// **'Tarea cobrada'**
+  String get reasonEarned;
+
+  /// Movement reason: coins taken as a penalty
+  ///
+  /// In es, this message translates to:
+  /// **'Multa'**
+  String get reasonFined;
+
+  /// Movement reason: coins spent on a reward
+  ///
+  /// In es, this message translates to:
+  /// **'Compra en la tienda'**
+  String get reasonSpent;
+
+  /// Movement reason: coins returned after a refused purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Compra devuelta'**
+  String get reasonRefunded;
+
+  /// When a movement happened, as date and time
+  ///
+  /// In es, this message translates to:
+  /// **'{date}, {time}'**
+  String movementAt(String date, String time);
 }
 
 class _AppLocalizationsDelegate

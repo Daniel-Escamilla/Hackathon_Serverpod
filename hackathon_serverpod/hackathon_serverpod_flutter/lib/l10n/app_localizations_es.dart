@@ -104,4 +104,31 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
+
+  @override
+  String get walletTitle => 'Cartera';
+
+  @override
+  String get walletMovements => 'Últimos movimientos';
+
+  @override
+  String get walletEmpty =>
+      'Todavía no hay movimientos. Haz una tarea y cobra.';
+
+  @override
+  String get reasonEarned => 'Tarea cobrada';
+
+  @override
+  String get reasonFined => 'Multa';
+
+  @override
+  String get reasonSpent => 'Compra en la tienda';
+
+  @override
+  String get reasonRefunded => 'Compra devuelta';
+
+  @override
+  String movementAt(String date, String time) {
+    return '$date, $time';
+  }
 }
