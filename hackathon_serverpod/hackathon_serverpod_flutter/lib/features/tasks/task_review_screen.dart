@@ -64,8 +64,9 @@ class TaskReviewScreen extends StatelessWidget {
         );
       }
     } catch (e) {
-      if (context.mounted)
+      if (context.mounted) {
         showMessage(context, l10n.proposeError, isError: true);
+      }
     }
   }
 }
