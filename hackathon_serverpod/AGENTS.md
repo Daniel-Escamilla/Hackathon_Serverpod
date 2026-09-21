@@ -100,6 +100,32 @@ A build installed on a device never goes through that route: it reads the checke
 
 `serverpod: scripts: flutter_build` in the server `pubspec.yaml` builds the Flutter web app into `hackathon_serverpod_server/web/app` (Windows needs `xcopy` because Flutter's `--output` is broken there; both branches `flutter clean` and retry once on failure). `server.dart` mounts that directory at `/` when it exists and otherwise falls back to the `web/pages/build_flutter_app.html` placeholder — so a bare-looking site on port 8082 usually just means the web app has not been built.
 
+## Flutter conventions
+
+Agreed 2026-09-21. They cover the app under `hackathon_serverpod_flutter/lib`.
+
+**No literal anybody reads.** Every string lives in `lib/l10n/app_es.arb` with a `@key` description and reaches the widget through `AppLocalizations.of(context)`. Spanish is the template, English is generated from it later (PLAN.md §8). A hard-coded string in a widget is a bug, not a shortcut — retrofitting them is what makes translation a rewrite instead of a translation.
+
+**Layers, and what each may import:**
+
+| Layer | Where | May import |
+|---|---|---|
+| Data | `lib/data/` | The generated client. No Flutter widgets, no display text |
+| Pieces | `lib/ui/` | Flutter, the l10n, the theme |
+| Screens | `lib/screens/` | Everything above |
+
+- **Only `lib/data/` imports `client`.** A screen calling `client.something` is exactly what this rule prevents: error handling scattered across widgets, and no way to test a screen without a server running.
+- Repositories throw `AppException`, never a raw server error. The translation lives in `data/app_failure.dart`, in one function.
+- Which sentence a failure shows is decided in the UI, from the ARB (`ui/failure_messages.dart`). The data layer never holds display text.
+
+**State with Riverpod** (`flutter_riverpod`, no code generation, so there is no build step to run). `ProviderScope` wraps the app. Server data that more than one widget needs is a `FutureProvider` — `walletBalanceProvider` is the model to copy — and whatever changes it calls `ref.invalidate`, so every widget showing that figure refreshes once instead of each fetching its own. Form state stays in the widget: a `Notifier` for a text field is ceremony, not architecture.
+
+**Reusable before repeated.** A widget wanted by a second screen moves to `lib/ui/`. `CoinAmount` is the first: every amount in the app goes through it, so a balance, a reward's price and a line of history all read the same, with tabular figures so columns line up.
+
+**One thing per file**, named after it: screens end in `Screen`, repositories in `Repository`. Private helpers stay in the file that uses them until a second file wants one.
+
+**Size.** Past roughly 300 lines, split the file. `prototype_app.dart` is 2555 lines and is the counterexample: it is Mayte's design reference, and the team agreed to break it up as each screen is ported to the real app, rather than rewrite it in one go.
+
 ## Why this project exists
 
 "Build Something Real", the Serverpod hackathon. Sponsor Serverpod AB, administered by BuilderBase. One full-stack app, any domain, no tracks, on the condition that Serverpod is the backend. The official rules live in the repo: `docs/hackathon-rules.pdf`, with a greppable text extraction beside it at `docs/hackathon-rules.md` (source <https://tinyurl.com/SP-rules>, copied 2026-09-16). They prevail over anything the event site says, and section 11 allows them to be amended mid-event, so re-check the source before relying on a detail close to the deadline. What follows is a working summary, not a substitute.
