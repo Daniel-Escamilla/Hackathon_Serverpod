@@ -9,6 +9,8 @@ emailIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+event:
+  - watchGroup:
 greeting:
   - hello:
 group:

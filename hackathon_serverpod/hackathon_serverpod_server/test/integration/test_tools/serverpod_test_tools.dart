@@ -13,6 +13,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
+import 'package:hackathon_serverpod_server/src/generated/events/group_event.dart'
+    as _i5i7k9r4;
 import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
     as _isvvvywu;
 import 'package:hackathon_serverpod_server/src/generated/future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
@@ -173,6 +175,8 @@ class TestEndpoints {
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
+  late final _EventEndpoint event;
+
   late final _GreetingEndpoint greeting;
 
   late final _GroupEndpoint group;
@@ -196,6 +200,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     jwtRefresh = _JwtRefreshEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    event = _EventEndpoint(
       endpoints,
       serializationManager,
     );
@@ -541,6 +549,49 @@ class _JwtRefreshEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _EventEndpoint {
+  _EventEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Stream<_i5i7k9r4.GroupEvent> watchGroup(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_i5i7k9r4.GroupEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'event',
+              method: 'watchGroup',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'event',
+              methodName: 'watchGroup',
+              arguments: {},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
   }
 }
 

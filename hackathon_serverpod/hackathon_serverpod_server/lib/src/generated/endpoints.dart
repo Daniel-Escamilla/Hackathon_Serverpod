@@ -21,6 +21,7 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../events/event_endpoint.dart' as _i7r7roa3;
 import '../greetings/greeting_endpoint.dart' as _il624ik7;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
@@ -42,6 +43,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'event': _i7r7roa3.EventEndpoint()
+        ..initialize(
+          server,
+          'event',
           null,
         ),
       'greeting': _il624ik7.GreetingEndpoint()
@@ -278,6 +285,26 @@ class Endpoints extends _is.EndpointDispatch {
                         session,
                         refreshToken: params['refreshToken'],
                       ),
+        ),
+      },
+    );
+    connectors['event'] = _is.EndpointConnector(
+      name: 'event',
+      endpoint: endpoints['event']!,
+      methodConnectors: {
+        'watchGroup': _is.MethodStreamConnector(
+          name: 'watchGroup',
+          params: {},
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['event'] as _i7r7roa3.EventEndpoint).watchGroup(
+                session,
+              ),
         ),
       },
     );

@@ -26,6 +26,8 @@ import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _iaic;
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
+import 'events/group_event.dart' as _iecilz9e;
+import 'events/group_event_kind.dart' as _il82a0w2;
 import 'greetings/greeting.dart' as _izw8z7ou;
 import 'groups/group.dart' as _i9ztykbt;
 import 'groups/group_error_reason.dart' as _i7quka6t;
@@ -49,6 +51,8 @@ import 'wallet/coin_movement.dart' as _ii2179p0;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
+export 'events/group_event.dart';
+export 'events/group_event_kind.dart';
 export 'greetings/greeting.dart';
 export 'groups/group.dart';
 export 'groups/group_error_reason.dart';
@@ -108,6 +112,12 @@ class Protocol extends _isc.SerializationManager {
       }
     }
 
+    if (t == _iecilz9e.GroupEvent) {
+      return _iecilz9e.GroupEvent.fromJson(data) as T;
+    }
+    if (t == _il82a0w2.GroupEventKind) {
+      return _il82a0w2.GroupEventKind.fromJson(data) as T;
+    }
     if (t == _izw8z7ou.Greeting) {
       return _izw8z7ou.Greeting.fromJson(data) as T;
     }
@@ -176,6 +186,13 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _izo0hjq0.RankingEntry) {
       return _izo0hjq0.RankingEntry.fromJson(data) as T;
+    }
+    if (t == _isc.getType<_iecilz9e.GroupEvent?>()) {
+      return (data != null ? _iecilz9e.GroupEvent.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_il82a0w2.GroupEventKind?>()) {
+      return (data != null ? _il82a0w2.GroupEventKind.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
@@ -297,6 +314,8 @@ class Protocol extends _isc.SerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _iecilz9e.GroupEvent => 'GroupEvent',
+      _il82a0w2.GroupEventKind => 'GroupEventKind',
       _izw8z7ou.Greeting => 'Greeting',
       _i9ztykbt.Group => 'Group',
       _i7quka6t.GroupErrorReason => 'GroupErrorReason',
@@ -337,6 +356,10 @@ class Protocol extends _isc.SerializationManager {
     }
 
     switch (data) {
+      case _iecilz9e.GroupEvent():
+        return 'GroupEvent';
+      case _il82a0w2.GroupEventKind():
+        return 'GroupEventKind';
       case _izw8z7ou.Greeting():
         return 'Greeting';
       case _i9ztykbt.Group():
@@ -404,6 +427,12 @@ class Protocol extends _isc.SerializationManager {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'GroupEvent') {
+      return deserialize<_iecilz9e.GroupEvent>(data['data']);
+    }
+    if (dataClassName == 'GroupEventKind') {
+      return deserialize<_il82a0w2.GroupEventKind>(data['data']);
     }
     if (dataClassName == 'Greeting') {
       return deserialize<_izw8z7ou.Greeting>(data['data']);
