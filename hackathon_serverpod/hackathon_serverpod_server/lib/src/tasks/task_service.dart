@@ -322,8 +322,7 @@ class TaskService {
     final votes = await TaskVote.db.find(
       session,
       where: (t) =>
-          t.taskId.equals(task.id!) &
-          t.phase.equals(TaskVotePhase.completion),
+          t.taskId.equals(task.id!) & t.phase.equals(TaskVotePhase.completion),
     );
     final approveCount = votes.where((v) => v.approve).length;
     final denyCount = votes.length - approveCount;
