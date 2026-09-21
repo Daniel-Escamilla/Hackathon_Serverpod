@@ -5,6 +5,7 @@ import '../data/app_failure.dart';
 import '../data/wallet_repository.dart';
 import '../l10n/app_localizations.dart';
 import '../theme.dart';
+import '../ui/app_button.dart';
 import '../ui/coin_amount.dart';
 import '../ui/failure_messages.dart';
 import 'create_group_screen.dart';
@@ -135,14 +136,15 @@ class _NoGroupYet extends StatelessWidget {
           style: text.bodyLarge?.copyWith(color: appMuted),
         ),
         const SizedBox(height: 28),
-        FilledButton(
+        AppButton(
+          label: l10n.createGroupAction,
           onPressed: () => _open(context, const CreateGroupScreen()),
-          child: Text(l10n.createGroupAction),
         ),
         const SizedBox(height: 12),
-        OutlinedButton(
+        AppButton(
+          label: l10n.joinGroupAction,
+          kind: AppButtonKind.secondary,
           onPressed: () => _open(context, const JoinGroupScreen()),
-          child: Text(l10n.joinGroupAction),
         ),
       ],
     );
@@ -177,7 +179,12 @@ class _Failed extends StatelessWidget {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         const SizedBox(height: 16),
-        TextButton(onPressed: onRetry, child: Text(l10n.retry)),
+        AppButton(
+          label: l10n.retry,
+          kind: AppButtonKind.quiet,
+          compact: true,
+          onPressed: onRetry,
+        ),
       ],
     );
   }

@@ -4,8 +4,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/group_repository.dart';
 import '../l10n/app_localizations.dart';
+import '../ui/app_button.dart';
 import '../ui/failure_messages.dart';
 import '../ui/feedback.dart';
+import '../ui/sounds.dart';
 
 /// Joins a group with its invite code, against `GroupEndpoint.joinGroup`.
 /// Entry is direct, with no approval to wait for (PRODUCT.md §7).
@@ -37,6 +39,7 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
     try {
       await ref.read(groupRepositoryProvider).joinWithCode(_code.text.trim());
       if (!mounted) return;
+      ref.read(uiSoundsProvider).play(AppSound.success);
       navigator.pop(true);
     } catch (error) {
       if (!mounted) return;
@@ -81,17 +84,10 @@ class _JoinGroupScreenState extends ConsumerState<JoinGroupScreen> {
                 onFieldSubmitted: (_) => _submit(),
               ),
               const SizedBox(height: 32),
-              FilledButton(
-                onPressed: _submitting ? null : _submit,
-                child: _submitting
-                    ? const SizedBox.square(
-                        dimension: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Text(l10n.joinGroupSubmit),
+              AppButton(
+                label: l10n.joinGroupSubmit,
+                loading: _submitting,
+                onPressed: _submit,
               ),
             ],
           ),

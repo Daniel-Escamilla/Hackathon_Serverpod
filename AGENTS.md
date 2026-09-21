@@ -17,7 +17,7 @@ anyway — they are the instructions.
 | [`README.md`](README.md) | Required tool versions and how to run the backend, the app and the tests | Setting up, or running anything |
 | [`TEAM.md`](TEAM.md) | Members, representative, ownership and prize split | Anything about authorship or the submission |
 | [`docs/hackathon-rules.md`](docs/hackathon-rules.md) | The official rules, a text copy of the PDF beside it | A deadline or eligibility question |
-| [`docs/DESIGN.md`](docs/DESIGN.md) | **What it looks like**: the palette and its tokens, the typography options still open, and the two moments that get motion. A proposal Mayte and Juan close. In Spanish | Touching the theme or building a screen |
+| [`docs/DESIGN.md`](docs/DESIGN.md) | **The design standard, Playful UI**: rules for a new screen, the `lib/ui/` components, colour and type tokens, the press bounce and the five UI sounds. In Spanish | **Before building or changing any screen** |
 | [`docs/FEEDBACK.md`](docs/FEEDBACK.md) | Serverpod friction, written down as it is hit, for the Most Valuable Feedback prize. In English | Whenever Serverpod, its CLI or its docs get in the way |
 
 The code lives in the Dart workspace [`hackathon_serverpod/`](hackathon_serverpod): the Serverpod
