@@ -94,6 +94,24 @@ class TaskEndpoint extends Endpoint {
     return _taskService.markDone(session, task: task, claimant: member);
   }
 
+  /// Vote on whether a claimed task was actually done. Approval pays the
+  /// claimant; denial fines them and reopens the task for someone else
+  /// (PRODUCT.md §3).
+  Future<Task> voteTaskCompletion(
+    Session session,
+    int taskId,
+    bool approve,
+  ) async {
+    final member = await currentGroupMember(session);
+    final task = await _findGroupTask(session, member, taskId);
+    return _taskService.castCompletionVote(
+      session,
+      task: task,
+      voter: member,
+      approve: approve,
+    );
+  }
+
   Future<Task> _findGroupTask(
     Session session,
     GroupMember member,
