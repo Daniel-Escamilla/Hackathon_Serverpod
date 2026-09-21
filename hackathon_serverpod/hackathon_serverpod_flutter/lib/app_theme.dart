@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 /// Named color tokens for the app. Nothing outside this file should hold a
 /// [Color] literal that stands for one of these — reference the token
@@ -16,11 +15,27 @@ class AppColors {
   static const muted = Color(0xFF687086);
 }
 
+/// Font family names, matching the `family:` entries in pubspec.yaml. Both
+/// fonts are bundled as variable-weight .ttf files under assets/fonts so the
+/// first frame never flashes the system font while google_fonts would still
+/// be fetching them.
+class AppFonts {
+  const AppFonts._();
+
+  static const display = 'Fredoka';
+  static const body = 'Nunito Sans';
+
+  /// For any amount of coins, so a column of numbers lines up — digits get
+  /// a fixed width instead of proportional spacing.
+  static const tabularFigures = [FontFeature.tabularFigures()];
+}
+
 class AppTheme {
   const AppTheme._();
 
   static ThemeData get light {
-    final body = GoogleFonts.nunitoSansTextTheme().apply(
+    final body = Typography.material2021().black.apply(
+      fontFamily: AppFonts.body,
       bodyColor: AppColors.ink,
       displayColor: AppColors.ink,
     );
@@ -33,29 +48,34 @@ class AppTheme {
         surface: AppColors.cream,
       ),
       textTheme: body.copyWith(
-        displaySmall: GoogleFonts.fredoka(
+        displaySmall: const TextStyle(
+          fontFamily: AppFonts.display,
           color: AppColors.ink,
           fontSize: 42,
           height: .98,
           fontWeight: FontWeight.w700,
         ),
-        headlineMedium: GoogleFonts.fredoka(
+        headlineMedium: const TextStyle(
+          fontFamily: AppFonts.display,
           color: AppColors.ink,
           fontSize: 32,
           height: 1,
           fontWeight: FontWeight.w700,
         ),
-        titleLarge: GoogleFonts.fredoka(
+        titleLarge: const TextStyle(
+          fontFamily: AppFonts.display,
           color: AppColors.ink,
           fontSize: 24,
           fontWeight: FontWeight.w600,
         ),
-        titleMedium: GoogleFonts.nunitoSans(
+        titleMedium: const TextStyle(
+          fontFamily: AppFonts.body,
           color: AppColors.ink,
           fontSize: 17,
           fontWeight: FontWeight.w800,
         ),
-        bodyLarge: GoogleFonts.nunitoSans(
+        bodyLarge: const TextStyle(
+          fontFamily: AppFonts.body,
           color: AppColors.ink,
           fontSize: 16,
           height: 1.35,
@@ -89,7 +109,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          textStyle: GoogleFonts.nunitoSans(
+          textStyle: const TextStyle(
+            fontFamily: AppFonts.body,
             fontSize: 17,
             fontWeight: FontWeight.w900,
           ),
@@ -103,7 +124,8 @@ class AppTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          textStyle: GoogleFonts.nunitoSans(
+          textStyle: const TextStyle(
+            fontFamily: AppFonts.body,
             fontSize: 16,
             fontWeight: FontWeight.w900,
           ),
@@ -114,7 +136,8 @@ class AppTheme {
         foregroundColor: AppColors.ink,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: GoogleFonts.fredoka(
+        titleTextStyle: const TextStyle(
+          fontFamily: AppFonts.display,
           color: AppColors.ink,
           fontSize: 25,
           fontWeight: FontWeight.w700,

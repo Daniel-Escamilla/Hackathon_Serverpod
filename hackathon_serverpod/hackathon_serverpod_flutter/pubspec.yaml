@@ -30,7 +30,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^2.2.1
-  google_fonts: ^8.1.0
   hackathon_serverpod_client:
     path: ../hackathon_serverpod_client
   serverpod_auth_idp_flutter: 4.0.0
@@ -91,3 +90,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  fonts:
+    - family: Fredoka
+      fonts:
+        - asset: assets/fonts/Fredoka.ttf
+    - family: Nunito Sans
+      fonts:
+        - asset: assets/fonts/NunitoSans.ttf

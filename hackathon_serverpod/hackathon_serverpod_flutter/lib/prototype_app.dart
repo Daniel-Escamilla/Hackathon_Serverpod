@@ -66,9 +66,13 @@ class WelcomeScreen extends StatelessWidget {
               const SizedBox(height: 14),
               Text(
                 'Los acuerdos de casa se deciden entre todos.',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyLarge?.copyWith(color: AppColors.muted, fontSize: 18),
+                style:
+                    Theme.of(
+                      context,
+                    ).textTheme.bodyLarge?.copyWith(
+                      color: AppColors.muted,
+                      fontSize: 18,
+                    ),
               ),
               const Spacer(),
               FilledButton.icon(
@@ -128,7 +132,11 @@ class _HouseHero extends StatelessWidget {
             ),
             const Positioned(
               top: 33,
-              child: Icon(Icons.roofing_rounded, color: AppColors.coral, size: 150),
+              child: Icon(
+                Icons.roofing_rounded,
+                color: AppColors.coral,
+                size: 150,
+              ),
             ),
             const Positioned(
               right: 20,
@@ -149,7 +157,10 @@ class EmailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SimpleFormPage(
       title: 'Entra en tu cuenta',
-      art: const _RoundIcon(icon: Icons.alternate_email_rounded, color: AppColors.sky),
+      art: const _RoundIcon(
+        icon: Icons.alternate_email_rounded,
+        color: AppColors.sky,
+      ),
       children: [
         const _FieldLabel('Email'),
         const TextField(
@@ -174,7 +185,10 @@ class VerificationScreen extends StatelessWidget {
     return _SimpleFormPage(
       title: 'Revisa tu email',
       subtitle: 'Hemos enviado un código de 6 dígitos.',
-      art: const _RoundIcon(icon: Icons.mark_email_read_rounded, color: AppColors.lime),
+      art: const _RoundIcon(
+        icon: Icons.mark_email_read_rounded,
+        color: AppColors.lime,
+      ),
       children: [
         const TextField(
           keyboardType: TextInputType.number,
@@ -347,7 +361,10 @@ class _ChoiceCard extends StatelessWidget {
                   children: [
                     Text(title, style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 4),
-                    Text(subtitle, style: const TextStyle(color: AppColors.muted)),
+                    Text(
+                      subtitle,
+                      style: const TextStyle(color: AppColors.muted),
+                    ),
                   ],
                 ),
               ),
@@ -652,7 +669,10 @@ class _PageHeader extends StatelessWidget {
                 Text(title, style: Theme.of(context).textTheme.headlineMedium),
                 if (subtitle != null) ...[
                   const SizedBox(height: 5),
-                  Text(subtitle!, style: const TextStyle(color: AppColors.muted)),
+                  Text(
+                    subtitle!,
+                    style: const TextStyle(color: AppColors.muted),
+                  ),
                 ],
               ],
             ),
@@ -689,7 +709,13 @@ class _CoinPill extends StatelessWidget {
         children: [
           const Text('🪙', style: TextStyle(fontSize: 18)),
           const SizedBox(width: 5),
-          Text('$value', style: const TextStyle(fontWeight: FontWeight.w900)),
+          Text(
+            '$value',
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              fontFeatures: AppFonts.tabularFigures,
+            ),
+          ),
         ],
       ),
     );
@@ -952,7 +978,10 @@ class _TaskCard extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   '🪙 $coins monedas',
-                  style: const TextStyle(fontWeight: FontWeight.w800),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontFeatures: AppFonts.tabularFigures,
+                  ),
                 ),
                 const SizedBox(height: 9),
                 Wrap(
@@ -961,7 +990,10 @@ class _TaskCard extends StatelessWidget {
                   children: [
                     _StatusPill(label: status, color: statusColor),
                     if (detail != null)
-                      Text(detail!, style: const TextStyle(color: AppColors.muted)),
+                      Text(
+                        detail!,
+                        style: const TextStyle(color: AppColors.muted),
+                      ),
                   ],
                 ),
               ],
@@ -1138,7 +1170,12 @@ class CounterOfferDecisionScreen extends StatelessWidget {
       content: const [
         _PersonRow(name: 'Mayte propone', emoji: '👩🏽'),
         SizedBox(height: 22),
-        _BigValueCard(color: AppColors.sky, value: '20', label: 'monedas', icon: '🪙'),
+        _BigValueCard(
+          color: AppColors.sky,
+          value: '20',
+          label: 'monedas',
+          icon: '🪙',
+        ),
         SizedBox(height: 18),
         _InfoRow(
           icon: Icons.restart_alt_rounded,
@@ -1170,7 +1207,12 @@ class AvailableTaskScreen extends StatelessWidget {
       title: 'Sacar la basura',
       content: const [
         Center(child: Text('🗑️', style: TextStyle(fontSize: 110))),
-        _BigValueCard(color: AppColors.lime, value: '5', label: 'monedas', icon: '🪙'),
+        _BigValueCard(
+          color: AppColors.lime,
+          value: '5',
+          label: 'monedas',
+          icon: '🪙',
+        ),
         SizedBox(height: 16),
         _InfoRow(
           icon: Icons.description_rounded,
@@ -1367,7 +1409,11 @@ class _BigValueCard extends StatelessWidget {
           const SizedBox(width: 14),
           Text(
             value,
-            style: const TextStyle(fontSize: 52, fontWeight: FontWeight.w900),
+            style: const TextStyle(
+              fontSize: 52,
+              fontWeight: FontWeight.w900,
+              fontFeatures: AppFonts.tabularFigures,
+            ),
           ),
           const SizedBox(width: 8),
           Text(
@@ -1524,7 +1570,12 @@ class TaskReviewScreen extends StatelessWidget {
       status: const _StatusPill(label: 'Revisa el trato', color: AppColors.sky),
       title: 'Limpiar el baño',
       content: const [
-        _BigValueCard(color: AppColors.lime, value: '25', label: 'monedas', icon: '🪙'),
+        _BigValueCard(
+          color: AppColors.lime,
+          value: '25',
+          label: 'monedas',
+          icon: '🪙',
+        ),
         SizedBox(height: 16),
         _InfoRow(
           icon: Icons.schedule_rounded,
@@ -1618,7 +1669,9 @@ class _StepperValue extends StatelessWidget {
             child: Text(
               '$value monedas',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleLarge,
+              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                fontFeatures: AppFonts.tabularFigures,
+              ),
             ),
           ),
           IconButton.filled(
@@ -1729,7 +1782,10 @@ class _RewardCard extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text(
                   '🪙 $price monedas',
-                  style: const TextStyle(fontWeight: FontWeight.w900),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontFeatures: AppFonts.tabularFigures,
+                  ),
                 ),
               ],
             ),
@@ -1903,7 +1959,10 @@ class _BalanceRow extends StatelessWidget {
           Expanded(child: Text(label)),
           Text(
             '🪙 $value',
-            style: const TextStyle(fontWeight: FontWeight.w900),
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              fontFeatures: AppFonts.tabularFigures,
+            ),
           ),
         ],
       ),
@@ -1955,7 +2014,12 @@ class RewardVoteScreen extends StatelessWidget {
       title: 'Desayuno en la cama',
       content: const [
         Center(child: Text('☕🥐', style: TextStyle(fontSize: 90))),
-        _BigValueCard(color: AppColors.sky, value: '40', label: 'monedas', icon: '🪙'),
+        _BigValueCard(
+          color: AppColors.sky,
+          value: '40',
+          label: 'monedas',
+          icon: '🪙',
+        ),
         SizedBox(height: 14),
         _PersonRow(name: 'Propuesta por Mayte', emoji: '👩🏽'),
         SizedBox(height: 14),
@@ -1986,7 +2050,10 @@ class PendingPurchaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _DetailScaffold(
-      status: const _StatusPill(label: 'Necesita tu respuesta', color: AppColors.coral),
+      status: const _StatusPill(
+        label: 'Necesita tu respuesta',
+        color: AppColors.coral,
+      ),
       title: 'Mayte te ha elegido',
       content: [
         const Center(child: Text('📺🍿', style: TextStyle(fontSize: 90))),
@@ -2124,6 +2191,7 @@ class WalletPage extends StatelessWidget {
                               color: Colors.white,
                               fontSize: 54,
                               fontWeight: FontWeight.w900,
+                              fontFeatures: AppFonts.tabularFigures,
                             ),
                           ),
                           const Text(
@@ -2225,7 +2293,10 @@ class _MovementRow extends StatelessWidget {
                   ),
                   Text(
                     date,
-                    style: const TextStyle(color: AppColors.muted, fontSize: 13),
+                    style: const TextStyle(
+                      color: AppColors.muted,
+                      fontSize: 13,
+                    ),
                   ),
                 ],
               ),
@@ -2236,6 +2307,7 @@ class _MovementRow extends StatelessWidget {
                 color: positive ? const Color(0xFF16853C) : AppColors.coral,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
+                fontFeatures: AppFonts.tabularFigures,
               ),
             ),
           ],
@@ -2435,7 +2507,10 @@ class _ActivityCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                Text(time, style: const TextStyle(color: AppColors.muted, fontSize: 12)),
+                Text(
+                  time,
+                  style: const TextStyle(color: AppColors.muted, fontSize: 12),
+                ),
               ],
             ),
             const SizedBox(height: 14),
