@@ -1,0 +1,136 @@
+{
+  "@@locale": "es",
+
+  "appTitle": "Tareas de casa",
+  "@appTitle": {
+    "description": "Name of the app, shown in the app bar and the task switcher"
+  },
+
+  "signInTitle": "Las tareas de casa,\nen un trato",
+  "@signInTitle": {
+    "description": "Headline on the sign-in screen"
+  },
+  "signInSubtitle": "Entra con tu correo. Te enviamos un código para confirmar que eres tú.",
+  "@signInSubtitle": {
+    "description": "Explains the email code flow under the sign-in headline"
+  },
+  "signInDone": "Sesión iniciada.",
+  "@signInDone": {
+    "description": "Confirmation shown once the email code is accepted"
+  },
+  "signInFailed": "No se ha podido entrar: {error}",
+  "@signInFailed": {
+    "description": "Shown when the identity provider rejects the sign-in",
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+
+  "walletCoins": "monedas en tu cartera",
+  "@walletCoins": {
+    "description": "Label under the coin balance on the home screen"
+  },
+  "walletNegative": "Estás en números rojos. Haz una tarea para salir.",
+  "@walletNegative": {
+    "description": "Replaces the balance label when the balance is below zero"
+  },
+
+  "noGroupTitle": "Todavía no estás en ningún grupo",
+  "@noGroupTitle": {
+    "description": "Headline shown to a signed-in user with no group yet"
+  },
+  "noGroupBody": "Crea uno para tu casa o entra en el de alguien con su código.",
+  "@noGroupBody": {
+    "description": "Explains the two ways into a group"
+  },
+  "retry": "Volver a intentarlo",
+  "@retry": {
+    "description": "Button that runs the failed request again"
+  },
+
+  "createGroupAction": "Crear un grupo",
+  "@createGroupAction": {
+    "description": "Button that opens the create-group screen"
+  },
+  "createGroupTitle": "Tu grupo",
+  "@createGroupTitle": {
+    "description": "Title of the create-group screen"
+  },
+  "createGroupNameLabel": "¿Cómo se llama?",
+  "@createGroupNameLabel": {
+    "description": "Label of the group name field"
+  },
+  "createGroupNameHint": "Piso de la calle Mayor",
+  "@createGroupNameHint": {
+    "description": "Example group name shown inside the empty field"
+  },
+  "createGroupNameEmpty": "Ponle un nombre para reconocerlo.",
+  "@createGroupNameEmpty": {
+    "description": "Validation error when the group name is left empty"
+  },
+  "createGroupTypeLabel": "¿Quiénes sois?",
+  "@createGroupTypeLabel": {
+    "description": "Label above the group profile choice"
+  },
+  "groupTypeSharedFlat": "Piso compartido",
+  "@groupTypeSharedFlat": {
+    "description": "Group profile: flatmates, all equal"
+  },
+  "groupTypeCouple": "Pareja",
+  "@groupTypeCouple": {
+    "description": "Group profile: two people"
+  },
+  "createGroupSubmit": "Crear el grupo",
+  "@createGroupSubmit": {
+    "description": "Button that creates the group"
+  },
+
+  "groupReadyTitle": "Grupo creado",
+  "@groupReadyTitle": {
+    "description": "Headline after a group is created"
+  },
+  "groupReadyBody": "Pásales este código para que entren.",
+  "@groupReadyBody": {
+    "description": "Explains what the invite code is for"
+  },
+  "groupReadyDone": "Listo",
+  "@groupReadyDone": {
+    "description": "Button that closes the invite-code screen"
+  },
+
+  "joinGroupAction": "Entrar con un código",
+  "@joinGroupAction": {
+    "description": "Button that opens the join-group screen"
+  },
+  "joinGroupTitle": "Entrar en un grupo",
+  "@joinGroupTitle": {
+    "description": "Title of the join-group screen"
+  },
+  "joinGroupCodeLabel": "Código del grupo",
+  "@joinGroupCodeLabel": {
+    "description": "Label of the invite code field"
+  },
+  "joinGroupCodeEmpty": "Escribe el código que te han pasado.",
+  "@joinGroupCodeEmpty": {
+    "description": "Validation error when the invite code is left empty"
+  },
+  "joinGroupSubmit": "Entrar",
+  "@joinGroupSubmit": {
+    "description": "Button that joins the group"
+  },
+
+  "errorInviteCode": "Ese código no existe. Compruébalo con quien te lo pasó.",
+  "@errorInviteCode": {
+    "description": "Shown when no group matches the invite code"
+  },
+  "errorAlreadyInGroup": "Ya estás en un grupo. Sal de él antes de entrar en otro.",
+  "@errorAlreadyInGroup": {
+    "description": "Shown when the user already has an active membership"
+  },
+  "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
+  "@errorGeneric": {
+    "description": "Fallback for a server error we cannot be specific about"
+  }
+}

@@ -1,0 +1,7 @@
+# The app is written in Spanish and translated later (PLAN.md §8), so the
+# Spanish ARB is the template every other locale is generated from.
+arb-dir: lib/l10n
+template-arb-file: app_es.arb
+output-localization-file: app_localizations.dart
+output-class: AppLocalizations
+nullable-getter: false

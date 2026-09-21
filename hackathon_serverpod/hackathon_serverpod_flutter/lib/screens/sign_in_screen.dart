@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../client.dart';
+import '../l10n/app_localizations.dart';
 import '../theme.dart';
 
 /// Gates [child] behind a real Serverpod sign-in. `SignInWidget` runs the email
@@ -42,6 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     if (_isSignedIn) return widget.child;
 
+    final l10n = AppLocalizations.of(context);
     final text = Theme.of(context).textTheme;
 
     return Scaffold(
@@ -54,24 +56,18 @@ class _SignInScreenState extends State<SignInScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    'Las tareas de casa,\nen un trato',
-                    style: text.displaySmall,
-                  ),
+                  Text(l10n.signInTitle, style: text.displaySmall),
                   const SizedBox(height: 12),
                   Text(
-                    'Entra con tu correo. Te enviamos un código para confirmar '
-                    'que eres tú.',
+                    l10n.signInSubtitle,
                     style: text.bodyLarge?.copyWith(color: appMuted),
                   ),
                   const SizedBox(height: 28),
                   SignInWidget(
                     client: client,
-                    onAuthenticated: () =>
-                        _showMessage(context, 'Sesión iniciada.'),
+                    onAuthenticated: () => _showMessage(l10n.signInDone),
                     onError: (error) => _showMessage(
-                      context,
-                      'No se ha podido entrar: $error',
+                      l10n.signInFailed('$error'),
                       isError: true,
                     ),
                   ),
@@ -84,11 +80,8 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _showMessage(
-    BuildContext context,
-    String message, {
-    bool isError = false,
-  }) {
+  void _showMessage(String message, {bool isError = false}) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message, style: const TextStyle(color: Colors.white)),

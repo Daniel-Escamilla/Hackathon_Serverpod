@@ -1,63 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../client.dart';
+import '../data/app_failure.dart';
+import '../data/wallet_repository.dart';
+import '../l10n/app_localizations.dart';
 import '../theme.dart';
+import '../ui/coin_amount.dart';
+import '../ui/failure_messages.dart';
+import 'create_group_screen.dart';
+import 'join_group_screen.dart';
 
 /// What a signed-in member sees. Everything here comes from the server: the
 /// balance is `WalletEndpoint.getBalance`, not a number typed into the widget.
 ///
 /// The three tabs (Tareas, Tienda, Grupo) land next, each against its own
-/// endpoint. Until then this screen shows what is already real rather than
-/// standing in for it with invented data.
-class HomeScreen extends StatefulWidget {
+/// endpoint.
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final balance = ref.watch(walletBalanceProvider);
 
-class _HomeScreenState extends State<HomeScreen> {
-  late Future<int> _balance;
-
-  @override
-  void initState() {
-    super.initState();
-    _balance = client.wallet.getBalance();
-  }
-
-  void _reload() {
-    setState(() {
-      _balance = client.wallet.getBalance();
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tareas de casa')),
+      appBar: AppBar(title: Text(l10n.appTitle)),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: FutureBuilder<int>(
-            future: _balance,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              // The server refuses every call from someone without an active
-              // membership, so a failure here almost always means "no group
-              // yet". Once GroupEndpoint can answer that question directly,
-              // ask it instead of reading it off an error.
-              if (snapshot.hasError) {
-                return _NoGroupYet(onRetry: _reload);
-              }
-              return _Balance(coins: snapshot.data!);
-            },
+          child: balance.when(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, _) => _onError(context, ref, error),
+            data: (coins) => _Balance(coins: coins),
           ),
         ),
       ),
     );
+  }
+
+  /// The server refuses every call from someone with no active membership, so
+  /// that failure is not an error to report — it is the "you have no group
+  /// yet" state, and the way out of it is on screen.
+  Widget _onError(BuildContext context, WidgetRef ref, Object error) {
+    final noGroup =
+        error is AppException && error.failure == AppFailure.noGroup;
+    void reload() => ref.invalidate(walletBalanceProvider);
+
+    return noGroup
+        ? _NoGroupYet(onJoined: reload)
+        : _Failed(error: error, onRetry: reload);
   }
 }
 
@@ -68,25 +59,17 @@ class _Balance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final text = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset('assets/icons/coin.svg', width: 40, height: 40),
-            const SizedBox(width: 12),
-            Text('$coins', style: text.displaySmall),
-          ],
-        ),
+        CoinAmount(coins: coins, style: text.displaySmall, size: 40),
         const SizedBox(height: 8),
         Text(
-          coins < 0
-              ? 'Estás en números rojos. Haz una tarea para salir.'
-              : 'monedas en tu cartera',
+          coins < 0 ? l10n.walletNegative : l10n.walletCoins,
           style: text.bodyLarge?.copyWith(color: appMuted),
         ),
       ],
@@ -95,36 +78,69 @@ class _Balance extends StatelessWidget {
 }
 
 class _NoGroupYet extends StatelessWidget {
-  const _NoGroupYet({required this.onRetry});
+  const _NoGroupYet({required this.onJoined});
 
-  final VoidCallback onRetry;
+  final VoidCallback onJoined;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final text = Theme.of(context).textTheme;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text('Todavía no estás en ningún grupo', style: text.headlineMedium),
+        Text(l10n.noGroupTitle, style: text.headlineMedium),
         const SizedBox(height: 12),
         Text(
-          'Crea uno para tu casa o entra en el de alguien con su código.',
+          l10n.noGroupBody,
           style: text.bodyLarge?.copyWith(color: appMuted),
         ),
         const SizedBox(height: 28),
-        FilledButton(onPressed: null, child: const Text('Crear un grupo')),
+        FilledButton(
+          onPressed: () => _open(context, const CreateGroupScreen()),
+          child: Text(l10n.createGroupAction),
+        ),
         const SizedBox(height: 12),
         OutlinedButton(
-          onPressed: null,
-          child: const Text('Entrar con un código'),
+          onPressed: () => _open(context, const JoinGroupScreen()),
+          child: Text(l10n.joinGroupAction),
         ),
-        const SizedBox(height: 24),
-        TextButton(
-          onPressed: onRetry,
-          child: const Text('Volver a intentarlo'),
+      ],
+    );
+  }
+
+  /// Both routes return true once the member belongs to a group, which is the
+  /// signal to ask the server for the balance again.
+  Future<void> _open(BuildContext context, Widget screen) async {
+    final joined = await Navigator.of(
+      context,
+    ).push<bool>(MaterialPageRoute(builder: (_) => screen));
+    if (joined ?? false) onJoined();
+  }
+}
+
+class _Failed extends StatelessWidget {
+  const _Failed({required this.error, required this.onRetry});
+
+  final Object error;
+  final VoidCallback onRetry;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          failureMessage(error, l10n),
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyLarge,
         ),
+        const SizedBox(height: 16),
+        TextButton(onPressed: onRetry, child: Text(l10n.retry)),
       ],
     );
   }
