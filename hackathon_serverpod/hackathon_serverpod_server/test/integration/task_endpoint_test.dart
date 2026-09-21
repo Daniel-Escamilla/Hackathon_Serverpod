@@ -1,4 +1,5 @@
 import 'package:hackathon_serverpod_server/src/generated/protocol.dart';
+import 'package:hackathon_serverpod_server/src/tasks/task_service.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:test/test.dart';
 
@@ -15,10 +16,13 @@ void main() {
     endpoints,
   ) {
     final session = sessionBuilder.build();
+    const taskService = TaskService();
 
     late Group householdGroup;
     late GroupMember alice;
     late GroupMember bob;
+    late GroupMember carol;
+    late GroupMember dave;
 
     TestSessionBuilder sessionOf(String authUserId) => sessionBuilder.copyWith(
       authentication: AuthenticationOverride.authenticationInfo(authUserId, {}),
@@ -51,7 +55,7 @@ void main() {
           role: GroupMemberRole.member,
         ),
       );
-      await GroupMember.db.insertRow(
+      carol = await GroupMember.db.insertRow(
         session,
         GroupMember(
           groupId: householdGroup.id!,
@@ -60,7 +64,7 @@ void main() {
           role: GroupMemberRole.member,
         ),
       );
-      await GroupMember.db.insertRow(
+      dave = await GroupMember.db.insertRow(
         session,
         GroupMember(
           groupId: householdGroup.id!,
@@ -151,6 +155,69 @@ void main() {
           throwsA(isA<StateError>()),
         );
       });
+
+      test(
+        'then expiring it fines only the members who did not vote (#64, #63)',
+        () async {
+          await endpoints.task.voteTaskProposal(
+            sessionOf(_bobAuthUserId),
+            proposedTask.id!,
+            true,
+          );
+
+          await taskService.expireVote(
+            session,
+            taskId: proposedTask.id!,
+            expectedVoteClosesAt: proposedTask.voteClosesAt!,
+          );
+
+          final resolved = await Task.db.findById(session, proposedTask.id!);
+          expect(resolved!.status, TaskStatus.rejected);
+          expect(resolved.voteClosesAt, isNull);
+
+          final bobAfter = await GroupMember.db.findById(session, bob.id!);
+          expect(bobAfter!.balance, 0); // voted, no fine
+
+          final carolAfter = await GroupMember.db.findById(session, carol.id!);
+          expect(carolAfter!.balance, -5); // 20% of 25, rounded up
+          final daveAfter = await GroupMember.db.findById(session, dave.id!);
+          expect(daveAfter!.balance, -5);
+
+          final proposerAfter = await GroupMember.db.findById(
+            session,
+            alice.id!,
+          );
+          expect(proposerAfter!.balance, 0); // excluded, not "didn't vote"
+        },
+      );
+
+      test(
+        'then expiring an already-resolved vote does nothing',
+        () async {
+          await endpoints.task.voteTaskProposal(
+            sessionOf(_bobAuthUserId),
+            proposedTask.id!,
+            true,
+          );
+          await endpoints.task.voteTaskProposal(
+            sessionOf(_carolAuthUserId),
+            proposedTask.id!,
+            true,
+          );
+
+          await taskService.expireVote(
+            session,
+            taskId: proposedTask.id!,
+            expectedVoteClosesAt: proposedTask.voteClosesAt!,
+          );
+
+          final resolved = await Task.db.findById(session, proposedTask.id!);
+          expect(resolved!.status, TaskStatus.open); // unchanged by expiry
+
+          final daveAfter = await GroupMember.db.findById(session, dave.id!);
+          expect(daveAfter!.balance, 0); // never voted, but not fined
+        },
+      );
     });
 
     group('when counter-offering the proposal', () {
@@ -231,6 +298,35 @@ void main() {
             );
             final opened = await Task.db.findById(session, resolved.id!);
             expect(opened!.status, TaskStatus.open);
+          },
+        );
+
+        test(
+          'then expiring the original window after a restart does nothing',
+          () async {
+            final originalVoteClosesAt = proposedTask.voteClosesAt!;
+
+            final restarted = await endpoints.task.respondToCounterOffer(
+              sessionOf(_aliceAuthUserId),
+              proposedTask.id!,
+              true,
+            );
+
+            await taskService.expireVote(
+              session,
+              taskId: proposedTask.id!,
+              expectedVoteClosesAt: originalVoteClosesAt,
+            );
+
+            final unchanged = await Task.db.findById(session, restarted.id!);
+            expect(unchanged!.status, TaskStatus.proposed);
+            expect(unchanged.voteClosesAt, isNotNull);
+
+            final proposerAfter = await GroupMember.db.findById(
+              session,
+              alice.id!,
+            );
+            expect(proposerAfter!.balance, 0);
           },
         );
 
@@ -403,6 +499,48 @@ void main() {
               ),
               throwsA(isA<StateError>()),
             );
+          },
+        );
+
+        test(
+          'then expiring it fines only the members who did not vote (#64, #63)',
+          () async {
+            await endpoints.task.voteTaskCompletion(
+              sessionOf(_aliceAuthUserId),
+              claimedTask.id!,
+              true,
+            );
+
+            await taskService.expireVote(
+              session,
+              taskId: claimedTask.id!,
+              expectedVoteClosesAt: claimedTask.voteClosesAt!,
+            );
+
+            final resolved = await Task.db.findById(session, claimedTask.id!);
+            expect(resolved!.status, TaskStatus.open);
+            expect(resolved.doneById, isNull);
+            expect(resolved.voteClosesAt, isNull);
+
+            final aliceAfter = await GroupMember.db.findById(
+              session,
+              alice.id!,
+            );
+            expect(aliceAfter!.balance, 0); // voted, no fine
+
+            final carolAfter = await GroupMember.db.findById(
+              session,
+              carol.id!,
+            );
+            expect(carolAfter!.balance, -5); // 20% of 25, rounded up
+            final daveAfter = await GroupMember.db.findById(session, dave.id!);
+            expect(daveAfter!.balance, -5);
+
+            final claimantAfter = await GroupMember.db.findById(
+              session,
+              bob.id!,
+            );
+            expect(claimantAfter!.balance, 0); // excluded as claimant
           },
         );
       });
