@@ -1,11 +1,25 @@
+import 'dart:io';
+
 import 'package:serverpod/serverpod.dart';
 
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
 
-/// Placeholder proposal-vote window: #64 makes it configurable per environment
-/// and wires the `FutureCall` that expires it (PRODUCT.md §4.2, §10.5).
-const _voteWindow = Duration(hours: 24);
+/// How long a proposal or completion vote stays open (#64, PRODUCT.md §4.2,
+/// §10.5): 24 hours in production, a short default elsewhere so tests and
+/// demos don't wait a day. Override with `TASK_VOTE_WINDOW_SECONDS` (e.g. for
+/// the demo recording) without touching code. The `FutureCall` that expires
+/// it automatically isn't wired yet — #64 still open for that part.
+Duration _voteWindow(Session session) {
+  final overrideSeconds = int.tryParse(
+    Platform.environment['TASK_VOTE_WINDOW_SECONDS'] ?? '',
+  );
+  if (overrideSeconds != null) return Duration(seconds: overrideSeconds);
+
+  return session.serverpod.runMode == ServerpodRunMode.production
+      ? const Duration(hours: 24)
+      : const Duration(minutes: 2);
+}
 
 /// Proposing and voting on tasks (PRODUCT.md §3, §4.1, §4.4).
 class TaskService {
@@ -29,7 +43,7 @@ class TaskService {
         description: description,
         reward: reward,
         proposedById: proposer.id!,
-        voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+        voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
       ),
     );
   }
@@ -196,7 +210,7 @@ class TaskService {
         task.copyWith(
           status: TaskStatus.proposed,
           reward: counterVote.counterReward!,
-          voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+          voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
         ),
         transaction: transaction,
       );
@@ -230,7 +244,7 @@ class TaskService {
         locked.copyWith(
           status: TaskStatus.inValidation,
           doneById: claimant.id,
-          voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+          voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
         ),
         transaction: transaction,
       );
