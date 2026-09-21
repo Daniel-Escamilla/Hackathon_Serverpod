@@ -36,7 +36,9 @@ dependencies:
   google_fonts: ^8.1.0
   hackathon_serverpod_client:
     path: ../hackathon_serverpod_client
-  intl: ^0.20.3
+  # `any` on purpose: flutter_localizations pins intl from the SDK, and any
+  # tighter constraint here fails to resolve on a clean checkout.
+  intl: any
   serverpod_auth_idp_flutter: 4.0.0
   serverpod_flutter: 4.0.0
 
