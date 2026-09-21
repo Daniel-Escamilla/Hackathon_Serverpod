@@ -1,123 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
-const _ink = Color(0xFF12152A);
-const _violet = Color(0xFF6558F5);
-const _lime = Color(0xFFDDFB69);
-const _coral = Color(0xFFFF776D);
-const _sky = Color(0xFFA8D7FF);
-const _cream = Color(0xFFF7F4EC);
-const _muted = Color(0xFF687086);
+import 'app_theme.dart';
 
 class PrototypeApp extends StatelessWidget {
   const PrototypeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final body = GoogleFonts.nunitoSansTextTheme().apply(
-      bodyColor: _ink,
-      displayColor: _ink,
-    );
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Prototipo de tareas',
-      theme: ThemeData(
-        useMaterial3: true,
-        scaffoldBackgroundColor: _cream,
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: _violet,
-          primary: _violet,
-          surface: _cream,
-        ),
-        textTheme: body.copyWith(
-          displaySmall: GoogleFonts.fredoka(
-            color: _ink,
-            fontSize: 42,
-            height: .98,
-            fontWeight: FontWeight.w700,
-          ),
-          headlineMedium: GoogleFonts.fredoka(
-            color: _ink,
-            fontSize: 32,
-            height: 1,
-            fontWeight: FontWeight.w700,
-          ),
-          titleLarge: GoogleFonts.fredoka(
-            color: _ink,
-            fontSize: 24,
-            fontWeight: FontWeight.w600,
-          ),
-          titleMedium: GoogleFonts.nunitoSans(
-            color: _ink,
-            fontSize: 17,
-            fontWeight: FontWeight.w800,
-          ),
-          bodyLarge: GoogleFonts.nunitoSans(
-            color: _ink,
-            fontSize: 16,
-            height: 1.35,
-          ),
-        ),
-        inputDecorationTheme: InputDecorationTheme(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: BorderSide.none,
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: Color(0xFFE4E1EA)),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20),
-            borderSide: const BorderSide(color: _violet, width: 2),
-          ),
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 18,
-            vertical: 17,
-          ),
-        ),
-        filledButtonTheme: FilledButtonThemeData(
-          style: FilledButton.styleFrom(
-            minimumSize: const Size.fromHeight(58),
-            backgroundColor: _violet,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            textStyle: GoogleFonts.nunitoSans(
-              fontSize: 17,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-        ),
-        outlinedButtonTheme: OutlinedButtonThemeData(
-          style: OutlinedButton.styleFrom(
-            minimumSize: const Size.fromHeight(56),
-            foregroundColor: _violet,
-            side: const BorderSide(color: _violet, width: 1.5),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            textStyle: GoogleFonts.nunitoSans(
-              fontSize: 16,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-        ),
-        appBarTheme: AppBarTheme(
-          backgroundColor: _cream,
-          foregroundColor: _ink,
-          elevation: 0,
-          centerTitle: false,
-          titleTextStyle: GoogleFonts.fredoka(
-            color: _ink,
-            fontSize: 25,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-      ),
+      theme: AppTheme.light,
       home: const WelcomeScreen(),
     );
   }
@@ -139,7 +32,7 @@ void _showMessage(BuildContext context, String message) {
     SnackBar(
       content: Text(message),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: _ink,
+      backgroundColor: AppColors.ink,
     ),
   );
 }
@@ -175,7 +68,7 @@ class WelcomeScreen extends StatelessWidget {
                 'Los acuerdos de casa se deciden entre todos.',
                 style: Theme.of(
                   context,
-                ).textTheme.bodyLarge?.copyWith(color: _muted, fontSize: 18),
+                ).textTheme.bodyLarge?.copyWith(color: AppColors.muted, fontSize: 18),
               ),
               const Spacer(),
               FilledButton.icon(
@@ -206,7 +99,7 @@ class _HouseHero extends StatelessWidget {
         width: 238,
         height: 238,
         decoration: BoxDecoration(
-          color: _sky.withValues(alpha: .45),
+          color: AppColors.sky.withValues(alpha: .45),
           shape: BoxShape.circle,
         ),
         child: Stack(
@@ -229,18 +122,18 @@ class _HouseHero extends StatelessWidget {
               ),
               child: const Icon(
                 Icons.handshake_rounded,
-                color: _violet,
+                color: AppColors.violet,
                 size: 64,
               ),
             ),
             const Positioned(
               top: 33,
-              child: Icon(Icons.roofing_rounded, color: _coral, size: 150),
+              child: Icon(Icons.roofing_rounded, color: AppColors.coral, size: 150),
             ),
             const Positioned(
               right: 20,
               top: 28,
-              child: Icon(Icons.auto_awesome, color: _lime, size: 42),
+              child: Icon(Icons.auto_awesome, color: AppColors.lime, size: 42),
             ),
           ],
         ),
@@ -256,7 +149,7 @@ class EmailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return _SimpleFormPage(
       title: 'Entra en tu cuenta',
-      art: const _RoundIcon(icon: Icons.alternate_email_rounded, color: _sky),
+      art: const _RoundIcon(icon: Icons.alternate_email_rounded, color: AppColors.sky),
       children: [
         const _FieldLabel('Email'),
         const TextField(
@@ -281,7 +174,7 @@ class VerificationScreen extends StatelessWidget {
     return _SimpleFormPage(
       title: 'Revisa tu email',
       subtitle: 'Hemos enviado un código de 6 dígitos.',
-      art: const _RoundIcon(icon: Icons.mark_email_read_rounded, color: _lime),
+      art: const _RoundIcon(icon: Icons.mark_email_read_rounded, color: AppColors.lime),
       children: [
         const TextField(
           keyboardType: TextInputType.number,
@@ -332,7 +225,7 @@ class _SimpleFormPage extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 subtitle!,
-                style: const TextStyle(color: _muted, fontSize: 16),
+                style: const TextStyle(color: AppColors.muted, fontSize: 16),
               ),
             ],
             const SizedBox(height: 42),
@@ -359,7 +252,7 @@ class _RoundIcon extends StatelessWidget {
         width: 150,
         height: 150,
         decoration: BoxDecoration(color: color, shape: BoxShape.circle),
-        child: Icon(icon, size: 76, color: _ink),
+        child: Icon(icon, size: 76, color: AppColors.ink),
       ),
     );
   }
@@ -389,7 +282,7 @@ class GroupChoiceScreen extends StatelessWidget {
               ),
               const SizedBox(height: 34),
               _ChoiceCard(
-                color: _lime,
+                color: AppColors.lime,
                 icon: Icons.home_rounded,
                 title: 'Crear un grupo',
                 subtitle: 'Prepara vuestro espacio',
@@ -397,7 +290,7 @@ class GroupChoiceScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _ChoiceCard(
-                color: _sky,
+                color: AppColors.sky,
                 icon: Icons.confirmation_number_rounded,
                 title: 'Unirme con un código',
                 subtitle: 'Entra en un grupo existente',
@@ -445,7 +338,7 @@ class _ChoiceCard extends StatelessWidget {
                   color: Colors.white,
                   shape: BoxShape.circle,
                 ),
-                child: Icon(icon, color: _violet, size: 42),
+                child: Icon(icon, color: AppColors.violet, size: 42),
               ),
               const SizedBox(width: 18),
               Expanded(
@@ -454,7 +347,7 @@ class _ChoiceCard extends StatelessWidget {
                   children: [
                     Text(title, style: Theme.of(context).textTheme.titleLarge),
                     const SizedBox(height: 4),
-                    Text(subtitle, style: const TextStyle(color: _muted)),
+                    Text(subtitle, style: const TextStyle(color: AppColors.muted)),
                   ],
                 ),
               ),
@@ -491,7 +384,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           const SizedBox(height: 8),
           const Text(
             'Elige cómo compartís casa',
-            style: TextStyle(color: _muted),
+            style: TextStyle(color: AppColors.muted),
           ),
           const SizedBox(height: 28),
           Row(
@@ -557,7 +450,7 @@ class _ProfileCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: selected ? _violet : const Color(0xFFE1DEE8),
+            color: selected ? AppColors.violet : const Color(0xFFE1DEE8),
             width: 2,
           ),
         ),
@@ -567,7 +460,7 @@ class _ProfileCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Icon(
                 selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-                color: selected ? _violet : _muted,
+                color: selected ? AppColors.violet : AppColors.muted,
               ),
             ),
             Text(emoji, style: const TextStyle(fontSize: 52)),
@@ -592,7 +485,7 @@ class JoinGroupScreen extends StatelessWidget {
     return _SimpleFormPage(
       title: 'Únete a tu gente',
       subtitle: 'Introduce el código que te han compartido.',
-      art: const _RoundIcon(icon: Icons.groups_rounded, color: _sky),
+      art: const _RoundIcon(icon: Icons.groups_rounded, color: AppColors.sky),
       children: [
         const TextField(
           textAlign: TextAlign.center,
@@ -608,7 +501,7 @@ class JoinGroupScreen extends StatelessWidget {
         const Text(
           'El código no distingue mayúsculas',
           textAlign: TextAlign.center,
-          style: TextStyle(color: _muted),
+          style: TextStyle(color: AppColors.muted),
         ),
         const SizedBox(height: 20),
         FilledButton(
@@ -632,7 +525,7 @@ class GroupSuccessScreen extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(),
-              const _RoundIcon(icon: Icons.home_rounded, color: _lime),
+              const _RoundIcon(icon: Icons.home_rounded, color: AppColors.lime),
               const SizedBox(height: 30),
               Text(
                 '¡Ya tenéis casa!',
@@ -649,7 +542,7 @@ class GroupSuccessScreen extends StatelessWidget {
                   children: [
                     const Text(
                       'Código del grupo',
-                      style: TextStyle(color: _muted),
+                      style: TextStyle(color: AppColors.muted),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -701,7 +594,7 @@ class _HomeShellState extends State<HomeShell> {
         selectedIndex: _index,
         onDestinationSelected: (value) => setState(() => _index = value),
         backgroundColor: Colors.white,
-        indicatorColor: _violet.withValues(alpha: .14),
+        indicatorColor: AppColors.violet.withValues(alpha: .14),
         destinations: const [
           NavigationDestination(
             icon: Icon(Icons.task_alt_rounded),
@@ -724,7 +617,7 @@ class _HomeShellState extends State<HomeShell> {
       floatingActionButton: _index == 0
           ? FloatingActionButton.extended(
               onPressed: () => _push(context, const ProposeTaskScreen()),
-              backgroundColor: _violet,
+              backgroundColor: AppColors.violet,
               foregroundColor: Colors.white,
               icon: const Icon(Icons.add_rounded),
               label: const Text('Proponer'),
@@ -759,7 +652,7 @@ class _PageHeader extends StatelessWidget {
                 Text(title, style: Theme.of(context).textTheme.headlineMedium),
                 if (subtitle != null) ...[
                   const SizedBox(height: 5),
-                  Text(subtitle!, style: const TextStyle(color: _muted)),
+                  Text(subtitle!, style: const TextStyle(color: AppColors.muted)),
                 ],
               ],
             ),
@@ -768,7 +661,7 @@ class _PageHeader extends StatelessWidget {
           IconButton(
             onPressed: () => _push(context, const ActivityScreen()),
             icon: const Badge(
-              backgroundColor: _coral,
+              backgroundColor: AppColors.coral,
               child: Icon(Icons.notifications_none_rounded),
             ),
           ),
@@ -788,7 +681,7 @@ class _CoinPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
       decoration: BoxDecoration(
-        color: _lime,
+        color: AppColors.lime,
         borderRadius: BorderRadius.circular(22),
       ),
       child: Row(
@@ -895,7 +788,7 @@ class TasksPage extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
             children: [
               _ActionBanner(
-                color: _coral,
+                color: AppColors.coral,
                 icon: Icons.notifications_active_rounded,
                 title: '1 tarea espera tu voto',
                 subtitle: 'Tu opinión cuenta',
@@ -907,7 +800,7 @@ class TasksPage extends StatelessWidget {
                 title: 'Limpiar el baño',
                 coins: 20,
                 status: 'Tu voto',
-                statusColor: _sky,
+                statusColor: AppColors.sky,
                 detail: '23 h 42 min',
                 onTap: () => _push(context, const TaskVoteScreen()),
               ),
@@ -917,7 +810,7 @@ class TasksPage extends StatelessWidget {
                 title: 'Sacar la basura',
                 coins: 5,
                 status: 'Disponible',
-                statusColor: _lime,
+                statusColor: AppColors.lime,
                 onTap: () => _push(context, const AvailableTaskScreen()),
               ),
               const SizedBox(height: 12),
@@ -926,7 +819,7 @@ class TasksPage extends StatelessWidget {
                 title: 'Fregar los platos',
                 coins: 10,
                 status: 'Validación',
-                statusColor: _coral.withValues(alpha: .35),
+                statusColor: AppColors.coral.withValues(alpha: .35),
                 onTap: () => _push(context, const ValidationScreen()),
               ),
             ],
@@ -949,13 +842,13 @@ class _FilterChip extends StatelessWidget {
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: selected ? _violet : Colors.white,
+        color: selected ? AppColors.violet : Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: selected ? Colors.white : _ink,
+          color: selected ? Colors.white : AppColors.ink,
           fontWeight: FontWeight.w800,
         ),
       ),
@@ -1044,7 +937,7 @@ class _TaskCard extends StatelessWidget {
             width: 68,
             height: 68,
             decoration: BoxDecoration(
-              color: _sky.withValues(alpha: .36),
+              color: AppColors.sky.withValues(alpha: .36),
               borderRadius: BorderRadius.circular(20),
             ),
             alignment: Alignment.center,
@@ -1068,13 +961,13 @@ class _TaskCard extends StatelessWidget {
                   children: [
                     _StatusPill(label: status, color: statusColor),
                     if (detail != null)
-                      Text(detail!, style: const TextStyle(color: _muted)),
+                      Text(detail!, style: const TextStyle(color: AppColors.muted)),
                   ],
                 ),
               ],
             ),
           ),
-          const Icon(Icons.chevron_right_rounded, color: _muted),
+          const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
         ],
       ),
     );
@@ -1096,7 +989,7 @@ class TaskVoteScreen extends StatelessWidget {
         const _PersonRow(name: 'Propuesta por Juan', emoji: '👨🏽'),
         const SizedBox(height: 20),
         const _BigValueCard(
-          color: _lime,
+          color: AppColors.lime,
           value: '25',
           label: 'monedas',
           icon: '🪙',
@@ -1137,7 +1030,7 @@ class TaskVoteScreen extends StatelessWidget {
         ),
         TextButton(
           onPressed: () => _showMessage(context, 'Propuesta rechazada'),
-          style: TextButton.styleFrom(foregroundColor: _coral),
+          style: TextButton.styleFrom(foregroundColor: AppColors.coral),
           child: const Text('Rechazar'),
         ),
       ],
@@ -1170,7 +1063,7 @@ class CounterOfferSheet extends StatelessWidget {
         24 + MediaQuery.viewInsetsOf(context).bottom,
       ),
       decoration: const BoxDecoration(
-        color: _cream,
+        color: AppColors.cream,
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
@@ -1192,7 +1085,7 @@ class CounterOfferSheet extends StatelessWidget {
           const SizedBox(height: 8),
           const Text(
             '¿Cuántas monedas te parecerían justas?',
-            style: TextStyle(color: _muted),
+            style: TextStyle(color: AppColors.muted),
           ),
           const SizedBox(height: 26),
           Row(
@@ -1245,7 +1138,7 @@ class CounterOfferDecisionScreen extends StatelessWidget {
       content: const [
         _PersonRow(name: 'Mayte propone', emoji: '👩🏽'),
         SizedBox(height: 22),
-        _BigValueCard(color: _sky, value: '20', label: 'monedas', icon: '🪙'),
+        _BigValueCard(color: AppColors.sky, value: '20', label: 'monedas', icon: '🪙'),
         SizedBox(height: 18),
         _InfoRow(
           icon: Icons.restart_alt_rounded,
@@ -1273,11 +1166,11 @@ class AvailableTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _DetailScaffold(
-      status: const _StatusPill(label: 'Disponible', color: _lime),
+      status: const _StatusPill(label: 'Disponible', color: AppColors.lime),
       title: 'Sacar la basura',
       content: const [
         Center(child: Text('🗑️', style: TextStyle(fontSize: 110))),
-        _BigValueCard(color: _lime, value: '5', label: 'monedas', icon: '🪙'),
+        _BigValueCard(color: AppColors.lime, value: '5', label: 'monedas', icon: '🪙'),
         SizedBox(height: 16),
         _InfoRow(
           icon: Icons.description_rounded,
@@ -1315,7 +1208,7 @@ class ValidationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _DetailScaffold(
-      status: const _StatusPill(label: 'Validación', color: _lime),
+      status: const _StatusPill(label: 'Validación', color: AppColors.lime),
       title: '¿Está bien hecha?',
       content: [
         Text(
@@ -1362,8 +1255,8 @@ class ValidationScreen extends StatelessWidget {
             ),
           ),
           style: OutlinedButton.styleFrom(
-            foregroundColor: _coral,
-            side: const BorderSide(color: _coral),
+            foregroundColor: AppColors.coral,
+            side: const BorderSide(color: AppColors.coral),
           ),
           icon: const Icon(Icons.close_rounded),
           label: const Text('No, falta algo'),
@@ -1412,7 +1305,7 @@ class _DetailScaffold extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(24, 12, 24, 22),
-              color: _cream,
+              color: AppColors.cream,
               child: Column(mainAxisSize: MainAxisSize.min, children: actions),
             ),
           ],
@@ -1433,7 +1326,7 @@ class _PersonRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        CircleAvatar(backgroundColor: _sky, child: Text(emoji)),
+        CircleAvatar(backgroundColor: AppColors.sky, child: Text(emoji)),
         const SizedBox(width: 10),
         Flexible(
           child: Text(
@@ -1498,7 +1391,7 @@ class _InfoRow extends StatelessWidget {
     return _SoftCard(
       child: Row(
         children: [
-          Icon(icon, color: _violet),
+          Icon(icon, color: AppColors.violet),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -1550,7 +1443,7 @@ class ResultScreen extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: _muted, fontSize: 17),
+                style: const TextStyle(color: AppColors.muted, fontSize: 17),
               ),
               const SizedBox(height: 28),
               Container(
@@ -1559,7 +1452,7 @@ class ResultScreen extends StatelessWidget {
                   vertical: 18,
                 ),
                 decoration: BoxDecoration(
-                  color: _lime,
+                  color: AppColors.lime,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: Text(
@@ -1613,7 +1506,7 @@ class ProposeTaskScreen extends StatelessWidget {
         Text(
           'Una tarea normal suele valer 10',
           textAlign: TextAlign.center,
-          style: TextStyle(color: _muted),
+          style: TextStyle(color: AppColors.muted),
         ),
       ],
       button: 'Revisar propuesta',
@@ -1628,10 +1521,10 @@ class TaskReviewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _DetailScaffold(
-      status: const _StatusPill(label: 'Revisa el trato', color: _sky),
+      status: const _StatusPill(label: 'Revisa el trato', color: AppColors.sky),
       title: 'Limpiar el baño',
       content: const [
-        _BigValueCard(color: _lime, value: '25', label: 'monedas', icon: '🪙'),
+        _BigValueCard(color: AppColors.lime, value: '25', label: 'monedas', icon: '🪙'),
         SizedBox(height: 16),
         _InfoRow(
           icon: Icons.schedule_rounded,
@@ -1775,7 +1668,7 @@ class ShopPage extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               _RewardCard(
-                color: _sky.withValues(alpha: .55),
+                color: AppColors.sky.withValues(alpha: .55),
                 emoji: '💆🏽',
                 title: 'Un masaje',
                 price: 50,
@@ -1783,7 +1676,7 @@ class ShopPage extends StatelessWidget {
               ),
               const SizedBox(height: 14),
               _RewardCard(
-                color: _coral.withValues(alpha: .25),
+                color: AppColors.coral.withValues(alpha: .25),
                 emoji: '🍝',
                 title: 'Cena fuera, pago yo',
                 price: 150,
@@ -1941,7 +1834,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
           const Text(
             'Mayte tendrá que aceptar',
             textAlign: TextAlign.center,
-            style: TextStyle(color: _muted),
+            style: TextStyle(color: AppColors.muted),
           ),
         ],
       ),
@@ -1973,7 +1866,7 @@ class _PersonChoice extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: selected ? _violet : Colors.transparent,
+            color: selected ? AppColors.violet : Colors.transparent,
             width: 2,
           ),
         ),
@@ -1983,7 +1876,7 @@ class _PersonChoice extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Icon(
                 selected ? Icons.check_circle : Icons.circle_outlined,
-                color: selected ? _violet : _muted,
+                color: selected ? AppColors.violet : AppColors.muted,
               ),
             ),
             Text(emoji, style: const TextStyle(fontSize: 54)),
@@ -2062,7 +1955,7 @@ class RewardVoteScreen extends StatelessWidget {
       title: 'Desayuno en la cama',
       content: const [
         Center(child: Text('☕🥐', style: TextStyle(fontSize: 90))),
-        _BigValueCard(color: _sky, value: '40', label: 'monedas', icon: '🪙'),
+        _BigValueCard(color: AppColors.sky, value: '40', label: 'monedas', icon: '🪙'),
         SizedBox(height: 14),
         _PersonRow(name: 'Propuesta por Mayte', emoji: '👩🏽'),
         SizedBox(height: 14),
@@ -2077,8 +1970,8 @@ class RewardVoteScreen extends StatelessWidget {
         OutlinedButton(
           onPressed: () => _showMessage(context, 'Recompensa rechazada'),
           style: OutlinedButton.styleFrom(
-            foregroundColor: _coral,
-            side: const BorderSide(color: _coral),
+            foregroundColor: AppColors.coral,
+            side: const BorderSide(color: AppColors.coral),
           ),
           child: const Text('Rechazar'),
         ),
@@ -2093,7 +1986,7 @@ class PendingPurchaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _DetailScaffold(
-      status: const _StatusPill(label: 'Necesita tu respuesta', color: _coral),
+      status: const _StatusPill(label: 'Necesita tu respuesta', color: AppColors.coral),
       title: 'Mayte te ha elegido',
       content: [
         const Center(child: Text('📺🍿', style: TextStyle(fontSize: 90))),
@@ -2125,8 +2018,8 @@ class PendingPurchaseScreen extends StatelessWidget {
           onPressed: () =>
               _showMessage(context, 'Compra rechazada y monedas devueltas'),
           style: OutlinedButton.styleFrom(
-            foregroundColor: _coral,
-            side: const BorderSide(color: _coral),
+            foregroundColor: AppColors.coral,
+            side: const BorderSide(color: AppColors.coral),
           ),
           child: const Text('No puedo cumplirla'),
         ),
@@ -2184,7 +2077,7 @@ class _TimelineStep extends StatelessWidget {
       children: [
         CircleAvatar(
           radius: 18,
-          backgroundColor: done ? _violet : const Color(0xFFD8D5DE),
+          backgroundColor: done ? AppColors.violet : const Color(0xFFD8D5DE),
           child: Icon(
             done ? Icons.check : Icons.more_horiz,
             color: Colors.white,
@@ -2216,7 +2109,7 @@ class WalletPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: _violet,
+                  color: AppColors.violet,
                   borderRadius: BorderRadius.circular(30),
                 ),
                 child: Row(
@@ -2248,7 +2141,7 @@ class WalletPage extends StatelessWidget {
                               vertical: 6,
                             ),
                             decoration: BoxDecoration(
-                              color: _lime,
+                              color: AppColors.lime,
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const Text(
@@ -2332,7 +2225,7 @@ class _MovementRow extends StatelessWidget {
                   ),
                   Text(
                     date,
-                    style: const TextStyle(color: _muted, fontSize: 13),
+                    style: const TextStyle(color: AppColors.muted, fontSize: 13),
                   ),
                 ],
               ),
@@ -2340,7 +2233,7 @@ class _MovementRow extends StatelessWidget {
             Text(
               amount,
               style: TextStyle(
-                color: positive ? const Color(0xFF16853C) : _coral,
+                color: positive ? const Color(0xFF16853C) : AppColors.coral,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
               ),
@@ -2365,7 +2258,7 @@ class GroupPage extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
             children: [
               _SoftCard(
-                color: _lime,
+                color: AppColors.lime,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -2385,7 +2278,7 @@ class GroupPage extends StatelessWidget {
                     const Divider(height: 28),
                     const Text(
                       'Código del grupo',
-                      style: TextStyle(color: _muted),
+                      style: TextStyle(color: AppColors.muted),
                     ),
                     Row(
                       children: [
@@ -2448,7 +2341,7 @@ class _MemberRow extends StatelessWidget {
       child: _SoftCard(
         child: Row(
           children: [
-            CircleAvatar(backgroundColor: _sky, child: Text(emoji)),
+            CircleAvatar(backgroundColor: AppColors.sky, child: Text(emoji)),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -2542,7 +2435,7 @@ class _ActivityCard extends StatelessWidget {
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
-                Text(time, style: const TextStyle(color: _muted, fontSize: 12)),
+                Text(time, style: const TextStyle(color: AppColors.muted, fontSize: 12)),
               ],
             ),
             const SizedBox(height: 14),
