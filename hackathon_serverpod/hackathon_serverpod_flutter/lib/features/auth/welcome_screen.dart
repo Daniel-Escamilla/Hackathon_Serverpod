@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
-import 'email_screen.dart';
+import 'create_account_email_screen.dart';
+import 'sign_in_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -16,13 +17,6 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () => enterHome(context),
-                  child: const Text('Ver prototipo'),
-                ),
-              ),
               const Spacer(),
               const _HouseHero(),
               const SizedBox(height: 38),
@@ -43,13 +37,14 @@ class WelcomeScreen extends StatelessWidget {
               ),
               const Spacer(),
               FilledButton.icon(
-                onPressed: () => pushPage(context, const EmailScreen()),
+                onPressed: () => pushPage(context, const SignInScreen()),
                 icon: const Icon(Icons.mail_outline_rounded),
                 label: const Text('Entrar con email'),
               ),
               const SizedBox(height: 8),
               TextButton(
-                onPressed: () => pushPage(context, const EmailScreen()),
+                onPressed: () =>
+                    pushPage(context, const CreateAccountEmailScreen()),
                 child: const Text('Crear una cuenta'),
               ),
             ],

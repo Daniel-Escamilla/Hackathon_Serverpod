@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../../app_theme.dart';
-import '../../common/navigation.dart';
-import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
 
-class BuyRewardScreen extends StatefulWidget {
-  const BuyRewardScreen({super.key});
+/// Buying needs to pick who fulfils the reward, which needs the group's
+/// member list — GroupEndpoint has no read endpoint for that yet (see
+/// group_page.dart). Shows the real reward and blocks the purchase instead
+/// of picking from fake people.
+class BuyRewardScreen extends StatelessWidget {
+  const BuyRewardScreen({required this.reward, super.key});
 
-  @override
-  State<BuyRewardScreen> createState() => _BuyRewardScreenState();
-}
-
-class _BuyRewardScreenState extends State<BuyRewardScreen> {
-  String _selected = 'Mayte';
+  final RewardItem reward;
 
   @override
   Widget build(BuildContext context) {
@@ -31,146 +29,40 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
             color: const Color(0xFFE9E3FF),
             child: Row(
               children: [
-                const Text('🍿', style: TextStyle(fontSize: 54)),
+                const Icon(
+                  Icons.card_giftcard_rounded,
+                  color: AppColors.violet,
+                  size: 40,
+                ),
                 const SizedBox(width: 14),
                 Expanded(
                   child: Text(
-                    'Elijo yo la serie esta noche',
+                    reward.title,
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                 ),
-                const Text(
-                  '🪙 20',
-                  style: TextStyle(fontWeight: FontWeight.w900),
+                Text(
+                  '🪙 ${reward.price}',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w900,
+                    fontFeatures: AppFonts.tabularFigures,
+                  ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 24),
-          const FieldLabel('Selecciona a una persona'),
-          Row(
-            children: [
-              Expanded(
-                child: _PersonChoice(
-                  name: 'Mayte',
-                  emoji: '👩🏽',
-                  selected: _selected == 'Mayte',
-                  onTap: () => setState(() => _selected = 'Mayte'),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: _PersonChoice(
-                  name: 'Daniel',
-                  emoji: '👨🏻',
-                  selected: _selected == 'Daniel',
-                  onTap: () => setState(() => _selected = 'Daniel'),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 22),
-          const SoftCard(
-            child: Column(
-              children: [
-                _BalanceRow(label: 'Tu saldo', value: '120'),
-                Divider(),
-                _BalanceRow(label: 'Después', value: '100'),
-              ],
-            ),
-          ),
-          const SizedBox(height: 22),
-          FilledButton(
-            onPressed: () => pushPage(
-              context,
-              const ResultScreen(
-                emoji: '🎁',
-                title: 'Compra enviada',
-                message: 'Mayte debe aceptar antes de cumplirla.',
-                value: '−20 monedas',
-                button: 'Volver a la tienda',
-                homeIndex: 1,
-              ),
-            ),
-            child: const Text('Comprar por 20'),
+          const InfoRow(
+            icon: Icons.construction_rounded,
+            text:
+                'Elegir a quién le toca necesita el listado de miembros del '
+                'grupo, que todavía no tiene endpoint.',
           ),
           const SizedBox(height: 8),
           const Text(
-            'Mayte tendrá que aceptar',
+            'La compra se activará en cuanto el backend lo exponga.',
             textAlign: TextAlign.center,
             style: TextStyle(color: AppColors.muted),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PersonChoice extends StatelessWidget {
-  const _PersonChoice({
-    required this.name,
-    required this.emoji,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String name;
-  final String emoji;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
-      child: Container(
-        padding: const EdgeInsets.all(18),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: selected ? AppColors.violet : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerRight,
-              child: Icon(
-                selected ? Icons.check_circle : Icons.circle_outlined,
-                color: selected ? AppColors.violet : AppColors.muted,
-              ),
-            ),
-            Text(emoji, style: const TextStyle(fontSize: 54)),
-            Text(name, style: Theme.of(context).textTheme.titleMedium),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _BalanceRow extends StatelessWidget {
-  const _BalanceRow({required this.label, required this.value});
-
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: Row(
-        children: [
-          Expanded(child: Text(label)),
-          Text(
-            '🪙 $value',
-            style: const TextStyle(
-              fontWeight: FontWeight.w900,
-              fontFeatures: AppFonts.tabularFigures,
-            ),
           ),
         ],
       ),

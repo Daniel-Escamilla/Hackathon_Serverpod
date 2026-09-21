@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:provider/provider.dart';
 
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import 'counter_offer_decision_screen.dart';
 import 'counter_offer_sheet.dart';
+import 'tasks_controller.dart';
 
 class TaskVoteScreen extends StatelessWidget {
-  const TaskVoteScreen({super.key});
+  const TaskVoteScreen({required this.task, super.key});
+
+  final Task task;
 
   @override
   Widget build(BuildContext context) {
@@ -16,41 +21,27 @@ class TaskVoteScreen extends StatelessWidget {
         label: 'Esperando tu voto',
         color: Color(0xFFE2DCFF),
       ),
-      title: 'Limpiar el baño',
+      title: task.title,
       content: [
-        const PersonRow(name: 'Propuesta por Juan', emoji: '👨🏽'),
-        const SizedBox(height: 20),
-        const BigValueCard(
+        BigValueCard(
           color: AppColors.lime,
-          value: '25',
+          value: '${task.reward}',
           label: 'monedas',
           icon: '🪙',
         ),
         const SizedBox(height: 16),
-        const InfoRow(
-          icon: Icons.description_rounded,
-          text: 'Ducha, lavabo, espejo y suelo',
-        ),
-        const SizedBox(height: 12),
-        const InfoRow(
-          icon: Icons.schedule_rounded,
-          text: 'Quedan 23 h 42 min',
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          'Votos · 0 de 1',
-          style: TextStyle(fontWeight: FontWeight.w900),
-        ),
-        const SizedBox(height: 10),
-        const LinearProgressIndicator(
-          value: 0,
-          minHeight: 8,
-          borderRadius: BorderRadius.all(Radius.circular(8)),
-        ),
+        InfoRow(icon: Icons.description_rounded, text: task.description),
+        if (task.voteClosesAt != null) ...[
+          const SizedBox(height: 12),
+          InfoRow(
+            icon: Icons.schedule_rounded,
+            text: _remaining(task.voteClosesAt!),
+          ),
+        ],
       ],
       actions: [
         FilledButton.icon(
-          onPressed: () => showSnack(context, 'Has aprobado la propuesta'),
+          onPressed: () => _vote(context, true),
           icon: const Icon(Icons.thumb_up_alt_rounded),
           label: const Text('Aprobar'),
         ),
@@ -61,7 +52,7 @@ class TaskVoteScreen extends StatelessWidget {
           label: const Text('Contraofertar'),
         ),
         TextButton(
-          onPressed: () => showSnack(context, 'Propuesta rechazada'),
+          onPressed: () => _vote(context, false),
           style: TextButton.styleFrom(foregroundColor: AppColors.coral),
           child: const Text('Rechazar'),
         ),
@@ -69,15 +60,46 @@ class TaskVoteScreen extends StatelessWidget {
     );
   }
 
+  String _remaining(DateTime closesAt) {
+    final left = closesAt.difference(DateTime.now());
+    if (left.isNegative) return 'La votación está a punto de cerrar';
+    return 'Quedan ${left.inHours} h ${left.inMinutes % 60} min';
+  }
+
+  Future<void> _vote(BuildContext context, bool approve) async {
+    final controller = context.read<TasksController>();
+    try {
+      await controller.voteTaskProposal(task.id!, approve);
+      if (context.mounted) {
+        showSnack(
+          context,
+          approve ? 'Has aprobado la propuesta' : 'Propuesta rechazada',
+        );
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (context.mounted) showSnack(context, 'No se pudo registrar tu voto');
+    }
+  }
+
   Future<void> _counterOffer(BuildContext context) async {
-    final sent = await showModalBottomSheet<bool>(
+    final controller = context.read<TasksController>();
+    final sent = await showModalBottomSheet<int>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => const CounterOfferSheet(),
+      builder: (context) => CounterOfferSheet(initialValue: task.reward),
     );
-    if (sent == true && context.mounted) {
-      pushPage(context, const CounterOfferDecisionScreen());
+    if (sent == null || !context.mounted) return;
+    try {
+      final updated = await controller.counterOfferTask(task.id!, sent);
+      if (context.mounted) {
+        pushPage(context, CounterOfferDecisionScreen(task: updated));
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showSnack(context, 'No se pudo enviar la contraoferta');
+      }
     }
   }
 }

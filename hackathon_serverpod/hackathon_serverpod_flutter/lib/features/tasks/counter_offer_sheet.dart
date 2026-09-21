@@ -3,8 +3,17 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 
-class CounterOfferSheet extends StatelessWidget {
-  const CounterOfferSheet({super.key});
+class CounterOfferSheet extends StatefulWidget {
+  const CounterOfferSheet({required this.initialValue, super.key});
+
+  final int initialValue;
+
+  @override
+  State<CounterOfferSheet> createState() => _CounterOfferSheetState();
+}
+
+class _CounterOfferSheetState extends State<CounterOfferSheet> {
+  late int _value = widget.initialValue;
 
   @override
   Widget build(BuildContext context) {
@@ -45,18 +54,22 @@ class CounterOfferSheet extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton.filledTonal(
-                onPressed: () {},
+                onPressed: _value > 1 ? () => setState(() => _value--) : null,
                 icon: const Icon(Icons.remove_rounded),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Text(
-                  '20',
-                  style: TextStyle(fontSize: 44, fontWeight: FontWeight.w900),
+                  '$_value',
+                  style: const TextStyle(
+                    fontSize: 44,
+                    fontWeight: FontWeight.w900,
+                    fontFeatures: AppFonts.tabularFigures,
+                  ),
                 ),
               ),
               IconButton.filled(
-                onPressed: () {},
+                onPressed: () => setState(() => _value++),
                 icon: const Icon(Icons.add_rounded),
               ),
             ],
@@ -64,11 +77,11 @@ class CounterOfferSheet extends StatelessWidget {
           const SizedBox(height: 20),
           const InfoRow(
             icon: Icons.pause_circle_rounded,
-            text: 'La votación se pausará hasta que Juan responda',
+            text: 'La votación se pausará hasta que el autor responda',
           ),
           const SizedBox(height: 20),
           FilledButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.pop(context, _value),
             child: const Text('Enviar contraoferta'),
           ),
         ],

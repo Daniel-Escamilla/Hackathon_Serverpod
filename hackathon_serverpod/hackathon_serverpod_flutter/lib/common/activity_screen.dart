@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
-import '../features/tasks/available_task_screen.dart';
-import '../features/tasks/counter_offer_decision_screen.dart';
-import '../home_shell.dart';
-import 'navigation.dart';
-import 'widgets.dart';
 
+/// The notification feed had canned, hardcoded entries pointing at task/shop
+/// detail screens that now require a real Task/RewardItem. There's no
+/// endpoint yet to list a member's actual activity, so this is an honest
+/// empty state instead of fake notifications.
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({super.key});
 
@@ -14,85 +13,25 @@ class ActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Actividad')),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 30),
-        children: [
-          _ActivityCard(
-            emoji: '👨🏽',
-            title: 'Juan ha contraofertado 20 monedas',
-            time: 'Ahora',
-            action: 'Responder',
-            onTap: () => pushPage(context, const CounterOfferDecisionScreen()),
+      body: const Center(
+        child: Padding(
+          padding: EdgeInsets.all(24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.notifications_none_rounded,
+                size: 48,
+                color: AppColors.muted,
+              ),
+              SizedBox(height: 12),
+              Text(
+                'Todavía no hay un listado de actividad del servidor.',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: AppColors.muted),
+              ),
+            ],
           ),
-          _ActivityCard(
-            emoji: '✅',
-            title: 'Tu tarea está disponible',
-            time: 'Hace 8 min',
-            action: 'Ver tarea',
-            onTap: () => pushPage(context, const AvailableTaskScreen()),
-          ),
-          _ActivityCard(
-            emoji: '🪙',
-            title: 'Has ganado 20 monedas',
-            time: 'Ayer',
-            action: 'Ver cartera',
-            onTap: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute<void>(
-                  builder: (_) => const HomeShell(initialIndex: 2),
-                ),
-                (_) => false,
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ActivityCard extends StatelessWidget {
-  const _ActivityCard({
-    required this.emoji,
-    required this.title,
-    required this.time,
-    required this.action,
-    required this.onTap,
-  });
-
-  final String emoji;
-  final String title;
-  final String time;
-  final String action;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: SoftCard(
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(emoji, style: const TextStyle(fontSize: 36)),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.titleMedium,
-                  ),
-                ),
-                Text(
-                  time,
-                  style: const TextStyle(color: AppColors.muted, fontSize: 12),
-                ),
-              ],
-            ),
-            const SizedBox(height: 14),
-            OutlinedButton(onPressed: onTap, child: Text(action)),
-          ],
         ),
       ),
     );

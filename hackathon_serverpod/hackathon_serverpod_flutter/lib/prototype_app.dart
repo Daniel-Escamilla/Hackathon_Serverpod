@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'app_theme.dart';
-import 'features/auth/welcome_screen.dart';
+import 'common/auth_gate.dart';
 
 class PrototypeApp extends StatelessWidget {
   const PrototypeApp({super.key});
@@ -12,7 +12,7 @@ class PrototypeApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Prototipo de tareas',
       theme: AppTheme.light,
-      home: const WelcomeScreen(),
+      home: const AuthGate(),
     );
   }
 }

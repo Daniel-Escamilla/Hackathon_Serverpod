@@ -16,6 +16,13 @@ class GroupPage extends StatelessWidget {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
             children: [
+              const InfoRow(
+                icon: Icons.construction_rounded,
+                text:
+                    'Datos de ejemplo: falta un endpoint para pedir tu grupo '
+                    'y sus miembros al servidor.',
+              ),
+              const SizedBox(height: 14),
               SoftCard(
                 color: AppColors.lime,
                 child: Column(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../../app_theme.dart';
+import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import 'group_success_screen.dart';
@@ -13,7 +15,45 @@ class CreateGroupScreen extends StatefulWidget {
 }
 
 class _CreateGroupScreenState extends State<CreateGroupScreen> {
-  String _type = 'Pareja';
+  GroupType _type = GroupType.couple;
+  final _nameController = TextEditingController();
+  bool _loading = false;
+  String? _error;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    if (_loading) return;
+    final name = _nameController.text.trim();
+    if (name.isEmpty) {
+      setState(() => _error = 'Ponle un nombre al grupo.');
+      return;
+    }
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final group = await client.group.createGroup(name, _type);
+      if (mounted) {
+        pushPage(
+          context,
+          GroupSuccessScreen(
+            groupName: group.name,
+            inviteCode: group.inviteCode,
+          ),
+        );
+      }
+    } catch (e) {
+      setState(() => _error = 'No se pudo crear el grupo.');
+    } finally {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -38,8 +78,8 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 child: _ProfileCard(
                   emoji: '🏠',
                   label: 'Piso compartido',
-                  selected: _type == 'Piso compartido',
-                  onTap: () => setState(() => _type = 'Piso compartido'),
+                  selected: _type == GroupType.sharedFlat,
+                  onTap: () => setState(() => _type = GroupType.sharedFlat),
                 ),
               ),
               const SizedBox(width: 12),
@@ -47,21 +87,35 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
                 child: _ProfileCard(
                   emoji: '💜',
                   label: 'Pareja',
-                  selected: _type == 'Pareja',
-                  onTap: () => setState(() => _type = 'Pareja'),
+                  selected: _type == GroupType.couple,
+                  onTap: () => setState(() => _type = GroupType.couple),
                 ),
               ),
             ],
           ),
           const SizedBox(height: 30),
           const FieldLabel('Nombre del grupo'),
-          const TextField(
-            decoration: InputDecoration(hintText: 'Casa de Mayte y Juan'),
+          TextField(
+            controller: _nameController,
+            decoration: const InputDecoration(hintText: 'Casa de Mayte y Juan'),
           ),
+          if (_error != null) ...[
+            const SizedBox(height: 12),
+            Text(_error!, style: const TextStyle(color: AppColors.coral)),
+          ],
           const SizedBox(height: 24),
           FilledButton(
-            onPressed: () => pushPage(context, const GroupSuccessScreen()),
-            child: const Text('Crear grupo'),
+            onPressed: _loading ? null : _submit,
+            child: _loading
+                ? const SizedBox(
+                    height: 20,
+                    width: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    ),
+                  )
+                : const Text('Crear grupo'),
           ),
         ],
       ),

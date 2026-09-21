@@ -18,10 +18,7 @@ class GroupChoiceScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                '¡Hola, Mayte!',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
+              Text('¡Hola!', style: Theme.of(context).textTheme.titleLarge),
               const SizedBox(height: 8),
               Text(
                 '¿Cómo quieres\nempezar?',

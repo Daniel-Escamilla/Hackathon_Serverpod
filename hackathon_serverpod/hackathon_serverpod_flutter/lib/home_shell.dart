@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
 import 'common/navigation.dart';
 import 'features/group/group_page.dart';
+import 'features/shop/shop_controller.dart';
 import 'features/shop/shop_page.dart';
 import 'features/tasks/propose_task_screen.dart';
+import 'features/tasks/tasks_controller.dart';
 import 'features/tasks/tasks_page.dart';
+import 'features/wallet/wallet_controller.dart';
 import 'features/wallet/wallet_page.dart';
 
 class HomeShell extends StatefulWidget {
@@ -19,47 +23,75 @@ class HomeShell extends StatefulWidget {
 
 class _HomeShellState extends State<HomeShell> {
   late int _index = widget.initialIndex;
+  final _tasksController = TasksController()..load();
+  final _shopController = ShopController()..load();
+  final _walletController = WalletController()..load();
+
+  @override
+  void dispose() {
+    _tasksController.dispose();
+    _shopController.dispose();
+    _walletController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    const pages = [TasksPage(), ShopPage(), WalletPage(), GroupPage()];
-    return Scaffold(
-      body: SafeArea(
-        child: IndexedStack(index: _index, children: pages),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _tasksController),
+        ChangeNotifierProvider.value(value: _shopController),
+        ChangeNotifierProvider.value(value: _walletController),
+      ],
+      child: Builder(
+        builder: (context) {
+          const pages = [
+            TasksPage(),
+            ShopPage(),
+            WalletPage(),
+            GroupPage(),
+          ];
+          return Scaffold(
+            body: SafeArea(
+              child: IndexedStack(index: _index, children: pages),
+            ),
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: _index,
+              onDestinationSelected: (value) => setState(() => _index = value),
+              backgroundColor: Colors.white,
+              indicatorColor: AppColors.violet.withValues(alpha: .14),
+              destinations: const [
+                NavigationDestination(
+                  icon: Icon(Icons.task_alt_rounded),
+                  label: 'Tareas',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.storefront_rounded),
+                  label: 'Tienda',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.account_balance_wallet_rounded),
+                  label: 'Cartera',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.groups_rounded),
+                  label: 'Grupo',
+                ),
+              ],
+            ),
+            floatingActionButton: _index == 0
+                ? FloatingActionButton.extended(
+                    onPressed: () =>
+                        pushPage(context, const ProposeTaskScreen()),
+                    backgroundColor: AppColors.violet,
+                    foregroundColor: Colors.white,
+                    icon: const Icon(Icons.add_rounded),
+                    label: const Text('Proponer'),
+                  )
+                : null,
+          );
+        },
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _index,
-        onDestinationSelected: (value) => setState(() => _index = value),
-        backgroundColor: Colors.white,
-        indicatorColor: AppColors.violet.withValues(alpha: .14),
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.task_alt_rounded),
-            label: 'Tareas',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.storefront_rounded),
-            label: 'Tienda',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.account_balance_wallet_rounded),
-            label: 'Cartera',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.groups_rounded),
-            label: 'Grupo',
-          ),
-        ],
-      ),
-      floatingActionButton: _index == 0
-          ? FloatingActionButton.extended(
-              onPressed: () => pushPage(context, const ProposeTaskScreen()),
-              backgroundColor: AppColors.violet,
-              foregroundColor: Colors.white,
-              icon: const Icon(Icons.add_rounded),
-              label: const Text('Proponer'),
-            )
-          : null,
     );
   }
 }

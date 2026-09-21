@@ -5,7 +5,14 @@ import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 
 class GroupSuccessScreen extends StatelessWidget {
-  const GroupSuccessScreen({super.key});
+  const GroupSuccessScreen({
+    required this.groupName,
+    required this.inviteCode,
+    super.key,
+  });
+
+  final String groupName;
+  final String inviteCode;
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +30,7 @@ class GroupSuccessScreen extends StatelessWidget {
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               const SizedBox(height: 8),
-              Text(
-                'Casa de Mayte y Juan',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
+              Text(groupName, style: Theme.of(context).textTheme.titleMedium),
               const SizedBox(height: 28),
               SoftCard(
                 child: Column(
@@ -37,7 +41,7 @@ class GroupSuccessScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'NIDO-482',
+                      inviteCode,
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                   ],

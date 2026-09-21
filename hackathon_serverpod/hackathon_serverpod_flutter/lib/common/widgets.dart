@@ -342,9 +342,16 @@ class FormScaffold extends StatelessWidget {
 }
 
 class StepperValue extends StatelessWidget {
-  const StepperValue({required this.value, super.key});
+  const StepperValue({
+    required this.value,
+    this.onChanged,
+    this.step = 5,
+    super.key,
+  });
 
   final int value;
+  final ValueChanged<int>? onChanged;
+  final int step;
 
   @override
   Widget build(BuildContext context) {
@@ -352,7 +359,9 @@ class StepperValue extends StatelessWidget {
       child: Row(
         children: [
           IconButton.filledTonal(
-            onPressed: () {},
+            onPressed: onChanged == null || value <= step
+                ? null
+                : () => onChanged!(value - step),
             icon: const Icon(Icons.remove_rounded),
           ),
           Expanded(
@@ -365,7 +374,9 @@ class StepperValue extends StatelessWidget {
             ),
           ),
           IconButton.filled(
-            onPressed: () {},
+            onPressed: onChanged == null
+                ? null
+                : () => onChanged!(value + step),
             icon: const Icon(Icons.add_rounded),
           ),
         ],
