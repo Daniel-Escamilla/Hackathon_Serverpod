@@ -1,0 +1,11 @@
+### What happened, for the group's live Stream (PRODUCT.md §10.4, issue #65). One
+### value per thing the issue names: propuesta, voto, contraoferta, validación,
+### compra. `taskVoteCast` is a proposal-vote cast; `taskValidated` is a
+### completion-vote cast — the codebase's own names for the two phases.
+enum: GroupEventKind
+values:
+  - taskProposed
+  - taskVoteCast
+  - taskCounterOffered
+  - taskValidated
+  - purchased
