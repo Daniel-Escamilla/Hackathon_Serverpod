@@ -13,6 +13,12 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
+import 'package:hackathon_serverpod_server/src/generated/events/group_event.dart'
+    as _i5i7k9r4;
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
+import 'package:hackathon_serverpod_server/src/generated/future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
+    as _i7db9b19;
 import 'package:hackathon_serverpod_server/src/generated/greetings/greeting.dart'
     as _ikht4he2;
 import 'package:hackathon_serverpod_server/src/generated/groups/group.dart'
@@ -163,9 +169,13 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final futureCalls = _FutureCalls();
+
   late final _EmailIdpEndpoint emailIdp;
 
   late final _JwtRefreshEndpoint jwtRefresh;
+
+  late final _EventEndpoint event;
 
   late final _GreetingEndpoint greeting;
 
@@ -193,6 +203,10 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
+    event = _EventEndpoint(
+      endpoints,
+      serializationManager,
+    );
     greeting = _GreetingEndpoint(
       endpoints,
       serializationManager,
@@ -214,6 +228,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
   }
+}
+
+class _FutureCalls {
+  late final taskVote = _TaskVoteFutureCall();
 }
 
 class _EmailIdpEndpoint {
@@ -531,6 +549,49 @@ class _JwtRefreshEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _EventEndpoint {
+  _EventEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Stream<_i5i7k9r4.GroupEvent> watchGroup(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_i5i7k9r4.GroupEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'event',
+              method: 'watchGroup',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'event',
+              methodName: 'watchGroup',
+              arguments: {},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
+        );
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
   }
 }
 
@@ -1416,5 +1477,28 @@ class _WalletEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _TaskVoteFutureCall {
+  Future<void> expireVote(
+    _ist.TestSessionBuilder sessionBuilder,
+    int taskId,
+    DateTime expectedVoteClosesAt,
+  ) async {
+    var object = _i7db9b19.TaskVoteFutureCallExpireVoteModel(
+      taskId: taskId,
+      expectedVoteClosesAt: expectedVoteClosesAt,
+    );
+    var _localUniqueSession =
+        (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild();
+    try {
+      await _isvvvywu.TaskVoteExpireVoteFutureCall().invoke(
+        _localUniqueSession,
+        object,
+      );
+    } finally {
+      await _localUniqueSession.close();
+    }
   }
 }

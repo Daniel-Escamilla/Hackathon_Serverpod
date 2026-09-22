@@ -10,6 +10,8 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
 import 'package:hackathon_serverpod_server/src/generated/groups/group_type.dart'
     as _ik8b7v56;
 import 'package:serverpod/serverpod.dart' as _is;
@@ -19,11 +21,13 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../events/event_endpoint.dart' as _i7r7roa3;
 import '../greetings/greeting_endpoint.dart' as _il624ik7;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
 import '../tasks/task_endpoint.dart' as _i3nmwja6;
 import '../wallet/wallet_endpoint.dart' as _il5vx24y;
+export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -39,6 +43,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'event': _i7r7roa3.EventEndpoint()
+        ..initialize(
+          server,
+          'event',
           null,
         ),
       'greeting': _il624ik7.GreetingEndpoint()
@@ -275,6 +285,26 @@ class Endpoints extends _is.EndpointDispatch {
                         session,
                         refreshToken: params['refreshToken'],
                       ),
+        ),
+      },
+    );
+    connectors['event'] = _is.EndpointConnector(
+      name: 'event',
+      endpoint: endpoints['event']!,
+      methodConnectors: {
+        'watchGroup': _is.MethodStreamConnector(
+          name: 'watchGroup',
+          params: {},
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['event'] as _i7r7roa3.EventEndpoint).watchGroup(
+                session,
+              ),
         ),
       },
     );
@@ -832,5 +862,10 @@ class Endpoints extends _is.EndpointDispatch {
       ..initializeEndpoints(server);
     modules['serverpod_auth_core'] = _iacs.Endpoints()
       ..initializeEndpoints(server);
+  }
+
+  @override
+  _is.FutureCallDispatch? get futureCalls {
+    return _isvvvywu.FutureCalls();
   }
 }

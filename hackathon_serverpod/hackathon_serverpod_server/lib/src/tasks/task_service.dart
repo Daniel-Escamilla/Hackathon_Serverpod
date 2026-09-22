@@ -1,17 +1,36 @@
+import 'dart:io';
+
 import 'package:serverpod/serverpod.dart';
 
+import '../events/event_service.dart';
+import '../generated/future_calls.dart' show ServerpodFutureCallsGetter;
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
 
-/// Placeholder proposal-vote window: #64 makes it configurable per environment
-/// and wires the `FutureCall` that expires it (PRODUCT.md §4.2, §10.5).
-const _voteWindow = Duration(hours: 24);
+/// How long a proposal or completion vote stays open (#64, PRODUCT.md §4.2,
+/// §10.5): 24 hours in production, a short default elsewhere so tests and
+/// demos don't wait a day. Override with `TASK_VOTE_WINDOW_SECONDS` (e.g. for
+/// the demo recording) without touching code.
+Duration _voteWindow(Session session) {
+  final overrideSeconds = int.tryParse(
+    Platform.environment['TASK_VOTE_WINDOW_SECONDS'] ?? '',
+  );
+  if (overrideSeconds != null) return Duration(seconds: overrideSeconds);
+
+  return session.serverpod.runMode == ServerpodRunMode.production
+      ? const Duration(hours: 24)
+      : const Duration(minutes: 2);
+}
 
 /// Proposing and voting on tasks (PRODUCT.md §3, §4.1, §4.4).
 class TaskService {
-  const TaskService({this.walletService = const WalletService()});
+  const TaskService({
+    this.walletService = const WalletService(),
+    this.eventService = const EventService(),
+  });
 
   final WalletService walletService;
+  final EventService eventService;
 
   /// Starts a new task as `proposed`, open to a proposal vote.
   Future<Task> proposeTask(
@@ -20,8 +39,8 @@ class TaskService {
     required String title,
     required String description,
     required int reward,
-  }) {
-    return Task.db.insertRow(
+  }) async {
+    final task = await Task.db.insertRow(
       session,
       Task(
         groupId: proposer.groupId,
@@ -29,9 +48,32 @@ class TaskService {
         description: description,
         reward: reward,
         proposedById: proposer.id!,
-        voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+        voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
       ),
     );
+    await _scheduleVoteExpiry(session, task);
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskProposed,
+      taskId: task.id,
+    );
+    return task;
+  }
+
+  /// Schedules the `FutureCall` (#64, PRODUCT.md §10.5) that closes [task]'s
+  /// vote if it's still open when `task.voteClosesAt` arrives. Called every
+  /// time a proposal or completion vote opens or restarts; see
+  /// `TaskVoteFutureCall.expireVote` for what runs when it fires, and
+  /// [expireVote] below for why a stale one is safe to leave scheduled.
+  Future<void> _scheduleVoteExpiry(Session session, Task task) {
+    return session.serverpod.futureCalls
+        .callAtTime(
+          task.voteClosesAt!,
+          identifier: 'task-vote-${task.id}',
+        )
+        .taskVote
+        .expireVote(task.id!, task.voteClosesAt!);
   }
 
   /// Records [voter]'s proposal vote on [task] and resolves it to `open`/`rejected`
@@ -73,6 +115,12 @@ class TaskService {
         existingVote.copyWith(approve: approve),
       );
     }
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskVoteCast,
+      taskId: task.id,
+    );
 
     final otherMembers = await GroupMember.db.count(
       session,
@@ -144,10 +192,17 @@ class TaskService {
       );
     }
 
-    return Task.db.updateRow(
+    final countered = await Task.db.updateRow(
       session,
       task.copyWith(status: TaskStatus.counterOffered),
     );
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskCounterOffered,
+      taskId: task.id,
+    );
+    return countered;
   }
 
   /// [author] accepts or withdraws the pending counter-offer on [task]
@@ -184,7 +239,7 @@ class TaskService {
       throw StateError('No counter-offer found for this task.');
     }
 
-    return session.db.transaction((transaction) async {
+    final restarted = await session.db.transaction((transaction) async {
       await TaskVote.db.deleteWhere(
         session,
         where: (t) =>
@@ -196,11 +251,13 @@ class TaskService {
         task.copyWith(
           status: TaskStatus.proposed,
           reward: counterVote.counterReward!,
-          voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+          voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
         ),
         transaction: transaction,
       );
     });
+    await _scheduleVoteExpiry(session, restarted);
+    return restarted;
   }
 
   /// [claimant] marks [task] as done, sending it to validation. Nobody reserves
@@ -212,8 +269,8 @@ class TaskService {
     Session session, {
     required Task task,
     required GroupMember claimant,
-  }) {
-    return session.db.transaction((transaction) async {
+  }) async {
+    final claimed = await session.db.transaction((transaction) async {
       final locked = await Task.db.findById(
         session,
         task.id!,
@@ -230,11 +287,13 @@ class TaskService {
         locked.copyWith(
           status: TaskStatus.inValidation,
           doneById: claimant.id,
-          voteClosesAt: DateTime.now().toUtc().add(_voteWindow),
+          voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
         ),
         transaction: transaction,
       );
     });
+    await _scheduleVoteExpiry(session, claimed);
+    return claimed;
   }
 
   Future<Task> _denyProposal(Session session, Task task) {
@@ -309,6 +368,12 @@ class TaskService {
         existingVote.copyWith(approve: approve),
       );
     }
+    await eventService.publish(
+      session,
+      groupId: task.groupId,
+      kind: GroupEventKind.taskValidated,
+      taskId: task.id,
+    );
 
     final otherMembers = await GroupMember.db.count(
       session,
@@ -395,6 +460,91 @@ class TaskService {
       );
 
       return updated;
+    });
+  }
+
+  /// Resolves an expired vote when its `FutureCall` (#64, PRODUCT.md §10.5)
+  /// fires: fines every member who was eligible to vote and didn't, then
+  /// resolves [taskId] the same way an explicit denial would — `rejected` for
+  /// an expired proposal, back to `open` for an expired completion vote
+  /// (issue #63, third fine: "votación expirada (pagan los que no votaron)").
+  ///
+  /// A no-op if the vote isn't the one that scheduled this call anymore:
+  /// [expectedVoteClosesAt] must still match the task's current
+  /// `voteClosesAt`, which changes the moment the vote resolves early or a
+  /// new round starts (a counter-offer restarting the proposal vote reuses
+  /// the same `proposed` status, so comparing the timestamp — not just the
+  /// status — is what keeps a stale call from closing the wrong round).
+  Future<void> expireVote(
+    Session session, {
+    required int taskId,
+    required DateTime expectedVoteClosesAt,
+  }) async {
+    final task = await Task.db.findById(session, taskId);
+    if (task == null) return;
+    if (task.voteClosesAt == null ||
+        !task.voteClosesAt!.isAtSameMomentAs(expectedVoteClosesAt)) {
+      return;
+    }
+
+    final phase = switch (task.status) {
+      TaskStatus.proposed => TaskVotePhase.proposal,
+      TaskStatus.inValidation => TaskVotePhase.completion,
+      _ => null,
+    };
+    if (phase == null) return;
+    final excludedMemberId = phase == TaskVotePhase.proposal
+        ? task.proposedById
+        : task.doneById!;
+
+    final eligibleVoters = await GroupMember.db.find(
+      session,
+      where: (t) =>
+          t.groupId.equals(task.groupId) &
+          t.leftAt.equals(null) &
+          t.id.notEquals(excludedMemberId),
+    );
+    final votes = await TaskVote.db.find(
+      session,
+      where: (t) => t.taskId.equals(task.id!) & t.phase.equals(phase),
+    );
+    final votedMemberIds = votes.map((v) => v.memberId).toSet();
+    final nonVoters = eligibleVoters.where(
+      (member) => !votedMemberIds.contains(member.id),
+    );
+
+    await session.db.transaction((transaction) async {
+      final group = await Group.db.findById(
+        session,
+        task.groupId,
+        transaction: transaction,
+      );
+      if (group == null) throw StateError('Group not found.');
+      final fine = (task.reward * group.finePercent / 100).ceil();
+
+      for (final member in nonVoters) {
+        await walletService.recordTransaction(
+          session,
+          groupId: task.groupId,
+          memberId: member.id!,
+          amount: -fine,
+          reason: CoinTransactionReason.fined,
+          taskId: task.id,
+          transaction: transaction,
+        );
+      }
+
+      await Task.db.updateRow(
+        session,
+        phase == TaskVotePhase.proposal
+            ? task.copyWith(status: TaskStatus.rejected, voteClosesAt: null)
+            : task.copyWith(
+                status: TaskStatus.open,
+                doneById: null,
+                voteClosesAt: null,
+              ),
+        transaction: transaction,
+      );
     });
   }
 }

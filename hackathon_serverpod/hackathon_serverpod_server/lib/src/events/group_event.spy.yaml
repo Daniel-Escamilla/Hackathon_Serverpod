@@ -1,0 +1,12 @@
+### Something happened in a group that every member's app should see right away,
+### over the per-group Stream (PRODUCT.md §10.4, issue #65). Not a table:
+### published, never queried back.
+class: GroupEvent
+fields:
+  groupId: int
+  kind: GroupEventKind
+  ### The task [kind] is about; null for `purchased`.
+  taskId: int?
+  ### The purchase, when [kind] is `purchased`; null otherwise.
+  purchaseId: int?
+  occurredAt: DateTime

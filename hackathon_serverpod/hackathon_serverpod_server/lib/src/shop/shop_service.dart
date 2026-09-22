@@ -1,14 +1,19 @@
 import 'package:serverpod/serverpod.dart';
 
+import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
 import 'reward_templates.dart';
 
 /// Voting, buying and fulfilling rewards (PRODUCT.md §4.1, §4.4, §6).
 class ShopService {
-  const ShopService({this.walletService = const WalletService()});
+  const ShopService({
+    this.walletService = const WalletService(),
+    this.eventService = const EventService(),
+  });
 
   final WalletService walletService;
+  final EventService eventService;
 
   /// Copies the profile's reward templates into [group] as `active` items — they
   /// skip the vote that member-proposed rewards go through (PRODUCT.md §6). Family
@@ -104,7 +109,7 @@ class ShopService {
     required RewardItem item,
     required GroupMember buyer,
     required GroupMember provider,
-  }) {
+  }) async {
     if (item.status != RewardItemStatus.active) {
       throw StateError('This reward is not available.');
     }
@@ -118,7 +123,7 @@ class ShopService {
       throw StateError('This reward is out of stock.');
     }
 
-    return session.db.transaction((transaction) async {
+    final purchase = await session.db.transaction((transaction) async {
       if (item.stock != null) {
         await RewardItem.db.updateRow(
           session,
@@ -150,6 +155,13 @@ class ShopService {
 
       return purchase;
     });
+    await eventService.publish(
+      session,
+      groupId: item.groupId,
+      kind: GroupEventKind.purchased,
+      purchaseId: purchase.id,
+    );
+    return purchase;
   }
 
   /// The provider accepts or refuses [purchase]. Refusing fines the provider,

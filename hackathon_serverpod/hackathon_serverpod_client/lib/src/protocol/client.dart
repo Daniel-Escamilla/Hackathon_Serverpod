@@ -11,6 +11,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
+import 'package:hackathon_serverpod_client/src/protocol/events/group_event.dart'
+    as _ixxl2uus;
 import 'package:hackathon_serverpod_client/src/protocol/greetings/greeting.dart'
     as _icy68nvy;
 import 'package:hackathon_serverpod_client/src/protocol/groups/group.dart'
@@ -259,6 +261,28 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
         'refreshAccessToken',
         {'refreshToken': refreshToken},
         authenticated: false,
+      );
+}
+
+/// Live updates for the signed-in member's group (PRODUCT.md §10.4, issue #65).
+/// {@category Endpoint}
+class EndpointEvent extends _isc.EndpointRef {
+  EndpointEvent(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'event';
+
+  /// Subscribes to the group's Stream: every `GroupEvent` published for it
+  /// from this point on, until the client stops listening.
+  _ida.Stream<_ixxl2uus.GroupEvent> watchGroup() =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_ixxl2uus.GroupEvent>,
+        _ixxl2uus.GroupEvent
+      >(
+        'event',
+        'watchGroup',
+        {},
+        {},
       );
 }
 
@@ -656,6 +680,7 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    event = EndpointEvent(this);
     greeting = EndpointGreeting(this);
     group = EndpointGroup(this);
     shop = EndpointShop(this);
@@ -667,6 +692,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointEmailIdp emailIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
+
+  late final EndpointEvent event;
 
   late final EndpointGreeting greeting;
 
@@ -684,6 +711,7 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
+    'event': event,
     'greeting': greeting,
     'group': group,
     'shop': shop,
