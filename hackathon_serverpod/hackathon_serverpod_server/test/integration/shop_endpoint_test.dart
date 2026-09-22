@@ -293,6 +293,37 @@ void main() {
           },
         );
 
+        test('then the buyer and the provider both see it listed', () async {
+          final seenByBuyer = await endpoints.shop.listPurchases(
+            sessionOf(_bobAuthUserId),
+          );
+          final seenByProvider = await endpoints.shop.listPurchases(
+            sessionOf(_carolAuthUserId),
+          );
+          expect(seenByBuyer.map((p) => p.id), [purchase.id]);
+          expect(seenByProvider.map((p) => p.id), [purchase.id]);
+        });
+
+        test('then a member who is neither does not see it', () async {
+          final seenByDave = await endpoints.shop.listPurchases(
+            sessionOf(_daveAuthUserId),
+          );
+          expect(seenByDave, isEmpty);
+        });
+
+        test('then the most recent purchase is listed first', () async {
+          final second = await endpoints.shop.purchaseReward(
+            sessionOf(_bobAuthUserId),
+            proposedItem.id!,
+            alice.id!,
+          );
+
+          final seenByBuyer = await endpoints.shop.listPurchases(
+            sessionOf(_bobAuthUserId),
+          );
+          expect(seenByBuyer.map((p) => p.id), [second.id, purchase.id]);
+        });
+
         test('then someone other than the provider cannot respond', () async {
           await expectLater(
             endpoints.shop.respondToPurchase(

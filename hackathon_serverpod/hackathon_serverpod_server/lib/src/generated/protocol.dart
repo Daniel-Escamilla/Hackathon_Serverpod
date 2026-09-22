@@ -13,6 +13,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:hackathon_serverpod_server/src/generated/groups/group_member.dart'
     as _is20wtgg;
+import 'package:hackathon_serverpod_server/src/generated/shop/purchase.dart'
+    as _il4ufzf6;
 import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
 import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
@@ -1137,6 +1139,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == List<_iub5jn2z.RewardItem>) {
       return (data as List)
               .map((e) => deserialize<_iub5jn2z.RewardItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_il4ufzf6.Purchase>) {
+      return (data as List)
+              .map((e) => deserialize<_il4ufzf6.Purchase>(e))
               .toList()
           as T;
     }

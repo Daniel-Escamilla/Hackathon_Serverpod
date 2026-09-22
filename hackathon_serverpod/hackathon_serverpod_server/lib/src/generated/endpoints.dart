@@ -483,6 +483,16 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
                   .listRewards(session),
         ),
+        'listPurchases': _is.MethodConnector(
+          name: 'listPurchases',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
+                  .listPurchases(session),
+        ),
         'proposeReward': _is.MethodConnector(
           name: 'proposeReward',
           params: {
