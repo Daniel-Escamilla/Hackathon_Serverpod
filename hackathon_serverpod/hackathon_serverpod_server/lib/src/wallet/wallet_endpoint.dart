@@ -101,7 +101,10 @@ class WalletEndpoint extends Endpoint {
           t.groupId.equals(member.groupId) &
           (t.createdAt >= weekStart) &
           (t.reason.equals(CoinTransactionReason.earned) |
-              t.reason.equals(CoinTransactionReason.fined)),
+              t.reason.equals(CoinTransactionReason.fined) |
+              t.reason.equals(CoinTransactionReason.proposalDenied) |
+              t.reason.equals(CoinTransactionReason.validationDenied) |
+              t.reason.equals(CoinTransactionReason.voteExpired)),
     );
 
     final netByMember = <int, int>{};
