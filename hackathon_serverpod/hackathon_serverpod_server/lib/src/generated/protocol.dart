@@ -34,6 +34,7 @@ import 'events/group_event_kind.dart' as _il82a0w2;
 import 'future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
     as _if11z8io;
 import 'greetings/greeting.dart' as _izw8z7ou;
+import 'groups/child_login_code.dart' as _ivjbsthj;
 import 'groups/group.dart' as _i9ztykbt;
 import 'groups/group_error_reason.dart' as _i7quka6t;
 import 'groups/group_exception.dart' as _i3la3wci;
@@ -59,6 +60,7 @@ import 'wallet/ranking_entry.dart' as _izo0hjq0;
 export 'events/group_event.dart';
 export 'events/group_event_kind.dart';
 export 'greetings/greeting.dart';
+export 'groups/child_login_code.dart';
 export 'groups/group.dart';
 export 'groups/group_error_reason.dart';
 export 'groups/group_exception.dart';
@@ -90,6 +92,86 @@ class Protocol extends _is.DatabaseSerializationManager {
   static final Protocol _instance = Protocol._().._registerHostProtocols();
 
   static List<_isp.TableDefinition> get targetTableDefinitions => [
+    _isp.TableDefinition(
+      name: 'child_login_code',
+      dartName: 'ChildLoginCode',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'memberId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'codeHash',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'expiresAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'usedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'child_login_code_fk_0',
+          columns: ['memberId'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'child_login_code_member_id_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'memberId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isp.IndexDefinition(
+          indexName: 'child_login_code_code_hash_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'codeHash',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     _isp.TableDefinition(
       name: 'coin_transaction',
       dartName: 'CoinTransaction',
@@ -970,6 +1052,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _izw8z7ou.Greeting) {
       return _izw8z7ou.Greeting.fromJson(data) as T;
     }
+    if (t == _ivjbsthj.ChildLoginCode) {
+      return _ivjbsthj.ChildLoginCode.fromJson(data) as T;
+    }
     if (t == _i9ztykbt.Group) {
       return _i9ztykbt.Group.fromJson(data) as T;
     }
@@ -1051,6 +1136,10 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _is.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_ivjbsthj.ChildLoginCode?>()) {
+      return (data != null ? _ivjbsthj.ChildLoginCode.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_i9ztykbt.Group?>()) {
       return (data != null ? _i9ztykbt.Group.fromJson(data) : null) as T;
@@ -1183,6 +1272,7 @@ class Protocol extends _is.DatabaseSerializationManager {
       _if11z8io.TaskVoteFutureCallExpireVoteModel =>
         'TaskVoteFutureCallExpireVoteModel',
       _izw8z7ou.Greeting => 'Greeting',
+      _ivjbsthj.ChildLoginCode => 'ChildLoginCode',
       _i9ztykbt.Group => 'Group',
       _i7quka6t.GroupErrorReason => 'GroupErrorReason',
       _i3la3wci.GroupException => 'GroupException',
@@ -1230,6 +1320,8 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'TaskVoteFutureCallExpireVoteModel';
       case _izw8z7ou.Greeting():
         return 'Greeting';
+      case _ivjbsthj.ChildLoginCode():
+        return 'ChildLoginCode';
       case _i9ztykbt.Group():
         return 'Group';
       case _i7quka6t.GroupErrorReason():
@@ -1313,6 +1405,9 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (dataClassName == 'Greeting') {
       return deserialize<_izw8z7ou.Greeting>(data['data']);
+    }
+    if (dataClassName == 'ChildLoginCode') {
+      return deserialize<_ivjbsthj.ChildLoginCode>(data['data']);
     }
     if (dataClassName == 'Group') {
       return deserialize<_i9ztykbt.Group>(data['data']);
@@ -1421,6 +1516,8 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
     switch (t) {
+      case _ivjbsthj.ChildLoginCode:
+        return _ivjbsthj.ChildLoginCode.t;
       case _i9ztykbt.Group:
         return _i9ztykbt.Group.t;
       case _iio6btzp.GroupMember:

@@ -31,6 +31,7 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 import 'events/group_event.dart' as _iecilz9e;
 import 'events/group_event_kind.dart' as _il82a0w2;
 import 'greetings/greeting.dart' as _izw8z7ou;
+import 'groups/child_login_code.dart' as _ivjbsthj;
 import 'groups/group.dart' as _i9ztykbt;
 import 'groups/group_error_reason.dart' as _i7quka6t;
 import 'groups/group_exception.dart' as _i3la3wci;
@@ -56,6 +57,7 @@ import 'wallet/ranking_entry.dart' as _izo0hjq0;
 export 'events/group_event.dart';
 export 'events/group_event_kind.dart';
 export 'greetings/greeting.dart';
+export 'groups/child_login_code.dart';
 export 'groups/group.dart';
 export 'groups/group_error_reason.dart';
 export 'groups/group_exception.dart';
@@ -122,6 +124,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _izw8z7ou.Greeting) {
       return _izw8z7ou.Greeting.fromJson(data) as T;
+    }
+    if (t == _ivjbsthj.ChildLoginCode) {
+      return _ivjbsthj.ChildLoginCode.fromJson(data) as T;
     }
     if (t == _i9ztykbt.Group) {
       return _i9ztykbt.Group.fromJson(data) as T;
@@ -198,6 +203,10 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == _isc.getType<_izw8z7ou.Greeting?>()) {
       return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ivjbsthj.ChildLoginCode?>()) {
+      return (data != null ? _ivjbsthj.ChildLoginCode.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_i9ztykbt.Group?>()) {
       return (data != null ? _i9ztykbt.Group.fromJson(data) : null) as T;
@@ -325,6 +334,7 @@ class Protocol extends _isc.SerializationManager {
       _iecilz9e.GroupEvent => 'GroupEvent',
       _il82a0w2.GroupEventKind => 'GroupEventKind',
       _izw8z7ou.Greeting => 'Greeting',
+      _ivjbsthj.ChildLoginCode => 'ChildLoginCode',
       _i9ztykbt.Group => 'Group',
       _i7quka6t.GroupErrorReason => 'GroupErrorReason',
       _i3la3wci.GroupException => 'GroupException',
@@ -370,6 +380,8 @@ class Protocol extends _isc.SerializationManager {
         return 'GroupEventKind';
       case _izw8z7ou.Greeting():
         return 'Greeting';
+      case _ivjbsthj.ChildLoginCode():
+        return 'ChildLoginCode';
       case _i9ztykbt.Group():
         return 'Group';
       case _i7quka6t.GroupErrorReason():
@@ -444,6 +456,9 @@ class Protocol extends _isc.SerializationManager {
     }
     if (dataClassName == 'Greeting') {
       return deserialize<_izw8z7ou.Greeting>(data['data']);
+    }
+    if (dataClassName == 'ChildLoginCode') {
+      return deserialize<_ivjbsthj.ChildLoginCode>(data['data']);
     }
     if (dataClassName == 'Group') {
       return deserialize<_i9ztykbt.Group>(data['data']);
