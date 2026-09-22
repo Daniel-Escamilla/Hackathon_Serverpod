@@ -225,6 +225,56 @@ void main() {
         expect(other.id, isNot(createdGroup.id));
       });
 
+      test(
+        'then rejoining the same group after expulsion carries over a debt',
+        () async {
+          await GroupMember.db.updateRow(
+            session,
+            bob.copyWith(balance: -15),
+          );
+          await endpoints.group.expelMember(
+            sessionOf(_aliceAuthUserId),
+            bob.id!,
+          );
+
+          final rejoined = await endpoints.group.joinGroup(
+            sessionOf(_bobAuthUserId),
+            createdGroup.inviteCode,
+            displayName: 'Bob',
+          );
+
+          // The debt follows: leaving and rejoining the same group can't be
+          // used to erase a fine (Notion "Puntos de mejora", punto 2).
+          expect(rejoined.balance, -15);
+          expect(rejoined.id, isNot(bob.id));
+        },
+      );
+
+      test(
+        'then rejoining the same group after expulsion does not carry over a '
+        'positive balance',
+        () async {
+          await GroupMember.db.updateRow(
+            session,
+            bob.copyWith(balance: 40),
+          );
+          await endpoints.group.expelMember(
+            sessionOf(_aliceAuthUserId),
+            bob.id!,
+          );
+
+          final rejoined = await endpoints.group.joinGroup(
+            sessionOf(_bobAuthUserId),
+            createdGroup.inviteCode,
+            displayName: 'Bob',
+          );
+
+          // Winnings still don't carry over — only closing the debt-evasion
+          // direction, not changing PRODUCT.md §4.6 for the other one.
+          expect(rejoined.balance, 0);
+        },
+      );
+
       test('then a plain member cannot expel anyone', () async {
         final alice = (await endpoints.group.listMembers(
           sessionOf(_aliceAuthUserId),
