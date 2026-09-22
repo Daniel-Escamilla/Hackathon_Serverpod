@@ -92,6 +92,29 @@
   "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.",
   "membersTitle": "Miembros",
   "groupSettings": "Configuración del grupo",
+  "groupSettingsFineLabel": "Multa",
+  "@groupSettingsFineLabel": {
+    "description": "Label above the fine percentage slider in the group settings screen"
+  },
+  "groupSettingsFineHint": "Lo que paga quien recibe una multa, sobre el valor de la tarea o de la recompensa.",
+  "@groupSettingsFineHint": {
+    "description": "Explains what the fine percentage applies to, under its label"
+  },
+  "groupSettingsFineValue": "{percent} %",
+  "@groupSettingsFineValue": {
+    "description": "The fine percentage currently picked on the slider",
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "groupSettingsSave": "Guardar cambios",
+  "@groupSettingsSave": {
+    "description": "Primary button that saves the group's name and fine percentage"
+  },
+  "groupSettingsSaved": "Configuración guardada.",
+  "@groupSettingsSaved": {
+    "description": "Message after the group settings are saved"
+  },
   "codeCopied": "Código copiado",
   "copyCode": "Copiar código",
 

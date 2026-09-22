@@ -43,6 +43,21 @@ class GroupController extends ChangeNotifier {
     await load();
   }
 
+  Future<void> updateSettings({
+    required String name,
+    required int finePercent,
+  }) async {
+    try {
+      group = await client.group.updateGroup(
+        name: name,
+        finePercent: finePercent,
+      );
+      notifyListeners();
+    } catch (e) {
+      throw mapServerError(e);
+    }
+  }
+
   Future<void> regenerateInviteCode() async {
     try {
       group = await client.group.regenerateInviteCode();
