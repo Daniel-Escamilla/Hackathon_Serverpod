@@ -9,6 +9,9 @@ const _aliceAuthUserId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const _bobAuthUserId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 const _carolAuthUserId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 const _daveAuthUserId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+const _race1BuyerAuthUserId = '11111111-1111-4111-8111-111111111111';
+const _race1ProviderAuthUserId = '12121212-1212-4212-8212-121212121212';
+const _race1ThirdAuthUserId = '13131313-1313-4313-8313-131313131313';
 
 void main() {
   withServerpod('Given a group of four with a proposed reward', (
@@ -384,4 +387,131 @@ void main() {
       });
     });
   });
+
+  // Real concurrent transactions need rollback disabled (serverpod-testing
+  // skill); each withServerpod group gets its own database, and every test
+  // here uses its own members and invite code so none sees another's rows.
+  withServerpod(
+    'Given a shop purchase and two requests racing on it',
+    (sessionBuilder, endpoints) {
+      final session = sessionBuilder.build();
+      const walletService = WalletService();
+
+      TestSessionBuilder sessionOf(String authUserId) =>
+          sessionBuilder.copyWith(
+            authentication: AuthenticationOverride.authenticationInfo(
+              authUserId,
+              {},
+            ),
+          );
+
+      /// A shared flat with a buyer holding 50 coins, a provider and a third
+      /// member, and one active reward at 20 with 2 units.
+      Future<
+        ({
+          Group group,
+          GroupMember buyer,
+          GroupMember provider,
+          RewardItem item,
+        })
+      >
+      seed({
+        required String inviteCode,
+        required String buyerAuthUserId,
+        required String providerAuthUserId,
+        required String thirdAuthUserId,
+      }) async {
+        final group = await Group.db.insertRow(
+          session,
+          Group(
+            name: 'Piso de prueba',
+            type: GroupType.sharedFlat,
+            inviteCode: inviteCode,
+          ),
+        );
+        GroupMember member(String authUserId, GroupMemberRole role) =>
+            GroupMember(
+              groupId: group.id!,
+              authUserId: UuidValue.fromString(authUserId),
+              displayName: authUserId.substring(0, 4),
+              role: role,
+            );
+        final buyer = await GroupMember.db.insertRow(
+          session,
+          member(buyerAuthUserId, GroupMemberRole.admin),
+        );
+        final provider = await GroupMember.db.insertRow(
+          session,
+          member(providerAuthUserId, GroupMemberRole.member),
+        );
+        await GroupMember.db.insertRow(
+          session,
+          member(thirdAuthUserId, GroupMemberRole.member),
+        );
+        await walletService.recordTransaction(
+          session,
+          groupId: group.id!,
+          memberId: buyer.id!,
+          amount: 50,
+          reason: CoinTransactionReason.earned,
+        );
+        final item = await RewardItem.db.insertRow(
+          session,
+          RewardItem(
+            groupId: group.id!,
+            title: 'Elegir la peli de la noche',
+            description: '',
+            price: 20,
+            status: RewardItemStatus.active,
+            createdById: buyer.id!,
+            stock: 2,
+          ),
+        );
+        return (group: group, buyer: buyer, provider: provider, item: item);
+      }
+
+      test(
+        'then two simultaneous refusals fine the provider and refund the buyer only once',
+        () async {
+          final seeded = await seed(
+            inviteCode: 'RACE01',
+            buyerAuthUserId: _race1BuyerAuthUserId,
+            providerAuthUserId: _race1ProviderAuthUserId,
+            thirdAuthUserId: _race1ThirdAuthUserId,
+          );
+          final purchase = await endpoints.shop.purchaseReward(
+            sessionOf(_race1BuyerAuthUserId),
+            seeded.item.id!,
+            seeded.provider.id!,
+          );
+
+          final outcomes = await Future.wait([
+            for (var i = 0; i < 2; i++)
+              endpoints.shop
+                  .respondToPurchase(
+                    sessionOf(_race1ProviderAuthUserId),
+                    purchase.id!,
+                    false,
+                  )
+                  .then<Object?>((_) => null, onError: (Object e) => e),
+          ]);
+          expect(outcomes.whereType<StateError>(), hasLength(1));
+
+          final provider = await GroupMember.db.findById(
+            session,
+            seeded.provider.id!,
+          );
+          expect(provider!.balance, -4); // one fine: 20% of 20
+          final buyer = await GroupMember.db.findById(
+            session,
+            seeded.buyer.id!,
+          );
+          expect(buyer!.balance, 50); // 50 - 20 + one refund of 20
+          final item = await RewardItem.db.findById(session, seeded.item.id!);
+          expect(item!.stock, 2); // restored once
+        },
+      );
+    },
+    rollbackDatabase: RollbackDatabase.disabled,
+  );
 }

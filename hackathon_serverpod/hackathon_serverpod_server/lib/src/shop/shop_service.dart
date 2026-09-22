@@ -166,6 +166,10 @@ class ShopService {
 
   /// The provider accepts or refuses [purchase]. Refusing fines the provider,
   /// refunds the buyer and restores stock (PRODUCT.md §4.4, §6).
+  ///
+  /// Reads the purchase locked and checks `pending` on that row: a double tap
+  /// on "refuse" otherwise lets both calls pass the check before either
+  /// commits, fining the provider and refunding the buyer twice (#101).
   Future<void> respond(
     Session session, {
     required Purchase purchase,
@@ -173,29 +177,42 @@ class ShopService {
     required Group group,
     required bool accept,
   }) async {
-    if (purchase.status != PurchaseStatus.pending) {
-      throw StateError('This purchase is not pending a response.');
-    }
-
-    if (accept) {
-      await Purchase.db.updateRow(
-        session,
-        purchase.copyWith(status: PurchaseStatus.accepted),
-      );
-      return;
-    }
-
     await session.db.transaction((transaction) async {
+      final locked = await Purchase.db.findById(
+        session,
+        purchase.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null || locked.status != PurchaseStatus.pending) {
+        throw StateError('This purchase is not pending a response.');
+      }
+
+      if (accept) {
+        await Purchase.db.updateRow(
+          session,
+          locked.copyWith(status: PurchaseStatus.accepted),
+          transaction: transaction,
+        );
+        return;
+      }
+
       await Purchase.db.updateRow(
         session,
-        purchase.copyWith(status: PurchaseStatus.refused),
+        locked.copyWith(status: PurchaseStatus.refused),
         transaction: transaction,
       );
 
-      if (item.stock != null) {
+      final lockedItem = await RewardItem.db.findById(
+        session,
+        item.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (lockedItem?.stock != null) {
         await RewardItem.db.updateRow(
           session,
-          item.copyWith(stock: item.stock! + 1),
+          lockedItem!.copyWith(stock: lockedItem.stock! + 1),
           transaction: transaction,
         );
       }
