@@ -10,6 +10,12 @@ const _aliceAuthUserId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const _bobAuthUserId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 const _carolAuthUserId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
 const _daveAuthUserId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
+const _race2ProposerAuthUserId = '01010101-0101-4101-8101-010101010101';
+const _race2VoterAAuthUserId = '02020202-0202-4202-8202-020202020202';
+const _race2VoterBAuthUserId = '03030303-0303-4303-8303-030303030303';
+const _race3ProposerAuthUserId = '04040404-0404-4404-8404-040404040404';
+const _race3VoterAuthUserId = '05050505-0505-4505-8505-050505050505';
+const _race3ClaimantAuthUserId = '06060606-0606-4606-8606-060606060606';
 
 void main() {
   withServerpod('Given a group of four with a proposed task', (
@@ -162,7 +168,7 @@ void main() {
             where: (t) => t.memberId.equals(alice.id!),
           );
           expect(history, hasLength(1));
-          expect(history.single.reason, CoinTransactionReason.fined);
+          expect(history.single.reason, CoinTransactionReason.proposalDenied);
           expect(history.single.taskId, proposedTask.id);
         },
       );
@@ -210,6 +216,12 @@ void main() {
             alice.id!,
           );
           expect(proposerAfter!.balance, 0); // excluded, not "didn't vote"
+
+          final carolFine = await CoinTransaction.db.find(
+            session,
+            where: (t) => t.memberId.equals(carol.id!),
+          );
+          expect(carolFine.single.reason, CoinTransactionReason.voteExpired);
         },
       );
 
@@ -526,7 +538,10 @@ void main() {
               where: (t) => t.memberId.equals(bob.id!),
             );
             expect(history, hasLength(1));
-            expect(history.single.reason, CoinTransactionReason.fined);
+            expect(
+              history.single.reason,
+              CoinTransactionReason.validationDenied,
+            );
             expect(history.single.taskId, claimedTask.id);
           },
         );
@@ -584,6 +599,12 @@ void main() {
               bob.id!,
             );
             expect(claimantAfter!.balance, 0); // excluded as claimant
+
+            final carolFine = await CoinTransaction.db.find(
+              session,
+              where: (t) => t.memberId.equals(carol.id!),
+            );
+            expect(carolFine.single.reason, CoinTransactionReason.voteExpired);
           },
         );
       });
@@ -674,6 +695,182 @@ void main() {
         expect(finalState!.status, TaskStatus.inValidation);
         expect(finalState.doneById, wins.single.doneById);
       });
+
+      test(
+        'then two simultaneous deciding proposal votes reject and fine the proposer only once',
+        () async {
+          final householdGroup = await Group.db.insertRow(
+            session,
+            Group(
+              name: 'Piso de prueba',
+              type: GroupType.sharedFlat,
+              inviteCode: 'TASK03',
+            ),
+          );
+          final proposer = await GroupMember.db.insertRow(
+            session,
+            GroupMember(
+              groupId: householdGroup.id!,
+              authUserId: UuidValue.fromString(_race2ProposerAuthUserId),
+              displayName: 'Proposer',
+              role: GroupMemberRole.admin,
+            ),
+          );
+          await GroupMember.db.insertRow(
+            session,
+            GroupMember(
+              groupId: householdGroup.id!,
+              authUserId: UuidValue.fromString(_race2VoterAAuthUserId),
+              displayName: 'Voter A',
+              role: GroupMemberRole.member,
+            ),
+          );
+          await GroupMember.db.insertRow(
+            session,
+            GroupMember(
+              groupId: householdGroup.id!,
+              authUserId: UuidValue.fromString(_race2VoterBAuthUserId),
+              displayName: 'Voter B',
+              role: GroupMemberRole.member,
+            ),
+          );
+
+          final proposedTask = await endpoints.task.proposeTask(
+            sessionOf(_race2ProposerAuthUserId),
+            'Limpiar el baño',
+            '',
+            25,
+          );
+
+          // 2 other members: ceil(2/2) = 1 approval opens it, so it takes both
+          // denying at once to cross the deny threshold — the race window this
+          // regression test targets (Notion "Puntos de mejora", punto 1).
+          // Casting a vote is always valid while the task is still `proposed`,
+          // so both calls succeed; the lock only decides which one of them
+          // ends up processing the deciding vote — it must resolve exactly
+          // once, not twice.
+          final outcomes = await Future.wait([
+            endpoints.task
+                .voteTaskProposal(
+                  sessionOf(_race2VoterAAuthUserId),
+                  proposedTask.id!,
+                  false,
+                )
+                .then<Object>((task) => task, onError: (Object e) => e),
+            endpoints.task
+                .voteTaskProposal(
+                  sessionOf(_race2VoterBAuthUserId),
+                  proposedTask.id!,
+                  false,
+                )
+                .then<Object>((task) => task, onError: (Object e) => e),
+          ]);
+
+          expect(outcomes, everyElement(isA<Task>()));
+
+          final finalState = await Task.db.findById(session, proposedTask.id!);
+          expect(finalState!.status, TaskStatus.rejected);
+
+          final fines = await CoinTransaction.db.find(
+            session,
+            where: (t) => t.memberId.equals(proposer.id!),
+          );
+          expect(fines, hasLength(1));
+          expect(fines.single.reason, CoinTransactionReason.proposalDenied);
+        },
+      );
+
+      test(
+        'then two simultaneous deciding completion votes fine the claimant only once',
+        () async {
+          final householdGroup = await Group.db.insertRow(
+            session,
+            Group(
+              name: 'Piso de prueba',
+              type: GroupType.sharedFlat,
+              inviteCode: 'TASK04',
+            ),
+          );
+          await GroupMember.db.insertRow(
+            session,
+            GroupMember(
+              groupId: householdGroup.id!,
+              authUserId: UuidValue.fromString(_race3ProposerAuthUserId),
+              displayName: 'Proposer',
+              role: GroupMemberRole.admin,
+            ),
+          );
+          await GroupMember.db.insertRow(
+            session,
+            GroupMember(
+              groupId: householdGroup.id!,
+              authUserId: UuidValue.fromString(_race3VoterAuthUserId),
+              displayName: 'Voter',
+              role: GroupMemberRole.member,
+            ),
+          );
+          final claimant = await GroupMember.db.insertRow(
+            session,
+            GroupMember(
+              groupId: householdGroup.id!,
+              authUserId: UuidValue.fromString(_race3ClaimantAuthUserId),
+              displayName: 'Claimant',
+              role: GroupMemberRole.member,
+            ),
+          );
+
+          final proposedTask = await endpoints.task.proposeTask(
+            sessionOf(_race3ProposerAuthUserId),
+            'Limpiar el baño',
+            '',
+            25,
+          );
+          final openTask = await endpoints.task.voteTaskProposal(
+            sessionOf(_race3VoterAuthUserId),
+            proposedTask.id!,
+            true,
+          );
+          final claimedTask = await endpoints.task.markTaskDone(
+            sessionOf(_race3ClaimantAuthUserId),
+            openTask.id!,
+          );
+
+          // 2 other members (proposer, voter): ceil(2/2) = 1 approval closes
+          // it, so it takes both denying at once to cross the deny threshold —
+          // same race window as the proposal vote above, on the completion
+          // vote. Both calls succeed for the same reason as above; only the
+          // resolution — one fine, not two — is what must hold.
+          final outcomes = await Future.wait([
+            endpoints.task
+                .voteTaskCompletion(
+                  sessionOf(_race3ProposerAuthUserId),
+                  claimedTask.id!,
+                  false,
+                )
+                .then<Object>((task) => task, onError: (Object e) => e),
+            endpoints.task
+                .voteTaskCompletion(
+                  sessionOf(_race3VoterAuthUserId),
+                  claimedTask.id!,
+                  false,
+                )
+                .then<Object>((task) => task, onError: (Object e) => e),
+          ]);
+
+          expect(outcomes, everyElement(isA<Task>()));
+
+          final finalState = await Task.db.findById(session, claimedTask.id!);
+          expect(finalState!.status, TaskStatus.open);
+          expect(finalState.doneById, isNull);
+
+          final fines = await CoinTransaction.db.find(
+            session,
+            where: (t) => t.memberId.equals(claimant.id!),
+          );
+          expect(fines, hasLength(1));
+          expect(fines.single.reason, CoinTransactionReason.validationDenied);
+        },
+      );
     },
     rollbackDatabase: RollbackDatabase.disabled,
   );

@@ -79,128 +79,171 @@ class TaskService {
   /// Records [voter]'s proposal vote on [task] and resolves it to `open`/`rejected`
   /// once the result can no longer change (PRODUCT.md §4.1: `ceil((members - 1) / 2)`
   /// approvals). A denied proposal fines whoever proposed it (§4.4).
+  ///
+  /// Reads [task] locked, inside the same transaction as the vote and the
+  /// recount: two members casting the deciding vote within the same instant
+  /// otherwise both read the recount before either commits, and both would
+  /// resolve the task — paying or fining it twice (same risk `markDone`
+  /// guards against with its own lock).
   Future<Task> castProposalVote(
     Session session, {
     required Task task,
     required GroupMember voter,
     required bool approve,
   }) async {
-    if (task.status != TaskStatus.proposed) {
-      throw StateError('This task is not open for a proposal vote.');
-    }
-    if (voter.id == task.proposedById) {
-      throw StateError('The proposer cannot vote on their own task.');
-    }
+    final resolved = await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
+        session,
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null) throw StateError('Task not found.');
+      if (locked.status != TaskStatus.proposed) {
+        throw StateError('This task is not open for a proposal vote.');
+      }
+      if (voter.id == locked.proposedById) {
+        throw StateError('The proposer cannot vote on their own task.');
+      }
 
-    final existingVote = await TaskVote.db.findFirstRow(
-      session,
-      where: (t) =>
-          t.taskId.equals(task.id!) &
-          t.memberId.equals(voter.id!) &
-          t.phase.equals(TaskVotePhase.proposal),
-    );
-    if (existingVote == null) {
-      await TaskVote.db.insertRow(
+      final existingVote = await TaskVote.db.findFirstRow(
         session,
-        TaskVote(
-          taskId: task.id!,
-          memberId: voter.id!,
-          phase: TaskVotePhase.proposal,
-          approve: approve,
-        ),
+        where: (t) =>
+            t.taskId.equals(locked.id!) &
+            t.memberId.equals(voter.id!) &
+            t.phase.equals(TaskVotePhase.proposal),
+        transaction: transaction,
       );
-    } else {
-      await TaskVote.db.updateRow(
+      if (existingVote == null) {
+        await TaskVote.db.insertRow(
+          session,
+          TaskVote(
+            taskId: locked.id!,
+            memberId: voter.id!,
+            phase: TaskVotePhase.proposal,
+            approve: approve,
+          ),
+          transaction: transaction,
+        );
+      } else {
+        await TaskVote.db.updateRow(
+          session,
+          existingVote.copyWith(approve: approve),
+          transaction: transaction,
+        );
+      }
+
+      final otherMembers = await GroupMember.db.count(
         session,
-        existingVote.copyWith(approve: approve),
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.id.notEquals(locked.proposedById),
+        transaction: transaction,
       );
-    }
+      final needed = (otherMembers / 2).ceil();
+
+      final votes = await TaskVote.db.find(
+        session,
+        where: (t) =>
+            t.taskId.equals(locked.id!) &
+            t.phase.equals(TaskVotePhase.proposal),
+        transaction: transaction,
+      );
+      final approveCount = votes.where((v) => v.approve).length;
+      final denyCount = votes.length - approveCount;
+
+      if (approveCount >= needed) {
+        return Task.db.updateRow(
+          session,
+          locked.copyWith(status: TaskStatus.open, voteClosesAt: null),
+          transaction: transaction,
+        );
+      }
+      if (denyCount > otherMembers - needed) {
+        return _denyProposal(session, locked, transaction: transaction);
+      }
+      return locked;
+    });
+
     await eventService.publish(
       session,
-      groupId: task.groupId,
+      groupId: resolved.groupId,
       kind: GroupEventKind.taskVoteCast,
-      taskId: task.id,
+      taskId: resolved.id,
     );
-
-    final otherMembers = await GroupMember.db.count(
-      session,
-      where: (t) =>
-          t.groupId.equals(task.groupId) &
-          t.leftAt.equals(null) &
-          t.id.notEquals(task.proposedById),
-    );
-    final needed = (otherMembers / 2).ceil();
-
-    final votes = await TaskVote.db.find(
-      session,
-      where: (t) =>
-          t.taskId.equals(task.id!) & t.phase.equals(TaskVotePhase.proposal),
-    );
-    final approveCount = votes.where((v) => v.approve).length;
-    final denyCount = votes.length - approveCount;
-
-    if (approveCount >= needed) {
-      return Task.db.updateRow(
-        session,
-        task.copyWith(status: TaskStatus.open, voteClosesAt: null),
-      );
-    }
-    if (denyCount > otherMembers - needed) {
-      return _denyProposal(session, task);
-    }
-    return task;
+    return resolved;
   }
 
   /// [voter] counter-offers [counterReward] instead of approving or denying.
   /// Freezes the proposal: nobody else can vote or counter-offer until the
   /// proposer responds (PRODUCT.md §4.3).
+  ///
+  /// Reads [task] locked, so a counter-offer arriving in the same instant as
+  /// a vote or another counter-offer can't both pass the `proposed` check —
+  /// "la primera contraoferta congela la votación" only holds if a second one
+  /// can't slip in before the first commits.
   Future<Task> counterOfferTask(
     Session session, {
     required Task task,
     required GroupMember voter,
     required int counterReward,
   }) async {
-    if (task.status != TaskStatus.proposed) {
-      throw StateError('This task is not open for a counter-offer.');
-    }
-    if (voter.id == task.proposedById) {
-      throw StateError('The proposer cannot counter-offer their own task.');
-    }
-
-    final existingVote = await TaskVote.db.findFirstRow(
-      session,
-      where: (t) =>
-          t.taskId.equals(task.id!) &
-          t.memberId.equals(voter.id!) &
-          t.phase.equals(TaskVotePhase.proposal),
-    );
-    if (existingVote == null) {
-      await TaskVote.db.insertRow(
+    final countered = await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
         session,
-        TaskVote(
-          taskId: task.id!,
-          memberId: voter.id!,
-          phase: TaskVotePhase.proposal,
-          approve: false,
-          counterReward: counterReward,
-        ),
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
       );
-    } else {
-      await TaskVote.db.updateRow(
-        session,
-        existingVote.copyWith(approve: false, counterReward: counterReward),
-      );
-    }
+      if (locked == null) throw StateError('Task not found.');
+      if (locked.status != TaskStatus.proposed) {
+        throw StateError('This task is not open for a counter-offer.');
+      }
+      if (voter.id == locked.proposedById) {
+        throw StateError('The proposer cannot counter-offer their own task.');
+      }
 
-    final countered = await Task.db.updateRow(
-      session,
-      task.copyWith(status: TaskStatus.counterOffered),
-    );
+      final existingVote = await TaskVote.db.findFirstRow(
+        session,
+        where: (t) =>
+            t.taskId.equals(locked.id!) &
+            t.memberId.equals(voter.id!) &
+            t.phase.equals(TaskVotePhase.proposal),
+        transaction: transaction,
+      );
+      if (existingVote == null) {
+        await TaskVote.db.insertRow(
+          session,
+          TaskVote(
+            taskId: locked.id!,
+            memberId: voter.id!,
+            phase: TaskVotePhase.proposal,
+            approve: false,
+            counterReward: counterReward,
+          ),
+          transaction: transaction,
+        );
+      } else {
+        await TaskVote.db.updateRow(
+          session,
+          existingVote.copyWith(approve: false, counterReward: counterReward),
+          transaction: transaction,
+        );
+      }
+
+      return Task.db.updateRow(
+        session,
+        locked.copyWith(status: TaskStatus.counterOffered),
+        transaction: transaction,
+      );
+    });
+
     await eventService.publish(
       session,
-      groupId: task.groupId,
+      groupId: countered.groupId,
       kind: GroupEventKind.taskCounterOffered,
-      taskId: task.id,
+      taskId: countered.id,
     );
     return countered;
   }
@@ -208,47 +251,63 @@ class TaskService {
   /// [author] accepts or withdraws the pending counter-offer on [task]
   /// (PRODUCT.md §4.3). Accepting restarts the proposal vote from zero at the
   /// new price; withdrawing carries no fine.
+  ///
+  /// Reads [task] locked, in the same transaction as the accept/withdraw
+  /// write — [author] is the only one who can call this, so the risk here is
+  /// smaller than the vote-counting methods, but the same guard keeps a
+  /// double click from restarting the vote (and scheduling two expiries) or
+  /// withdrawing twice.
   Future<Task> respondToCounterOffer(
     Session session, {
     required Task task,
     required GroupMember author,
     required bool accept,
   }) async {
-    if (task.status != TaskStatus.counterOffered) {
-      throw StateError('This task has no pending counter-offer.');
-    }
-    if (author.id != task.proposedById) {
-      throw StateError('Only the proposer can respond to a counter-offer.');
-    }
-
-    if (!accept) {
-      return Task.db.updateRow(
+    final result = await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
         session,
-        task.copyWith(status: TaskStatus.withdrawn, voteClosesAt: null),
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
       );
-    }
+      if (locked == null) throw StateError('Task not found.');
+      if (locked.status != TaskStatus.counterOffered) {
+        throw StateError('This task has no pending counter-offer.');
+      }
+      if (author.id != locked.proposedById) {
+        throw StateError('Only the proposer can respond to a counter-offer.');
+      }
 
-    final counterVote = await TaskVote.db.findFirstRow(
-      session,
-      where: (t) =>
-          t.taskId.equals(task.id!) &
-          t.phase.equals(TaskVotePhase.proposal) &
-          t.counterReward.notEquals(null),
-    );
-    if (counterVote == null) {
-      throw StateError('No counter-offer found for this task.');
-    }
+      if (!accept) {
+        return Task.db.updateRow(
+          session,
+          locked.copyWith(status: TaskStatus.withdrawn, voteClosesAt: null),
+          transaction: transaction,
+        );
+      }
 
-    final restarted = await session.db.transaction((transaction) async {
+      final counterVote = await TaskVote.db.findFirstRow(
+        session,
+        where: (t) =>
+            t.taskId.equals(locked.id!) &
+            t.phase.equals(TaskVotePhase.proposal) &
+            t.counterReward.notEquals(null),
+        transaction: transaction,
+      );
+      if (counterVote == null) {
+        throw StateError('No counter-offer found for this task.');
+      }
+
       await TaskVote.db.deleteWhere(
         session,
         where: (t) =>
-            t.taskId.equals(task.id!) & t.phase.equals(TaskVotePhase.proposal),
+            t.taskId.equals(locked.id!) &
+            t.phase.equals(TaskVotePhase.proposal),
         transaction: transaction,
       );
       return Task.db.updateRow(
         session,
-        task.copyWith(
+        locked.copyWith(
           status: TaskStatus.proposed,
           reward: counterVote.counterReward!,
           voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
@@ -256,8 +315,11 @@ class TaskService {
         transaction: transaction,
       );
     });
-    await _scheduleVoteExpiry(session, restarted);
-    return restarted;
+
+    if (result.status == TaskStatus.proposed) {
+      await _scheduleVoteExpiry(session, result);
+    }
+    return result;
   }
 
   /// [claimant] marks [task] as done, sending it to validation. Nobody reserves
@@ -296,18 +358,27 @@ class TaskService {
     return claimed;
   }
 
-  Future<Task> _denyProposal(Session session, Task task) {
-    return session.db.transaction((transaction) async {
+  /// Rejects [task] and fines whoever proposed it (§4.4). Runs inside
+  /// [transaction] when the caller already has one open — every caller does,
+  /// now that vote resolution happens under [castProposalVote]'s lock — and
+  /// opens its own otherwise, the same optional-transaction shape as
+  /// `WalletService.recordTransaction`.
+  Future<Task> _denyProposal(
+    Session session,
+    Task task, {
+    Transaction? transaction,
+  }) {
+    Future<Task> run(Transaction tx) async {
       final updated = await Task.db.updateRow(
         session,
         task.copyWith(status: TaskStatus.rejected, voteClosesAt: null),
-        transaction: transaction,
+        transaction: tx,
       );
 
       final group = await Group.db.findById(
         session,
         task.groupId,
-        transaction: transaction,
+        transaction: tx,
       );
       if (group == null) throw StateError('Group not found.');
 
@@ -317,13 +388,16 @@ class TaskService {
         groupId: task.groupId,
         memberId: task.proposedById,
         amount: -fine,
-        reason: CoinTransactionReason.fined,
+        reason: CoinTransactionReason.proposalDenied,
         taskId: task.id,
-        transaction: transaction,
+        transaction: tx,
       );
 
       return updated;
-    });
+    }
+
+    if (transaction != null) return run(transaction);
+    return session.db.transaction(run);
   }
 
   /// Records [voter]'s completion vote on [task] and resolves it to `done`/back
@@ -332,83 +406,109 @@ class TaskService {
   /// excluding whoever claimed it). Approval pays the claimant (§3); denial
   /// fines them and reopens the task for someone else, without rejecting it
   /// (§4.4, `task_status.spy.yaml`).
+  ///
+  /// Locked the same way as [castProposalVote], and for the same reason: two
+  /// completion votes landing the majority at once must not both pay or both
+  /// fine the claimant.
   Future<Task> castCompletionVote(
     Session session, {
     required Task task,
     required GroupMember voter,
     required bool approve,
   }) async {
-    if (task.status != TaskStatus.inValidation) {
-      throw StateError('This task is not open for a completion vote.');
-    }
-    if (voter.id == task.doneById) {
-      throw StateError('The claimant cannot vote on their own completion.');
-    }
+    final resolved = await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
+        session,
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null) throw StateError('Task not found.');
+      if (locked.status != TaskStatus.inValidation) {
+        throw StateError('This task is not open for a completion vote.');
+      }
+      if (voter.id == locked.doneById) {
+        throw StateError('The claimant cannot vote on their own completion.');
+      }
 
-    final existingVote = await TaskVote.db.findFirstRow(
-      session,
-      where: (t) =>
-          t.taskId.equals(task.id!) &
-          t.memberId.equals(voter.id!) &
-          t.phase.equals(TaskVotePhase.completion),
-    );
-    if (existingVote == null) {
-      await TaskVote.db.insertRow(
+      final existingVote = await TaskVote.db.findFirstRow(
         session,
-        TaskVote(
-          taskId: task.id!,
-          memberId: voter.id!,
-          phase: TaskVotePhase.completion,
-          approve: approve,
-        ),
+        where: (t) =>
+            t.taskId.equals(locked.id!) &
+            t.memberId.equals(voter.id!) &
+            t.phase.equals(TaskVotePhase.completion),
+        transaction: transaction,
       );
-    } else {
-      await TaskVote.db.updateRow(
+      if (existingVote == null) {
+        await TaskVote.db.insertRow(
+          session,
+          TaskVote(
+            taskId: locked.id!,
+            memberId: voter.id!,
+            phase: TaskVotePhase.completion,
+            approve: approve,
+          ),
+          transaction: transaction,
+        );
+      } else {
+        await TaskVote.db.updateRow(
+          session,
+          existingVote.copyWith(approve: approve),
+          transaction: transaction,
+        );
+      }
+
+      final otherMembers = await GroupMember.db.count(
         session,
-        existingVote.copyWith(approve: approve),
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.id.notEquals(locked.doneById!),
+        transaction: transaction,
       );
-    }
+      final needed = (otherMembers / 2).ceil();
+
+      final votes = await TaskVote.db.find(
+        session,
+        where: (t) =>
+            t.taskId.equals(locked.id!) &
+            t.phase.equals(TaskVotePhase.completion),
+        transaction: transaction,
+      );
+      final approveCount = votes.where((v) => v.approve).length;
+      final denyCount = votes.length - approveCount;
+
+      if (approveCount >= needed) {
+        return _payClaimant(session, locked, transaction: transaction);
+      }
+      if (denyCount > otherMembers - needed) {
+        return _denyValidation(session, locked, transaction: transaction);
+      }
+      return locked;
+    });
+
     await eventService.publish(
       session,
-      groupId: task.groupId,
+      groupId: resolved.groupId,
       kind: GroupEventKind.taskValidated,
-      taskId: task.id,
+      taskId: resolved.id,
     );
-
-    final otherMembers = await GroupMember.db.count(
-      session,
-      where: (t) =>
-          t.groupId.equals(task.groupId) &
-          t.leftAt.equals(null) &
-          t.id.notEquals(task.doneById!),
-    );
-    final needed = (otherMembers / 2).ceil();
-
-    final votes = await TaskVote.db.find(
-      session,
-      where: (t) =>
-          t.taskId.equals(task.id!) & t.phase.equals(TaskVotePhase.completion),
-    );
-    final approveCount = votes.where((v) => v.approve).length;
-    final denyCount = votes.length - approveCount;
-
-    if (approveCount >= needed) {
-      return _payClaimant(session, task);
-    }
-    if (denyCount > otherMembers - needed) {
-      return _denyValidation(session, task);
-    }
-    return task;
+    return resolved;
   }
 
   /// The validation vote passed: closes [task] as `done` and pays its claimant.
   /// Coins are only ever paid here, never on marking a task done (PRODUCT.md §3).
-  Future<Task> _payClaimant(Session session, Task task) {
-    return session.db.transaction((transaction) async {
+  /// Same optional-[transaction] shape as [_denyProposal].
+  Future<Task> _payClaimant(
+    Session session,
+    Task task, {
+    Transaction? transaction,
+  }) {
+    Future<Task> run(Transaction tx) async {
       final updated = await Task.db.updateRow(
         session,
         task.copyWith(status: TaskStatus.done, voteClosesAt: null),
-        transaction: transaction,
+        transaction: tx,
       );
 
       await walletService.recordTransaction(
@@ -418,18 +518,26 @@ class TaskService {
         amount: task.reward,
         reason: CoinTransactionReason.earned,
         taskId: task.id,
-        transaction: transaction,
+        transaction: tx,
       );
 
       return updated;
-    });
+    }
+
+    if (transaction != null) return run(transaction);
+    return session.db.transaction(run);
   }
 
   /// The validation vote failed: fines whoever claimed [task] and reopens it for
   /// someone else to claim — unlike a denied proposal, this does not reject the
-  /// task (PRODUCT.md §3, §4.4).
-  Future<Task> _denyValidation(Session session, Task task) {
-    return session.db.transaction((transaction) async {
+  /// task (PRODUCT.md §3, §4.4). Same optional-[transaction] shape as
+  /// [_denyProposal].
+  Future<Task> _denyValidation(
+    Session session,
+    Task task, {
+    Transaction? transaction,
+  }) {
+    Future<Task> run(Transaction tx) async {
       final claimantId = task.doneById!;
       final updated = await Task.db.updateRow(
         session,
@@ -438,13 +546,13 @@ class TaskService {
           doneById: null,
           voteClosesAt: null,
         ),
-        transaction: transaction,
+        transaction: tx,
       );
 
       final group = await Group.db.findById(
         session,
         task.groupId,
-        transaction: transaction,
+        transaction: tx,
       );
       if (group == null) throw StateError('Group not found.');
 
@@ -454,13 +562,16 @@ class TaskService {
         groupId: task.groupId,
         memberId: claimantId,
         amount: -fine,
-        reason: CoinTransactionReason.fined,
+        reason: CoinTransactionReason.validationDenied,
         taskId: task.id,
-        transaction: transaction,
+        transaction: tx,
       );
 
       return updated;
-    });
+    }
+
+    if (transaction != null) return run(transaction);
+    return session.db.transaction(run);
   }
 
   /// Resolves an expired vote when its `FutureCall` (#64, PRODUCT.md §10.5)
@@ -475,6 +586,12 @@ class TaskService {
   /// new round starts (a counter-offer restarting the proposal vote reuses
   /// the same `proposed` status, so comparing the timestamp — not just the
   /// status — is what keeps a stale call from closing the wrong round).
+  ///
+  /// The match is checked twice: once before doing any work, to skip it
+  /// cheaply, and again on the locked row inside the transaction — a human
+  /// vote resolving the task in the instant between those two reads would
+  /// otherwise still get fined by a `FutureCall` that fired a moment too
+  /// late.
   Future<void> expireVote(
     Session session, {
     required int taskId,
@@ -487,49 +604,63 @@ class TaskService {
       return;
     }
 
-    final phase = switch (task.status) {
-      TaskStatus.proposed => TaskVotePhase.proposal,
-      TaskStatus.inValidation => TaskVotePhase.completion,
-      _ => null,
-    };
-    if (phase == null) return;
-    final excludedMemberId = phase == TaskVotePhase.proposal
-        ? task.proposedById
-        : task.doneById!;
-
-    final eligibleVoters = await GroupMember.db.find(
-      session,
-      where: (t) =>
-          t.groupId.equals(task.groupId) &
-          t.leftAt.equals(null) &
-          t.id.notEquals(excludedMemberId),
-    );
-    final votes = await TaskVote.db.find(
-      session,
-      where: (t) => t.taskId.equals(task.id!) & t.phase.equals(phase),
-    );
-    final votedMemberIds = votes.map((v) => v.memberId).toSet();
-    final nonVoters = eligibleVoters.where(
-      (member) => !votedMemberIds.contains(member.id),
-    );
-
     await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
+        session,
+        taskId,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null) return;
+      if (locked.voteClosesAt == null ||
+          !locked.voteClosesAt!.isAtSameMomentAs(expectedVoteClosesAt)) {
+        return;
+      }
+
+      final phase = switch (locked.status) {
+        TaskStatus.proposed => TaskVotePhase.proposal,
+        TaskStatus.inValidation => TaskVotePhase.completion,
+        _ => null,
+      };
+      if (phase == null) return;
+      final excludedMemberId = phase == TaskVotePhase.proposal
+          ? locked.proposedById
+          : locked.doneById!;
+
+      final eligibleVoters = await GroupMember.db.find(
+        session,
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.id.notEquals(excludedMemberId),
+        transaction: transaction,
+      );
+      final votes = await TaskVote.db.find(
+        session,
+        where: (t) => t.taskId.equals(locked.id!) & t.phase.equals(phase),
+        transaction: transaction,
+      );
+      final votedMemberIds = votes.map((v) => v.memberId).toSet();
+      final nonVoters = eligibleVoters.where(
+        (member) => !votedMemberIds.contains(member.id),
+      );
+
       final group = await Group.db.findById(
         session,
-        task.groupId,
+        locked.groupId,
         transaction: transaction,
       );
       if (group == null) throw StateError('Group not found.');
-      final fine = (task.reward * group.finePercent / 100).ceil();
+      final fine = (locked.reward * group.finePercent / 100).ceil();
 
       for (final member in nonVoters) {
         await walletService.recordTransaction(
           session,
-          groupId: task.groupId,
+          groupId: locked.groupId,
           memberId: member.id!,
           amount: -fine,
-          reason: CoinTransactionReason.fined,
-          taskId: task.id,
+          reason: CoinTransactionReason.voteExpired,
+          taskId: locked.id,
           transaction: transaction,
         );
       }
@@ -537,8 +668,8 @@ class TaskService {
       await Task.db.updateRow(
         session,
         phase == TaskVotePhase.proposal
-            ? task.copyWith(status: TaskStatus.rejected, voteClosesAt: null)
-            : task.copyWith(
+            ? locked.copyWith(status: TaskStatus.rejected, voteClosesAt: null)
+            : locked.copyWith(
                 status: TaskStatus.open,
                 doneById: null,
                 voteClosesAt: null,

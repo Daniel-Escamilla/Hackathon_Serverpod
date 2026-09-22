@@ -511,6 +511,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reasonRefunded => 'Devolución';
 
   @override
+  String get reasonProposalDenied => 'Propuesta rechazada';
+
+  @override
+  String get reasonValidationDenied => 'Validación rechazada';
+
+  @override
+  String get reasonVoteExpired => 'No votaste a tiempo';
+
+  @override
   String get cancel => 'Cancelar';
 
   @override

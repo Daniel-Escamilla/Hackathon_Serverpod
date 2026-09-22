@@ -93,8 +93,36 @@ class GroupEndpoint extends Endpoint {
         authUserId: authUserId,
         displayName: resolvedDisplayName,
         role: GroupMemberRole.member,
+        balance: await _carriedOverDebt(
+          session,
+          groupId: group.id!,
+          authUserId: authUserId,
+        ),
       ),
     );
+  }
+
+  /// A debt (negative balance) from a previous membership of [authUserId] in
+  /// this *same* group carries over on rejoining, so leaving and rejoining
+  /// can't be used to erase a fine. Coins earned do not carry over —
+  /// PRODUCT.md §4.6 already says leaving loses the balance; this only closes
+  /// the one direction that can be abused (today, reachable via an admin's
+  /// `expelMember` followed by rejoining with a code that still works).
+  Future<int> _carriedOverDebt(
+    Session session, {
+    required int groupId,
+    required UuidValue authUserId,
+  }) async {
+    final previous = await GroupMember.db.findFirstRow(
+      session,
+      where: (t) =>
+          t.groupId.equals(groupId) &
+          t.authUserId.equals(authUserId) &
+          t.leftAt.notEquals(null),
+      orderBy: (t) => t.leftAt.desc(),
+    );
+    if (previous == null || previous.balance >= 0) return 0;
+    return previous.balance;
   }
 
   /// The signed-in member's group: its name, profile and invite code.
