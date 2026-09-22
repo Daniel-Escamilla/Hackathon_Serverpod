@@ -390,6 +390,21 @@ class EndpointGroup extends _isc.EndpointRef {
         'regenerateInviteCode',
         {},
       );
+
+  /// The admin renames the group or changes its fine percentage (PRODUCT.md
+  /// §7, §4.4). A field left null keeps its current value; the profile is not
+  /// here because it never changes after creation.
+  _ida.Future<_iubjh9pq.Group> updateGroup({
+    String? name,
+    int? finePercent,
+  }) => caller.callServerEndpoint<_iubjh9pq.Group>(
+    'group',
+    'updateGroup',
+    {
+      'name': name,
+      'finePercent': finePercent,
+    },
+  );
 }
 
 /// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).

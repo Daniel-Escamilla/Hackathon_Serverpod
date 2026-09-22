@@ -194,6 +194,36 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The admin renames the group or changes its fine percentage (PRODUCT.md
+  /// §7, §4.4). A field left null keeps its current value; the profile is not
+  /// here because it never changes after creation.
+  Future<Group> updateGroup(
+    Session session, {
+    String? name,
+    int? finePercent,
+  }) async {
+    final admin = await _requireAdmin(session);
+    final trimmedName = name?.trim();
+    if (trimmedName != null && trimmedName.isEmpty) {
+      throw ArgumentError.value(name, 'name', 'must not be blank');
+    }
+    if (finePercent != null && (finePercent < 0 || finePercent > 100)) {
+      throw RangeError.range(finePercent, 0, 100, 'finePercent');
+    }
+
+    final group = await Group.db.findById(session, admin.groupId);
+    if (group == null) {
+      throw GroupException(reason: GroupErrorReason.noMembership);
+    }
+    return Group.db.updateRow(
+      session,
+      group.copyWith(
+        name: trimmedName ?? group.name,
+        finePercent: finePercent ?? group.finePercent,
+      ),
+    );
+  }
+
   Future<GroupMember> _requireAdmin(Session session) async {
     final member = await currentGroupMember(session);
     if (member.role != GroupMemberRole.admin) {

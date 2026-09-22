@@ -442,6 +442,31 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
                   .regenerateInviteCode(session),
         ),
+        'updateGroup': _is.MethodConnector(
+          name: 'updateGroup',
+          params: {
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'finePercent': _is.ParameterDescription(
+              name: 'finePercent',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).updateGroup(
+                    session,
+                    name: params['name'],
+                    finePercent: params['finePercent'],
+                  ),
+        ),
       },
     );
     connectors['shop'] = _is.EndpointConnector(

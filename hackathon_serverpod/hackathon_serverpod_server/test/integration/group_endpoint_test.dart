@@ -344,6 +344,61 @@ void main() {
           _throwsGroupError(GroupErrorReason.notAdmin),
         );
       });
+
+      test('then the admin renames the group and changes its fine', () async {
+        final updated = await endpoints.group.updateGroup(
+          sessionOf(_aliceAuthUserId),
+          name: '  Piso nuevo  ',
+          finePercent: 35,
+        );
+        expect(updated.name, 'Piso nuevo');
+        expect(updated.finePercent, 35);
+
+        final seenByBob = await endpoints.group.myGroup(
+          sessionOf(_bobAuthUserId),
+        );
+        expect(seenByBob.name, 'Piso nuevo');
+        expect(seenByBob.finePercent, 35);
+      });
+
+      test('then a field left out keeps its current value', () async {
+        final updated = await endpoints.group.updateGroup(
+          sessionOf(_aliceAuthUserId),
+          finePercent: 10,
+        );
+        expect(updated.name, createdGroup.name);
+        expect(updated.finePercent, 10);
+      });
+
+      test('then a plain member cannot change the settings', () async {
+        await expectLater(
+          endpoints.group.updateGroup(
+            sessionOf(_bobAuthUserId),
+            finePercent: 50,
+          ),
+          _throwsGroupError(GroupErrorReason.notAdmin),
+        );
+      });
+
+      test('then a blank name or a fine outside 0-100 is refused', () async {
+        await expectLater(
+          endpoints.group.updateGroup(sessionOf(_aliceAuthUserId), name: '  '),
+          throwsA(anything),
+        );
+        await expectLater(
+          endpoints.group.updateGroup(
+            sessionOf(_aliceAuthUserId),
+            finePercent: 101,
+          ),
+          throwsA(anything),
+        );
+
+        final unchanged = await endpoints.group.myGroup(
+          sessionOf(_aliceAuthUserId),
+        );
+        expect(unchanged.name, createdGroup.name);
+        expect(unchanged.finePercent, createdGroup.finePercent);
+      });
     });
   });
 }
