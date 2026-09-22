@@ -232,6 +232,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupSettings => 'Configuración del grupo';
 
   @override
+  String get groupSettingsFineLabel => 'Multa';
+
+  @override
+  String get groupSettingsFineHint =>
+      'Lo que paga quien recibe una multa, sobre el valor de la tarea o de la recompensa.';
+
+  @override
+  String groupSettingsFineValue(int percent) {
+    return '$percent %';
+  }
+
+  @override
+  String get groupSettingsSave => 'Guardar cambios';
+
+  @override
+  String get groupSettingsSaved => 'Configuración guardada.';
+
+  @override
   String get codeCopied => 'Código copiado';
 
   @override

@@ -526,6 +526,36 @@ abstract class AppLocalizations {
   /// **'Configuración del grupo'**
   String get groupSettings;
 
+  /// Label above the fine percentage slider in the group settings screen
+  ///
+  /// In es, this message translates to:
+  /// **'Multa'**
+  String get groupSettingsFineLabel;
+
+  /// Explains what the fine percentage applies to, under its label
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que paga quien recibe una multa, sobre el valor de la tarea o de la recompensa.'**
+  String get groupSettingsFineHint;
+
+  /// The fine percentage currently picked on the slider
+  ///
+  /// In es, this message translates to:
+  /// **'{percent} %'**
+  String groupSettingsFineValue(int percent);
+
+  /// Primary button that saves the group's name and fine percentage
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar cambios'**
+  String get groupSettingsSave;
+
+  /// Message after the group settings are saved
+  ///
+  /// In es, this message translates to:
+  /// **'Configuración guardada.'**
+  String get groupSettingsSaved;
+
   /// No description provided for @codeCopied.
   ///
   /// In es, this message translates to:
