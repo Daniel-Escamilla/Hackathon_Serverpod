@@ -189,6 +189,27 @@ void main() {
         );
       });
 
+      test('then a reward already decided cannot be voted again', () async {
+        await RewardItem.db.updateRow(
+          session,
+          proposedItem.copyWith(status: RewardItemStatus.active),
+        );
+
+        await expectLater(
+          endpoints.shop.voteReward(
+            sessionOf(_bobAuthUserId),
+            proposedItem.id!,
+            false,
+          ),
+          throwsA(isA<StateError>()),
+        );
+        final votes = await RewardVote.db.find(
+          session,
+          where: (t) => t.itemId.equals(proposedItem.id!),
+        );
+        expect(votes, isEmpty);
+      });
+
       test('then voting on an unknown reward throws', () async {
         await expectLater(
           endpoints.shop.voteReward(sessionOf(_bobAuthUserId), 999999, true),

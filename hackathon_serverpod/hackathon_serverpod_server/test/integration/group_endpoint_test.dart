@@ -361,6 +361,15 @@ void main() {
         expect(seenByBob.finePercent, 35);
       });
 
+      test('then renaming alone keeps the fine percentage', () async {
+        final updated = await endpoints.group.updateGroup(
+          sessionOf(_aliceAuthUserId),
+          name: 'Solo el nombre',
+        );
+        expect(updated.name, 'Solo el nombre');
+        expect(updated.finePercent, createdGroup.finePercent);
+      });
+
       test('then a field left out keeps its current value', () async {
         final updated = await endpoints.group.updateGroup(
           sessionOf(_aliceAuthUserId),
