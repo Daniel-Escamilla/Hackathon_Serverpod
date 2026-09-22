@@ -391,6 +391,19 @@ class EndpointGroup extends _isc.EndpointRef {
         {},
       );
 
+  /// The admin hands the role over to [memberId] and becomes a plain member
+  /// (PRODUCT.md §7). Never to themselves, and never to a child (§8).
+  ///
+  /// Both roles change in one transaction on the admin's row read locked:
+  /// two hand-overs sent at once would otherwise both pass the admin check
+  /// and leave the group with two admins.
+  _ida.Future<_ir4oz66a.GroupMember> transferAdmin(int memberId) =>
+      caller.callServerEndpoint<_ir4oz66a.GroupMember>(
+        'group',
+        'transferAdmin',
+        {'memberId': memberId},
+      );
+
   /// The admin renames the group or changes its fine percentage (PRODUCT.md
   /// §7, §4.4). A field left null keeps its current value; the profile is not
   /// here because it never changes after creation.

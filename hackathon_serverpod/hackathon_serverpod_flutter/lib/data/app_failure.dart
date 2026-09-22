@@ -24,6 +24,9 @@ enum AppFailure {
   /// The admin tried to expel themselves.
   cannotExpelSelf,
 
+  /// The admin role can only go to another member, never to a child.
+  cannotTransferAdmin,
+
   /// Anything we cannot be specific about.
   unknown,
 }
@@ -55,6 +58,7 @@ AppException mapServerError(Object error) => switch (error) {
     GroupErrorReason.notAdmin => AppFailure.notAdmin,
     GroupErrorReason.memberNotFound => AppFailure.memberNotFound,
     GroupErrorReason.cannotExpelSelf => AppFailure.cannotExpelSelf,
+    GroupErrorReason.cannotTransferAdmin => AppFailure.cannotTransferAdmin,
   }),
   _ => const AppException(AppFailure.unknown),
 };

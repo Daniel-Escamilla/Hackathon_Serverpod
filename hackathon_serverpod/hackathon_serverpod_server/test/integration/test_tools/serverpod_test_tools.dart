@@ -840,6 +840,37 @@ class _GroupEndpoint {
     });
   }
 
+  _ida.Future<_is20wtgg.GroupMember> transferAdmin(
+    _ist.TestSessionBuilder sessionBuilder,
+    int memberId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'group',
+            method: 'transferAdmin',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'group',
+          methodName: 'transferAdmin',
+          parameters: _ist.testObjectToJson({'memberId': memberId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_is20wtgg.GroupMember>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
   _ida.Future<_i96jc0h6.Group> updateGroup(
     _ist.TestSessionBuilder sessionBuilder, {
     String? name,

@@ -1198,6 +1198,12 @@ abstract class AppLocalizations {
   /// **'No puedes expulsarte a ti del grupo.'**
   String get errorCannotExpelSelf;
 
+  /// Shown when the admin tries to hand the role to themselves or to a child
+  ///
+  /// In es, this message translates to:
+  /// **'El cargo de admin solo se puede ceder a otra persona adulta del grupo.'**
+  String get errorCannotTransferAdmin;
+
   /// No description provided for @errorGeneric.
   ///
   /// In es, this message translates to:

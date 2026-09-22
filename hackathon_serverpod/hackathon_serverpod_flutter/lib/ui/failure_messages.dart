@@ -11,6 +11,7 @@ extension AppFailureMessage on AppFailure {
     AppFailure.notAdmin => l10n.errorNotAdmin,
     AppFailure.memberNotFound => l10n.errorMemberNotFound,
     AppFailure.cannotExpelSelf => l10n.errorCannotExpelSelf,
+    AppFailure.cannotTransferAdmin => l10n.errorCannotTransferAdmin,
     AppFailure.noGroup || AppFailure.unknown => l10n.errorGeneric,
   };
 }

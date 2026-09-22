@@ -596,5 +596,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorCannotExpelSelf => 'No puedes expulsarte a ti del grupo.';
 
   @override
+  String get errorCannotTransferAdmin =>
+      'El cargo de admin solo se puede ceder a otra persona adulta del grupo.';
+
+  @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
 }
