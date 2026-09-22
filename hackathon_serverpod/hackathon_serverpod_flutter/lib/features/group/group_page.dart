@@ -7,6 +7,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
 import '../../client.dart';
+import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../data/app_failure.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -16,6 +17,7 @@ import '../../ui/feedback.dart';
 import '../../ui/pressable.dart';
 import '../../ui/sounds.dart';
 import 'group_controller.dart';
+import 'group_settings_screen.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});
@@ -128,6 +130,16 @@ class _Body extends StatelessWidget {
                     kind: AppButtonKind.quiet,
                     compact: true,
                     onPressed: () => _regenerateCode(context),
+                  ),
+                  const SizedBox(height: 6),
+                  AppButton(
+                    label: l10n.groupSettings,
+                    kind: AppButtonKind.quiet,
+                    compact: true,
+                    onPressed: () => pushPage(
+                      context,
+                      GroupSettingsScreen(group: group, controller: controller),
+                    ),
                   ),
                 ],
               ],
