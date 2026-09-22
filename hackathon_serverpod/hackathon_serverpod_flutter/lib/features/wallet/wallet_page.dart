@@ -178,6 +178,9 @@ class _MovementRow extends StatelessWidget {
     CoinTransactionReason.fined => Icons.warning_amber_rounded,
     CoinTransactionReason.spent => Icons.storefront_rounded,
     CoinTransactionReason.refunded => Icons.replay_rounded,
+    CoinTransactionReason.proposalDenied => Icons.thumb_down_alt_rounded,
+    CoinTransactionReason.validationDenied => Icons.rule_rounded,
+    CoinTransactionReason.voteExpired => Icons.timer_off_rounded,
   };
 
   String _label(AppLocalizations l10n) => switch (movement.reason) {
@@ -185,6 +188,9 @@ class _MovementRow extends StatelessWidget {
     CoinTransactionReason.fined => l10n.reasonFined,
     CoinTransactionReason.spent => l10n.reasonSpent,
     CoinTransactionReason.refunded => l10n.reasonRefunded,
+    CoinTransactionReason.proposalDenied => l10n.reasonProposalDenied,
+    CoinTransactionReason.validationDenied => l10n.reasonValidationDenied,
+    CoinTransactionReason.voteExpired => l10n.reasonVoteExpired,
   };
 
   String _formatDate(DateTime date) {

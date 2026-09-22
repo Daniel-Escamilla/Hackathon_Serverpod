@@ -209,6 +209,9 @@
   "reasonFined": "Multa",
   "reasonSpent": "Compra en la tienda",
   "reasonRefunded": "Devolución",
+  "reasonProposalDenied": "Propuesta rechazada",
+  "reasonValidationDenied": "Validación rechazada",
+  "reasonVoteExpired": "No votaste a tiempo",
 
   "cancel": "Cancelar",
   "@cancel": {

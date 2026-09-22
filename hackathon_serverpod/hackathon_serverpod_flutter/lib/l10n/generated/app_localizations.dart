@@ -1054,6 +1054,24 @@ abstract class AppLocalizations {
   /// **'Devolución'**
   String get reasonRefunded;
 
+  /// No description provided for @reasonProposalDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'Propuesta rechazada'**
+  String get reasonProposalDenied;
+
+  /// No description provided for @reasonValidationDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'Validación rechazada'**
+  String get reasonValidationDenied;
+
+  /// No description provided for @reasonVoteExpired.
+  ///
+  /// In es, this message translates to:
+  /// **'No votaste a tiempo'**
+  String get reasonVoteExpired;
+
   /// Dismisses a confirmation without doing anything
   ///
   /// In es, this message translates to:
