@@ -45,60 +45,83 @@ class ShopService {
   /// the result can no longer change — the same majority rule as a task
   /// (PRODUCT.md §4.1: `ceil((members - 1) / 2)` approvals). A rejected reward
   /// carries no fine (PRODUCT.md §6).
+  ///
+  /// Reads [item] locked, in the same transaction as the vote and the
+  /// recount: otherwise on a double tap both calls find no vote yet, both
+  /// insert, and the second fails on the unique (itemId, memberId) index
+  /// with a server error instead of just updating the vote (#101).
   Future<RewardItem> castVote(
     Session session, {
     required RewardItem item,
     required GroupMember voter,
     required bool approve,
-  }) async {
-    if (item.status != RewardItemStatus.proposed) {
-      throw StateError('This reward is not open for voting.');
-    }
-    if (voter.id == item.createdById) {
-      throw StateError('The proposer cannot vote on their own reward.');
-    }
-
-    final existingVote = await RewardVote.db.findFirstRow(
-      session,
-      where: (t) => t.itemId.equals(item.id!) & t.memberId.equals(voter.id!),
-    );
-    if (existingVote == null) {
-      await RewardVote.db.insertRow(
+  }) {
+    return session.db.transaction((transaction) async {
+      final locked = await RewardItem.db.findById(
         session,
-        RewardVote(itemId: item.id!, memberId: voter.id!, approve: approve),
+        item.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
       );
-    } else {
-      await RewardVote.db.updateRow(
+      if (locked == null || locked.status != RewardItemStatus.proposed) {
+        throw StateError('This reward is not open for voting.');
+      }
+      if (voter.id == locked.createdById) {
+        throw StateError('The proposer cannot vote on their own reward.');
+      }
+
+      final existingVote = await RewardVote.db.findFirstRow(
         session,
-        existingVote.copyWith(approve: approve),
+        where: (t) =>
+            t.itemId.equals(locked.id!) & t.memberId.equals(voter.id!),
+        transaction: transaction,
       );
-    }
+      if (existingVote == null) {
+        await RewardVote.db.insertRow(
+          session,
+          RewardVote(itemId: locked.id!, memberId: voter.id!, approve: approve),
+          transaction: transaction,
+        );
+      } else {
+        await RewardVote.db.updateRow(
+          session,
+          existingVote.copyWith(approve: approve),
+          transaction: transaction,
+        );
+      }
 
-    final otherMembers = await GroupMember.db.count(
-      session,
-      where: (t) =>
-          t.groupId.equals(item.groupId) &
-          t.leftAt.equals(null) &
-          t.id.notEquals(item.createdById),
-    );
-    final needed = (otherMembers / 2).ceil();
+      final otherMembers = await GroupMember.db.count(
+        session,
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.id.notEquals(locked.createdById),
+        transaction: transaction,
+      );
+      final needed = (otherMembers / 2).ceil();
 
-    final votes = await RewardVote.db.find(
-      session,
-      where: (t) => t.itemId.equals(item.id!),
-    );
-    final approveCount = votes.where((v) => v.approve).length;
-    final denyCount = votes.length - approveCount;
+      final votes = await RewardVote.db.find(
+        session,
+        where: (t) => t.itemId.equals(locked.id!),
+        transaction: transaction,
+      );
+      final approveCount = votes.where((v) => v.approve).length;
+      final denyCount = votes.length - approveCount;
 
-    RewardItemStatus? resolution;
-    if (approveCount >= needed) {
-      resolution = RewardItemStatus.active;
-    } else if (denyCount > otherMembers - needed) {
-      resolution = RewardItemStatus.rejected;
-    }
+      RewardItemStatus? resolution;
+      if (approveCount >= needed) {
+        resolution = RewardItemStatus.active;
+      } else if (denyCount > otherMembers - needed) {
+        resolution = RewardItemStatus.rejected;
+      }
 
-    if (resolution == null) return item;
-    return RewardItem.db.updateRow(session, item.copyWith(status: resolution));
+      if (resolution == null) return locked;
+      return RewardItem.db.updateRow(
+        session,
+        locked.copyWith(status: resolution),
+        transaction: transaction,
+      );
+    });
   }
 
   /// Buys [item] for [buyer], to be fulfilled by [provider]. Decrements stock (if

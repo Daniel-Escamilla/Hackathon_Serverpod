@@ -12,6 +12,13 @@ const _daveAuthUserId = 'dddddddd-dddd-4ddd-8ddd-dddddddddddd';
 const _race1BuyerAuthUserId = '11111111-1111-4111-8111-111111111111';
 const _race1ProviderAuthUserId = '12121212-1212-4212-8212-121212121212';
 const _race1ThirdAuthUserId = '13131313-1313-4313-8313-131313131313';
+const _race2AuthUserIds = [
+  '21212121-2121-4121-8121-212121212121',
+  '22222222-2222-4222-8222-222222222222',
+  '23232323-2323-4323-8323-232323232323',
+  '24242424-2424-4424-8424-242424242424',
+  '25252525-2525-4525-8525-252525252525',
+];
 
 void main() {
   withServerpod('Given a group of four with a proposed reward', (
@@ -509,6 +516,66 @@ void main() {
           expect(buyer!.balance, 50); // 50 - 20 + one refund of 20
           final item = await RewardItem.db.findById(session, seeded.item.id!);
           expect(item!.stock, 2); // restored once
+        },
+      );
+
+      test(
+        "then a member's double-tapped vote succeeds both times and counts once",
+        () async {
+          final group = await Group.db.insertRow(
+            session,
+            Group(
+              name: 'Piso de prueba',
+              type: GroupType.sharedFlat,
+              inviteCode: 'RACE02',
+            ),
+          );
+          final members = <GroupMember>[];
+          for (final authUserId in _race2AuthUserIds) {
+            members.add(
+              await GroupMember.db.insertRow(
+                session,
+                GroupMember(
+                  groupId: group.id!,
+                  authUserId: UuidValue.fromString(authUserId),
+                  displayName: authUserId.substring(0, 4),
+                  role: members.isEmpty
+                      ? GroupMemberRole.admin
+                      : GroupMemberRole.member,
+                ),
+              ),
+            );
+          }
+          // Proposer plus 4 others: ceil(4/2) = 2 approvals needed.
+          final item = await RewardItem.db.insertRow(
+            session,
+            RewardItem(
+              groupId: group.id!,
+              title: 'Desayuno en la cama',
+              description: '',
+              price: 30,
+              createdById: members.first.id!,
+            ),
+          );
+
+          // Without the lock the second insert hits the unique index on
+          // (itemId, memberId) and the app gets a server error.
+          await Future.wait([
+            for (var i = 0; i < 2; i++)
+              endpoints.shop.voteReward(
+                sessionOf(_race2AuthUserIds[1]),
+                item.id!,
+                true,
+              ),
+          ]);
+
+          final votes = await RewardVote.db.find(
+            session,
+            where: (t) => t.itemId.equals(item.id!),
+          );
+          expect(votes, hasLength(1));
+          final after = await RewardItem.db.findById(session, item.id!);
+          expect(after!.status, RewardItemStatus.proposed);
         },
       );
     },
