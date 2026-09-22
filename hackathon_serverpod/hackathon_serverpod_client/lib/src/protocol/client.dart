@@ -423,6 +423,16 @@ class EndpointShop extends _isc.EndpointRef {
         {},
       );
 
+  /// The signed-in member's purchases: the ones they bought and the ones they
+  /// were chosen to fulfil, most recent first (PRODUCT.md §6). Other members'
+  /// purchases between themselves stay out.
+  _ida.Future<List<_idofij3t.Purchase>> listPurchases() =>
+      caller.callServerEndpoint<List<_idofij3t.Purchase>>(
+        'shop',
+        'listPurchases',
+        {},
+      );
+
   /// Propose a new reward. Starts `proposed` and goes to a vote in piso/pareja.
   _ida.Future<_ibcsn808.RewardItem> proposeReward(
     String title,

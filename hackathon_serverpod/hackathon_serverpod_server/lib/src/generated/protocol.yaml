@@ -23,6 +23,7 @@ group:
   - updateGroup:
 shop:
   - listRewards:
+  - listPurchases:
   - proposeReward:
   - voteReward:
   - requestWish:

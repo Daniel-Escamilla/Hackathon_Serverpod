@@ -13,6 +13,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:hackathon_serverpod_client/src/protocol/groups/group_member.dart'
     as _ir4oz66a;
+import 'package:hackathon_serverpod_client/src/protocol/shop/purchase.dart'
+    as _idofij3t;
 import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
     as _ibcsn808;
 import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
@@ -284,6 +286,12 @@ class Protocol extends _isc.SerializationManager {
     if (t == List<_ibcsn808.RewardItem>) {
       return (data as List)
               .map((e) => deserialize<_ibcsn808.RewardItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_idofij3t.Purchase>) {
+      return (data as List)
+              .map((e) => deserialize<_idofij3t.Purchase>(e))
               .toList()
           as T;
     }

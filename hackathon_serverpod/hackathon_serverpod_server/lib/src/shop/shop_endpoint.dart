@@ -20,6 +20,20 @@ class ShopEndpoint extends Endpoint {
     );
   }
 
+  /// The signed-in member's purchases: the ones they bought and the ones they
+  /// were chosen to fulfil, most recent first (PRODUCT.md §6). Other members'
+  /// purchases between themselves stay out.
+  Future<List<Purchase>> listPurchases(Session session) async {
+    final member = await currentGroupMember(session);
+    return Purchase.db.find(
+      session,
+      where: (t) =>
+          t.groupId.equals(member.groupId) &
+          (t.buyerId.equals(member.id!) | t.providerId.equals(member.id!)),
+      orderBy: (t) => t.id.desc(),
+    );
+  }
+
   /// Propose a new reward. Starts `proposed` and goes to a vote in piso/pareja.
   Future<RewardItem> proposeReward(
     Session session,
