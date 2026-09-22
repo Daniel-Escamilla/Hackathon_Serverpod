@@ -194,6 +194,69 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The admin hands the role over to [memberId] and becomes a plain member
+  /// (PRODUCT.md §7). Never to themselves, and never to a child (§8).
+  ///
+  /// Both roles change in one transaction on the admin's row read locked:
+  /// two hand-overs sent at once would otherwise both pass the admin check
+  /// and leave the group with two admins.
+  Future<GroupMember> transferAdmin(Session session, int memberId) async {
+    final admin = await _requireAdmin(session);
+    if (memberId == admin.id) {
+      throw GroupException(reason: GroupErrorReason.cannotTransferAdmin);
+    }
+
+    return session.db.transaction((transaction) async {
+      final lockedAdmin = await GroupMember.db.findById(
+        session,
+        admin.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (lockedAdmin == null ||
+          lockedAdmin.role != GroupMemberRole.admin ||
+          lockedAdmin.leftAt != null) {
+        throw GroupException(reason: GroupErrorReason.notAdmin);
+      }
+
+      final target = await GroupMember.db.findById(
+        session,
+        memberId,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (target == null ||
+          target.groupId != lockedAdmin.groupId ||
+          target.leftAt != null) {
+        throw GroupException(reason: GroupErrorReason.memberNotFound);
+      }
+      if (target.role == GroupMemberRole.child) {
+        throw GroupException(reason: GroupErrorReason.cannotTransferAdmin);
+      }
+
+      // In a family the admin is also a guardian and stays one (§8).
+      final group = await Group.db.findById(
+        session,
+        lockedAdmin.groupId,
+        transaction: transaction,
+      );
+      await GroupMember.db.updateRow(
+        session,
+        lockedAdmin.copyWith(
+          role: group?.type == GroupType.family
+              ? GroupMemberRole.guardian
+              : GroupMemberRole.member,
+        ),
+        transaction: transaction,
+      );
+      return GroupMember.db.updateRow(
+        session,
+        target.copyWith(role: GroupMemberRole.admin),
+        transaction: transaction,
+      );
+    });
+  }
+
   /// The admin renames the group or changes its fine percentage (PRODUCT.md
   /// §7, §4.4). A field left null keeps its current value; the profile is not
   /// here because it never changes after creation.

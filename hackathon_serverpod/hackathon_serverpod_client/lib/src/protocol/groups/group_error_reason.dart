@@ -31,7 +31,10 @@ enum GroupErrorReason implements _isc.SerializableModel {
   memberNotFound,
 
   /// The admin tried to expel themselves. Handing the role over is the way out.
-  cannotExpelSelf;
+  cannotExpelSelf,
+
+  /// The admin role can only go to another member, and never to a child (PRODUCT.md §8).
+  cannotTransferAdmin;
 
   static GroupErrorReason fromJson(String name) {
     switch (name) {
@@ -47,6 +50,8 @@ enum GroupErrorReason implements _isc.SerializableModel {
         return GroupErrorReason.memberNotFound;
       case 'cannotExpelSelf':
         return GroupErrorReason.cannotExpelSelf;
+      case 'cannotTransferAdmin':
+        return GroupErrorReason.cannotTransferAdmin;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupErrorReason"',

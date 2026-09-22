@@ -442,6 +442,25 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
                   .regenerateInviteCode(session),
         ),
+        'transferAdmin': _is.MethodConnector(
+          name: 'transferAdmin',
+          params: {
+            'memberId': _is.ParameterDescription(
+              name: 'memberId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).transferAdmin(
+                    session,
+                    params['memberId'],
+                  ),
+        ),
         'updateGroup': _is.MethodConnector(
           name: 'updateGroup',
           params: {

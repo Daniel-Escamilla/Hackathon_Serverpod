@@ -308,5 +308,9 @@
   "@errorCannotExpelSelf": {
     "description": "Shown when the admin tries to expel themselves"
   },
+  "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta del grupo.",
+  "@errorCannotTransferAdmin": {
+    "description": "Shown when the admin tries to hand the role to themselves or to a child"
+  },
   "errorGeneric": "Algo ha fallado. Inténtalo otra vez."
 }

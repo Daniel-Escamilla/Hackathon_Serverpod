@@ -1,4 +1,5 @@
 import 'package:hackathon_serverpod_server/src/generated/protocol.dart';
+import 'package:serverpod/serverpod.dart';
 import 'package:test/test.dart';
 
 import 'test_tools/serverpod_test_tools.dart';
@@ -6,6 +7,9 @@ import 'test_tools/serverpod_test_tools.dart';
 const _aliceAuthUserId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa';
 const _bobAuthUserId = 'bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb';
 const _carolAuthUserId = 'cccccccc-cccc-4ccc-8ccc-cccccccccccc';
+const _race1AdminAuthUserId = '31313131-3131-4131-8131-313131313131';
+const _race1BobAuthUserId = '32323232-3232-4232-8232-323232323232';
+const _race1CarolAuthUserId = '33333333-3333-4333-8333-333333333333';
 
 /// A refusal the app can act on: the right exception type *and* the right
 /// reason, since the reason is what picks the sentence the user sees.
@@ -317,6 +321,119 @@ void main() {
         );
       });
 
+      test('then handing the role over swaps admin and member', () async {
+        final newAdmin = await endpoints.group.transferAdmin(
+          sessionOf(_aliceAuthUserId),
+          bob.id!,
+        );
+        expect(newAdmin.role, GroupMemberRole.admin);
+
+        final members = await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        );
+        final roles = {for (final m in members) m.displayName: m.role};
+        expect(roles, {
+          'Alice': GroupMemberRole.member,
+          'Bob': GroupMemberRole.admin,
+        });
+
+        await endpoints.group.regenerateInviteCode(sessionOf(_bobAuthUserId));
+        await expectLater(
+          endpoints.group.regenerateInviteCode(sessionOf(_aliceAuthUserId)),
+          _throwsGroupError(GroupErrorReason.notAdmin),
+        );
+      });
+
+      test('then a plain member cannot hand the role over', () async {
+        final alice = (await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        )).first;
+
+        await expectLater(
+          endpoints.group.transferAdmin(sessionOf(_bobAuthUserId), alice.id!),
+          _throwsGroupError(GroupErrorReason.notAdmin),
+        );
+      });
+
+      test('then the admin cannot hand the role to themselves', () async {
+        final alice = (await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        )).first;
+
+        await expectLater(
+          endpoints.group.transferAdmin(sessionOf(_aliceAuthUserId), alice.id!),
+          _throwsGroupError(GroupErrorReason.cannotTransferAdmin),
+        );
+      });
+
+      test('then the role cannot go to someone in another group', () async {
+        await endpoints.group.createGroup(
+          sessionOf(_carolAuthUserId),
+          'Otro piso',
+          GroupType.sharedFlat,
+        );
+        final carolMember = (await endpoints.group.listMembers(
+          sessionOf(_carolAuthUserId),
+        )).single;
+
+        await expectLater(
+          endpoints.group.transferAdmin(
+            sessionOf(_aliceAuthUserId),
+            carolMember.id!,
+          ),
+          _throwsGroupError(GroupErrorReason.memberNotFound),
+        );
+      });
+
+      test('then in a family the old admin stays a guardian', () async {
+        final family = await endpoints.group.createGroup(
+          sessionOf(_carolAuthUserId),
+          'Familia',
+          GroupType.family,
+          displayName: 'Carol',
+        );
+        final guardian = await GroupMember.db.insertRow(
+          session,
+          GroupMember(
+            groupId: family.id!,
+            authUserId: UuidValue.fromString(
+              '34343434-3434-4434-8434-343434343434',
+            ),
+            displayName: 'Dani',
+            role: GroupMemberRole.guardian,
+          ),
+        );
+
+        await endpoints.group.transferAdmin(
+          sessionOf(_carolAuthUserId),
+          guardian.id!,
+        );
+
+        final carol = await GroupMember.db.findFirstRow(
+          session,
+          where: (t) =>
+              t.groupId.equals(family.id!) & t.displayName.equals('Carol'),
+        );
+        expect(carol!.role, GroupMemberRole.guardian);
+      });
+
+      test('then the role never goes to a child', () async {
+        final child = await GroupMember.db.insertRow(
+          session,
+          GroupMember(
+            groupId: createdGroup.id!,
+            authUserId: UuidValue.fromString(_carolAuthUserId),
+            displayName: 'Carol',
+            role: GroupMemberRole.child,
+          ),
+        );
+
+        await expectLater(
+          endpoints.group.transferAdmin(sessionOf(_aliceAuthUserId), child.id!),
+          _throwsGroupError(GroupErrorReason.cannotTransferAdmin),
+        );
+      });
+
       test('then a new invite code replaces the old one', () async {
         final renewed = await endpoints.group.regenerateInviteCode(
           sessionOf(_aliceAuthUserId),
@@ -410,4 +527,58 @@ void main() {
       });
     });
   });
+
+  // Real concurrent transactions need rollback disabled (serverpod-testing
+  // skill); each withServerpod group gets its own database.
+  withServerpod(
+    'Given an admin handing the role over twice at once',
+    (sessionBuilder, endpoints) {
+      final session = sessionBuilder.build();
+
+      TestSessionBuilder sessionOf(String authUserId) =>
+          sessionBuilder.copyWith(
+            authentication: AuthenticationOverride.authenticationInfo(
+              authUserId,
+              {},
+            ),
+          );
+
+      test('then the group still ends with exactly one admin', () async {
+        final group = await endpoints.group.createGroup(
+          sessionOf(_race1AdminAuthUserId),
+          'Piso de prueba',
+          GroupType.sharedFlat,
+          displayName: 'Admin',
+        );
+        final bob = await endpoints.group.joinGroup(
+          sessionOf(_race1BobAuthUserId),
+          group.inviteCode,
+          displayName: 'Bob',
+        );
+        final carol = await endpoints.group.joinGroup(
+          sessionOf(_race1CarolAuthUserId),
+          group.inviteCode,
+          displayName: 'Carol',
+        );
+
+        final outcomes = await Future.wait([
+          for (final target in [bob, carol])
+            endpoints.group
+                .transferAdmin(sessionOf(_race1AdminAuthUserId), target.id!)
+                .then<Object>((m) => m, onError: (Object e) => e),
+        ]);
+        expect(outcomes.whereType<GroupMember>(), hasLength(1));
+        expect(outcomes.whereType<GroupException>(), hasLength(1));
+
+        final admins = await GroupMember.db.find(
+          session,
+          where: (t) =>
+              t.groupId.equals(group.id!) &
+              t.role.equals(GroupMemberRole.admin),
+        );
+        expect(admins, hasLength(1));
+      });
+    },
+    rollbackDatabase: RollbackDatabase.disabled,
+  );
 }
