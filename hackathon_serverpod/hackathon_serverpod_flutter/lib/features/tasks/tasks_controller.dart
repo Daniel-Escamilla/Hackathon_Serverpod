@@ -61,4 +61,10 @@ class TasksController extends ChangeNotifier {
     await load();
     return task;
   }
+
+  Future<Task> voteTaskCompletion(int taskId, bool approve) async {
+    final task = await client.task.voteTaskCompletion(taskId, approve);
+    await load();
+    return task;
+  }
 }

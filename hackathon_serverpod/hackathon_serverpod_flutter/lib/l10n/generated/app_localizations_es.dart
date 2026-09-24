@@ -381,8 +381,31 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo reclamar. Puede que ya la haya cogido otra persona.';
 
   @override
-  String get validationPendingNotice =>
-      'Todavía no se puede votar la validación: falta el endpoint en el backend.';
+  String get validationQuestion =>
+      '¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.';
+
+  @override
+  String get validationYourOwn =>
+      'La has reclamado tú: ahora el grupo decide si está hecha.';
+
+  @override
+  String get validationApprove => 'Sí, está hecha';
+
+  @override
+  String get validationDeny => 'No está hecha';
+
+  @override
+  String get validationDenyTitle => '¿Seguro que no está hecha?';
+
+  @override
+  String get validationDenyBody =>
+      'Si la mayoría vota que no, quien la reclamó paga una multa y la tarea vuelve a estar disponible.';
+
+  @override
+  String get validationApproved => 'Has votado que está hecha';
+
+  @override
+  String get validationDenied => 'Has votado que no está hecha';
 
   @override
   String get newTaskTitle => 'Nueva tarea';

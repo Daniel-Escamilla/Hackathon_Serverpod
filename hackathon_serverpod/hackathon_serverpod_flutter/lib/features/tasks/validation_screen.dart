@@ -1,14 +1,22 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:provider/provider.dart';
+import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
+import '../../client.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/sounds.dart';
+import '../group/group_controller.dart';
+import 'tasks_controller.dart';
 
-/// There is no endpoint yet for the completion vote — TaskEndpoint's
-/// voteTaskProposal only accepts tasks in `proposed` status, so it can't be
-/// reused here. Shows the real task while the action is blocked, instead of
-/// wiring buttons that would always fail.
+/// A task someone has claimed as done, waiting for the group to confirm it
+/// (PRODUCT.md §3). Approval pays the claimant; denial fines them and
+/// reopens the task. The claimant cannot vote on their own claim.
 class ValidationScreen extends StatelessWidget {
   const ValidationScreen({required this.task, super.key});
 
@@ -17,6 +25,14 @@ class ValidationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final myUserId = client.auth.authInfoListenable.value?.authUserId;
+    final me = context
+        .watch<GroupController>()
+        .members
+        .where((m) => m.authUserId == myUserId)
+        .firstOrNull;
+    final isClaimant = me != null && me.id == task.doneById;
+
     return DetailScaffold(
       status: StatusPill(label: l10n.statusValidation, color: AppColors.lime),
       title: task.title,
@@ -29,13 +45,56 @@ class ValidationScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         InfoRow(icon: Icons.description_rounded, text: task.description),
-        const SizedBox(height: 16),
+        const SizedBox(height: 12),
         InfoRow(
-          icon: Icons.construction_rounded,
-          text: l10n.validationPendingNotice,
+          icon: Icons.how_to_vote_rounded,
+          text: isClaimant ? l10n.validationYourOwn : l10n.validationQuestion,
         ),
       ],
-      actions: const [],
+      actions: isClaimant
+          ? const []
+          : [
+              AppButton(
+                label: l10n.validationApprove,
+                onPressed: () => _vote(context, true),
+              ),
+              const SizedBox(height: 10),
+              AppButton(
+                label: l10n.validationDeny,
+                kind: AppButtonKind.danger,
+                onPressed: () => _deny(context),
+              ),
+            ],
     );
+  }
+
+  Future<void> _deny(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.validationDenyTitle,
+      body: l10n.validationDenyBody,
+      action: l10n.validationDeny,
+      destructive: true,
+    );
+    if (confirmed && context.mounted) await _vote(context, false);
+  }
+
+  Future<void> _vote(BuildContext context, bool approve) async {
+    final l10n = AppLocalizations.of(context);
+    final controller = context.read<TasksController>();
+    try {
+      await controller.voteTaskCompletion(task.id!, approve);
+      if (context.mounted) {
+        showMessage(
+          context,
+          approve ? l10n.validationApproved : l10n.validationDenied,
+          sound: AppSound.success,
+        );
+        Navigator.of(context).pop();
+      }
+    } catch (e) {
+      if (context.mounted) showMessage(context, l10n.voteError, isError: true);
+    }
   }
 }
