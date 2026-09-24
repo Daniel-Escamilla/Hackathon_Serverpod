@@ -320,5 +320,18 @@
   "@errorCannotTransferAdmin": {
     "description": "Shown when the admin tries to hand the role to themselves or to a child"
   },
-  "errorGeneric": "Algo ha fallado. Inténtalo otra vez."
+  "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
+
+  "signOut": "Cerrar sesión",
+  "@signOut": {
+    "description": "Button at the bottom of the group tab, and the confirm button of its dialog"
+  },
+  "signOutTitle": "¿Cerrar sesión?",
+  "@signOutTitle": {
+    "description": "Title of the dialog that confirms signing out"
+  },
+  "signOutBody": "Volverás a la pantalla de inicio y podrás entrar con otra cuenta.",
+  "@signOutBody": {
+    "description": "Body of the dialog that confirms signing out"
+  }
 }

@@ -607,4 +607,14 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
+
+  @override
+  String get signOut => 'Cerrar sesión';
+
+  @override
+  String get signOutTitle => '¿Cerrar sesión?';
+
+  @override
+  String get signOutBody =>
+      'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.';
 }

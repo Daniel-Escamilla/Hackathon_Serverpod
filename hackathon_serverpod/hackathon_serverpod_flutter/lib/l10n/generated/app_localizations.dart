@@ -1221,6 +1221,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Algo ha fallado. Inténtalo otra vez.'**
   String get errorGeneric;
+
+  /// Button at the bottom of the group tab, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get signOut;
+
+  /// Title of the dialog that confirms signing out
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar sesión?'**
+  String get signOutTitle;
+
+  /// Body of the dialog that confirms signing out
+  ///
+  /// In es, this message translates to:
+  /// **'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.'**
+  String get signOutBody;
 }
 
 class _AppLocalizationsDelegate
