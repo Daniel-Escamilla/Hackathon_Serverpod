@@ -632,6 +632,68 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
 
   @override
+  String get purchasesToFulfil => 'Te toca cumplir';
+
+  @override
+  String get purchasesMine => 'Tus compras';
+
+  @override
+  String get purchaseUnknownReward => 'Recompensa';
+
+  @override
+  String get purchaseSomeone => 'Alguien';
+
+  @override
+  String get purchaseAccept => 'Aceptar';
+
+  @override
+  String get purchaseRefuse => 'Negarme';
+
+  @override
+  String get purchaseRefuseTitle => '¿Negarte a cumplirla?';
+
+  @override
+  String get purchaseRefuseNotice =>
+      'Si te niegas pagas una multa, y quien compró recupera sus monedas.';
+
+  @override
+  String get purchaseMarkDelivered => 'Marcar como entregada';
+
+  @override
+  String get purchaseAccepted => 'Compra aceptada: ahora te toca cumplirla';
+
+  @override
+  String get purchaseRefused => 'Te has negado: se ha cobrado la multa';
+
+  @override
+  String get purchaseDelivered => 'Entregada. ¡Bien hecho!';
+
+  @override
+  String get purchaseStatusPendingApproval => 'Esperando al tutor';
+
+  @override
+  String get purchaseStatusPending => 'Por aceptar';
+
+  @override
+  String get purchaseStatusAccepted => 'Aceptada';
+
+  @override
+  String get purchaseStatusDelivered => 'Entregada';
+
+  @override
+  String get purchaseStatusRefused => 'Rechazada';
+
+  @override
+  String purchaseBoughtBy(String name) {
+    return 'La compró $name';
+  }
+
+  @override
+  String purchaseProvidedBy(String name) {
+    return 'Le toca cumplirla a $name';
+  }
+
+  @override
   String get signOut => 'Cerrar sesión';
 
   @override

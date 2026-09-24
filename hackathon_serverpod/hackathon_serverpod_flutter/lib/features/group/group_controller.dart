@@ -1,5 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../client.dart';
 import '../../data/app_failure.dart';
@@ -13,6 +15,13 @@ class GroupController extends ChangeNotifier {
   bool loading = false;
   bool hasLoaded = false;
   Object? error;
+
+  /// The signed-in member's id in this group: what a task's `doneById` or a
+  /// purchase's `providerId` point at. Null until the members have loaded.
+  int? get myMemberId {
+    final myUserId = client.auth.authInfoListenable.value?.authUserId;
+    return members.firstWhereOrNull((m) => m.authUserId == myUserId)?.id;
+  }
 
   Future<void> load() async {
     loading = true;

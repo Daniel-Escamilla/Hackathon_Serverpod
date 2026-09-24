@@ -5,6 +5,9 @@ import '../../client.dart';
 
 class ShopController extends ChangeNotifier {
   List<RewardItem> rewards = [];
+
+  /// The purchases the signed-in member made or has to fulfil, newest first.
+  List<Purchase> purchases = [];
   bool loading = false;
   bool hasLoaded = false;
   Object? error;
@@ -14,7 +17,12 @@ class ShopController extends ChangeNotifier {
     error = null;
     notifyListeners();
     try {
-      rewards = await client.shop.listRewards();
+      final (loadedRewards, loadedPurchases) = await (
+        client.shop.listRewards(),
+        client.shop.listPurchases(),
+      ).wait;
+      rewards = loadedRewards;
+      purchases = loadedPurchases;
     } catch (e) {
       error = e;
     } finally {
@@ -44,4 +52,20 @@ class ShopController extends ChangeNotifier {
     await load();
     return purchase;
   }
+
+  /// The chosen provider takes the purchase on, or refuses it and pays the
+  /// fine; refusing refunds the buyer (PRODUCT.md §6).
+  Future<void> respondToPurchase(int purchaseId, bool accept) async {
+    await client.shop.respondToPurchase(purchaseId, accept);
+    await load();
+  }
+
+  Future<void> markDelivered(int purchaseId) async {
+    await client.shop.markDelivered(purchaseId);
+    await load();
+  }
+
+  /// The reward a purchase is for, if it is still in the shop's list.
+  RewardItem? rewardFor(Purchase purchase) =>
+      rewards.where((r) => r.id == purchase.itemId).firstOrNull;
 }

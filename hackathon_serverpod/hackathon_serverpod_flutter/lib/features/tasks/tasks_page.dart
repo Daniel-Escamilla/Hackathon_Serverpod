@@ -7,6 +7,7 @@ import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../group/group_controller.dart';
 import 'available_task_screen.dart';
 import 'counter_offer_decision_screen.dart';
 import 'task_vote_screen.dart';
@@ -71,6 +72,7 @@ class _Body extends StatelessWidget {
     final inValidation = controller.tasks
         .where((t) => t.status == TaskStatus.inValidation)
         .toList();
+    final myMemberId = context.watch<GroupController>().myMemberId;
 
     if (controller.tasks.isEmpty) {
       return RefreshIndicator(
@@ -127,7 +129,10 @@ class _Body extends StatelessWidget {
                 task: task,
                 statusLabel: l10n.statusValidation,
                 statusColor: AppColors.coral.withValues(alpha: .35),
-                onTap: () => pushPage(context, ValidationScreen(task: task)),
+                onTap: () => pushPage(
+                  context,
+                  ValidationScreen(task: task, myMemberId: myMemberId),
+                ),
               ),
           ],
         ],
