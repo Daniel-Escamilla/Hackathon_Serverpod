@@ -130,6 +130,18 @@ abstract class AppLocalizations {
   /// **'Sumar'**
   String get increaseAmount;
 
+  /// Tooltip of the eye in a password field while the password is hidden
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar contraseña'**
+  String get showPassword;
+
+  /// Tooltip of the eye in a password field while the password is shown
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar contraseña'**
+  String get hidePassword;
+
   /// No description provided for @navTasks.
   ///
   /// In es, this message translates to:
@@ -790,11 +802,53 @@ abstract class AppLocalizations {
   /// **'No se pudo reclamar. Puede que ya la haya cogido otra persona.'**
   String get claimError;
 
-  /// No description provided for @validationPendingNotice.
+  /// Shown to the group on a task someone has claimed as done
   ///
   /// In es, this message translates to:
-  /// **'Todavía no se puede votar la validación: falta el endpoint en el backend.'**
-  String get validationPendingNotice;
+  /// **'¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.'**
+  String get validationQuestion;
+
+  /// Shown instead of the vote buttons to whoever claimed the task
+  ///
+  /// In es, this message translates to:
+  /// **'La has reclamado tú: ahora el grupo decide si está hecha.'**
+  String get validationYourOwn;
+
+  /// Button that votes a claimed task as done
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, está hecha'**
+  String get validationApprove;
+
+  /// Button that votes a claimed task as not done, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'No está hecha'**
+  String get validationDeny;
+
+  /// Title of the dialog before voting a claimed task as not done
+  ///
+  /// In es, this message translates to:
+  /// **'¿Seguro que no está hecha?'**
+  String get validationDenyTitle;
+
+  /// Body of the dialog before voting a claimed task as not done
+  ///
+  /// In es, this message translates to:
+  /// **'Si la mayoría vota que no, quien la reclamó paga una multa y la tarea vuelve a estar disponible.'**
+  String get validationDenyBody;
+
+  /// Message after voting a claimed task as done
+  ///
+  /// In es, this message translates to:
+  /// **'Has votado que está hecha'**
+  String get validationApproved;
+
+  /// Message after voting a claimed task as not done
+  ///
+  /// In es, this message translates to:
+  /// **'Has votado que no está hecha'**
+  String get validationDenied;
 
   /// No description provided for @newTaskTitle.
   ///
@@ -1209,6 +1263,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Algo ha fallado. Inténtalo otra vez.'**
   String get errorGeneric;
+
+  /// Button at the bottom of the group tab, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get signOut;
+
+  /// Title of the dialog that confirms signing out
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar sesión?'**
+  String get signOutTitle;
+
+  /// Body of the dialog that confirms signing out
+  ///
+  /// In es, this message translates to:
+  /// **'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.'**
+  String get signOutBody;
 }
 
 class _AppLocalizationsDelegate

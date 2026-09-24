@@ -7,6 +7,7 @@ import '../../client.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/password_field.dart';
 
 class CreateAccountPasswordScreen extends StatefulWidget {
   const CreateAccountPasswordScreen({
@@ -72,11 +73,10 @@ class _CreateAccountPasswordScreenState
       art: const RoundIcon(icon: Icons.lock_rounded, color: AppColors.lime),
       children: [
         FieldLabel(l10n.passwordFieldLabel),
-        TextField(
+        PasswordField(
           controller: _passwordController,
-          obscureText: true,
+          hintText: l10n.passwordHint,
           onSubmitted: (_) => _submit(),
-          decoration: InputDecoration(hintText: l10n.passwordHint),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),

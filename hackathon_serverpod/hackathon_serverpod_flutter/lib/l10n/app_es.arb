@@ -8,6 +8,14 @@
   "reject": "Rechazar",
   "decreaseAmount": "Restar",
   "increaseAmount": "Sumar",
+  "showPassword": "Mostrar contraseña",
+  "@showPassword": {
+    "description": "Tooltip of the eye in a password field while the password is hidden"
+  },
+  "hidePassword": "Ocultar contraseña",
+  "@hidePassword": {
+    "description": "Tooltip of the eye in a password field while the password is shown"
+  },
 
   "navTasks": "Tareas",
   "navShop": "Tienda",
@@ -171,7 +179,38 @@
   "backToTasks": "Volver a tareas",
   "claimError": "No se pudo reclamar. Puede que ya la haya cogido otra persona.",
 
-  "validationPendingNotice": "Todavía no se puede votar la validación: falta el endpoint en el backend.",
+  "validationQuestion": "¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.",
+  "@validationQuestion": {
+    "description": "Shown to the group on a task someone has claimed as done"
+  },
+  "validationYourOwn": "La has reclamado tú: ahora el grupo decide si está hecha.",
+  "@validationYourOwn": {
+    "description": "Shown instead of the vote buttons to whoever claimed the task"
+  },
+  "validationApprove": "Sí, está hecha",
+  "@validationApprove": {
+    "description": "Button that votes a claimed task as done"
+  },
+  "validationDeny": "No está hecha",
+  "@validationDeny": {
+    "description": "Button that votes a claimed task as not done, and the confirm button of its dialog"
+  },
+  "validationDenyTitle": "¿Seguro que no está hecha?",
+  "@validationDenyTitle": {
+    "description": "Title of the dialog before voting a claimed task as not done"
+  },
+  "validationDenyBody": "Si la mayoría vota que no, quien la reclamó paga una multa y la tarea vuelve a estar disponible.",
+  "@validationDenyBody": {
+    "description": "Body of the dialog before voting a claimed task as not done"
+  },
+  "validationApproved": "Has votado que está hecha",
+  "@validationApproved": {
+    "description": "Message after voting a claimed task as done"
+  },
+  "validationDenied": "Has votado que no está hecha",
+  "@validationDenied": {
+    "description": "Message after voting a claimed task as not done"
+  },
 
   "newTaskTitle": "Nueva tarea",
   "titleFieldLabel": "Título",
@@ -312,5 +351,18 @@
   "@errorCannotTransferAdmin": {
     "description": "Shown when the admin tries to hand the role to themselves or to a child"
   },
-  "errorGeneric": "Algo ha fallado. Inténtalo otra vez."
+  "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
+
+  "signOut": "Cerrar sesión",
+  "@signOut": {
+    "description": "Button at the bottom of the group tab, and the confirm button of its dialog"
+  },
+  "signOutTitle": "¿Cerrar sesión?",
+  "@signOutTitle": {
+    "description": "Title of the dialog that confirms signing out"
+  },
+  "signOutBody": "Volverás a la pantalla de inicio y podrás entrar con otra cuenta.",
+  "@signOutBody": {
+    "description": "Body of the dialog that confirms signing out"
+  }
 }

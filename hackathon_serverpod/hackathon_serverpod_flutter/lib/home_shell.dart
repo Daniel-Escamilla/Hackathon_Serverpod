@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
+import 'client.dart';
 import 'common/navigation.dart';
 import 'features/group/group_controller.dart';
 import 'features/group/group_page.dart';
@@ -49,9 +53,51 @@ class _HomeShellState extends State<HomeShell> {
   final _shopController = ShopController()..load();
   final _walletController = WalletController()..load();
   final _groupController = GroupController()..load();
+  StreamSubscription<GroupEvent>? _events;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchGroup();
+  }
+
+  /// Listens to the group's live stream (PRODUCT.md §10.4) so a vote, a
+  /// claim or a purchase made on another phone shows up here without pulling
+  /// to refresh. If the connection drops, it tries again a few seconds later.
+  void _watchGroup() {
+    _events = client.event.watchGroup().listen(
+      _onGroupEvent,
+      onError: (Object _) => _retryWatch(),
+      onDone: _retryWatch,
+      cancelOnError: true,
+    );
+  }
+
+  void _retryWatch() {
+    _events = null;
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted && _events == null) _watchGroup();
+    });
+  }
+
+  void _onGroupEvent(GroupEvent event) {
+    switch (event.kind) {
+      case GroupEventKind.taskProposed:
+      case GroupEventKind.taskVoteCast:
+      case GroupEventKind.taskCounterOffered:
+        unawaited(_tasksController.load());
+      case GroupEventKind.taskValidated:
+        unawaited(_tasksController.load());
+        unawaited(_walletController.load());
+      case GroupEventKind.purchased:
+        unawaited(_shopController.load());
+        unawaited(_walletController.load());
+    }
+  }
 
   @override
   void dispose() {
+    unawaited(_events?.cancel());
     _tabController.dispose();
     _tasksController.dispose();
     _shopController.dispose();

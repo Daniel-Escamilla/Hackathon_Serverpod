@@ -158,9 +158,29 @@ class _Body extends StatelessWidget {
               canExpel: isAdmin && member.authUserId != myUserId,
               onExpel: () => _expel(context, member),
             ),
+          const SizedBox(height: 26),
+          AppButton(
+            label: l10n.signOut,
+            kind: AppButtonKind.quiet,
+            onPressed: () => _signOut(context),
+          ),
         ],
       ),
     );
+  }
+
+  /// Signing out only clears the session: `AuthGate` sees it and takes the
+  /// app back to the welcome screen, so another account can sign in.
+  Future<void> _signOut(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.signOutTitle,
+      body: l10n.signOutBody,
+      action: l10n.signOut,
+    );
+    if (!confirmed) return;
+    await client.auth.signOutDevice();
   }
 
   String _typeLabel(AppLocalizations l10n, GroupType type) => switch (type) {

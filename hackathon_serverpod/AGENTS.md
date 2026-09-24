@@ -206,10 +206,10 @@ now the app's real `MaterialApp` shell — `main.dart` runs it, and it points at
 What runs today, all against the server: email sign-in, creating a group or joining one by code,
 the group screen (members, invite code, and for the admin, expelling a member and replacing the
 code), the wallet with its history, proposing/voting/counter-offering/validating tasks, and
-browsing/proposing/voting/buying shop rewards. The backend has groups, wallet, shop and most of the
-task cycle; `docs/PLAN.md` says what is left and when. Two known gaps: there is no endpoint yet to
-list a member's past purchases, and no endpoint to vote on a task's completion once it has been
-claimed (only its initial proposal goes to a vote).
+browsing/proposing/voting/buying shop rewards, and signing out. The backend has groups, wallet,
+shop and the whole task cycle; `docs/PLAN.md` says what is left and when. Endpoints the app does
+not call yet: `listPurchases`, `respondToPurchase`, `markDelivered`, `requestWish`,
+`approveChildPurchase`, `transferAdmin` and `getWeeklyRanking`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits
