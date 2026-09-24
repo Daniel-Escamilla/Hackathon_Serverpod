@@ -353,6 +353,84 @@
   },
   "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
 
+  "purchasesToFulfil": "Te toca cumplir",
+  "@purchasesToFulfil": {
+    "description": "Shop section: purchases the signed-in member was chosen to fulfil"
+  },
+  "purchasesMine": "Tus compras",
+  "@purchasesMine": {
+    "description": "Shop section: the signed-in member's purchases still in progress"
+  },
+  "purchaseUnknownReward": "Recompensa",
+  "@purchaseUnknownReward": {
+    "description": "Title of a purchase whose reward is no longer in the shop list"
+  },
+  "purchaseSomeone": "Alguien",
+  "@purchaseSomeone": {
+    "description": "Name shown for a member who is no longer in the group"
+  },
+  "purchaseAccept": "Aceptar",
+  "@purchaseAccept": {
+    "description": "Button: the provider takes the purchase on"
+  },
+  "purchaseRefuse": "Negarme",
+  "@purchaseRefuse": {
+    "description": "Button: the provider refuses the purchase, and the confirm button of its dialog"
+  },
+  "purchaseRefuseTitle": "¿Negarte a cumplirla?",
+  "@purchaseRefuseTitle": {
+    "description": "Title of the dialog before refusing a purchase"
+  },
+  "purchaseRefuseNotice": "Si te niegas pagas una multa, y quien compró recupera sus monedas.",
+  "@purchaseRefuseNotice": {
+    "description": "Warns the provider what refusing a purchase costs"
+  },
+  "purchaseMarkDelivered": "Marcar como entregada",
+  "@purchaseMarkDelivered": {
+    "description": "Button: the provider has fulfilled an accepted purchase"
+  },
+  "purchaseAccepted": "Compra aceptada: ahora te toca cumplirla",
+  "@purchaseAccepted": {
+    "description": "Message after accepting a purchase"
+  },
+  "purchaseRefused": "Te has negado: se ha cobrado la multa",
+  "@purchaseRefused": {
+    "description": "Message after refusing a purchase"
+  },
+  "purchaseDelivered": "Entregada. ¡Bien hecho!",
+  "@purchaseDelivered": {
+    "description": "Message after marking a purchase delivered"
+  },
+  "purchaseStatusPendingApproval": "Esperando al tutor",
+  "@purchaseStatusPendingApproval": {
+    "description": "Purchase status: a child's purchase waiting for a guardian"
+  },
+  "purchaseStatusPending": "Por aceptar",
+  "@purchaseStatusPending": {
+    "description": "Purchase status: waiting for the provider to accept"
+  },
+  "purchaseStatusAccepted": "Aceptada",
+  "@purchaseStatusAccepted": {
+    "description": "Purchase status: accepted, not yet delivered"
+  },
+  "purchaseStatusDelivered": "Entregada",
+  "@purchaseStatusDelivered": {
+    "description": "Purchase status: fulfilled"
+  },
+  "purchaseStatusRefused": "Rechazada",
+  "@purchaseStatusRefused": {
+    "description": "Purchase status: the provider refused it"
+  },
+  "purchaseBoughtBy": "La compró {name}",
+  "@purchaseBoughtBy": {
+    "description": "Who bought a purchase",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "purchaseProvidedBy": "Le toca cumplirla a {name}",
+  "@purchaseProvidedBy": {
+    "description": "Who has to fulfil a purchase",
+    "placeholders": { "name": { "type": "String" } }
+  },
   "signOut": "Cerrar sesión",
   "@signOut": {
     "description": "Button at the bottom of the group tab, and the confirm button of its dialog"

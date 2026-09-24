@@ -1264,6 +1264,120 @@ abstract class AppLocalizations {
   /// **'Algo ha fallado. Inténtalo otra vez.'**
   String get errorGeneric;
 
+  /// Shop section: purchases the signed-in member was chosen to fulfil
+  ///
+  /// In es, this message translates to:
+  /// **'Te toca cumplir'**
+  String get purchasesToFulfil;
+
+  /// Shop section: the signed-in member's purchases still in progress
+  ///
+  /// In es, this message translates to:
+  /// **'Tus compras'**
+  String get purchasesMine;
+
+  /// Title of a purchase whose reward is no longer in the shop list
+  ///
+  /// In es, this message translates to:
+  /// **'Recompensa'**
+  String get purchaseUnknownReward;
+
+  /// Name shown for a member who is no longer in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Alguien'**
+  String get purchaseSomeone;
+
+  /// Button: the provider takes the purchase on
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptar'**
+  String get purchaseAccept;
+
+  /// Button: the provider refuses the purchase, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'Negarme'**
+  String get purchaseRefuse;
+
+  /// Title of the dialog before refusing a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'¿Negarte a cumplirla?'**
+  String get purchaseRefuseTitle;
+
+  /// Warns the provider what refusing a purchase costs
+  ///
+  /// In es, this message translates to:
+  /// **'Si te niegas pagas una multa, y quien compró recupera sus monedas.'**
+  String get purchaseRefuseNotice;
+
+  /// Button: the provider has fulfilled an accepted purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como entregada'**
+  String get purchaseMarkDelivered;
+
+  /// Message after accepting a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Compra aceptada: ahora te toca cumplirla'**
+  String get purchaseAccepted;
+
+  /// Message after refusing a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Te has negado: se ha cobrado la multa'**
+  String get purchaseRefused;
+
+  /// Message after marking a purchase delivered
+  ///
+  /// In es, this message translates to:
+  /// **'Entregada. ¡Bien hecho!'**
+  String get purchaseDelivered;
+
+  /// Purchase status: a child's purchase waiting for a guardian
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando al tutor'**
+  String get purchaseStatusPendingApproval;
+
+  /// Purchase status: waiting for the provider to accept
+  ///
+  /// In es, this message translates to:
+  /// **'Por aceptar'**
+  String get purchaseStatusPending;
+
+  /// Purchase status: accepted, not yet delivered
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptada'**
+  String get purchaseStatusAccepted;
+
+  /// Purchase status: fulfilled
+  ///
+  /// In es, this message translates to:
+  /// **'Entregada'**
+  String get purchaseStatusDelivered;
+
+  /// Purchase status: the provider refused it
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazada'**
+  String get purchaseStatusRefused;
+
+  /// Who bought a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'La compró {name}'**
+  String purchaseBoughtBy(String name);
+
+  /// Who has to fulfil a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Le toca cumplirla a {name}'**
+  String purchaseProvidedBy(String name);
+
   /// Button at the bottom of the group tab, and the confirm button of its dialog
   ///
   /// In es, this message translates to:

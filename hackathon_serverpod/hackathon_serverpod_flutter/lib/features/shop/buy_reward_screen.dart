@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
-import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
@@ -31,11 +29,9 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final myUserId = client.auth.authInfoListenable.value?.authUserId;
     final group = context.watch<GroupController>();
-    final others = group.members
-        .where((m) => m.authUserId != myUserId)
-        .toList();
+    final myMemberId = group.myMemberId;
+    final others = group.members.where((m) => m.id != myMemberId).toList();
 
     return Scaffold(
       appBar: AppBar(),
