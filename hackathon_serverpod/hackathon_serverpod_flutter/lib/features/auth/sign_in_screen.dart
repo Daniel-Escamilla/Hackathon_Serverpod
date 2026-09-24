@@ -7,6 +7,7 @@ import '../../client.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/password_field.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -77,11 +78,10 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         const SizedBox(height: 18),
         FieldLabel(l10n.passwordFieldLabel),
-        TextField(
+        PasswordField(
           controller: _passwordController,
-          obscureText: true,
+          hintText: l10n.passwordHint,
           onSubmitted: (_) => _submit(),
-          decoration: InputDecoration(hintText: l10n.passwordHint),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),

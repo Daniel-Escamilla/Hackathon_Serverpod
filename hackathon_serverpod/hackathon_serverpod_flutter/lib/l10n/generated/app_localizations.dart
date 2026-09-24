@@ -130,6 +130,18 @@ abstract class AppLocalizations {
   /// **'Sumar'**
   String get increaseAmount;
 
+  /// Tooltip of the eye in a password field while the password is hidden
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar contraseña'**
+  String get showPassword;
+
+  /// Tooltip of the eye in a password field while the password is shown
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar contraseña'**
+  String get hidePassword;
+
   /// No description provided for @navTasks.
   ///
   /// In es, this message translates to:

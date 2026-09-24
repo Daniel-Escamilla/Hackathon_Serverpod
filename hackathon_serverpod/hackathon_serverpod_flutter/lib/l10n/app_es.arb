@@ -8,6 +8,14 @@
   "reject": "Rechazar",
   "decreaseAmount": "Restar",
   "increaseAmount": "Sumar",
+  "showPassword": "Mostrar contraseña",
+  "@showPassword": {
+    "description": "Tooltip of the eye in a password field while the password is hidden"
+  },
+  "hidePassword": "Ocultar contraseña",
+  "@hidePassword": {
+    "description": "Tooltip of the eye in a password field while the password is shown"
+  },
 
   "navTasks": "Tareas",
   "navShop": "Tienda",

@@ -27,6 +27,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get increaseAmount => 'Sumar';
 
   @override
+  String get showPassword => 'Mostrar contraseña';
+
+  @override
+  String get hidePassword => 'Ocultar contraseña';
+
+  @override
   String get navTasks => 'Tareas';
 
   @override
