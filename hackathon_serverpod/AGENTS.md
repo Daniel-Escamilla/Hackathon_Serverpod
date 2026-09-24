@@ -209,7 +209,7 @@ code), the wallet with its history, proposing/voting/counter-offering/validating
 browsing/proposing/voting/buying shop rewards, and signing out. The backend has groups, wallet,
 shop and the whole task cycle; `docs/PLAN.md` says what is left and when. Endpoints the app does
 not call yet: `listPurchases`, `respondToPurchase`, `markDelivered`, `requestWish`,
-`approveChildPurchase`, `transferAdmin`, `getWeeklyRanking` and the `watchGroup` stream.
+`approveChildPurchase`, `transferAdmin` and `getWeeklyRanking`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits
