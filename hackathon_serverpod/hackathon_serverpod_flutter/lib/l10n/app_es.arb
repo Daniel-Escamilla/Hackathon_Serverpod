@@ -67,6 +67,35 @@
   "passwordErrorExpired": "La sesión de registro ha caducado. Vuelve a empezar.",
   "passwordErrorGeneric": "No se pudo crear la cuenta.",
 
+  "forgotPasswordLink": "¿Has olvidado la contraseña?",
+  "@forgotPasswordLink": {
+    "description": "Link under the sign-in form that starts the password reset."
+  },
+  "resetPasswordTitle": "Recupera tu contraseña",
+  "@resetPasswordTitle": {
+    "description": "Title of the first password reset step, where the email is typed."
+  },
+  "resetPasswordSubtitle": "Te enviaremos un código para elegir una nueva.",
+  "@resetPasswordSubtitle": {
+    "description": "Explains what happens after typing the email in the password reset."
+  },
+  "resetPasswordSendCode": "Enviar código",
+  "@resetPasswordSendCode": {
+    "description": "Button that asks the server to email the password reset code."
+  },
+  "newPasswordTitle": "Elige una contraseña nueva",
+  "@newPasswordTitle": {
+    "description": "Title of the last password reset step."
+  },
+  "newPasswordButton": "Cambiar contraseña",
+  "@newPasswordButton": {
+    "description": "Button that saves the new password and ends the reset."
+  },
+  "passwordChanged": "Contraseña cambiada. Entra con la nueva.",
+  "@passwordChanged": {
+    "description": "Message shown back on the sign-in screen once the password has been reset."
+  },
+
   "groupChoiceGreeting": "¡Hola!",
   "groupChoiceQuestion": "¿Cómo quieres\nempezar?",
   "createGroupTitle": "Crear un grupo",

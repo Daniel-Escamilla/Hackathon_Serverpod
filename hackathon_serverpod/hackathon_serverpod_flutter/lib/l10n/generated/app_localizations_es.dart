@@ -150,6 +150,28 @@ class AppLocalizationsEs extends AppLocalizations {
   String get passwordErrorGeneric => 'No se pudo crear la cuenta.';
 
   @override
+  String get forgotPasswordLink => '¿Has olvidado la contraseña?';
+
+  @override
+  String get resetPasswordTitle => 'Recupera tu contraseña';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Te enviaremos un código para elegir una nueva.';
+
+  @override
+  String get resetPasswordSendCode => 'Enviar código';
+
+  @override
+  String get newPasswordTitle => 'Elige una contraseña nueva';
+
+  @override
+  String get newPasswordButton => 'Cambiar contraseña';
+
+  @override
+  String get passwordChanged => 'Contraseña cambiada. Entra con la nueva.';
+
+  @override
   String get groupChoiceGreeting => '¡Hola!';
 
   @override
