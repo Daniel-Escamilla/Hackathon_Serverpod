@@ -72,6 +72,23 @@ run_with_spinner() {
   return $status
 }
 
+# This computer's address on the local network. The phone reaches the server
+# through it: the app's own fallback, localhost, is the phone itself.
+detect_lan_ip() {
+  case "$(uname -s)" in
+    Darwin)
+      ipconfig getifaddr en0 2>/dev/null || ipconfig getifaddr en1 2>/dev/null
+      ;;
+    MINGW* | MSYS* | CYGWIN*)
+      ipconfig | grep -a 'IPv4' | head -n1 | sed 's/.*: *//' | tr -d '\r'
+      ;;
+    *)
+      ip -4 route get 1.1.1.1 2>/dev/null \
+        | awk '{for (i = 1; i < NF; i++) if ($i == "src") print $(i + 1)}'
+      ;;
+  esac
+}
+
 confirm() {
   local reply
   read -r -p "$1 [s/N] " reply
@@ -209,6 +226,23 @@ if [ -z "$SDK_VERSION" ] || [ "$SDK_VERSION" -lt "$MIN_SDK" ] 2>/dev/null; then
 fi
 ok "Versión de Android compatible (API $SDK_VERSION)"
 
+section "Servidor para la app"
+
+# SERVER_URL in the environment wins, e.g. to point the phone at Cloud.
+if [ -z "${SERVER_URL:-}" ]; then
+  LAN_IP="$(detect_lan_ip)"
+  read -r -p "IP de este ordenador en la wifi del móvil [${LAN_IP:-?}]: " reply
+  LAN_IP="${reply:-$LAN_IP}"
+  if [ -z "$LAN_IP" ]; then
+    fail "No se pudo averiguar la IP de este ordenador"
+    echo "Vuelve a lanzar el script y escríbela, o pasa SERVER_URL=http://<IP>:8080/."
+    exit 1
+  fi
+  SERVER_URL="http://$LAN_IP:8080/"
+fi
+ok "La app usará $SERVER_URL"
+echo "El móvil tiene que estar en la misma wifi que este ordenador."
+
 echo
 if ! confirm "¿Instalar la app en $DEVICE_ID?"; then
   echo "Cancelado."
@@ -216,7 +250,8 @@ if ! confirm "¿Instalar la app en $DEVICE_ID?"; then
 fi
 
 build_apk() {
-  cd "$FLUTTER_PROJECT_DIR" && flutter build apk --debug --target=lib/main.dart
+  cd "$FLUTTER_PROJECT_DIR" && flutter build apk --debug --target=lib/main.dart \
+    --dart-define=SERVER_URL="$SERVER_URL"
 }
 run_with_spinner "Compilando APK debug" build_apk || exit 1
 
