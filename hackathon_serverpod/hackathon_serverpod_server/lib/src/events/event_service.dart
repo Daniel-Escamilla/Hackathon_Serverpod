@@ -11,9 +11,9 @@ String groupEventChannel(int groupId) => 'group-events-$groupId';
 /// Publishes to a group's live Stream (PRODUCT.md §10.4, issue #65): every
 /// member's app watching `EventEndpoint.watchGroup` gets the event the
 /// moment it's posted here, no reload needed. Covers the five moments the
-/// issue names — propuesta, voto, contraoferta, validación, compra — not
-/// every state change (marking a task done, a shop vote or purchase
-/// response don't publish yet).
+/// issue names — propuesta, voto, contraoferta, validación, compra — plus a
+/// task being claimed as done. Not every state change: a shop vote or a
+/// purchase response don't publish yet.
 class EventService {
   const EventService();
 

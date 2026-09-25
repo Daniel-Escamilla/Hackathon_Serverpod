@@ -355,6 +355,12 @@ class TaskService {
       );
     });
     await _scheduleVoteExpiry(session, claimed);
+    await eventService.publish(
+      session,
+      groupId: claimed.groupId,
+      kind: GroupEventKind.taskClaimed,
+      taskId: claimed.id,
+    );
     return claimed;
   }
 

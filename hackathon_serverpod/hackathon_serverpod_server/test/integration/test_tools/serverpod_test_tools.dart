@@ -33,6 +33,8 @@ import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
 import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
     as _i0sdpywk;
+import 'package:hackathon_serverpod_server/src/generated/tasks/task_vote.dart'
+    as _ini4h15w;
 import 'package:hackathon_serverpod_server/src/generated/wallet/coin_movement.dart'
     as _ijihwky5;
 import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
@@ -1256,6 +1258,36 @@ class _TaskEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<List<_i0sdpywk.Task>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_ini4h15w.TaskVote>> listTaskVotes(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'listTaskVotes',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'listTaskVotes',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_ini4h15w.TaskVote>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();

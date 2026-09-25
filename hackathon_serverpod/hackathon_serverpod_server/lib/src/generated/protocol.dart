@@ -19,6 +19,8 @@ import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
 import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
     as _i0sdpywk;
+import 'package:hackathon_serverpod_server/src/generated/tasks/task_vote.dart'
+    as _ini4h15w;
 import 'package:hackathon_serverpod_server/src/generated/wallet/coin_movement.dart'
     as _ijihwky5;
 import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
@@ -1239,6 +1241,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == List<_i0sdpywk.Task>) {
       return (data as List).map((e) => deserialize<_i0sdpywk.Task>(e)).toList()
+          as T;
+    }
+    if (t == List<_ini4h15w.TaskVote>) {
+      return (data as List)
+              .map((e) => deserialize<_ini4h15w.TaskVote>(e))
+              .toList()
           as T;
     }
     if (t == List<_ijihwky5.CoinMovement>) {
