@@ -12,6 +12,10 @@ extension AppFailureMessage on AppFailure {
     AppFailure.memberNotFound => l10n.errorMemberNotFound,
     AppFailure.cannotExpelSelf => l10n.errorCannotExpelSelf,
     AppFailure.cannotTransferAdmin => l10n.errorCannotTransferAdmin,
+    AppFailure.resetExpired => l10n.codeErrorExpired,
+    AppFailure.resetCodeInvalid => l10n.codeErrorInvalid,
+    AppFailure.passwordPolicy => l10n.passwordErrorPolicy,
+    AppFailure.tooManyAttempts => l10n.authErrorTooManyAttempts,
     AppFailure.noGroup || AppFailure.unknown => l10n.errorGeneric,
   };
 }

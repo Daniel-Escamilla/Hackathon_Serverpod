@@ -364,6 +364,48 @@ abstract class AppLocalizations {
   /// **'No se pudo crear la cuenta.'**
   String get passwordErrorGeneric;
 
+  /// Link under the sign-in form that starts the password reset.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Has olvidado la contraseña?'**
+  String get forgotPasswordLink;
+
+  /// Title of the first password reset step, where the email is typed.
+  ///
+  /// In es, this message translates to:
+  /// **'Recupera tu contraseña'**
+  String get resetPasswordTitle;
+
+  /// Explains what happens after typing the email in the password reset.
+  ///
+  /// In es, this message translates to:
+  /// **'Te enviaremos un código para elegir una nueva.'**
+  String get resetPasswordSubtitle;
+
+  /// Button that asks the server to email the password reset code.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar código'**
+  String get resetPasswordSendCode;
+
+  /// Title of the last password reset step.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una contraseña nueva'**
+  String get newPasswordTitle;
+
+  /// Button that saves the new password and ends the reset.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar contraseña'**
+  String get newPasswordButton;
+
+  /// Message shown back on the sign-in screen once the password has been reset.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña cambiada. Entra con la nueva.'**
+  String get passwordChanged;
+
   /// No description provided for @groupChoiceGreeting.
   ///
   /// In es, this message translates to:

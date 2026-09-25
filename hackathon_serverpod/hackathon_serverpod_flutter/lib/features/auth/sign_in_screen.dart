@@ -4,13 +4,22 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
 import '../../client.dart';
+import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/password_reset_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import '../../ui/password_field.dart';
+import 'reset_password_email_screen.dart';
 
 class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+  const SignInScreen({
+    this.passwordReset = const PasswordResetRepository(),
+    super.key,
+  });
+
+  /// Handed down the password reset steps, so a test can swap in a fake.
+  final PasswordResetRepository passwordReset;
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -92,6 +101,18 @@ class _SignInScreenState extends State<SignInScreen> {
           label: l10n.signInSubmit,
           loading: _loading,
           onPressed: _submit,
+        ),
+        const SizedBox(height: 8),
+        AppButton(
+          label: l10n.forgotPasswordLink,
+          kind: AppButtonKind.quiet,
+          onPressed: () => pushPage(
+            context,
+            ResetPasswordEmailScreen(
+              initialEmail: _emailController.text.trim(),
+              repository: widget.passwordReset,
+            ),
+          ),
         ),
       ],
     );
