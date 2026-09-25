@@ -120,6 +120,10 @@ flutter run --dart-define=SERVER_URL=http://<your-LAN-IP>:8080/
 Brings up the Docker backend, checks `adb`/`flutter` and the connected device, then asks before
 building and installing the debug APK. Prompts are in Spanish and take `s` for yes.
 
+The APK is built against this computer's LAN address, which the script detects and lets you
+correct, so the phone has to be on the same Wi-Fi. To point it somewhere else, set it up front:
+`SERVER_URL=https://<host>/ ./hackathon_serverpod/scripts/run_on_phone.sh`.
+
 ## Tests
 
 No Docker needed — the test config manages its own embedded PostgreSQL.

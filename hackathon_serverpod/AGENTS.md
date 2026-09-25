@@ -95,7 +95,7 @@ flutter test
 
 `lib/client.dart` builds the client from `getServerUrl()`, which prefers `--dart-define=SERVER_URL=...`, then falls back to `assets/config.json`, then to `http://localhost:8080/`. The server serves a *runtime* version of that file — `server.dart` mounts `AppConfigRoute` at `/assets/assets/config.json`, filled from the API URL in `config/<mode>.yaml` — so a Flutter **web** build served by the server always gets the right URL, whatever host it runs on.
 
-A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does not pass it today, which is harmless only while the screens stay local placeholders.
+A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does: it detects this computer's LAN address, lets whoever runs it correct it, and takes a `SERVER_URL` from the environment instead when one is set.
 
 ## Serving the Flutter app from the server
 
