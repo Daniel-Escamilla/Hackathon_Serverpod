@@ -11,19 +11,28 @@ import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
 import 'counter_offer_decision_screen.dart';
 import 'counter_offer_sheet.dart';
+import 'task_voters.dart';
 import 'tasks_controller.dart';
 
 class TaskVoteScreen extends StatelessWidget {
-  const TaskVoteScreen({required this.task, super.key});
+  const TaskVoteScreen({
+    required this.task,
+    required this.myMemberId,
+    super.key,
+  });
 
   final Task task;
+  final int? myMemberId;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    final isMine = myMemberId != null && task.proposedById == myMemberId;
+    final voted = context.watch<TasksController>().hasVoted(task, myMemberId);
+    final canVote = !isMine && !voted;
     return DetailScaffold(
       status: StatusPill(
-        label: l10n.waitingYourVote,
+        label: canVote ? l10n.waitingYourVote : l10n.statusProposal,
         color: const Color(0xFFE2DCFF),
       ),
       title: task.title,
@@ -43,20 +52,31 @@ class TaskVoteScreen extends StatelessWidget {
             text: _remaining(l10n, task.voteClosesAt!),
           ),
         ],
+        if (!canVote) ...[
+          const SizedBox(height: 12),
+          InfoRow(
+            icon: Icons.how_to_vote_rounded,
+            text: isMine ? l10n.ownProposalNotice : l10n.alreadyVotedNotice,
+          ),
+        ],
+        const SizedBox(height: 20),
+        TaskVoters(task: task),
       ],
       actions: [
-        AppButton(label: l10n.approve, onPressed: () => _vote(context, true)),
-        const SizedBox(height: 10),
-        AppButton(
-          label: l10n.counterOffer,
-          kind: AppButtonKind.secondary,
-          onPressed: () => _counterOffer(context),
-        ),
-        AppButton(
-          label: l10n.reject,
-          kind: AppButtonKind.danger,
-          onPressed: () => _vote(context, false),
-        ),
+        if (canVote) ...[
+          AppButton(label: l10n.approve, onPressed: () => _vote(context, true)),
+          const SizedBox(height: 10),
+          AppButton(
+            label: l10n.counterOffer,
+            kind: AppButtonKind.secondary,
+            onPressed: () => _counterOffer(context),
+          ),
+          AppButton(
+            label: l10n.reject,
+            kind: AppButtonKind.danger,
+            onPressed: () => _vote(context, false),
+          ),
+        ],
       ],
     );
   }
@@ -98,7 +118,10 @@ class TaskVoteScreen extends StatelessWidget {
     try {
       final updated = await controller.counterOfferTask(task.id!, sent);
       if (context.mounted) {
-        pushPage(context, CounterOfferDecisionScreen(task: updated));
+        pushPage(
+          context,
+          CounterOfferDecisionScreen(task: updated, myMemberId: myMemberId),
+        );
       }
     } catch (e) {
       if (context.mounted) {

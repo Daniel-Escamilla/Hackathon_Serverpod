@@ -7,6 +7,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
+import 'task_voters.dart';
 import 'tasks_controller.dart';
 
 /// Shown to a task's author to accept or withdraw a pending counter-offer.
@@ -14,13 +15,20 @@ import 'tasks_controller.dart';
 /// endpoint yet — so this can drive the real decision, but can't yet show
 /// what price was offered.
 class CounterOfferDecisionScreen extends StatelessWidget {
-  const CounterOfferDecisionScreen({required this.task, super.key});
+  const CounterOfferDecisionScreen({
+    required this.task,
+    required this.myMemberId,
+    super.key,
+  });
 
   final Task task;
+  final int? myMemberId;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+    // Only whoever proposed the task decides; everyone else waits (§4.3).
+    final canDecide = myMemberId != null && task.proposedById == myMemberId;
     return DetailScaffold(
       status: StatusPill(
         label: l10n.counterOfferPausedStatus,
@@ -30,20 +38,26 @@ class CounterOfferDecisionScreen extends StatelessWidget {
       content: [
         InfoRow(
           icon: Icons.restart_alt_rounded,
-          text: l10n.counterOfferDecisionNotice,
+          text: canDecide
+              ? l10n.counterOfferDecisionNotice
+              : l10n.counterOfferWaitingNotice,
         ),
+        const SizedBox(height: 20),
+        TaskVoters(task: task),
       ],
       actions: [
-        AppButton(
-          label: l10n.acceptCounterOffer,
-          onPressed: () => _respond(context, true),
-        ),
-        const SizedBox(height: 10),
-        AppButton(
-          label: l10n.withdrawNoFine,
-          kind: AppButtonKind.secondary,
-          onPressed: () => _respond(context, false),
-        ),
+        if (canDecide) ...[
+          AppButton(
+            label: l10n.acceptCounterOffer,
+            onPressed: () => _respond(context, true),
+          ),
+          const SizedBox(height: 10),
+          AppButton(
+            label: l10n.withdrawNoFine,
+            kind: AppButtonKind.secondary,
+            onPressed: () => _respond(context, false),
+          ),
+        ],
       ],
     );
   }

@@ -268,16 +268,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tasksEmpty => 'Todavía no hay tareas. Propón la primera.';
 
   @override
-  String get sectionAwaitingVote => 'Esperan un voto';
-
-  @override
-  String get sectionCounterOffered => 'Contraofertadas';
+  String get sectionAwaitingVote => 'Esperan tu voto';
 
   @override
   String get sectionAvailable => 'Disponibles';
-
-  @override
-  String get sectionInValidation => 'En validación';
 
   @override
   String get statusProposal => 'Propuesta';
@@ -691,6 +685,40 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String purchaseProvidedBy(String name) {
     return 'Le toca cumplirla a $name';
+  }
+
+  @override
+  String get sectionYoursInValidation => 'Tuyas en validación';
+
+  @override
+  String get sectionInVoting => 'En votación';
+
+  @override
+  String get votersTitle => 'Quién ha votado';
+
+  @override
+  String get votersNone => 'Todavía no ha votado nadie.';
+
+  @override
+  String get voteInFavour => 'A favor';
+
+  @override
+  String get voteAgainst => 'En contra';
+
+  @override
+  String get ownProposalNotice =>
+      'La has propuesto tú: vota el resto del grupo.';
+
+  @override
+  String get alreadyVotedNotice => 'Ya has votado. Falta que vote el resto.';
+
+  @override
+  String get counterOfferWaitingNotice =>
+      'Quien la propuso está decidiendo si acepta la contraoferta.';
+
+  @override
+  String voteCounterOffer(int reward) {
+    return 'Contraoferta: $reward';
   }
 
   @override

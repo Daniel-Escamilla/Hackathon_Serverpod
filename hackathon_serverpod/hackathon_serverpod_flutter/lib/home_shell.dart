@@ -85,6 +85,7 @@ class _HomeShellState extends State<HomeShell> {
       case GroupEventKind.taskProposed:
       case GroupEventKind.taskVoteCast:
       case GroupEventKind.taskCounterOffered:
+      case GroupEventKind.taskClaimed:
         unawaited(_tasksController.load());
       case GroupEventKind.taskValidated:
         unawaited(_tasksController.load());

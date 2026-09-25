@@ -128,10 +128,8 @@
 
   "tasksLoadError": "No se pudieron cargar las tareas.",
   "tasksEmpty": "Todavía no hay tareas. Propón la primera.",
-  "sectionAwaitingVote": "Esperan un voto",
-  "sectionCounterOffered": "Contraofertadas",
+  "sectionAwaitingVote": "Esperan tu voto",
   "sectionAvailable": "Disponibles",
-  "sectionInValidation": "En validación",
   "statusProposal": "Propuesta",
   "statusCounterOffer": "Contraoferta",
   "statusAvailable": "Disponible",
@@ -430,6 +428,47 @@
   "@purchaseProvidedBy": {
     "description": "Who has to fulfil a purchase",
     "placeholders": { "name": { "type": "String" } }
+  },
+  "sectionYoursInValidation": "Tuyas en validación",
+  "@sectionYoursInValidation": {
+    "description": "Tasks tab section: tasks the signed-in member claimed, waiting for the group"
+  },
+  "sectionInVoting": "En votación",
+  "@sectionInVoting": {
+    "description": "Tasks tab section: open votes with nothing left for the signed-in member to do"
+  },
+  "votersTitle": "Quién ha votado",
+  "@votersTitle": {
+    "description": "Heading of the list of votes on a task"
+  },
+  "votersNone": "Todavía no ha votado nadie.",
+  "@votersNone": {
+    "description": "Shown when a task's open vote has no votes yet"
+  },
+  "voteInFavour": "A favor",
+  "@voteInFavour": {
+    "description": "A yes vote in the voters list"
+  },
+  "voteAgainst": "En contra",
+  "@voteAgainst": {
+    "description": "A no vote in the voters list"
+  },
+  "ownProposalNotice": "La has propuesto tú: vota el resto del grupo.",
+  "@ownProposalNotice": {
+    "description": "Shown instead of the vote buttons on the member's own proposal"
+  },
+  "alreadyVotedNotice": "Ya has votado. Falta que vote el resto.",
+  "@alreadyVotedNotice": {
+    "description": "Shown instead of the vote buttons once the member has voted"
+  },
+  "counterOfferWaitingNotice": "Quien la propuso está decidiendo si acepta la contraoferta.",
+  "@counterOfferWaitingNotice": {
+    "description": "Shown to everyone but the proposer on a counter-offered task"
+  },
+  "voteCounterOffer": "Contraoferta: {reward}",
+  "@voteCounterOffer": {
+    "description": "A counter-offer vote in the voters list",
+    "placeholders": { "reward": { "type": "int" } }
   },
   "signOut": "Cerrar sesión",
   "@signOut": {

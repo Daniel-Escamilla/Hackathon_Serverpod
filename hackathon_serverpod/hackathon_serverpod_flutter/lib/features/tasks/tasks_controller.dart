@@ -9,6 +9,10 @@ import '../../client.dart';
 /// same data.
 class TasksController extends ChangeNotifier {
   List<Task> tasks = [];
+
+  /// The votes cast so far in the group's open votes (see
+  /// `TaskEndpoint.listTaskVotes`).
+  List<TaskVote> votes = [];
   bool loading = false;
   bool hasLoaded = false;
   Object? error;
@@ -18,7 +22,12 @@ class TasksController extends ChangeNotifier {
     error = null;
     notifyListeners();
     try {
-      tasks = await client.task.listTasks();
+      final (loadedTasks, loadedVotes) = await (
+        client.task.listTasks(),
+        client.task.listTaskVotes(),
+      ).wait;
+      tasks = loadedTasks;
+      votes = loadedVotes;
     } catch (e) {
       error = e;
     } finally {
@@ -27,6 +36,14 @@ class TasksController extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+  List<TaskVote> votesFor(int taskId) =>
+      votes.where((v) => v.taskId == taskId).toList();
+
+  /// Whether [memberId] has already voted in [task]'s open vote.
+  bool hasVoted(Task task, int? memberId) =>
+      memberId != null &&
+      votes.any((v) => v.taskId == task.id && v.memberId == memberId);
 
   Future<Task> proposeTask(
     String title,

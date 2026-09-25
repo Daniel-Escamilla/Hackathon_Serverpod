@@ -8,6 +8,7 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
+import 'task_voters.dart';
 import 'tasks_controller.dart';
 
 /// A task someone has claimed as done, waiting for the group to confirm it
@@ -27,6 +28,8 @@ class ValidationScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final isClaimant = myMemberId != null && myMemberId == task.doneById;
+    final voted = context.watch<TasksController>().hasVoted(task, myMemberId);
+    final canVote = !isClaimant && !voted;
 
     return DetailScaffold(
       status: StatusPill(label: l10n.statusValidation, color: AppColors.lime),
@@ -43,10 +46,16 @@ class ValidationScreen extends StatelessWidget {
         const SizedBox(height: 12),
         InfoRow(
           icon: Icons.how_to_vote_rounded,
-          text: isClaimant ? l10n.validationYourOwn : l10n.validationQuestion,
+          text: isClaimant
+              ? l10n.validationYourOwn
+              : voted
+              ? l10n.alreadyVotedNotice
+              : l10n.validationQuestion,
         ),
+        const SizedBox(height: 20),
+        TaskVoters(task: task),
       ],
-      actions: isClaimant
+      actions: !canVote
           ? const []
           : [
               AppButton(
