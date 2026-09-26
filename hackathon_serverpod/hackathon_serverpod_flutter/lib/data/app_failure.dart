@@ -50,6 +50,49 @@ enum AppFailure {
   /// Too many tries in a row; the server makes the caller wait.
   tooManyAttempts,
 
+  /// No task with that id in the caller's group.
+  taskNotFound,
+
+  /// The task moved on before the action: the vote closed, the counter-offer
+  /// was answered, or someone else claimed it first.
+  taskNotOpen,
+
+  /// Nobody votes on their own proposal or their own completion.
+  ownTask,
+
+  /// Only the proposer answers a counter-offer.
+  notProposer,
+
+  /// No reward with that id in the caller's group.
+  rewardNotFound,
+
+  /// The reward is no longer being voted on.
+  rewardNotOpen,
+
+  /// Nobody votes on a reward they proposed.
+  ownReward,
+
+  /// The reward is not in the shop right now.
+  rewardNotAvailable,
+
+  /// No stock left.
+  outOfStock,
+
+  /// Nothing can be bought with a negative balance.
+  negativeBalance,
+
+  /// The provider has to be another member of the group.
+  invalidProvider,
+
+  /// No purchase with that id in the caller's group.
+  purchaseNotFound,
+
+  /// The purchase was already answered, or is not accepted yet.
+  purchaseNotOpen,
+
+  /// Only the member chosen to fulfil a purchase answers or delivers it.
+  notProvider,
+
   /// Anything we cannot be specific about.
   unknown,
 }
@@ -63,15 +106,19 @@ class AppException implements Exception {
   String toString() => 'AppException(${failure.name})';
 }
 
+/// The failure behind anything a repository or a controller threw, mapping a
+/// raw server error first.
+AppFailure failureOf(Object error) =>
+    (error is AppException ? error : mapServerError(error)).failure;
+
 /// Maps a server error onto an [AppFailure].
 ///
 /// Only serialisable exceptions carry a reason across the wire: anything else
 /// arrives as a generic failure and becomes [AppFailure.unknown]. The group
-/// endpoints declare `GroupException`, and the email identity provider
+/// endpoints declare `GroupException`, the task endpoints `TaskException`, the
+/// shop endpoints `ShopException`, and the email identity provider
 /// `EmailAccountLoginException`, `EmailAccountRequestException` and
-/// `EmailAccountPasswordResetException`; the task and shop endpoints still throw
-/// plain errors, so their refusals read as the generic message until they get
-/// exceptions of their own.
+/// `EmailAccountPasswordResetException`.
 ///
 /// The inner switch has no wildcard on purpose: a reason added on the server
 /// fails the build here until the app decides what it means.
@@ -98,6 +145,24 @@ AppException mapServerError(Object error) => switch (error) {
       EmailAccountPasswordResetExceptionReason.unknown => AppFailure.unknown,
     },
   ),
+  TaskException(:final reason) => AppException(switch (reason) {
+    TaskErrorReason.taskNotFound => AppFailure.taskNotFound,
+    TaskErrorReason.notOpen => AppFailure.taskNotOpen,
+    TaskErrorReason.ownTask => AppFailure.ownTask,
+    TaskErrorReason.notProposer => AppFailure.notProposer,
+  }),
+  ShopException(:final reason) => AppException(switch (reason) {
+    ShopErrorReason.rewardNotFound => AppFailure.rewardNotFound,
+    ShopErrorReason.rewardNotOpen => AppFailure.rewardNotOpen,
+    ShopErrorReason.ownReward => AppFailure.ownReward,
+    ShopErrorReason.rewardNotAvailable => AppFailure.rewardNotAvailable,
+    ShopErrorReason.outOfStock => AppFailure.outOfStock,
+    ShopErrorReason.negativeBalance => AppFailure.negativeBalance,
+    ShopErrorReason.invalidProvider => AppFailure.invalidProvider,
+    ShopErrorReason.purchaseNotFound => AppFailure.purchaseNotFound,
+    ShopErrorReason.purchaseNotOpen => AppFailure.purchaseNotOpen,
+    ShopErrorReason.notProvider => AppFailure.notProvider,
+  }),
   EmailAccountLoginException(:final reason) => AppException(switch (reason) {
     EmailAccountLoginExceptionReason.invalidCredentials =>
       AppFailure.invalidCredentials,

@@ -78,6 +78,24 @@ void main() {
       expect(shop.calls, ['buy 4 from 3']);
       expect(find.text('🎁'), findsOneWidget);
     });
+
+    testWidgets('a negative balance says why it cannot buy', (tester) async {
+      shop.failWith = ShopException(reason: ShopErrorReason.negativeBalance);
+      await openScreen(
+        tester,
+        BuyRewardScreen(reward: reward),
+        shop: shop,
+        group: members,
+      );
+
+      await tapLabel(tester, 'Carla');
+      await tapLabel(tester, '15 monedas');
+
+      expect(
+        find.text('Con saldo negativo no se puede comprar.'),
+        findsOneWidget,
+      );
+    });
   });
 
   group('a purchase, seen by whoever fulfils it', () {

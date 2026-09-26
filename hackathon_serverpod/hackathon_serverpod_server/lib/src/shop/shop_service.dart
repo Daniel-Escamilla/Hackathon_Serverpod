@@ -64,10 +64,10 @@ class ShopService {
         lockMode: LockMode.forNoKeyUpdate,
       );
       if (locked == null || locked.status != RewardItemStatus.proposed) {
-        throw StateError('This reward is not open for voting.');
+        throw ShopException(reason: ShopErrorReason.rewardNotOpen);
       }
       if (voter.id == locked.createdById) {
-        throw StateError('The proposer cannot vote on their own reward.');
+        throw ShopException(reason: ShopErrorReason.ownReward);
       }
 
       final existingVote = await RewardVote.db.findFirstRow(
@@ -134,16 +134,16 @@ class ShopService {
     required GroupMember provider,
   }) async {
     if (item.status != RewardItemStatus.active) {
-      throw StateError('This reward is not available.');
+      throw ShopException(reason: ShopErrorReason.rewardNotAvailable);
     }
     if (provider.id == buyer.id) {
-      throw StateError('Choose someone else to fulfil the reward.');
+      throw ShopException(reason: ShopErrorReason.invalidProvider);
     }
     if (buyer.balance < 0) {
-      throw StateError('Cannot buy with a negative balance.');
+      throw ShopException(reason: ShopErrorReason.negativeBalance);
     }
     if (item.stock != null && item.stock! <= 0) {
-      throw StateError('This reward is out of stock.');
+      throw ShopException(reason: ShopErrorReason.outOfStock);
     }
 
     final purchase = await session.db.transaction((transaction) async {
@@ -208,7 +208,7 @@ class ShopService {
         lockMode: LockMode.forNoKeyUpdate,
       );
       if (locked == null || locked.status != PurchaseStatus.pending) {
-        throw StateError('This purchase is not pending a response.');
+        throw ShopException(reason: ShopErrorReason.purchaseNotOpen);
       }
 
       if (accept) {
@@ -266,7 +266,7 @@ class ShopService {
   /// The provider marks an accepted purchase as fulfilled.
   Future<Purchase> markDelivered(Session session, Purchase purchase) {
     if (purchase.status != PurchaseStatus.accepted) {
-      throw StateError('Only an accepted purchase can be marked delivered.');
+      throw ShopException(reason: ShopErrorReason.purchaseNotOpen);
     }
     return Purchase.db.updateRow(
       session,

@@ -832,6 +832,12 @@ abstract class AppLocalizations {
   /// **'No se pudo reclamar. Puede que ya la haya cogido otra persona.'**
   String get claimError;
 
+  /// Shown when another member claimed the task first
+  ///
+  /// In es, this message translates to:
+  /// **'Alguien se te ha adelantado: ya la ha cogido otra persona.'**
+  String get claimTaken;
+
   /// Shown to the group on a task someone has claimed as done
   ///
   /// In es, this message translates to:
@@ -1287,6 +1293,90 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'El cargo de admin solo se puede ceder a otra persona adulta del grupo.'**
   String get errorCannotTransferAdmin;
+
+  /// A task call named a task that is not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa tarea ya no existe.'**
+  String get errorTaskNotFound;
+
+  /// The task moved on before the action: vote closed, counter-offer answered, or someone else claimed it
+  ///
+  /// In es, this message translates to:
+  /// **'Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.'**
+  String get errorTaskNotOpen;
+
+  /// Voting on or counter-offering your own proposal, or voting on your own completion
+  ///
+  /// In es, this message translates to:
+  /// **'No puedes votar tu propia tarea.'**
+  String get errorOwnTask;
+
+  /// Someone other than the proposer answered a counter-offer
+  ///
+  /// In es, this message translates to:
+  /// **'Solo quien propuso la tarea puede responder a la contraoferta.'**
+  String get errorNotProposer;
+
+  /// A shop call named a reward that is not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa recompensa ya no existe.'**
+  String get errorRewardNotFound;
+
+  /// Voting on a reward whose vote is over
+  ///
+  /// In es, this message translates to:
+  /// **'La votación de esta recompensa ya se ha cerrado.'**
+  String get errorRewardNotOpen;
+
+  /// The proposer tried to vote on their own reward
+  ///
+  /// In es, this message translates to:
+  /// **'No puedes votar tu propia recompensa.'**
+  String get errorOwnReward;
+
+  /// Buying a reward that is not active
+  ///
+  /// In es, this message translates to:
+  /// **'Esta recompensa no está en la tienda ahora mismo.'**
+  String get errorRewardNotAvailable;
+
+  /// Buying a reward with no stock left
+  ///
+  /// In es, this message translates to:
+  /// **'Esta recompensa se ha agotado.'**
+  String get errorOutOfStock;
+
+  /// Buying while the balance is below zero
+  ///
+  /// In es, this message translates to:
+  /// **'Con saldo negativo no se puede comprar.'**
+  String get errorNegativeBalance;
+
+  /// The provider chosen for a purchase is the buyer or not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Elige a otra persona del grupo para cumplirla.'**
+  String get errorInvalidProvider;
+
+  /// A shop call named a purchase that is not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa compra ya no existe.'**
+  String get errorPurchaseNotFound;
+
+  /// The purchase was already answered, or is not accepted yet
+  ///
+  /// In es, this message translates to:
+  /// **'Esta compra ya ha cambiado. Vuelve a la lista para verla al día.'**
+  String get errorPurchaseNotOpen;
+
+  /// Someone other than the provider answered or delivered a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Solo quien tiene que cumplir la compra puede responderla o entregarla.'**
+  String get errorNotProvider;
 
   /// No description provided for @errorGeneric.
   ///

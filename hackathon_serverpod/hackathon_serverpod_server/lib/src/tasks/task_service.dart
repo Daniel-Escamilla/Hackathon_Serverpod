@@ -98,12 +98,14 @@ class TaskService {
         transaction: transaction,
         lockMode: LockMode.forNoKeyUpdate,
       );
-      if (locked == null) throw StateError('Task not found.');
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
       if (locked.status != TaskStatus.proposed) {
-        throw StateError('This task is not open for a proposal vote.');
+        throw TaskException(reason: TaskErrorReason.notOpen);
       }
       if (voter.id == locked.proposedById) {
-        throw StateError('The proposer cannot vote on their own task.');
+        throw TaskException(reason: TaskErrorReason.ownTask);
       }
 
       final existingVote = await TaskVote.db.findFirstRow(
@@ -196,12 +198,14 @@ class TaskService {
         transaction: transaction,
         lockMode: LockMode.forNoKeyUpdate,
       );
-      if (locked == null) throw StateError('Task not found.');
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
       if (locked.status != TaskStatus.proposed) {
-        throw StateError('This task is not open for a counter-offer.');
+        throw TaskException(reason: TaskErrorReason.notOpen);
       }
       if (voter.id == locked.proposedById) {
-        throw StateError('The proposer cannot counter-offer their own task.');
+        throw TaskException(reason: TaskErrorReason.ownTask);
       }
 
       final existingVote = await TaskVote.db.findFirstRow(
@@ -270,12 +274,14 @@ class TaskService {
         transaction: transaction,
         lockMode: LockMode.forNoKeyUpdate,
       );
-      if (locked == null) throw StateError('Task not found.');
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
       if (locked.status != TaskStatus.counterOffered) {
-        throw StateError('This task has no pending counter-offer.');
+        throw TaskException(reason: TaskErrorReason.notOpen);
       }
       if (author.id != locked.proposedById) {
-        throw StateError('Only the proposer can respond to a counter-offer.');
+        throw TaskException(reason: TaskErrorReason.notProposer);
       }
 
       if (!accept) {
@@ -325,7 +331,7 @@ class TaskService {
   /// [claimant] marks [task] as done, sending it to validation. Nobody reserves
   /// a task beforehand (PRODUCT.md §3), so two members can press "done" on the
   /// same task at once; the row lock inside this transaction means only the
-  /// first commit sees `open` and wins, the other gets a `StateError`
+  /// first commit sees `open` and wins, the other gets `TaskErrorReason.notOpen`
   /// (PRODUCT.md §10.2).
   Future<Task> markDone(
     Session session, {
@@ -339,9 +345,11 @@ class TaskService {
         transaction: transaction,
         lockMode: LockMode.forNoKeyUpdate,
       );
-      if (locked == null) throw StateError('Task not found.');
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
       if (locked.status != TaskStatus.open) {
-        throw StateError('This task is not available to claim.');
+        throw TaskException(reason: TaskErrorReason.notOpen);
       }
 
       return Task.db.updateRow(
@@ -429,12 +437,14 @@ class TaskService {
         transaction: transaction,
         lockMode: LockMode.forNoKeyUpdate,
       );
-      if (locked == null) throw StateError('Task not found.');
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
       if (locked.status != TaskStatus.inValidation) {
-        throw StateError('This task is not open for a completion vote.');
+        throw TaskException(reason: TaskErrorReason.notOpen);
       }
       if (voter.id == locked.doneById) {
-        throw StateError('The claimant cannot vote on their own completion.');
+        throw TaskException(reason: TaskErrorReason.ownTask);
       }
 
       final existingVote = await TaskVote.db.findFirstRow(

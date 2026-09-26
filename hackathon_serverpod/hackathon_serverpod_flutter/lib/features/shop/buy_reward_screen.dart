@@ -8,6 +8,7 @@ import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/pressable.dart';
 import '../group/group_controller.dart';
@@ -159,7 +160,11 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
     } catch (e) {
       if (mounted) {
         setState(() => _loading = false);
-        showMessage(context, l10n.purchaseError, isError: true);
+        showMessage(
+          context,
+          failureMessage(e, l10n, fallback: l10n.purchaseError),
+          isError: true,
+        );
       }
     }
   }

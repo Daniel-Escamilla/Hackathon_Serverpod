@@ -1,0 +1,25 @@
+### Why a shop call was refused. The app picks the sentence it shows from this,
+### so the server never sends display text (PRODUCT.md §7).
+enum: ShopErrorReason
+values:
+  ### No reward with that id in the caller's group.
+  - rewardNotFound
+  ### The reward is no longer being voted on.
+  - rewardNotOpen
+  ### Nobody votes on a reward they proposed.
+  - ownReward
+  ### The reward is not in the shop: still being voted on, or withdrawn.
+  - rewardNotAvailable
+  ### No stock left.
+  - outOfStock
+  ### Nothing can be bought with a negative balance (PRODUCT.md §4).
+  - negativeBalance
+  ### The provider has to be another member of the caller's group.
+  - invalidProvider
+  ### No purchase with that id in the caller's group.
+  - purchaseNotFound
+  ### The purchase is no longer where this action needs it: already answered,
+  ### or not accepted yet.
+  - purchaseNotOpen
+  ### Only the member chosen to fulfil a purchase answers it or delivers it.
+  - notProvider

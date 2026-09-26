@@ -153,7 +153,7 @@ class TaskEndpoint extends Endpoint {
   ) async {
     final task = await Task.db.findById(session, taskId);
     if (task == null || task.groupId != member.groupId) {
-      throw StateError('Task not found in your group.');
+      throw TaskException(reason: TaskErrorReason.taskNotFound);
     }
     return task;
   }

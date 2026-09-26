@@ -1,0 +1,14 @@
+### Why a task call was refused. The app picks the sentence it shows from this,
+### so the server never sends display text (PRODUCT.md §7).
+enum: TaskErrorReason
+values:
+  ### No task with that id in the caller's group.
+  - taskNotFound
+  ### The task is no longer where this action needs it: the vote closed, the
+  ### counter-offer was answered, or someone else claimed it first.
+  - notOpen
+  ### Nobody votes on or counter-offers their own proposal, nor votes on the
+  ### completion of a task they claimed.
+  - ownTask
+  ### Only the proposer answers a counter-offer.
+  - notProposer

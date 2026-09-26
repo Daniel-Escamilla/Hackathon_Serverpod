@@ -62,6 +62,26 @@ void main() {
       expect(tasks.calls, ['proposal 7 false']);
     });
 
+    testWidgets('a vote that closed meanwhile says the task changed', (
+      tester,
+    ) async {
+      tasks.failWith = TaskException(reason: TaskErrorReason.notOpen);
+      await openScreen(
+        tester,
+        TaskVoteScreen(task: task(), myMemberId: 3),
+        tasks: tasks,
+      );
+
+      await tapLabel(tester, 'Aprobar');
+
+      expect(
+        find.text(
+          'Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.',
+        ),
+        findsOneWidget,
+      );
+    });
+
     testWidgets('a failed vote stays on the screen and says so', (
       tester,
     ) async {
@@ -121,6 +141,24 @@ void main() {
         find.text(
           'No se pudo reclamar. Puede que ya la haya cogido otra persona.',
         ),
+        findsOneWidget,
+      );
+    });
+
+    testWidgets('a claim the server refused as taken says so plainly', (
+      tester,
+    ) async {
+      tasks.failWith = TaskException(reason: TaskErrorReason.notOpen);
+      await openScreen(
+        tester,
+        AvailableTaskScreen(task: task(status: TaskStatus.open)),
+        tasks: tasks,
+      );
+
+      await tapLabel(tester, 'Ya está hecha');
+
+      expect(
+        find.text('Alguien se te ha adelantado: ya la ha cogido otra persona.'),
         findsOneWidget,
       );
     });

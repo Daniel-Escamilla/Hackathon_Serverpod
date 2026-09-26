@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
 import 'task_voters.dart';
@@ -77,7 +78,15 @@ class CounterOfferDecisionScreen extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        showMessage(context, l10n.counterOfferDecisionError, isError: true);
+        showMessage(
+          context,
+          failureMessage(
+            e,
+            l10n,
+            fallback: l10n.counterOfferDecisionError,
+          ),
+          isError: true,
+        );
       }
     }
   }

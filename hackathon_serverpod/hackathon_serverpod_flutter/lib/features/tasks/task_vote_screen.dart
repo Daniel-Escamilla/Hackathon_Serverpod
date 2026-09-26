@@ -7,6 +7,7 @@ import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
 import 'counter_offer_decision_screen.dart';
@@ -101,7 +102,13 @@ class TaskVoteScreen extends StatelessWidget {
         Navigator.of(context).pop();
       }
     } catch (e) {
-      if (context.mounted) showMessage(context, l10n.voteError, isError: true);
+      if (context.mounted) {
+        showMessage(
+          context,
+          failureMessage(e, l10n, fallback: l10n.voteError),
+          isError: true,
+        );
+      }
     }
   }
 
@@ -125,7 +132,11 @@ class TaskVoteScreen extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        showMessage(context, l10n.counterOfferError, isError: true);
+        showMessage(
+          context,
+          failureMessage(e, l10n, fallback: l10n.counterOfferError),
+          isError: true,
+        );
       }
     }
   }

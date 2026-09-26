@@ -87,7 +87,7 @@ class ShopEndpoint extends Endpoint {
 
     final provider = await GroupMember.db.findById(session, providerId);
     if (provider == null || provider.groupId != member.groupId) {
-      throw StateError('Provider not found in your group.');
+      throw ShopException(reason: ShopErrorReason.invalidProvider);
     }
 
     return _shopService.purchase(
@@ -116,9 +116,7 @@ class ShopEndpoint extends Endpoint {
     final member = await currentGroupMember(session);
     final purchase = await _findGroupPurchase(session, member, purchaseId);
     if (purchase.providerId != member.id) {
-      throw StateError(
-        'Only the assigned provider can respond to this purchase.',
-      );
+      throw ShopException(reason: ShopErrorReason.notProvider);
     }
 
     final item = await RewardItem.db.findById(session, purchase.itemId);
@@ -141,9 +139,7 @@ class ShopEndpoint extends Endpoint {
     final member = await currentGroupMember(session);
     final purchase = await _findGroupPurchase(session, member, purchaseId);
     if (purchase.providerId != member.id) {
-      throw StateError(
-        'Only the assigned provider can mark this purchase delivered.',
-      );
+      throw ShopException(reason: ShopErrorReason.notProvider);
     }
 
     await _shopService.markDelivered(session, purchase);
@@ -156,7 +152,7 @@ class ShopEndpoint extends Endpoint {
   ) async {
     final item = await RewardItem.db.findById(session, itemId);
     if (item == null || item.groupId != member.groupId) {
-      throw StateError('Reward not found in your group.');
+      throw ShopException(reason: ShopErrorReason.rewardNotFound);
     }
     return item;
   }
@@ -168,7 +164,7 @@ class ShopEndpoint extends Endpoint {
   ) async {
     final purchase = await Purchase.db.findById(session, purchaseId);
     if (purchase == null || purchase.groupId != member.groupId) {
-      throw StateError('Purchase not found in your group.');
+      throw ShopException(reason: ShopErrorReason.purchaseNotFound);
     }
     return purchase;
   }
