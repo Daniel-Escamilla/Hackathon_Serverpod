@@ -637,26 +637,14 @@ abstract class AppLocalizations {
   /// No description provided for @sectionAwaitingVote.
   ///
   /// In es, this message translates to:
-  /// **'Esperan un voto'**
+  /// **'Esperan tu voto'**
   String get sectionAwaitingVote;
-
-  /// No description provided for @sectionCounterOffered.
-  ///
-  /// In es, this message translates to:
-  /// **'Contraofertadas'**
-  String get sectionCounterOffered;
 
   /// No description provided for @sectionAvailable.
   ///
   /// In es, this message translates to:
   /// **'Disponibles'**
   String get sectionAvailable;
-
-  /// No description provided for @sectionInValidation.
-  ///
-  /// In es, this message translates to:
-  /// **'En validación'**
-  String get sectionInValidation;
 
   /// No description provided for @statusProposal.
   ///
@@ -1419,6 +1407,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Le toca cumplirla a {name}'**
   String purchaseProvidedBy(String name);
+
+  /// Tasks tab section: tasks the signed-in member claimed, waiting for the group
+  ///
+  /// In es, this message translates to:
+  /// **'Tuyas en validación'**
+  String get sectionYoursInValidation;
+
+  /// Tasks tab section: open votes with nothing left for the signed-in member to do
+  ///
+  /// In es, this message translates to:
+  /// **'En votación'**
+  String get sectionInVoting;
+
+  /// Heading of the list of votes on a task
+  ///
+  /// In es, this message translates to:
+  /// **'Quién ha votado'**
+  String get votersTitle;
+
+  /// Shown when a task's open vote has no votes yet
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no ha votado nadie.'**
+  String get votersNone;
+
+  /// A yes vote in the voters list
+  ///
+  /// In es, this message translates to:
+  /// **'A favor'**
+  String get voteInFavour;
+
+  /// A no vote in the voters list
+  ///
+  /// In es, this message translates to:
+  /// **'En contra'**
+  String get voteAgainst;
+
+  /// Shown instead of the vote buttons on the member's own proposal
+  ///
+  /// In es, this message translates to:
+  /// **'La has propuesto tú: vota el resto del grupo.'**
+  String get ownProposalNotice;
+
+  /// Shown instead of the vote buttons once the member has voted
+  ///
+  /// In es, this message translates to:
+  /// **'Ya has votado. Falta que vote el resto.'**
+  String get alreadyVotedNotice;
+
+  /// Shown to everyone but the proposer on a counter-offered task
+  ///
+  /// In es, this message translates to:
+  /// **'Quien la propuso está decidiendo si acepta la contraoferta.'**
+  String get counterOfferWaitingNotice;
+
+  /// A counter-offer vote in the voters list
+  ///
+  /// In es, this message translates to:
+  /// **'Contraoferta: {reward}'**
+  String voteCounterOffer(int reward);
 
   /// Button at the bottom of the group tab, and the confirm button of its dialog
   ///

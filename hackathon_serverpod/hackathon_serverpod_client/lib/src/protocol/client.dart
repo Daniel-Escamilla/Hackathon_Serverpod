@@ -27,6 +27,8 @@ import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
     as _ibcsn808;
 import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
     as _i7vt05yn;
+import 'package:hackathon_serverpod_client/src/protocol/tasks/task_vote.dart'
+    as _itpz8rf5;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_movement.dart'
     as _ibr29qpn;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
@@ -553,6 +555,18 @@ class EndpointTask extends _isc.EndpointRef {
       caller.callServerEndpoint<List<_i7vt05yn.Task>>(
         'task',
         'listTasks',
+        {},
+      );
+
+  /// The votes cast so far in the group's open votes: the proposal votes of
+  /// tasks still `proposed` or `counterOffered` and the completion votes of
+  /// tasks `inValidation`. Lets the app show who has voted and leave out of
+  /// "waiting for your vote" what the member already voted (PRODUCT.md §11).
+  /// Closed votes stay out, so the list does not grow with the history.
+  _ida.Future<List<_itpz8rf5.TaskVote>> listTaskVotes() =>
+      caller.callServerEndpoint<List<_itpz8rf5.TaskVote>>(
+        'task',
+        'listTaskVotes',
         {},
       );
 

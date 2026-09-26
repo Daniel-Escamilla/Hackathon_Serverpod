@@ -60,21 +60,48 @@ class _Body extends StatelessWidget {
       );
     }
 
-    final proposed = controller.tasks
-        .where((t) => t.status == TaskStatus.proposed)
+    final me = context.watch<GroupController>().myMemberId;
+    bool voted(Task t) => controller.hasVoted(t, me);
+    bool mine(Task t) => me != null && t.proposedById == me;
+    bool claimedByMe(Task t) => me != null && t.doneById == me;
+
+    // What needs something from this member comes first (PRODUCT.md §11):
+    // proposals and validations they can still vote on, and counter-offers
+    // on their own proposals, which only they can answer.
+    final yourTurn = controller.tasks
+        .where(
+          (t) => switch (t.status) {
+            TaskStatus.proposed => !mine(t) && !voted(t),
+            TaskStatus.inValidation => !claimedByMe(t) && !voted(t),
+            TaskStatus.counterOffered => mine(t),
+            _ => false,
+          },
+        )
         .toList();
-    final counterOffered = controller.tasks
-        .where((t) => t.status == TaskStatus.counterOffered)
-        .toList();
-    final open = controller.tasks
+    final available = controller.tasks
         .where((t) => t.status == TaskStatus.open)
         .toList();
-    final inValidation = controller.tasks
-        .where((t) => t.status == TaskStatus.inValidation)
+    final yoursInValidation = controller.tasks
+        .where((t) => t.status == TaskStatus.inValidation && claimedByMe(t))
         .toList();
-    final myMemberId = context.watch<GroupController>().myMemberId;
+    // Still being decided, but nothing left for this member to do.
+    final inVoting = controller.tasks
+        .where(
+          (t) =>
+              const {
+                TaskStatus.proposed,
+                TaskStatus.counterOffered,
+                TaskStatus.inValidation,
+              }.contains(t.status) &&
+              !yourTurn.contains(t) &&
+              !yoursInValidation.contains(t),
+        )
+        .toList();
 
-    if (controller.tasks.isEmpty) {
+    if (yourTurn.isEmpty &&
+        available.isEmpty &&
+        yoursInValidation.isEmpty &&
+        inVoting.isEmpty) {
       return RefreshIndicator(
         onRefresh: controller.load,
         child: ListView(
@@ -86,59 +113,63 @@ class _Body extends StatelessWidget {
       );
     }
 
+    Widget card(Task task) => _TaskCard(
+      task: task,
+      statusLabel: _statusLabel(l10n, task.status),
+      statusColor: _statusColor(task.status),
+      onTap: () => pushPage(context, _detailFor(task, me)),
+    );
+
     return RefreshIndicator(
       onRefresh: controller.load,
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
         children: [
-          if (proposed.isNotEmpty) ...[
+          if (yourTurn.isNotEmpty) ...[
             _SectionTitle(l10n.sectionAwaitingVote),
-            for (final task in proposed)
-              _TaskCard(
-                task: task,
-                statusLabel: l10n.statusProposal,
-                statusColor: AppColors.sky,
-                onTap: () => pushPage(context, TaskVoteScreen(task: task)),
-              ),
+            for (final task in yourTurn) card(task),
           ],
-          if (counterOffered.isNotEmpty) ...[
-            _SectionTitle(l10n.sectionCounterOffered),
-            for (final task in counterOffered)
-              _TaskCard(
-                task: task,
-                statusLabel: l10n.statusCounterOffer,
-                statusColor: const Color(0xFFFFDFA0),
-                onTap: () =>
-                    pushPage(context, CounterOfferDecisionScreen(task: task)),
-              ),
-          ],
-          if (open.isNotEmpty) ...[
+          if (available.isNotEmpty) ...[
             _SectionTitle(l10n.sectionAvailable),
-            for (final task in open)
-              _TaskCard(
-                task: task,
-                statusLabel: l10n.statusAvailable,
-                statusColor: AppColors.lime,
-                onTap: () => pushPage(context, AvailableTaskScreen(task: task)),
-              ),
+            for (final task in available) card(task),
           ],
-          if (inValidation.isNotEmpty) ...[
-            _SectionTitle(l10n.sectionInValidation),
-            for (final task in inValidation)
-              _TaskCard(
-                task: task,
-                statusLabel: l10n.statusValidation,
-                statusColor: AppColors.coral.withValues(alpha: .35),
-                onTap: () => pushPage(
-                  context,
-                  ValidationScreen(task: task, myMemberId: myMemberId),
-                ),
-              ),
+          if (yoursInValidation.isNotEmpty) ...[
+            _SectionTitle(l10n.sectionYoursInValidation),
+            for (final task in yoursInValidation) card(task),
+          ],
+          if (inVoting.isNotEmpty) ...[
+            _SectionTitle(l10n.sectionInVoting),
+            for (final task in inVoting) card(task),
           ],
         ],
       ),
     );
   }
+
+  Widget _detailFor(Task task, int? me) => switch (task.status) {
+    TaskStatus.counterOffered => CounterOfferDecisionScreen(
+      task: task,
+      myMemberId: me,
+    ),
+    TaskStatus.open => AvailableTaskScreen(task: task),
+    TaskStatus.inValidation => ValidationScreen(task: task, myMemberId: me),
+    _ => TaskVoteScreen(task: task, myMemberId: me),
+  };
+
+  String _statusLabel(AppLocalizations l10n, TaskStatus status) =>
+      switch (status) {
+        TaskStatus.counterOffered => l10n.statusCounterOffer,
+        TaskStatus.open => l10n.statusAvailable,
+        TaskStatus.inValidation => l10n.statusValidation,
+        _ => l10n.statusProposal,
+      };
+
+  Color _statusColor(TaskStatus status) => switch (status) {
+    TaskStatus.counterOffered => const Color(0xFFFFDFA0),
+    TaskStatus.open => AppColors.lime,
+    TaskStatus.inValidation => AppColors.coral.withValues(alpha: .35),
+    _ => AppColors.sky,
+  };
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -207,7 +238,26 @@ class _TaskCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 9),
-                  StatusPill(label: statusLabel, color: statusColor),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 6,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      StatusPill(label: statusLabel, color: statusColor),
+                      if (task.voteClosesAt != null)
+                        Text(
+                          _timeLeft(
+                            AppLocalizations.of(context),
+                            task.voteClosesAt!,
+                          ),
+                          style: const TextStyle(
+                            color: AppColors.muted,
+                            fontSize: 12,
+                            fontFeatures: AppFonts.tabularFigures,
+                          ),
+                        ),
+                    ],
+                  ),
                 ],
               ),
             ),
@@ -217,4 +267,10 @@ class _TaskCard extends StatelessWidget {
       ),
     );
   }
+}
+
+String _timeLeft(AppLocalizations l10n, DateTime closesAt) {
+  final left = closesAt.difference(DateTime.now());
+  if (left.isNegative) return l10n.votingClosingSoon;
+  return l10n.remainingTime(left.inHours, left.inMinutes % 60);
 }

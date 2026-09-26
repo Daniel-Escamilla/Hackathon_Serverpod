@@ -709,6 +709,16 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
                   .listTasks(session),
         ),
+        'listTaskVotes': _is.MethodConnector(
+          name: 'listTaskVotes',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .listTaskVotes(session),
+        ),
         'proposeTask': _is.MethodConnector(
           name: 'proposeTask',
           params: {

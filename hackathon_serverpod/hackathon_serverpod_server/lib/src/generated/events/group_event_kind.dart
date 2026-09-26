@@ -16,11 +16,14 @@ import 'package:serverpod/serverpod.dart' as _is;
 /// value per thing the issue names: propuesta, voto, contraoferta, validación,
 /// compra. `taskVoteCast` is a proposal-vote cast; `taskValidated` is a
 /// completion-vote cast — the codebase's own names for the two phases.
+/// `taskClaimed` came later: without it a task someone marked done only moved
+/// to "in validation" on the other phones after a reload.
 enum GroupEventKind implements _is.SerializableModel {
   taskProposed,
   taskVoteCast,
   taskCounterOffered,
   taskValidated,
+  taskClaimed,
   purchased;
 
   static GroupEventKind fromJson(String name) {
@@ -33,6 +36,8 @@ enum GroupEventKind implements _is.SerializableModel {
         return GroupEventKind.taskCounterOffered;
       case 'taskValidated':
         return GroupEventKind.taskValidated;
+      case 'taskClaimed':
+        return GroupEventKind.taskClaimed;
       case 'purchased':
         return GroupEventKind.purchased;
       default:

@@ -19,6 +19,8 @@ import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
     as _ibcsn808;
 import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
     as _i7vt05yn;
+import 'package:hackathon_serverpod_client/src/protocol/tasks/task_vote.dart'
+    as _itpz8rf5;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_movement.dart'
     as _ibr29qpn;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
@@ -306,6 +308,12 @@ class Protocol extends _isc.SerializationManager {
     }
     if (t == List<_i7vt05yn.Task>) {
       return (data as List).map((e) => deserialize<_i7vt05yn.Task>(e)).toList()
+          as T;
+    }
+    if (t == List<_itpz8rf5.TaskVote>) {
+      return (data as List)
+              .map((e) => deserialize<_itpz8rf5.TaskVote>(e))
+              .toList()
           as T;
     }
     if (t == List<_ibr29qpn.CoinMovement>) {

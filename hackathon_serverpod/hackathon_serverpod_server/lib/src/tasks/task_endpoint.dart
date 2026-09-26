@@ -20,6 +20,40 @@ class TaskEndpoint extends Endpoint {
     );
   }
 
+  /// The votes cast so far in the group's open votes: the proposal votes of
+  /// tasks still `proposed` or `counterOffered` and the completion votes of
+  /// tasks `inValidation`. Lets the app show who has voted and leave out of
+  /// "waiting for your vote" what the member already voted (PRODUCT.md §11).
+  /// Closed votes stay out, so the list does not grow with the history.
+  Future<List<TaskVote>> listTaskVotes(Session session) async {
+    final member = await currentGroupMember(session);
+    final openTasks = await Task.db.find(
+      session,
+      where: (t) =>
+          t.groupId.equals(member.groupId) &
+          t.status.inSet({
+            TaskStatus.proposed,
+            TaskStatus.counterOffered,
+            TaskStatus.inValidation,
+          }),
+    );
+    if (openTasks.isEmpty) return [];
+    final phaseOf = {
+      for (final task in openTasks)
+        task.id!: task.status == TaskStatus.inValidation
+            ? TaskVotePhase.completion
+            : TaskVotePhase.proposal,
+    };
+    final votes = await TaskVote.db.find(
+      session,
+      where: (v) => v.taskId.inSet(phaseOf.keys.toSet()),
+    );
+    return [
+      for (final vote in votes)
+        if (vote.phase == phaseOf[vote.taskId]) vote,
+    ];
+  }
+
   /// Propose a new task. Starts `proposed` and opens a proposal vote.
   Future<Task> proposeTask(
     Session session,
