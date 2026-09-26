@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../shop/shop_service.dart';
 import 'current_member.dart';
@@ -14,6 +15,7 @@ const _inviteCodeLength = 6;
 /// Create a group and join one by invite code (PRODUCT.md §7, §10.3).
 class GroupEndpoint extends Endpoint {
   final ShopService _shopService = const ShopService();
+  final EventService _eventService = const EventService();
 
   @override
   bool get requireLogin => true;
@@ -174,6 +176,13 @@ class GroupEndpoint extends Endpoint {
     await GroupMember.db.updateRow(
       session,
       target.copyWith(leftAt: DateTime.now().toUtc()),
+    );
+    // Their app is still watching the group; this is what sends it away.
+    await _eventService.publish(
+      session,
+      groupId: admin.groupId,
+      kind: GroupEventKind.memberExpelled,
+      memberId: target.id,
     );
   }
 

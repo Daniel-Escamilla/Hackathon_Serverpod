@@ -33,7 +33,8 @@ extension AppFailureMessage on AppFailure {
     AppFailure.purchaseNotFound => l10n.errorPurchaseNotFound,
     AppFailure.purchaseNotOpen => l10n.errorPurchaseNotOpen,
     AppFailure.notProvider => l10n.errorNotProvider,
-    AppFailure.noGroup || AppFailure.unknown => l10n.errorGeneric,
+    AppFailure.noGroup => l10n.errorNoGroup,
+    AppFailure.unknown => l10n.errorGeneric,
   };
 }
 

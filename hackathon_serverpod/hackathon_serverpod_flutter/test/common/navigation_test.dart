@@ -88,4 +88,43 @@ void main() {
 
     expect(find.text('bienvenida'), findsOneWidget);
   });
+
+  testWidgets('leaving home clears the stack and says why', (tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Scaffold(
+          body: Builder(
+            builder: (context) => TextButton(
+              onPressed: () => pushPage(
+                context,
+                Builder(
+                  builder: (context) => TextButton(
+                    onPressed: () => leaveHome(
+                      context,
+                      'fuera',
+                      destination: const Scaffold(body: Text('elegir grupo')),
+                    ),
+                    child: const Text('salir'),
+                  ),
+                ),
+              ),
+              child: const Text('abrir'),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('abrir'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('salir'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('elegir grupo'), findsOneWidget);
+    expect(find.text('fuera'), findsOneWidget);
+    expect(find.text('abrir'), findsNothing);
+    expect(
+      tester.state<NavigatorState>(find.byType(Navigator)).canPop(),
+      false,
+    );
+  });
 }

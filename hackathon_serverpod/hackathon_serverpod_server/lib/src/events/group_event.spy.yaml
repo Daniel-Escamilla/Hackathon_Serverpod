@@ -5,8 +5,10 @@ class: GroupEvent
 fields:
   groupId: int
   kind: GroupEventKind
-  ### The task [kind] is about; null for `purchased`.
+  ### The task [kind] is about; null for `purchased` and `memberExpelled`.
   taskId: int?
   ### The purchase, when [kind] is `purchased`; null otherwise.
   purchaseId: int?
+  ### The member who left, when [kind] is `memberExpelled`; null otherwise.
+  memberId: int?
   occurredAt: DateTime
