@@ -37,6 +37,16 @@ enum AppFailure {
   /// The new password does not meet the server's password policy.
   passwordPolicy,
 
+  /// Wrong email or password on sign-in.
+  invalidCredentials,
+
+  /// The registration request ran out of time; it has to start again.
+  registrationExpired,
+
+  /// The server refused a registration step: a wrong code, or a request or
+  /// token it no longer accepts.
+  registrationInvalid,
+
   /// Too many tries in a row; the server makes the caller wait.
   tooManyAttempts,
 
@@ -57,7 +67,8 @@ class AppException implements Exception {
 ///
 /// Only serialisable exceptions carry a reason across the wire: anything else
 /// arrives as a generic failure and becomes [AppFailure.unknown]. The group
-/// endpoints declare `GroupException` and the password reset calls
+/// endpoints declare `GroupException`, and the email identity provider
+/// `EmailAccountLoginException`, `EmailAccountRequestException` and
 /// `EmailAccountPasswordResetException`; the task and shop endpoints still throw
 /// plain errors, so their refusals read as the generic message until they get
 /// exceptions of their own.
@@ -87,5 +98,23 @@ AppException mapServerError(Object error) => switch (error) {
       EmailAccountPasswordResetExceptionReason.unknown => AppFailure.unknown,
     },
   ),
+  EmailAccountLoginException(:final reason) => AppException(switch (reason) {
+    EmailAccountLoginExceptionReason.invalidCredentials =>
+      AppFailure.invalidCredentials,
+    EmailAccountLoginExceptionReason.tooManyAttempts =>
+      AppFailure.tooManyAttempts,
+    EmailAccountLoginExceptionReason.unknown => AppFailure.unknown,
+  }),
+  EmailAccountRequestException(:final reason) => AppException(switch (reason) {
+    EmailAccountRequestExceptionReason.expired =>
+      AppFailure.registrationExpired,
+    EmailAccountRequestExceptionReason.invalid =>
+      AppFailure.registrationInvalid,
+    EmailAccountRequestExceptionReason.policyViolation =>
+      AppFailure.passwordPolicy,
+    EmailAccountRequestExceptionReason.tooManyAttempts =>
+      AppFailure.tooManyAttempts,
+    EmailAccountRequestExceptionReason.unknown => AppFailure.unknown,
+  }),
   _ => const AppException(AppFailure.unknown),
 };

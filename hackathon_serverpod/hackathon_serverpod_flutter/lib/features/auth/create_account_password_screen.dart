@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart';
-import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/widgets.dart';
+import '../../data/app_failure.dart';
+import '../../data/auth_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 import '../../ui/password_field.dart';
 
 class CreateAccountPasswordScreen extends StatefulWidget {
   const CreateAccountPasswordScreen({
     required this.registrationToken,
+    this.repository = const AuthRepository(),
     super.key,
   });
 
   final String registrationToken;
+  final AuthRepository repository;
 
   @override
   State<CreateAccountPasswordScreen> createState() =>
@@ -42,24 +44,22 @@ class _CreateAccountPasswordScreenState
       _error = null;
     });
     try {
-      final authSuccess = await client.emailIdp.finishRegistration(
-        registrationToken: widget.registrationToken,
-        password: _passwordController.text,
+      await widget.repository.finishRegistration(
+        widget.registrationToken,
+        _passwordController.text,
       );
-      await client.auth.updateSignedInUser(authSuccess);
       if (mounted) Navigator.of(context).popUntil((route) => route.isFirst);
-    } on EmailAccountRequestException catch (e) {
+    } catch (e) {
       setState(
-        () => _error = switch (e.reason) {
-          EmailAccountRequestExceptionReason.policyViolation =>
-            l10n.passwordErrorPolicy,
-          EmailAccountRequestExceptionReason.expired =>
-            l10n.passwordErrorExpired,
+        () => _error = switch (e) {
+          AppException(
+            failure: AppFailure.passwordPolicy ||
+                AppFailure.registrationExpired,
+          ) =>
+            failureMessage(e, l10n),
           _ => l10n.passwordErrorGeneric,
         },
       );
-    } catch (e) {
-      setState(() => _error = l10n.passwordErrorGeneric);
     } finally {
       if (mounted) setState(() => _loading = false);
     }

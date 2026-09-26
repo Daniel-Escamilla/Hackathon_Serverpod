@@ -15,6 +15,9 @@ extension AppFailureMessage on AppFailure {
     AppFailure.resetExpired => l10n.codeErrorExpired,
     AppFailure.resetCodeInvalid => l10n.codeErrorInvalid,
     AppFailure.passwordPolicy => l10n.passwordErrorPolicy,
+    AppFailure.invalidCredentials => l10n.signInErrorInvalidCredentials,
+    AppFailure.registrationExpired => l10n.passwordErrorExpired,
+    AppFailure.registrationInvalid => l10n.codeErrorInvalid,
     AppFailure.tooManyAttempts => l10n.authErrorTooManyAttempts,
     AppFailure.noGroup || AppFailure.unknown => l10n.errorGeneric,
   };
