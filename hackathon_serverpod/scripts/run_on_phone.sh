@@ -10,6 +10,9 @@ SERVER_DIR="$SCRIPT_DIR/../hackathon_serverpod_server"
 FLUTTER_PROJECT_DIR="$SCRIPT_DIR/../hackathon_serverpod_flutter"
 APP_ID="com.example.hackathon_serverpod_flutter"
 MIN_SDK=21
+# The Flutter version the whole team builds with, read from the workspace's
+# .fvmrc so there is a single place to bump it.
+PINNED_FLUTTER="$(sed -n 's/.*"flutter": *"\([^"]*\)".*/\1/p' "$SCRIPT_DIR/../.fvmrc" 2>/dev/null)"
 
 FRAMES="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
 GREEN='\033[32m'
@@ -102,7 +105,7 @@ section "Requisitos"
 
 MISSING_TOOLS=()
 check "adb en PATH"     "command -v adb"     || MISSING_TOOLS+=("adb")
-check "flutter en PATH" "command -v flutter" || MISSING_TOOLS+=("flutter")
+check "flutter o fvm en PATH" "command -v fvm || command -v flutter" || MISSING_TOOLS+=("flutter")
 
 if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
   echo
@@ -130,7 +133,27 @@ if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
   echo
 fi
 
-section "Backend (Docker)"
+# A Flutter other than the pinned one rewrites pubspec.lock with newer
+# packages on its implicit pub get. fvm, when present, runs exactly the pinned
+# version; otherwise whatever flutter is on the PATH has to match it.
+if command -v fvm >/dev/null 2>&1 && [ -n "$PINNED_FLUTTER" ]; then
+  FLUTTER=(fvm flutter)
+  run_with_spinner "Preparando Flutter $PINNED_FLUTTER con fvm" \
+    fvm install "$PINNED_FLUTTER" || exit 1
+else
+  FLUTTER=(flutter)
+  FLUTTER_VERSION="$(flutter --version 2>/dev/null | awk '/^Flutter /{print $2; exit}')"
+  if [ -n "$PINNED_FLUTTER" ] && [ "$FLUTTER_VERSION" != "$PINNED_FLUTTER" ]; then
+    fail "Flutter ${FLUTTER_VERSION:-?} en vez de $PINNED_FLUTTER"
+    echo "Compilar con otra versión reescribe pubspec.lock con paquetes distintos."
+    echo "Instala fvm (https://fvm.app) o Flutter $PINNED_FLUTTER y vuelve a lanzar el script."
+    confirm "¿Seguir de todos modos con Flutter ${FLUTTER_VERSION:-?}?" || exit 1
+  else
+    ok "Flutter $FLUTTER_VERSION"
+  fi
+fi
+
+section "Backend"
 
 ENV_FILE="$SERVER_DIR/.env"
 
@@ -157,7 +180,26 @@ fi
 
 echo
 frames_len=${#FRAMES}
-if confirm "¿Levantar el backend (Postgres + servidor Serverpod) con Docker?"; then
+# The Docker server runs in staging mode, where verification codes go out by
+# email through Serverpod Cloud. `serverpod start` runs in development mode and
+# prints them in its console instead, so it is preferred whenever the CLI is
+# installed. It brings its own PostgreSQL and needs ports 8080-8082, so the
+# Docker server is stopped first.
+START_SERVERPOD=""
+if command -v serverpod >/dev/null 2>&1 \
+  && confirm "¿Arrancar el servidor con serverpod start al final? (enseña los códigos de verificación del email)"; then
+  START_SERVERPOD=1
+  stop_docker_server() {
+    cd "$SERVER_DIR" && docker compose stop server
+  }
+  run_with_spinner "Parando el servidor de Docker si estaba en marcha" stop_docker_server || exit 1
+  if [ ! -f "$SERVER_DIR/config/passwords.yaml" ]; then
+    init_secrets() {
+      cd "$SERVER_DIR" && dart run tool/init_local_secrets.dart
+    }
+    run_with_spinner "Generando config/passwords.yaml" init_secrets || exit 1
+  fi
+elif confirm "¿Levantar el backend (Postgres + servidor Serverpod) con Docker?"; then
   compose_up() {
     cd "$SERVER_DIR" && docker compose up -d --build server
   }
@@ -250,7 +292,7 @@ if ! confirm "¿Instalar la app en $DEVICE_ID?"; then
 fi
 
 build_apk() {
-  cd "$FLUTTER_PROJECT_DIR" && flutter build apk --debug --target=lib/main.dart \
+  cd "$FLUTTER_PROJECT_DIR" && "${FLUTTER[@]}" build apk --debug --target=lib/main.dart \
     --dart-define=SERVER_URL="$SERVER_URL"
 }
 run_with_spinner "Compilando APK debug" build_apk || exit 1
@@ -259,10 +301,37 @@ APK_PATH="$FLUTTER_PROJECT_DIR/build/app/outputs/flutter-apk/app-debug.apk"
 run_with_spinner "Instalando en $DEVICE_ID" adb -s "$DEVICE_ID" install -r "$APK_PATH" \
   || exit 1
 
+open_app() {
+  adb -s "$DEVICE_ID" shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1
+}
+
 echo
-if confirm "¿Abrir la app ahora?"; then
-  run_with_spinner "Abriendo app" adb -s "$DEVICE_ID" shell monkey -p "$APP_ID" \
-    -c android.intent.category.LAUNCHER 1
-else
-  echo "App instalada, no se ha abierto."
+if [ -z "$START_SERVERPOD" ]; then
+  if confirm "¿Abrir la app ahora?"; then
+    run_with_spinner "Abriendo app" open_app
+  else
+    echo "App instalada, no se ha abierto."
+  fi
+  exit 0
 fi
+
+# serverpod start keeps this terminal, so the app is opened from the
+# background once the server answers (for up to five minutes).
+if confirm "¿Abrir la app en cuanto responda el servidor?"; then
+  (
+    i=0
+    while [ $i -lt 300 ]; do
+      if curl -sf http://localhost:8080/ >/dev/null 2>&1; then
+        open_app
+        break
+      fi
+      sleep 1
+      i=$((i + 1))
+    done
+  ) >/dev/null 2>&1 &
+fi
+
+section "Servidor (serverpod start)"
+echo "Los códigos de verificación del email aparecen aquí. Ctrl+C para pararlo."
+echo
+cd "$SERVER_DIR" && exec serverpod start
