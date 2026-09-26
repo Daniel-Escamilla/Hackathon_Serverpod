@@ -13,8 +13,6 @@
 import 'dart:async' as _ida;
 import 'package:hackathon_serverpod_client/src/protocol/events/group_event.dart'
     as _ixxl2uus;
-import 'package:hackathon_serverpod_client/src/protocol/greetings/greeting.dart'
-    as _icy68nvy;
 import 'package:hackathon_serverpod_client/src/protocol/groups/group.dart'
     as _iubjh9pq;
 import 'package:hackathon_serverpod_client/src/protocol/groups/group_member.dart'
@@ -285,24 +283,6 @@ class EndpointEvent extends _isc.EndpointRef {
         'watchGroup',
         {},
         {},
-      );
-}
-
-/// This is an example endpoint that returns a greeting message through
-/// its [hello] method.
-/// {@category Endpoint}
-class EndpointGreeting extends _isc.EndpointRef {
-  EndpointGreeting(_isc.EndpointCaller caller) : super(caller);
-
-  @override
-  String get name => 'greeting';
-
-  /// Returns a personalized greeting message: "Hello {name}".
-  _ida.Future<_icy68nvy.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_icy68nvy.Greeting>(
-        'greeting',
-        'hello',
-        {'name': name},
       );
 }
 
@@ -733,7 +713,6 @@ class Client extends _isc.ServerpodClientShared {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     event = EndpointEvent(this);
-    greeting = EndpointGreeting(this);
     group = EndpointGroup(this);
     shop = EndpointShop(this);
     task = EndpointTask(this);
@@ -746,8 +725,6 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointJwtRefresh jwtRefresh;
 
   late final EndpointEvent event;
-
-  late final EndpointGreeting greeting;
 
   late final EndpointGroup group;
 
@@ -764,7 +741,6 @@ class Client extends _isc.ServerpodClientShared {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
     'event': event,
-    'greeting': greeting,
     'group': group,
     'shop': shop,
     'task': task,

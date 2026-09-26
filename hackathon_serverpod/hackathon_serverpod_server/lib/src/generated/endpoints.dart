@@ -22,7 +22,6 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
 import '../events/event_endpoint.dart' as _i7r7roa3;
-import '../greetings/greeting_endpoint.dart' as _il624ik7;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
 import '../tasks/task_endpoint.dart' as _i3nmwja6;
@@ -49,12 +48,6 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'event',
-          null,
-        ),
-      'greeting': _il624ik7.GreetingEndpoint()
-        ..initialize(
-          server,
-          'greeting',
           null,
         ),
       'group': _irt1w8ui.GroupEndpoint()
@@ -305,31 +298,6 @@ class Endpoints extends _is.EndpointDispatch {
               ) => (endpoints['event'] as _i7r7roa3.EventEndpoint).watchGroup(
                 session,
               ),
-        ),
-      },
-    );
-    connectors['greeting'] = _is.EndpointConnector(
-      name: 'greeting',
-      endpoint: endpoints['greeting']!,
-      methodConnectors: {
-        'hello': _is.MethodConnector(
-          name: 'hello',
-          params: {
-            'name': _is.ParameterDescription(
-              name: 'name',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async =>
-                  (endpoints['greeting'] as _il624ik7.GreetingEndpoint).hello(
-                    session,
-                    params['name'],
-                  ),
         ),
       },
     );

@@ -35,7 +35,6 @@ import 'events/group_event.dart' as _iecilz9e;
 import 'events/group_event_kind.dart' as _il82a0w2;
 import 'future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
     as _if11z8io;
-import 'greetings/greeting.dart' as _izw8z7ou;
 import 'groups/child_login_code.dart' as _ivjbsthj;
 import 'groups/group.dart' as _i9ztykbt;
 import 'groups/group_error_reason.dart' as _i7quka6t;
@@ -61,7 +60,6 @@ import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
 export 'events/group_event.dart';
 export 'events/group_event_kind.dart';
-export 'greetings/greeting.dart';
 export 'groups/child_login_code.dart';
 export 'groups/group.dart';
 export 'groups/group_error_reason.dart';
@@ -1051,9 +1049,6 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _if11z8io.TaskVoteFutureCallExpireVoteModel) {
       return _if11z8io.TaskVoteFutureCallExpireVoteModel.fromJson(data) as T;
     }
-    if (t == _izw8z7ou.Greeting) {
-      return _izw8z7ou.Greeting.fromJson(data) as T;
-    }
     if (t == _ivjbsthj.ChildLoginCode) {
       return _ivjbsthj.ChildLoginCode.fromJson(data) as T;
     }
@@ -1135,9 +1130,6 @@ class Protocol extends _is.DatabaseSerializationManager {
               ? _if11z8io.TaskVoteFutureCallExpireVoteModel.fromJson(data)
               : null)
           as T;
-    }
-    if (t == _is.getType<_izw8z7ou.Greeting?>()) {
-      return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
     }
     if (t == _is.getType<_ivjbsthj.ChildLoginCode?>()) {
       return (data != null ? _ivjbsthj.ChildLoginCode.fromJson(data) : null)
@@ -1279,7 +1271,6 @@ class Protocol extends _is.DatabaseSerializationManager {
       _il82a0w2.GroupEventKind => 'GroupEventKind',
       _if11z8io.TaskVoteFutureCallExpireVoteModel =>
         'TaskVoteFutureCallExpireVoteModel',
-      _izw8z7ou.Greeting => 'Greeting',
       _ivjbsthj.ChildLoginCode => 'ChildLoginCode',
       _i9ztykbt.Group => 'Group',
       _i7quka6t.GroupErrorReason => 'GroupErrorReason',
@@ -1326,8 +1317,6 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'GroupEventKind';
       case _if11z8io.TaskVoteFutureCallExpireVoteModel():
         return 'TaskVoteFutureCallExpireVoteModel';
-      case _izw8z7ou.Greeting():
-        return 'Greeting';
       case _ivjbsthj.ChildLoginCode():
         return 'ChildLoginCode';
       case _i9ztykbt.Group():
@@ -1410,9 +1399,6 @@ class Protocol extends _is.DatabaseSerializationManager {
       return deserialize<_if11z8io.TaskVoteFutureCallExpireVoteModel>(
         data['data'],
       );
-    }
-    if (dataClassName == 'Greeting') {
-      return deserialize<_izw8z7ou.Greeting>(data['data']);
     }
     if (dataClassName == 'ChildLoginCode') {
       return deserialize<_ivjbsthj.ChildLoginCode>(data['data']);

@@ -48,11 +48,9 @@ The root `pubspec.yaml` (`name: _`) is a Dart workspace, so a single `flutter pu
 
 That `pubspec.lock` is **committed on purpose** — four people on Linux, macOS and Windows need identical dependency versions, and the server `Dockerfile` does `COPY pubspec.lock .` and fails without it. Never add it back to `.gitignore`, and never run `flutter pub upgrade` as a side effect of another task: it rewrites the lock for the whole team. Pinned toolchain: Flutter 3.44.4, Dart 3.12.2, Serverpod CLI 4.0.0 (see the README).
 
-- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/greetings/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
+- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/groups/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
 - `hackathon_serverpod_client` — 100% generated from the server. Never hand-edit; the Flutter app depends on it by path.
 - `hackathon_serverpod_flutter` — the app. `lib/client.dart` owns the global `client` (a deliberate global, not DI), `lib/main.dart` boots `prototype_app.dart` (now just the `MaterialApp` shell, wired to the real `AuthGate`), and screens live under `lib/features/<feature>/`.
-
-Still-unused scaffold leftovers: the `Greeting` model/endpoint/test, and `screens/greetings_screen.dart` + `screens/sign_in_screen.dart`, which nothing imports.
 
 ## Commands
 
@@ -71,8 +69,8 @@ cd hackathon_serverpod_server
 dart analyze --fatal-infos          # CI setting; unawaited_futures and avoid_print are on here
 dart format --set-exit-if-changed .
 dart test                                                    # whole suite
-dart test test/integration/greeting_endpoint_test.dart       # one file
-dart test -n 'returned greeting includes name'               # one test by name
+dart test test/integration/wallet_endpoint_test.dart         # one file
+dart test -n 'a fine can take the balance negative'          # one test by name
 dart test -t integration                                     # the only declared tag (dart_test.yaml)
 
 cd ../hackathon_serverpod_flutter
