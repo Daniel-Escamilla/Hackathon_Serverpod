@@ -125,8 +125,7 @@ building and installing the debug APK. Prompts are in Spanish and take `s` for y
 
 It builds with `fvm flutter` when fvm is installed. Without it, it uses the `flutter` on your
 PATH and asks before going on if that is not 3.44.4: another version rewrites `pubspec.lock` on
-its implicit
-`pub get`.
+its implicit `pub get`.
 
 The APK is built against this computer's LAN address, which the script detects and lets you
 correct, so the phone has to be on the same Wi-Fi. To point it somewhere else, set it up front:
