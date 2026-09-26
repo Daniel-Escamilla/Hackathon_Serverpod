@@ -2,22 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/app_failure.dart';
+import '../../data/auth_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 import 'create_account_password_screen.dart';
 
 class CreateAccountCodeScreen extends StatefulWidget {
   const CreateAccountCodeScreen({
     required this.email,
     required this.accountRequestId,
+    this.repository = const AuthRepository(),
     super.key,
   });
 
   final String email;
   final UuidValue accountRequestId;
+  final AuthRepository repository;
 
   @override
   State<CreateAccountCodeScreen> createState() =>
@@ -43,28 +47,28 @@ class _CreateAccountCodeScreenState extends State<CreateAccountCodeScreen> {
       _error = null;
     });
     try {
-      final registrationToken = await client.emailIdp.verifyRegistrationCode(
-        accountRequestId: widget.accountRequestId,
-        verificationCode: _codeController.text.trim(),
+      final registrationToken = await widget.repository.verifyRegistrationCode(
+        widget.accountRequestId,
+        _codeController.text.trim(),
       );
       if (mounted) {
         pushPage(
           context,
-          CreateAccountPasswordScreen(registrationToken: registrationToken),
+          CreateAccountPasswordScreen(
+            registrationToken: registrationToken,
+            repository: widget.repository,
+          ),
         );
       }
-    } on EmailAccountRequestException catch (e) {
+    } catch (e) {
       setState(
-        () => _error = switch (e.reason) {
-          EmailAccountRequestExceptionReason.expired => l10n.codeErrorExpired,
-          EmailAccountRequestExceptionReason.invalid => l10n.codeErrorInvalid,
-          EmailAccountRequestExceptionReason.tooManyAttempts =>
-            l10n.authErrorTooManyAttempts,
-          _ => l10n.codeErrorGeneric,
+        () => _error = switch (e) {
+          AppException(failure: AppFailure.registrationExpired) =>
+            l10n.codeErrorExpired,
+          AppException(failure: AppFailure.unknown) => l10n.codeErrorGeneric,
+          _ => failureMessage(e, l10n),
         },
       );
-    } catch (e) {
-      setState(() => _error = l10n.codeErrorGeneric);
     } finally {
       if (mounted) setState(() => _loading = false);
     }

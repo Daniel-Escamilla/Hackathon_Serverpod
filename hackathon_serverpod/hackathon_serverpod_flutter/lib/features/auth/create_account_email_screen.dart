@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/app_failure.dart';
+import '../../data/auth_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import 'create_account_code_screen.dart';
 
 class CreateAccountEmailScreen extends StatefulWidget {
-  const CreateAccountEmailScreen({super.key});
+  const CreateAccountEmailScreen({
+    this.repository = const AuthRepository(),
+    super.key,
+  });
+
+  /// Handed down the registration steps, so a test can swap in a fake.
+  final AuthRepository repository;
 
   @override
   State<CreateAccountEmailScreen> createState() =>
@@ -37,28 +43,27 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
       _error = null;
     });
     try {
-      final accountRequestId = await client.emailIdp.startRegistration(
-        email: email,
-      );
+      final accountRequestId = await widget.repository.startRegistration(email);
       if (mounted) {
         pushPage(
           context,
           CreateAccountCodeScreen(
             email: email,
             accountRequestId: accountRequestId,
+            repository: widget.repository,
           ),
         );
       }
-    } on EmailAccountRequestException catch (e) {
+    } catch (e) {
       setState(
-        () => _error = switch (e.reason) {
-          EmailAccountRequestExceptionReason.tooManyAttempts =>
+        () => _error = switch (e) {
+          AppException(failure: AppFailure.tooManyAttempts) =>
             l10n.authErrorTooManyAttempts,
+          AppException(failure: AppFailure.unknown) =>
+            l10n.createAccountErrorStart,
           _ => l10n.createAccountErrorGeneric,
         },
       );
-    } catch (e) {
-      setState(() => _error = l10n.createAccountErrorStart);
     } finally {
       if (mounted) setState(() => _loading = false);
     }
