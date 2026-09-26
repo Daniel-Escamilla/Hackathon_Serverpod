@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
-import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../data/app_failure.dart';
@@ -71,10 +69,8 @@ class _Body extends StatelessWidget {
       );
     }
 
-    final myUserId = client.auth.authInfoListenable.value?.authUserId;
-    final me = controller.members
-        .where((m) => m.authUserId == myUserId)
-        .firstOrNull;
+    final myMemberId = controller.myMemberId;
+    final me = controller.members.where((m) => m.id == myMemberId).firstOrNull;
     final isAdmin = me?.role == GroupMemberRole.admin;
 
     return RefreshIndicator(
@@ -154,8 +150,8 @@ class _Body extends StatelessWidget {
           for (final member in controller.members)
             _MemberRow(
               member: member,
-              isYou: member.authUserId == myUserId,
-              canExpel: isAdmin && member.authUserId != myUserId,
+              isYou: member.id == myMemberId,
+              canExpel: isAdmin && member.id != myMemberId,
               onExpel: () => _expel(context, member),
             ),
           const SizedBox(height: 26),
@@ -180,7 +176,7 @@ class _Body extends StatelessWidget {
       action: l10n.signOut,
     );
     if (!confirmed) return;
-    await client.auth.signOutDevice();
+    await controller.auth.signOut();
   }
 
   String _typeLabel(AppLocalizations l10n, GroupType type) => switch (type) {

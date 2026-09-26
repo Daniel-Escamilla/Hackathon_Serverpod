@@ -5,7 +5,6 @@ import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
-import 'client.dart';
 import 'common/navigation.dart';
 import 'data/app_failure.dart';
 import 'features/group/group_controller.dart';
@@ -103,7 +102,7 @@ class _HomeShellState extends State<HomeShell> {
   /// claim or a purchase made on another phone shows up here without pulling
   /// to refresh. If the connection drops, it tries again a few seconds later.
   void _watchGroup() {
-    _events = client.event.watchGroup().listen(
+    _events = _groupController.repository.watchGroup().listen(
       _onGroupEvent,
       onError: (Object _) => _retryWatch(),
       onDone: _retryWatch,

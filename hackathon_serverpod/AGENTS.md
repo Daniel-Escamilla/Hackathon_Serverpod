@@ -120,7 +120,8 @@ Agreed 2026-09-21. They cover the app under `hackathon_serverpod_flutter/lib`.
 | Pieces | `lib/ui/` | Flutter, the l10n, the theme |
 | Screens | `lib/features/<feature>/` | Everything above |
 
-- **Only `lib/data/` imports `client`.** A screen calling `client.something` is exactly what this rule prevents: error handling scattered across widgets, and no way to test a screen without a server running.
+- **Only `lib/data/` imports `client`** (plus `main.dart`, which initialises it). A screen calling `client.something` is exactly what this rule prevents: error handling scattered across widgets, and no way to test a screen without a server running. Each controller takes its repository in the constructor (`TasksController(repository: ...)`), so a test hands it a fake.
+- Repositories wrap each call in `guardServerCall`. A controller loading two things at once uses `Future.wait`, not a record's `.wait`: the latter wraps the failure in a `ParallelWaitError` and the `AppException` is lost.
 - Repositories throw `AppException`, never a raw server error. The translation lives in `data/app_failure.dart`, in one function.
 - Which sentence a failure shows is decided in the UI, from the ARB (`ui/failure_messages.dart`). The data layer never holds display text.
 

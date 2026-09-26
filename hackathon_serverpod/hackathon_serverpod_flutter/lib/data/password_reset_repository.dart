@@ -14,28 +14,21 @@ class PasswordResetRepository {
   /// Sends a code to [email] and returns the id of the request it belongs to.
   /// In development the code is printed in the `serverpod start` console.
   Future<UuidValue> sendCode(String email) =>
-      _guard(() => client.emailIdp.startPasswordReset(email: email));
+      guardServerCall(() => client.emailIdp.startPasswordReset(email: email));
 
   /// Returns the token that lets [setPassword] finish the request.
-  Future<String> verifyCode(UuidValue requestId, String code) => _guard(
-    () => client.emailIdp.verifyPasswordResetCode(
-      passwordResetRequestId: requestId,
-      verificationCode: code,
-    ),
-  );
+  Future<String> verifyCode(UuidValue requestId, String code) =>
+      guardServerCall(
+        () => client.emailIdp.verifyPasswordResetCode(
+          passwordResetRequestId: requestId,
+          verificationCode: code,
+        ),
+      );
 
-  Future<void> setPassword(String token, String newPassword) => _guard(
+  Future<void> setPassword(String token, String newPassword) => guardServerCall(
     () => client.emailIdp.finishPasswordReset(
       finishPasswordResetToken: token,
       newPassword: newPassword,
     ),
   );
-
-  Future<T> _guard<T>(Future<T> Function() call) async {
-    try {
-      return await call();
-    } catch (e) {
-      throw mapServerError(e);
-    }
-  }
 }
