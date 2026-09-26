@@ -131,7 +131,7 @@ No Docker needed — the test config manages its own embedded PostgreSQL.
 ```sh
 cd hackathon_serverpod/hackathon_serverpod_server
 dart test                                                 # everything
-dart test test/integration/greeting_endpoint_test.dart    # one file
+dart test test/integration/wallet_endpoint_test.dart      # one file
 dart analyze --fatal-infos
 dart format --set-exit-if-changed .
 ```

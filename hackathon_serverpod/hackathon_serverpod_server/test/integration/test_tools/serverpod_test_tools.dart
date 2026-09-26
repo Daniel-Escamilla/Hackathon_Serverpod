@@ -19,8 +19,6 @@ import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
     as _isvvvywu;
 import 'package:hackathon_serverpod_server/src/generated/future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
     as _i7db9b19;
-import 'package:hackathon_serverpod_server/src/generated/greetings/greeting.dart'
-    as _ikht4he2;
 import 'package:hackathon_serverpod_server/src/generated/groups/group.dart'
     as _i96jc0h6;
 import 'package:hackathon_serverpod_server/src/generated/groups/group_member.dart'
@@ -177,8 +175,6 @@ class TestEndpoints {
 
   late final _EventEndpoint event;
 
-  late final _GreetingEndpoint greeting;
-
   late final _GroupEndpoint group;
 
   late final _ShopEndpoint shop;
@@ -204,10 +200,6 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     event = _EventEndpoint(
-      endpoints,
-      serializationManager,
-    );
-    greeting = _GreetingEndpoint(
       endpoints,
       serializationManager,
     );
@@ -592,48 +584,6 @@ class _EventEndpoint {
       _localTestStreamManager.outputStreamController,
     );
     return _localTestStreamManager.outputStreamController.stream;
-  }
-}
-
-class _GreetingEndpoint {
-  _GreetingEndpoint(
-    this._endpointDispatch,
-    this._serializationManager,
-  );
-
-  final _is.EndpointDispatch _endpointDispatch;
-
-  final _is.SerializationManager _serializationManager;
-
-  _ida.Future<_ikht4he2.Greeting> hello(
-    _ist.TestSessionBuilder sessionBuilder,
-    String name,
-  ) async {
-    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
-      var _localUniqueSession =
-          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'greeting',
-            method: 'hello',
-          );
-      try {
-        var _localCallContext = await _endpointDispatch.getMethodCallContext(
-          createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'greeting',
-          methodName: 'hello',
-          parameters: _ist.testObjectToJson({'name': name}),
-          serializationManager: _serializationManager,
-        );
-        var _localReturnValue =
-            await (_localCallContext.method.call(
-                  _localUniqueSession,
-                  _localCallContext.arguments,
-                )
-                as _ida.Future<_ikht4he2.Greeting>);
-        return _localReturnValue;
-      } finally {
-        await _localUniqueSession.close();
-      }
-    });
   }
 }
 
