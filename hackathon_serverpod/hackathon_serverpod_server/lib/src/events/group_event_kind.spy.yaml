@@ -4,6 +4,8 @@
 ### completion-vote cast — the codebase's own names for the two phases.
 ### `taskClaimed` came later: without it a task someone marked done only moved
 ### to "in validation" on the other phones after a reload.
+### `memberExpelled` tells the expelled member's app to leave the group, and
+### everyone else's to drop them from the member list.
 enum: GroupEventKind
 values:
   - taskProposed
@@ -12,3 +14,4 @@ values:
   - taskValidated
   - taskClaimed
   - purchased
+  - memberExpelled

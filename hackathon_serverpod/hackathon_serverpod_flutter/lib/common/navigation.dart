@@ -7,6 +7,8 @@ import '../features/shop/shop_controller.dart';
 import '../features/tasks/tasks_controller.dart';
 import '../features/wallet/wallet_controller.dart';
 import '../home_shell.dart';
+import '../ui/feedback.dart';
+import 'auth_gate.dart';
 
 /// Opens [page] on top of the current screen.
 ///
@@ -29,6 +31,22 @@ void pushPage(BuildContext context, Widget page) {
 void enterHome(BuildContext context) {
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute<void>(builder: (_) => const HomeShell()),
+    (_) => false,
+  );
+}
+
+/// The way out of [HomeShell] once the member is no longer in the group:
+/// back to the root, where [AuthGate] finds no group and offers to create or
+/// join one, with [message] shown on arrival. [destination] is only there so
+/// a test can land somewhere that needs no server.
+void leaveHome(
+  BuildContext context,
+  String message, {
+  Widget destination = const AuthGate(),
+}) {
+  showMessage(context, message, isError: true);
+  Navigator.of(context).pushAndRemoveUntil(
+    MaterialPageRoute<void>(builder: (_) => destination),
     (_) => false,
   );
 }

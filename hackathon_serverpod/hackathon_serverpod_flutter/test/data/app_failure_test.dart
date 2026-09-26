@@ -49,6 +49,16 @@ void main() {
       );
     });
 
+    test('having no group reads as such, not as a generic failure', () {
+      expect(
+        failureMessage(
+          GroupException(reason: GroupErrorReason.noMembership),
+          l10n,
+        ),
+        'Ya no estás en este grupo.',
+      );
+    });
+
     test('uses the fallback only when nothing more is known', () {
       expect(
         failureMessage(Exception('boom'), l10n, fallback: 'propio'),

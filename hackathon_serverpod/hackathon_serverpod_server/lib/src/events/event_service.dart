@@ -12,7 +12,7 @@ String groupEventChannel(int groupId) => 'group-events-$groupId';
 /// member's app watching `EventEndpoint.watchGroup` gets the event the
 /// moment it's posted here, no reload needed. Covers the five moments the
 /// issue names — propuesta, voto, contraoferta, validación, compra — plus a
-/// task being claimed as done. Not every state change: a shop vote or a
+/// task being claimed as done and a member being expelled. Not every state change: a shop vote or a
 /// purchase response don't publish yet.
 class EventService {
   const EventService();
@@ -23,6 +23,7 @@ class EventService {
     required GroupEventKind kind,
     int? taskId,
     int? purchaseId,
+    int? memberId,
   }) {
     return session.messages.postMessage(
       groupEventChannel(groupId),
@@ -31,6 +32,7 @@ class EventService {
         kind: kind,
         taskId: taskId,
         purchaseId: purchaseId,
+        memberId: memberId,
         occurredAt: DateTime.now().toUtc(),
       ),
     );

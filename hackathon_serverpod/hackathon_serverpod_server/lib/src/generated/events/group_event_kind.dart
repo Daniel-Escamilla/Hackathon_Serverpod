@@ -18,13 +18,16 @@ import 'package:serverpod/serverpod.dart' as _is;
 /// completion-vote cast — the codebase's own names for the two phases.
 /// `taskClaimed` came later: without it a task someone marked done only moved
 /// to "in validation" on the other phones after a reload.
+/// `memberExpelled` tells the expelled member's app to leave the group, and
+/// everyone else's to drop them from the member list.
 enum GroupEventKind implements _is.SerializableModel {
   taskProposed,
   taskVoteCast,
   taskCounterOffered,
   taskValidated,
   taskClaimed,
-  purchased;
+  purchased,
+  memberExpelled;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -40,6 +43,8 @@ enum GroupEventKind implements _is.SerializableModel {
         return GroupEventKind.taskClaimed;
       case 'purchased':
         return GroupEventKind.purchased;
+      case 'memberExpelled':
+        return GroupEventKind.memberExpelled;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

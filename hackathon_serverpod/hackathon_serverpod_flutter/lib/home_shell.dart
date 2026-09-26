@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'app_theme.dart';
 import 'client.dart';
 import 'common/navigation.dart';
+import 'data/app_failure.dart';
 import 'features/group/group_controller.dart';
 import 'features/group/group_page.dart';
 import 'features/shop/shop_controller.dart';
@@ -38,6 +39,11 @@ class HomeTabController extends ChangeNotifier {
   }
 }
 
+/// Whether [error], held by any of the tab controllers, means the member is no
+/// longer in the group: expelled while the app was open.
+bool meansNoGroup(Object? error) =>
+    error != null && failureOf(error) == AppFailure.noGroup;
+
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key, this.initialIndex = 0});
 
@@ -54,11 +60,43 @@ class _HomeShellState extends State<HomeShell> {
   final _walletController = WalletController()..load();
   final _groupController = GroupController()..load();
   StreamSubscription<GroupEvent>? _events;
+  bool _leaving = false;
 
   @override
   void initState() {
     super.initState();
     _watchGroup();
+    for (final controller in _controllers) {
+      controller.addListener(_leaveIfNoGroup);
+    }
+  }
+
+  List<ChangeNotifier> get _controllers => [
+    _tasksController,
+    _shopController,
+    _walletController,
+    _groupController,
+  ];
+
+  /// A load refused with "no membership" means the member was expelled while
+  /// the stream was down, so the event never arrived.
+  void _leaveIfNoGroup() {
+    if ([
+      _tasksController.error,
+      _shopController.error,
+      _walletController.error,
+      _groupController.error,
+    ].any(meansNoGroup)) {
+      _leaveGroup();
+    }
+  }
+
+  void _leaveGroup() {
+    if (_leaving || !mounted) return;
+    _leaving = true;
+    unawaited(_events?.cancel());
+    _events = null;
+    leaveHome(context, AppLocalizations.of(context).leftGroupNotice);
   }
 
   /// Listens to the group's live stream (PRODUCT.md §10.4) so a vote, a
@@ -76,7 +114,7 @@ class _HomeShellState extends State<HomeShell> {
   void _retryWatch() {
     _events = null;
     Future<void>.delayed(const Duration(seconds: 3), () {
-      if (mounted && _events == null) _watchGroup();
+      if (mounted && !_leaving && _events == null) _watchGroup();
     });
   }
 
@@ -93,6 +131,12 @@ class _HomeShellState extends State<HomeShell> {
       case GroupEventKind.purchased:
         unawaited(_shopController.load());
         unawaited(_walletController.load());
+      case GroupEventKind.memberExpelled:
+        if (event.memberId == _groupController.myMemberId) {
+          _leaveGroup();
+        } else {
+          unawaited(_groupController.load());
+        }
     }
   }
 

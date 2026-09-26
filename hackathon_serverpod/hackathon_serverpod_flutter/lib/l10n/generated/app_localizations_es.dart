@@ -698,6 +698,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Solo quien tiene que cumplir la compra puede responderla o entregarla.';
 
   @override
+  String get errorNoGroup => 'Ya no estás en este grupo.';
+
+  @override
+  String get leftGroupNotice =>
+      'Ya no estás en el grupo. Puedes crear otro o unirte con un código.';
+
+  @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
 
   @override

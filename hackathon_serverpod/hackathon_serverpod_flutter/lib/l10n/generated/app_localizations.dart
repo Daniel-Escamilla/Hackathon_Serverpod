@@ -1378,6 +1378,18 @@ abstract class AppLocalizations {
   /// **'Solo quien tiene que cumplir la compra puede responderla o entregarla.'**
   String get errorNotProvider;
 
+  /// A call was refused because the member has left or been expelled
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no estás en este grupo.'**
+  String get errorNoGroup;
+
+  /// Shown on the create-or-join screen after being expelled from the group
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no estás en el grupo. Puedes crear otro o unirte con un código.'**
+  String get leftGroupNotice;
+
   /// No description provided for @errorGeneric.
   ///
   /// In es, this message translates to:

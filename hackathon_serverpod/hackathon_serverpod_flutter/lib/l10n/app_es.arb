@@ -438,6 +438,14 @@
   "@errorNotProvider": {
     "description": "Someone other than the provider answered or delivered a purchase"
   },
+  "errorNoGroup": "Ya no estás en este grupo.",
+  "@errorNoGroup": {
+    "description": "A call was refused because the member has left or been expelled"
+  },
+  "leftGroupNotice": "Ya no estás en el grupo. Puedes crear otro o unirte con un código.",
+  "@leftGroupNotice": {
+    "description": "Shown on the create-or-join screen after being expelled from the group"
+  },
   "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
 
   "purchasesToFulfil": "Te toca cumplir",

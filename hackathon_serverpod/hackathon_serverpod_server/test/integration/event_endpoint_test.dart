@@ -10,6 +10,8 @@ const _strangerAuthUserId = 'eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee';
 // own people.
 const _claimAdminAuthUserId = 'c2c2c2c2-c2c2-4c2c-8c2c-c2c2c2c2c2c2';
 const _claimantAuthUserId = 'c3c3c3c3-c3c3-4c3c-8c3c-c3c3c3c3c3c3';
+const _expelAdminAuthUserId = 'c4c4c4c4-c4c4-4c4c-8c4c-c4c4c4c4c4c4';
+const _expelledAuthUserId = 'c5c5c5c5-c5c5-4c5c-8c5c-c5c5c5c5c5c5';
 
 void main() {
   // The stream's own lookup runs alongside the call that publishes, and
@@ -99,6 +101,36 @@ void main() {
           final event = await stream.first;
           expect(event.kind, GroupEventKind.taskClaimed);
           expect(event.taskId, task.id);
+        },
+      );
+
+      test(
+        'when the admin expels a member then the expelled member hears it',
+        () async {
+          final group = await endpoints.group.createGroup(
+            sessionOf(_expelAdminAuthUserId),
+            'Piso de expulsar',
+            GroupType.sharedFlat,
+            displayName: 'Alice',
+          );
+          final expelled = await endpoints.group.joinGroup(
+            sessionOf(_expelledAuthUserId),
+            group.inviteCode,
+            displayName: 'Bob',
+          );
+          final stream = endpoints.event.watchGroup(
+            sessionOf(_expelledAuthUserId),
+          );
+          await flushEventQueue();
+
+          await endpoints.group.expelMember(
+            sessionOf(_expelAdminAuthUserId),
+            expelled.id!,
+          );
+
+          final event = await stream.first;
+          expect(event.kind, GroupEventKind.memberExpelled);
+          expect(event.memberId, expelled.id);
         },
       );
 
