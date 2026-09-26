@@ -20,6 +20,11 @@ const _race2AuthUserIds = [
   '25252525-2525-4525-8525-252525252525',
 ];
 
+/// Fails unless the call is refused with [reason].
+Matcher throwsShop(ShopErrorReason reason) => throwsA(
+  isA<ShopException>().having((e) => e.reason, 'reason', reason),
+);
+
 void main() {
   withServerpod('Given a group of four with a proposed reward', (
     sessionBuilder,
@@ -185,7 +190,7 @@ void main() {
             proposedItem.id!,
             true,
           ),
-          throwsA(isA<StateError>()),
+          throwsShop(ShopErrorReason.ownReward),
         );
       });
 
@@ -201,7 +206,7 @@ void main() {
             proposedItem.id!,
             false,
           ),
-          throwsA(isA<StateError>()),
+          throwsShop(ShopErrorReason.rewardNotOpen),
         );
         final votes = await RewardVote.db.find(
           session,
@@ -213,7 +218,7 @@ void main() {
       test('then voting on an unknown reward throws', () async {
         await expectLater(
           endpoints.shop.voteReward(sessionOf(_bobAuthUserId), 999999, true),
-          throwsA(isA<StateError>()),
+          throwsShop(ShopErrorReason.rewardNotFound),
         );
       });
     });
@@ -257,7 +262,7 @@ void main() {
             proposedItem.id!,
             999999,
           ),
-          throwsA(isA<StateError>()),
+          throwsShop(ShopErrorReason.invalidProvider),
         );
       });
 
@@ -276,7 +281,7 @@ void main() {
             proposedItem.id!,
             carol.id!,
           ),
-          throwsA(isA<StateError>()),
+          throwsShop(ShopErrorReason.negativeBalance),
         );
       });
 
@@ -362,7 +367,7 @@ void main() {
               purchase.id!,
               true,
             ),
-            throwsA(isA<StateError>()),
+            throwsShop(ShopErrorReason.notProvider),
           );
         });
 
@@ -390,7 +395,7 @@ void main() {
               999999,
               true,
             ),
-            throwsA(isA<StateError>()),
+            throwsShop(ShopErrorReason.purchaseNotFound),
           );
         });
 
@@ -408,7 +413,7 @@ void main() {
                 sessionOf(_daveAuthUserId),
                 purchase.id!,
               ),
-              throwsA(isA<StateError>()),
+              throwsShop(ShopErrorReason.notProvider),
             );
           },
         );
@@ -523,7 +528,9 @@ void main() {
                   )
                   .then<Object?>((_) => null, onError: (Object e) => e),
           ]);
-          expect(outcomes.whereType<StateError>(), hasLength(1));
+          expect(outcomes.whereType<ShopException>().map((e) => e.reason), [
+            ShopErrorReason.purchaseNotOpen,
+          ]);
 
           final provider = await GroupMember.db.findById(
             session,

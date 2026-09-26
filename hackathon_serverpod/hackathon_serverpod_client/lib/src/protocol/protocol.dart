@@ -45,7 +45,11 @@ import 'shop/purchase_status.dart' as _ifglcefk;
 import 'shop/reward_item.dart' as _ikfprkod;
 import 'shop/reward_item_status.dart' as _i2lcnj26;
 import 'shop/reward_vote.dart' as _iod77io3;
+import 'shop/shop_error_reason.dart' as _il3xdzmd;
+import 'shop/shop_exception.dart' as _i0uw1vc9;
 import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_error_reason.dart' as _iorvycr6;
+import 'tasks/task_exception.dart' as _ima0h3gh;
 import 'tasks/task_kind.dart' as _i4hckegz;
 import 'tasks/task_recurrence.dart' as _ieirl7mq;
 import 'tasks/task_status.dart' as _i65tv1la;
@@ -70,7 +74,11 @@ export 'shop/purchase_status.dart';
 export 'shop/reward_item.dart';
 export 'shop/reward_item_status.dart';
 export 'shop/reward_vote.dart';
+export 'shop/shop_error_reason.dart';
+export 'shop/shop_exception.dart';
 export 'tasks/task.dart';
+export 'tasks/task_error_reason.dart';
+export 'tasks/task_exception.dart';
 export 'tasks/task_kind.dart';
 export 'tasks/task_recurrence.dart';
 export 'tasks/task_status.dart';
@@ -161,8 +169,20 @@ class Protocol extends _isc.SerializationManager {
     if (t == _iod77io3.RewardVote) {
       return _iod77io3.RewardVote.fromJson(data) as T;
     }
+    if (t == _il3xdzmd.ShopErrorReason) {
+      return _il3xdzmd.ShopErrorReason.fromJson(data) as T;
+    }
+    if (t == _i0uw1vc9.ShopException) {
+      return _i0uw1vc9.ShopException.fromJson(data) as T;
+    }
     if (t == _i253is06.Task) {
       return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _iorvycr6.TaskErrorReason) {
+      return _iorvycr6.TaskErrorReason.fromJson(data) as T;
+    }
+    if (t == _ima0h3gh.TaskException) {
+      return _ima0h3gh.TaskException.fromJson(data) as T;
     }
     if (t == _i4hckegz.TaskKind) {
       return _i4hckegz.TaskKind.fromJson(data) as T;
@@ -244,8 +264,24 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_iod77io3.RewardVote?>()) {
       return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
     }
+    if (t == _isc.getType<_il3xdzmd.ShopErrorReason?>()) {
+      return (data != null ? _il3xdzmd.ShopErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i0uw1vc9.ShopException?>()) {
+      return (data != null ? _i0uw1vc9.ShopException.fromJson(data) : null)
+          as T;
+    }
     if (t == _isc.getType<_i253is06.Task?>()) {
       return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iorvycr6.TaskErrorReason?>()) {
+      return (data != null ? _iorvycr6.TaskErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ima0h3gh.TaskException?>()) {
+      return (data != null ? _ima0h3gh.TaskException.fromJson(data) : null)
+          as T;
     }
     if (t == _isc.getType<_i4hckegz.TaskKind?>()) {
       return (data != null ? _i4hckegz.TaskKind.fromJson(data) : null) as T;
@@ -346,7 +382,11 @@ class Protocol extends _isc.SerializationManager {
       _ikfprkod.RewardItem => 'RewardItem',
       _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
       _iod77io3.RewardVote => 'RewardVote',
+      _il3xdzmd.ShopErrorReason => 'ShopErrorReason',
+      _i0uw1vc9.ShopException => 'ShopException',
       _i253is06.Task => 'Task',
+      _iorvycr6.TaskErrorReason => 'TaskErrorReason',
+      _ima0h3gh.TaskException => 'TaskException',
       _i4hckegz.TaskKind => 'TaskKind',
       _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
       _i65tv1la.TaskStatus => 'TaskStatus',
@@ -403,8 +443,16 @@ class Protocol extends _isc.SerializationManager {
         return 'RewardItemStatus';
       case _iod77io3.RewardVote():
         return 'RewardVote';
+      case _il3xdzmd.ShopErrorReason():
+        return 'ShopErrorReason';
+      case _i0uw1vc9.ShopException():
+        return 'ShopException';
       case _i253is06.Task():
         return 'Task';
+      case _iorvycr6.TaskErrorReason():
+        return 'TaskErrorReason';
+      case _ima0h3gh.TaskException():
+        return 'TaskException';
       case _i4hckegz.TaskKind():
         return 'TaskKind';
       case _ieirl7mq.TaskRecurrence():
@@ -490,8 +538,20 @@ class Protocol extends _isc.SerializationManager {
     if (dataClassName == 'RewardVote') {
       return deserialize<_iod77io3.RewardVote>(data['data']);
     }
+    if (dataClassName == 'ShopErrorReason') {
+      return deserialize<_il3xdzmd.ShopErrorReason>(data['data']);
+    }
+    if (dataClassName == 'ShopException') {
+      return deserialize<_i0uw1vc9.ShopException>(data['data']);
+    }
     if (dataClassName == 'Task') {
       return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskErrorReason') {
+      return deserialize<_iorvycr6.TaskErrorReason>(data['data']);
+    }
+    if (dataClassName == 'TaskException') {
+      return deserialize<_ima0h3gh.TaskException>(data['data']);
     }
     if (dataClassName == 'TaskKind') {
       return deserialize<_i4hckegz.TaskKind>(data['data']);

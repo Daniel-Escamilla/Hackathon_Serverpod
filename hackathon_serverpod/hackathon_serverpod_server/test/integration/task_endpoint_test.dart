@@ -17,6 +17,11 @@ const _race3ProposerAuthUserId = '04040404-0404-4404-8404-040404040404';
 const _race3VoterAuthUserId = '05050505-0505-4505-8505-050505050505';
 const _race3ClaimantAuthUserId = '06060606-0606-4606-8606-060606060606';
 
+/// Fails unless the call is refused with [reason].
+Matcher throwsTask(TaskErrorReason reason) => throwsA(
+  isA<TaskException>().having((e) => e.reason, 'reason', reason),
+);
+
 void main() {
   withServerpod('Given a group of four with a proposed task', (
     sessionBuilder,
@@ -180,7 +185,7 @@ void main() {
             proposedTask.id!,
             true,
           ),
-          throwsA(isA<StateError>()),
+          throwsTask(TaskErrorReason.ownTask),
         );
       });
 
@@ -301,7 +306,7 @@ void main() {
             proposedTask.id!,
             true,
           ),
-          throwsA(isA<StateError>()),
+          throwsTask(TaskErrorReason.notOpen),
         );
         await expectLater(
           endpoints.task.counterOfferTask(
@@ -309,7 +314,7 @@ void main() {
             proposedTask.id!,
             15,
           ),
-          throwsA(isA<StateError>()),
+          throwsTask(TaskErrorReason.notOpen),
         );
       });
 
@@ -405,7 +410,7 @@ void main() {
               proposedTask.id!,
               true,
             ),
-            throwsA(isA<StateError>()),
+            throwsTask(TaskErrorReason.notProposer),
           );
         });
       });
@@ -467,7 +472,7 @@ void main() {
             sessionOf(_carolAuthUserId),
             openTask.id!,
           ),
-          throwsA(isA<StateError>()),
+          throwsTask(TaskErrorReason.notOpen),
         );
       });
 
@@ -555,7 +560,7 @@ void main() {
                 claimedTask.id!,
                 true,
               ),
-              throwsA(isA<StateError>()),
+              throwsTask(TaskErrorReason.ownTask),
             );
           },
         );
@@ -687,9 +692,9 @@ void main() {
         ]);
 
         final wins = outcomes.whereType<Task>();
-        final losses = outcomes.whereType<StateError>();
+        final losses = outcomes.whereType<TaskException>();
         expect(wins, hasLength(1));
-        expect(losses, hasLength(1));
+        expect(losses.map((e) => e.reason), [TaskErrorReason.notOpen]);
 
         final finalState = await Task.db.findById(session, openTask.id!);
         expect(finalState!.status, TaskStatus.inValidation);

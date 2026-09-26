@@ -397,6 +397,10 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo reclamar. Puede que ya la haya cogido otra persona.';
 
   @override
+  String get claimTaken =>
+      'Alguien se te ha adelantado: ya la ha cogido otra persona.';
+
+  @override
   String get validationQuestion =>
       '¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.';
 
@@ -643,6 +647,55 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get errorCannotTransferAdmin =>
       'El cargo de admin solo se puede ceder a otra persona adulta del grupo.';
+
+  @override
+  String get errorTaskNotFound => 'Esa tarea ya no existe.';
+
+  @override
+  String get errorTaskNotOpen =>
+      'Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.';
+
+  @override
+  String get errorOwnTask => 'No puedes votar tu propia tarea.';
+
+  @override
+  String get errorNotProposer =>
+      'Solo quien propuso la tarea puede responder a la contraoferta.';
+
+  @override
+  String get errorRewardNotFound => 'Esa recompensa ya no existe.';
+
+  @override
+  String get errorRewardNotOpen =>
+      'La votación de esta recompensa ya se ha cerrado.';
+
+  @override
+  String get errorOwnReward => 'No puedes votar tu propia recompensa.';
+
+  @override
+  String get errorRewardNotAvailable =>
+      'Esta recompensa no está en la tienda ahora mismo.';
+
+  @override
+  String get errorOutOfStock => 'Esta recompensa se ha agotado.';
+
+  @override
+  String get errorNegativeBalance => 'Con saldo negativo no se puede comprar.';
+
+  @override
+  String get errorInvalidProvider =>
+      'Elige a otra persona del grupo para cumplirla.';
+
+  @override
+  String get errorPurchaseNotFound => 'Esa compra ya no existe.';
+
+  @override
+  String get errorPurchaseNotOpen =>
+      'Esta compra ya ha cambiado. Vuelve a la lista para verla al día.';
+
+  @override
+  String get errorNotProvider =>
+      'Solo quien tiene que cumplir la compra puede responderla o entregarla.';
 
   @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';

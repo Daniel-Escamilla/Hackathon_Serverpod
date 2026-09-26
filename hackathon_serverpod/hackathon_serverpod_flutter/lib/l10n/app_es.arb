@@ -205,6 +205,10 @@
   },
   "backToTasks": "Volver a tareas",
   "claimError": "No se pudo reclamar. Puede que ya la haya cogido otra persona.",
+  "claimTaken": "Alguien se te ha adelantado: ya la ha cogido otra persona.",
+  "@claimTaken": {
+    "description": "Shown when another member claimed the task first"
+  },
 
   "validationQuestion": "¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.",
   "@validationQuestion": {
@@ -377,6 +381,62 @@
   "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta del grupo.",
   "@errorCannotTransferAdmin": {
     "description": "Shown when the admin tries to hand the role to themselves or to a child"
+  },
+  "errorTaskNotFound": "Esa tarea ya no existe.",
+  "@errorTaskNotFound": {
+    "description": "A task call named a task that is not in the group"
+  },
+  "errorTaskNotOpen": "Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.",
+  "@errorTaskNotOpen": {
+    "description": "The task moved on before the action: vote closed, counter-offer answered, or someone else claimed it"
+  },
+  "errorOwnTask": "No puedes votar tu propia tarea.",
+  "@errorOwnTask": {
+    "description": "Voting on or counter-offering your own proposal, or voting on your own completion"
+  },
+  "errorNotProposer": "Solo quien propuso la tarea puede responder a la contraoferta.",
+  "@errorNotProposer": {
+    "description": "Someone other than the proposer answered a counter-offer"
+  },
+  "errorRewardNotFound": "Esa recompensa ya no existe.",
+  "@errorRewardNotFound": {
+    "description": "A shop call named a reward that is not in the group"
+  },
+  "errorRewardNotOpen": "La votación de esta recompensa ya se ha cerrado.",
+  "@errorRewardNotOpen": {
+    "description": "Voting on a reward whose vote is over"
+  },
+  "errorOwnReward": "No puedes votar tu propia recompensa.",
+  "@errorOwnReward": {
+    "description": "The proposer tried to vote on their own reward"
+  },
+  "errorRewardNotAvailable": "Esta recompensa no está en la tienda ahora mismo.",
+  "@errorRewardNotAvailable": {
+    "description": "Buying a reward that is not active"
+  },
+  "errorOutOfStock": "Esta recompensa se ha agotado.",
+  "@errorOutOfStock": {
+    "description": "Buying a reward with no stock left"
+  },
+  "errorNegativeBalance": "Con saldo negativo no se puede comprar.",
+  "@errorNegativeBalance": {
+    "description": "Buying while the balance is below zero"
+  },
+  "errorInvalidProvider": "Elige a otra persona del grupo para cumplirla.",
+  "@errorInvalidProvider": {
+    "description": "The provider chosen for a purchase is the buyer or not in the group"
+  },
+  "errorPurchaseNotFound": "Esa compra ya no existe.",
+  "@errorPurchaseNotFound": {
+    "description": "A shop call named a purchase that is not in the group"
+  },
+  "errorPurchaseNotOpen": "Esta compra ya ha cambiado. Vuelve a la lista para verla al día.",
+  "@errorPurchaseNotOpen": {
+    "description": "The purchase was already answered, or is not accepted yet"
+  },
+  "errorNotProvider": "Solo quien tiene que cumplir la compra puede responderla o entregarla.",
+  "@errorNotProvider": {
+    "description": "Someone other than the provider answered or delivered a purchase"
   },
   "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
 
