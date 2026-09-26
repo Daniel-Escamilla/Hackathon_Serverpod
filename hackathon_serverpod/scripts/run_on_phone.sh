@@ -10,6 +10,9 @@ SERVER_DIR="$SCRIPT_DIR/../hackathon_serverpod_server"
 FLUTTER_PROJECT_DIR="$SCRIPT_DIR/../hackathon_serverpod_flutter"
 APP_ID="com.example.hackathon_serverpod_flutter"
 MIN_SDK=21
+# The Flutter version the whole team builds with, read from the workspace's
+# .fvmrc so there is a single place to bump it.
+PINNED_FLUTTER="$(sed -n 's/.*"flutter": *"\([^"]*\)".*/\1/p' "$SCRIPT_DIR/../.fvmrc" 2>/dev/null)"
 
 FRAMES="⠋⠙⠹⠸⠼⠴⠦⠧⠇⠏"
 GREEN='\033[32m'
@@ -102,7 +105,7 @@ section "Requisitos"
 
 MISSING_TOOLS=()
 check "adb en PATH"     "command -v adb"     || MISSING_TOOLS+=("adb")
-check "flutter en PATH" "command -v flutter" || MISSING_TOOLS+=("flutter")
+check "flutter o fvm en PATH" "command -v fvm || command -v flutter" || MISSING_TOOLS+=("flutter")
 
 if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
   echo
@@ -128,6 +131,26 @@ if [ ${#MISSING_TOOLS[@]} -gt 0 ]; then
     esac
   done
   echo
+fi
+
+# A Flutter other than the pinned one rewrites pubspec.lock with newer
+# packages on its implicit pub get. fvm, when present, runs exactly the pinned
+# version; otherwise whatever flutter is on the PATH has to match it.
+if command -v fvm >/dev/null 2>&1 && [ -n "$PINNED_FLUTTER" ]; then
+  FLUTTER=(fvm flutter)
+  run_with_spinner "Preparando Flutter $PINNED_FLUTTER con fvm" \
+    fvm install "$PINNED_FLUTTER" || exit 1
+else
+  FLUTTER=(flutter)
+  FLUTTER_VERSION="$(flutter --version 2>/dev/null | awk '/^Flutter /{print $2; exit}')"
+  if [ -n "$PINNED_FLUTTER" ] && [ "$FLUTTER_VERSION" != "$PINNED_FLUTTER" ]; then
+    fail "Flutter ${FLUTTER_VERSION:-?} en vez de $PINNED_FLUTTER"
+    echo "Compilar con otra versión reescribe pubspec.lock con paquetes distintos."
+    echo "Instala fvm (https://fvm.app) o Flutter $PINNED_FLUTTER y vuelve a lanzar el script."
+    confirm "¿Seguir de todos modos con Flutter ${FLUTTER_VERSION:-?}?" || exit 1
+  else
+    ok "Flutter $FLUTTER_VERSION"
+  fi
 fi
 
 section "Backend (Docker)"
@@ -250,7 +273,7 @@ if ! confirm "¿Instalar la app en $DEVICE_ID?"; then
 fi
 
 build_apk() {
-  cd "$FLUTTER_PROJECT_DIR" && flutter build apk --debug --target=lib/main.dart \
+  cd "$FLUTTER_PROJECT_DIR" && "${FLUTTER[@]}" build apk --debug --target=lib/main.dart \
     --dart-define=SERVER_URL="$SERVER_URL"
 }
 run_with_spinner "Compilando APK debug" build_apk || exit 1

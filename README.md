@@ -23,6 +23,9 @@ the platform. Check yours with `flutter --version` and `serverpod --version`.
 | Serverpod CLI | **4.0.0** | Same as the `serverpod` package. `dart install serverpod_cli 4.0.0` — it prints where it put the binary and warns if that directory is not on your PATH |
 | Docker | any recent | Optional, only for the containerised backend below |
 
+`hackathon_serverpod/.fvmrc` pins the same Flutter for [fvm](https://fvm.app): with it
+installed, `fvm flutter …` inside the workspace runs 3.44.4 whatever else is on your PATH.
+
 `pubspec.lock` is committed on purpose. `flutter pub get` honours it, so everyone resolves the
 same dependencies. Don't run `flutter pub upgrade` without agreeing it with the team — it
 rewrites the lock for everybody.
@@ -117,8 +120,13 @@ flutter run --dart-define=SERVER_URL=http://<your-LAN-IP>:8080/
 ./hackathon_serverpod/scripts/run_on_phone.sh
 ```
 
-Brings up the Docker backend, checks `adb`/`flutter` and the connected device, then asks before
+Brings up the Docker backend, checks `adb`, Flutter and the connected device, then asks before
 building and installing the debug APK. Prompts are in Spanish and take `s` for yes.
+
+It builds with `fvm flutter` when fvm is installed. Without it, it uses the `flutter` on your
+PATH and asks before going on if that is not 3.44.4: another version rewrites `pubspec.lock` on
+its implicit
+`pub get`.
 
 The APK is built against this computer's LAN address, which the script detects and lets you
 correct, so the phone has to be on the same Wi-Fi. To point it somewhere else, set it up front:
