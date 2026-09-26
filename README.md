@@ -123,6 +123,12 @@ flutter run --dart-define=SERVER_URL=http://<your-LAN-IP>:8080/
 Brings up the Docker backend, checks `adb`, Flutter and the connected device, then asks before
 building and installing the debug APK. Prompts are in Spanish and take `s` for yes.
 
+With the Serverpod CLI installed it first offers to finish with `serverpod start` instead of the
+Docker server: it stops the Docker server, installs the app and then runs `serverpod start` in the
+same terminal, opening the app on the phone once the server answers. That mode is the one that
+prints the email verification codes; the Docker server runs in staging mode, which sends them
+through Serverpod Cloud instead.
+
 It builds with `fvm flutter` when fvm is installed. Without it, it uses the `flutter` on your
 PATH and asks before going on if that is not 3.44.4: another version rewrites `pubspec.lock` on
 its implicit `pub get`.

@@ -153,7 +153,7 @@ else
   fi
 fi
 
-section "Backend (Docker)"
+section "Backend"
 
 ENV_FILE="$SERVER_DIR/.env"
 
@@ -180,7 +180,26 @@ fi
 
 echo
 frames_len=${#FRAMES}
-if confirm "¿Levantar el backend (Postgres + servidor Serverpod) con Docker?"; then
+# The Docker server runs in staging mode, where verification codes go out by
+# email through Serverpod Cloud. `serverpod start` runs in development mode and
+# prints them in its console instead, so it is preferred whenever the CLI is
+# installed. It brings its own PostgreSQL and needs ports 8080-8082, so the
+# Docker server is stopped first.
+START_SERVERPOD=""
+if command -v serverpod >/dev/null 2>&1 \
+  && confirm "¿Arrancar el servidor con serverpod start al final? (enseña los códigos de verificación del email)"; then
+  START_SERVERPOD=1
+  stop_docker_server() {
+    cd "$SERVER_DIR" && docker compose stop server
+  }
+  run_with_spinner "Parando el servidor de Docker si estaba en marcha" stop_docker_server || exit 1
+  if [ ! -f "$SERVER_DIR/config/passwords.yaml" ]; then
+    init_secrets() {
+      cd "$SERVER_DIR" && dart run tool/init_local_secrets.dart
+    }
+    run_with_spinner "Generando config/passwords.yaml" init_secrets || exit 1
+  fi
+elif confirm "¿Levantar el backend (Postgres + servidor Serverpod) con Docker?"; then
   compose_up() {
     cd "$SERVER_DIR" && docker compose up -d --build server
   }
@@ -282,10 +301,37 @@ APK_PATH="$FLUTTER_PROJECT_DIR/build/app/outputs/flutter-apk/app-debug.apk"
 run_with_spinner "Instalando en $DEVICE_ID" adb -s "$DEVICE_ID" install -r "$APK_PATH" \
   || exit 1
 
+open_app() {
+  adb -s "$DEVICE_ID" shell monkey -p "$APP_ID" -c android.intent.category.LAUNCHER 1
+}
+
 echo
-if confirm "¿Abrir la app ahora?"; then
-  run_with_spinner "Abriendo app" adb -s "$DEVICE_ID" shell monkey -p "$APP_ID" \
-    -c android.intent.category.LAUNCHER 1
-else
-  echo "App instalada, no se ha abierto."
+if [ -z "$START_SERVERPOD" ]; then
+  if confirm "¿Abrir la app ahora?"; then
+    run_with_spinner "Abriendo app" open_app
+  else
+    echo "App instalada, no se ha abierto."
+  fi
+  exit 0
 fi
+
+# serverpod start keeps this terminal, so the app is opened from the
+# background once the server answers (for up to five minutes).
+if confirm "¿Abrir la app en cuanto responda el servidor?"; then
+  (
+    i=0
+    while [ $i -lt 300 ]; do
+      if curl -sf http://localhost:8080/ >/dev/null 2>&1; then
+        open_app
+        break
+      fi
+      sleep 1
+      i=$((i + 1))
+    done
+  ) >/dev/null 2>&1 &
+fi
+
+section "Servidor (serverpod start)"
+echo "Los códigos de verificación del email aparecen aquí. Ctrl+C para pararlo."
+echo
+cd "$SERVER_DIR" && exec serverpod start
