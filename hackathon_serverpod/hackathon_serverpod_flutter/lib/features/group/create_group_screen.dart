@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/group_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import 'group_success_screen.dart';
 
 class CreateGroupScreen extends StatefulWidget {
-  const CreateGroupScreen({super.key});
+  const CreateGroupScreen({
+    this.repository = const GroupRepository(),
+    super.key,
+  });
+
+  final GroupRepository repository;
 
   @override
   State<CreateGroupScreen> createState() => _CreateGroupScreenState();
@@ -41,7 +46,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
       _error = null;
     });
     try {
-      final group = await client.group.createGroup(name, _type);
+      final group = await widget.repository.createGroup(name, _type);
       if (mounted) {
         pushPage(
           context,

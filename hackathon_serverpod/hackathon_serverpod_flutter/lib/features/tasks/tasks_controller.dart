@@ -1,13 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
-import '../../client.dart';
+import '../../data/tasks_repository.dart';
 
 /// Holds the group's tasks and the actions that change them. One instance
 /// lives for the lifetime of [HomeShell] (see home_shell.dart) so the tasks
 /// tab, the propose flow and the wallet's task-title lookup all see the
 /// same data.
 class TasksController extends ChangeNotifier {
+  TasksController({this.repository = const TasksRepository()});
+
+  final TasksRepository repository;
+
   List<Task> tasks = [];
 
   /// The votes cast so far in the group's open votes (see
@@ -22,10 +26,14 @@ class TasksController extends ChangeNotifier {
     error = null;
     notifyListeners();
     try {
-      final (loadedTasks, loadedVotes) = await (
-        client.task.listTasks(),
-        client.task.listTaskVotes(),
-      ).wait;
+      // Future.wait rethrows the first failure as it is; a record's `.wait`
+      // would wrap it in a ParallelWaitError.
+      final results = await Future.wait<Object>([
+        repository.listTasks(),
+        repository.listTaskVotes(),
+      ]);
+      final loadedTasks = results[0] as List<Task>;
+      final loadedVotes = results[1] as List<TaskVote>;
       tasks = loadedTasks;
       votes = loadedVotes;
     } catch (e) {
@@ -50,37 +58,37 @@ class TasksController extends ChangeNotifier {
     String description,
     int reward,
   ) async {
-    final task = await client.task.proposeTask(title, description, reward);
+    final task = await repository.proposeTask(title, description, reward);
     await load();
     return task;
   }
 
   Future<Task> voteTaskProposal(int taskId, bool approve) async {
-    final task = await client.task.voteTaskProposal(taskId, approve);
+    final task = await repository.voteTaskProposal(taskId, approve);
     await load();
     return task;
   }
 
   Future<Task> counterOfferTask(int taskId, int counterReward) async {
-    final task = await client.task.counterOfferTask(taskId, counterReward);
+    final task = await repository.counterOfferTask(taskId, counterReward);
     await load();
     return task;
   }
 
   Future<Task> respondToCounterOffer(int taskId, bool accept) async {
-    final task = await client.task.respondToCounterOffer(taskId, accept);
+    final task = await repository.respondToCounterOffer(taskId, accept);
     await load();
     return task;
   }
 
   Future<Task> markTaskDone(int taskId) async {
-    final task = await client.task.markTaskDone(taskId);
+    final task = await repository.markTaskDone(taskId);
     await load();
     return task;
   }
 
   Future<Task> voteTaskCompletion(int taskId, bool approve) async {
-    final task = await client.task.voteTaskCompletion(taskId, approve);
+    final task = await repository.voteTaskCompletion(taskId, approve);
     await load();
     return task;
   }

@@ -106,6 +106,16 @@ class AppException implements Exception {
   String toString() => 'AppException(${failure.name})';
 }
 
+/// Runs a server call and rethrows whatever it throws as an [AppException],
+/// so nothing above `lib/data/` ever sees a server exception.
+Future<T> guardServerCall<T>(Future<T> Function() call) async {
+  try {
+    return await call();
+  } catch (e) {
+    throw mapServerError(e);
+  }
+}
+
 /// The failure behind anything a repository or a controller threw, mapping a
 /// raw server error first.
 AppFailure failureOf(Object error) =>

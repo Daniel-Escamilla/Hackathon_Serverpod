@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/group_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 
 class JoinGroupScreen extends StatefulWidget {
-  const JoinGroupScreen({super.key});
+  const JoinGroupScreen({this.repository = const GroupRepository(), super.key});
+
+  final GroupRepository repository;
 
   @override
   State<JoinGroupScreen> createState() => _JoinGroupScreenState();
@@ -34,10 +37,12 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
       _error = null;
     });
     try {
-      await client.group.joinGroup(code);
+      await widget.repository.joinGroup(code);
       if (mounted) enterHome(context);
     } catch (e) {
-      setState(() => _error = l10n.joinGroupError);
+      setState(
+        () => _error = failureMessage(e, l10n, fallback: l10n.joinGroupError),
+      );
     } finally {
       if (mounted) setState(() => _loading = false);
     }

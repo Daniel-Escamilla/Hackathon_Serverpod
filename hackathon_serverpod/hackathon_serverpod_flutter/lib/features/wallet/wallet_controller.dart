@@ -1,10 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
-import '../../client.dart';
+import '../../data/wallet_repository.dart';
 import '../../ui/sounds.dart';
 
 class WalletController extends ChangeNotifier {
+  WalletController({this.repository = const WalletRepository()});
+
+  final WalletRepository repository;
+
   int balance = 0;
   List<CoinMovement> history = [];
   bool loading = false;
@@ -20,12 +24,16 @@ class WalletController extends ChangeNotifier {
     error = null;
     notifyListeners();
     try {
-      final results = await Future.wait([
-        client.wallet.getBalance(),
-        client.wallet.getHistory(limit: 50, offset: 0),
+      // Future.wait rethrows the first failure as it is; a record's `.wait`
+      // would wrap it in a ParallelWaitError.
+      final results = await Future.wait<Object>([
+        repository.getBalance(),
+        repository.getHistory(),
       ]);
-      balance = results[0] as int;
-      history = results[1] as List<CoinMovement>;
+      final loadedBalance = results[0] as int;
+      final loadedHistory = results[1] as List<CoinMovement>;
+      balance = loadedBalance;
+      history = loadedHistory;
       _playNewMovementSounds();
     } catch (e) {
       error = e;
