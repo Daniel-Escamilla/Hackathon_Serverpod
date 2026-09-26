@@ -3,6 +3,11 @@
 Full-stack app built with [Serverpod](https://serverpod.dev) (Dart backend) and Flutter, for the
 **Build Something Real** hackathon, 2026-09-15 to 2026-10-14.
 
+A household-chores app where the group agrees on every task and pays for it in coins: someone
+proposes a task and its price, the group votes on it, anyone does it, the group confirms it was
+done, and the coins go to a wallet spent in a shop the group sets up. What it does and how it was
+built, including the use of AI tooling: [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+
 The Dart workspace lives in [`hackathon_serverpod/`](hackathon_serverpod) and holds three packages:
 
 | Package | What it is |
@@ -87,6 +92,9 @@ docker compose up --build server
 
 The API is then on `http://localhost:8080`, Insights on `8081`, the web server on `8082`.
 
+It runs in staging mode, where the email verification codes are sent through Serverpod Cloud, so
+they never show up locally. To register accounts on your machine, use `serverpod start` below.
+
 ### Backend, natively with hot reload
 
 Needs the Serverpod CLI. It starts the server, applies pending migrations, watches for changes and
@@ -99,6 +107,10 @@ serverpod start
 
 It manages its own embedded PostgreSQL (`database.dataPath` in `config/development.yaml`), so no
 container is required. Do not run it at the same time as the Docker backend — both bind 8080-8082.
+
+Registration and password-reset codes are printed in this console. In this mode each vote stays
+open for two minutes instead of 24 hours; set `TASK_VOTE_WINDOW_SECONDS` to change it, e.g.
+`TASK_VOTE_WINDOW_SECONDS=600 serverpod start`.
 
 ### The Flutter app on its own
 
@@ -169,6 +181,8 @@ serverpod create-migration     # only when a model with a `table` changed
   language. Written 2026-09-17.
 - [`docs/PLAN.md`](docs/PLAN.md) — when and who: the MVP cut, the video script that defines it, the
   four weeks task by task and the dates that do not move. In Spanish. Written 2026-09-18.
+- [`docs/SUBMISSION.md`](docs/SUBMISSION.md) — the submission's text description: features, how it
+  was built and the use of AI tooling. In English, as the rules require.
 - [`docs/DESIGN.md`](docs/DESIGN.md) — the design standard, Playful UI: the rules for a new screen,
   the `lib/ui/` components, colour and type tokens, the press bounce, and the five UI sounds and what
   each one means. In Spanish.
@@ -186,6 +200,9 @@ serverpod create-migration     # only when a model with a `table` changed
 
 ## Status
 
-Serverpod scaffold plus a Flutter shell: two swipeable tabs, "Grupo" and "Tareas", and a coin
-balance in the app bar. Auth (email identity provider, JWT) is configured server-side. The screens
-are still local placeholders — no custom endpoints or data models yet.
+Working end to end against the real backend: accounts (sign-up with a verification code, sign-in,
+password reset), groups (create, join by code, admin settings, expelling), the whole task cycle
+(propose, vote, counter-offer, claim, validate, fines, votes that expire), the shop (templates,
+proposals and their vote, buying, the provider's answer, delivery), the wallet and its history, and
+live updates between phones. Family mode, recurring tasks and the weekly ranking screen are out of
+scope for now; see [`docs/PLAN.md`](docs/PLAN.md).

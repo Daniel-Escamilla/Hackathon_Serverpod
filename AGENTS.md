@@ -18,6 +18,7 @@ anyway — they are the instructions.
 | [`TEAM.md`](TEAM.md) | Members, representative, ownership and prize split | Anything about authorship or the submission |
 | [`docs/hackathon-rules.md`](docs/hackathon-rules.md) | The official rules, a text copy of the PDF beside it | A deadline or eligibility question |
 | [`docs/DESIGN.md`](docs/DESIGN.md) | **The design standard, Playful UI**: rules for a new screen, the `lib/ui/` components, colour and type tokens, the press bounce and the five UI sounds. In Spanish | **Before building or changing any screen** |
+| [`docs/SUBMISSION.md`](docs/SUBMISSION.md) | The submission's **text description**: features, how it was built, the AI disclosure the rules require. In English | A feature lands or changes, or the submission is being prepared |
 | [`docs/FEEDBACK.md`](docs/FEEDBACK.md) | Serverpod friction, written down as it is hit, for the Most Valuable Feedback prize. In English | Whenever Serverpod, its CLI or its docs get in the way |
 
 The code lives in the Dart workspace [`hackathon_serverpod/`](hackathon_serverpod): the Serverpod
