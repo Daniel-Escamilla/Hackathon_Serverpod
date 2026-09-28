@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../client.dart';
 import '../features/group/group_choice_screen.dart';
@@ -6,12 +7,6 @@ import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../ui/app_button.dart';
 
-/// There is no endpoint yet to ask "does the signed-in user have a group" —
-/// GroupEndpoint only has createGroup/joinGroup. Every member-scoped
-/// endpoint throws a "No active group membership" StateError when there
-/// isn't one, so this probes with the cheapest of those (getBalance) and
-/// reads that error. Replace with a dedicated membership check once one
-/// exists server-side.
 class GroupGate extends StatefulWidget {
   const GroupGate({super.key});
 
@@ -24,10 +19,10 @@ class _GroupGateState extends State<GroupGate> {
 
   Future<bool> _checkMembership() async {
     try {
-      await client.wallet.getBalance();
+      await client.group.myGroup();
       return true;
-    } catch (e) {
-      if (e.toString().contains('No active group membership')) return false;
+    } on GroupException catch (e) {
+      if (e.reason == GroupErrorReason.noMembership) return false;
       rethrow;
     }
   }
