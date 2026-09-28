@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 import '../../app_theme.dart';
+import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/auth_repository.dart';
 import '../../data/password_reset_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
@@ -11,16 +13,23 @@ import '../../ui/password_field.dart';
 import '../../ui/sounds.dart';
 
 /// Last step of the password reset: the new password. Ends back on the
-/// sign-in screen, where the person enters with it.
+/// sign-in screen, where the person enters with it — or, when changed from
+/// the settings, signed out and back at the start.
 class ResetPasswordNewScreen extends StatefulWidget {
   const ResetPasswordNewScreen({
     required this.token,
     required this.repository,
+    this.signedIn = false,
+    this.auth = const AuthRepository(),
     super.key,
   });
 
   final String token;
   final PasswordResetRepository repository;
+
+  /// Opened from the settings by someone signed in.
+  final bool signedIn;
+  final AuthRepository auth;
 
   @override
   State<ResetPasswordNewScreen> createState() => _ResetPasswordNewScreenState();
@@ -50,6 +59,17 @@ class _ResetPasswordNewScreenState extends State<ResetPasswordNewScreen> {
         _passwordController.text,
       );
       if (!mounted) return;
+      if (widget.signedIn) {
+        // The server has just revoked every session of this account, this
+        // one included (EmailIdp.finishPasswordReset): the next call would be
+        // refused, so sign out here and start again from the welcome screen.
+        await signOutToStart(
+          context,
+          auth: widget.auth,
+          message: l10n.passwordChanged,
+        );
+        return;
+      }
       // The message outlives the pops: ScaffoldMessenger carries it over to
       // the sign-in screen.
       showMessage(context, l10n.passwordChanged, sound: AppSound.success);

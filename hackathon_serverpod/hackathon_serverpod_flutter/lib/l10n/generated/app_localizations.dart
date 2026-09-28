@@ -1723,6 +1723,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'English'**
   String get languageEnglish;
+
+  /// Title of the first password step when opened from the settings, signed in
+  ///
+  /// In es, this message translates to:
+  /// **'Cambia tu contraseña'**
+  String get changePasswordTitle;
+
+  /// Explains the change-password steps, and warns that finishing signs you out (the server ends every session)
+  ///
+  /// In es, this message translates to:
+  /// **'Te enviaremos un código a tu email para confirmar que eres tú. Al terminar tendrás que volver a entrar con la contraseña nueva.'**
+  String get changePasswordSubtitle;
+
+  /// Settings screen: heading of the sound switch
+  ///
+  /// In es, this message translates to:
+  /// **'Sonido'**
+  String get soundSection;
+
+  /// Settings screen: label of the switch that turns every UI sound on or off
+  ///
+  /// In es, this message translates to:
+  /// **'Sonidos de la app'**
+  String get soundsToggle;
+
+  /// Settings screen: what the sound switch covers, under its label
+  ///
+  /// In es, this message translates to:
+  /// **'Los pops de los botones, la moneda, las multas y los avisos.'**
+  String get soundsToggleHint;
+
+  /// Tooltip of the admin's icon on a member's row that hands them the admin role
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer admin'**
+  String get transferAdminAction;
+
+  /// Title of the confirmation before handing the admin role over
+  ///
+  /// In es, this message translates to:
+  /// **'¿Ceder el cargo de admin a {name}?'**
+  String transferAdminTitle(String name);
+
+  /// Explains what handing the admin role over means
+  ///
+  /// In es, this message translates to:
+  /// **'{name} podrá expulsar, cambiar el código y configurar el grupo. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.'**
+  String transferAdminBody(String name);
+
+  /// Confirm button of the dialog that hands the admin role over
+  ///
+  /// In es, this message translates to:
+  /// **'Ceder el cargo'**
+  String get transferAdminConfirm;
+
+  /// Message after the admin role was handed over
+  ///
+  /// In es, this message translates to:
+  /// **'{name} es ahora admin del grupo.'**
+  String transferAdminDone(String name);
 }
 
 class _AppLocalizationsDelegate

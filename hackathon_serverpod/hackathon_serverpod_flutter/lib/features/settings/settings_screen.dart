@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +17,10 @@ import '../../ui/sounds.dart';
 import '../auth/reset_password_email_screen.dart';
 import '../group/group_controller.dart';
 import 'locale_controller.dart';
+import 'sound_preference.dart';
 
-/// The member's own settings: how the group sees them, their password and
-/// the app's language. Opened from the group tab.
+/// The member's own settings: how the group sees them, their password, the
+/// sounds and the app's language. Opened from the group tab.
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({
     this.passwordReset = const PasswordResetRepository(),
@@ -40,11 +43,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String _color =
       _group.myMember?.avatarColor ?? MemberAvatar.defaultColor;
   bool _saving = false;
+  bool _soundsOn = !uiSounds.muted;
 
   @override
   void dispose() {
     _nameController.dispose();
     super.dispose();
+  }
+
+  void _setSounds(bool on) {
+    setState(() => _soundsOn = on);
+    uiSounds.muted = !on;
+    unawaited(SoundPreference.saveMuted(!on));
   }
 
   Future<void> _save() async {
@@ -185,9 +195,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
             kind: AppButtonKind.secondary,
             onPressed: () => pushPage(
               context,
-              ResetPasswordEmailScreen(repository: widget.passwordReset),
+              ResetPasswordEmailScreen(
+                repository: widget.passwordReset,
+                signedIn: true,
+                auth: _group.auth,
+              ),
             ),
           ),
+          const SizedBox(height: 26),
+          _SectionTitle(l10n.soundSection),
+          _SoundRow(on: _soundsOn, onChanged: _setSounds),
           const SizedBox(height: 26),
           _SectionTitle(l10n.languageSection),
           for (final (option, label) in [
@@ -256,6 +273,50 @@ class _Choice extends StatelessWidget {
           ),
         ),
         child: child,
+      ),
+    );
+  }
+}
+
+/// The switch for every UI sound at once. The whole card toggles it, not only
+/// the switch itself.
+class _SoundRow extends StatelessWidget {
+  const _SoundRow({required this.on, required this.onChanged});
+
+  final bool on;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return MergeSemantics(
+      child: Pressable(
+        onTap: () => onChanged(!on),
+        sound: null,
+        borderRadius: BorderRadius.circular(20),
+        child: SoftCard(
+          child: Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.soundsToggle,
+                      style: const TextStyle(fontWeight: FontWeight.w900),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l10n.soundsToggleHint,
+                      style: const TextStyle(color: AppColors.muted),
+                    ),
+                  ],
+                ),
+              ),
+              Switch(value: on, onChanged: onChanged),
+            ],
+          ),
+        ),
       ),
     );
   }

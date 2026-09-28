@@ -899,4 +899,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get languageEnglish => 'English';
+
+  @override
+  String get changePasswordTitle => 'Change your password';
+
+  @override
+  String get changePasswordSubtitle =>
+      'We\'ll email you a code to confirm it\'s you. Once done, you\'ll have to sign in again with the new password.';
+
+  @override
+  String get soundSection => 'Sound';
+
+  @override
+  String get soundsToggle => 'App sounds';
+
+  @override
+  String get soundsToggleHint =>
+      'The button pops, the coin, the fines and the alerts.';
+
+  @override
+  String get transferAdminAction => 'Make admin';
+
+  @override
+  String transferAdminTitle(String name) {
+    return 'Hand the admin role to $name?';
+  }
+
+  @override
+  String transferAdminBody(String name) {
+    return '$name will be able to expel members, change the code and configure the group. You\'ll become a regular member, and only $name can give the role back.';
+  }
+
+  @override
+  String get transferAdminConfirm => 'Hand over the role';
+
+  @override
+  String transferAdminDone(String name) {
+    return '$name is now the group\'s admin.';
+  }
 }

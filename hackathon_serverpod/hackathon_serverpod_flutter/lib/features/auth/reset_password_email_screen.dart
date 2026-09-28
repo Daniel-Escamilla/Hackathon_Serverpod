@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/auth_repository.dart';
 import '../../data/password_reset_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
@@ -14,6 +15,8 @@ class ResetPasswordEmailScreen extends StatefulWidget {
   const ResetPasswordEmailScreen({
     this.initialEmail = '',
     this.repository = const PasswordResetRepository(),
+    this.signedIn = false,
+    this.auth = const AuthRepository(),
     super.key,
   });
 
@@ -21,6 +24,12 @@ class ResetPasswordEmailScreen extends StatefulWidget {
   /// twice.
   final String initialEmail;
   final PasswordResetRepository repository;
+
+  /// Opened from the settings by someone signed in, to change the password
+  /// rather than recover a forgotten one. Finishing ends every session of the
+  /// account, so the last step signs out with [auth] and goes back to start.
+  final bool signedIn;
+  final AuthRepository auth;
 
   @override
   State<ResetPasswordEmailScreen> createState() =>
@@ -57,6 +66,8 @@ class _ResetPasswordEmailScreenState extends State<ResetPasswordEmailScreen> {
             email: email,
             requestId: requestId,
             repository: widget.repository,
+            signedIn: widget.signedIn,
+            auth: widget.auth,
           ),
         );
       }
@@ -71,8 +82,12 @@ class _ResetPasswordEmailScreenState extends State<ResetPasswordEmailScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return SimpleFormPage(
-      title: l10n.resetPasswordTitle,
-      subtitle: l10n.resetPasswordSubtitle,
+      title: widget.signedIn
+          ? l10n.changePasswordTitle
+          : l10n.resetPasswordTitle,
+      subtitle: widget.signedIn
+          ? l10n.changePasswordSubtitle
+          : l10n.resetPasswordSubtitle,
       art: const RoundIcon(
         icon: Icons.lock_reset_rounded,
         color: AppColors.sky,

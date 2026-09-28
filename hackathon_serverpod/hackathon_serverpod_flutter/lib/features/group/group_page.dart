@@ -153,7 +153,8 @@ class _Body extends StatelessWidget {
             _MemberRow(
               member: member,
               isYou: member.id == myMemberId,
-              canExpel: isAdmin && member.id != myMemberId,
+              canManage: isAdmin && member.id != myMemberId,
+              onMakeAdmin: () => _transferAdmin(context, member),
               onExpel: () => _expel(context, member),
             ),
           const SizedBox(height: 26),
@@ -173,8 +174,7 @@ class _Body extends StatelessWidget {
     );
   }
 
-  /// Signing out only clears the session: `AuthGate` sees it and takes the
-  /// app back to the welcome screen, so another account can sign in.
+  /// Back to the welcome screen, so another account can sign in.
   Future<void> _signOut(BuildContext context) async {
     final l10n = AppLocalizations.of(context);
     final confirmed = await confirmAction(
@@ -183,8 +183,8 @@ class _Body extends StatelessWidget {
       body: l10n.signOutBody,
       action: l10n.signOut,
     );
-    if (!confirmed) return;
-    await controller.auth.signOut();
+    if (!confirmed || !context.mounted) return;
+    await signOutToStart(context, auth: controller.auth);
   }
 
   String _typeLabel(AppLocalizations l10n, GroupType type) => switch (type) {
@@ -224,6 +224,33 @@ class _Body extends StatelessWidget {
     }
   }
 
+  /// The admin hands the role over and stays as a plain member: from the
+  /// reload on, the admin actions disappear from this screen.
+  Future<void> _transferAdmin(BuildContext context, GroupMember member) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.transferAdminTitle(member.displayName),
+      body: l10n.transferAdminBody(member.displayName),
+      action: l10n.transferAdminConfirm,
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      await context.read<GroupController>().transferAdmin(member.id!);
+      if (context.mounted) {
+        showMessage(
+          context,
+          l10n.transferAdminDone(member.displayName),
+          sound: AppSound.success,
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showMessage(context, failureMessage(e, l10n), isError: true);
+      }
+    }
+  }
+
   Future<void> _expel(BuildContext context, GroupMember member) async {
     final l10n = AppLocalizations.of(context);
     final confirmed = await confirmAction(
@@ -251,13 +278,17 @@ class _MemberRow extends StatelessWidget {
   const _MemberRow({
     required this.member,
     required this.isYou,
-    required this.canExpel,
+    required this.canManage,
+    required this.onMakeAdmin,
     required this.onExpel,
   });
 
   final GroupMember member;
   final bool isYou;
-  final bool canExpel;
+
+  /// The signed-in admin, looking at someone else's row.
+  final bool canManage;
+  final VoidCallback onMakeAdmin;
   final VoidCallback onExpel;
 
   @override
@@ -288,23 +319,54 @@ class _MemberRow extends StatelessWidget {
               const SizedBox(width: 6),
             ],
             if (isYou) StatusPill(label: l10n.memberYou, color: AppColors.lime),
-            if (canExpel) ...[
+            if (canManage) ...[
               const SizedBox(width: 6),
-              Pressable(
+              _RowAction(
+                tooltip: l10n.transferAdminAction,
+                icon: Icons.admin_panel_settings_rounded,
+                color: AppColors.violet,
+                onTap: onMakeAdmin,
+              ),
+              _RowAction(
+                tooltip: l10n.expelAction,
+                icon: Icons.person_remove_rounded,
+                color: AppColors.coral,
                 onTap: onExpel,
-                sound: null,
-                borderRadius: BorderRadius.circular(20),
-                child: const Padding(
-                  padding: EdgeInsets.all(4),
-                  child: Icon(
-                    Icons.person_remove_rounded,
-                    color: AppColors.coral,
-                    size: 20,
-                  ),
-                ),
               ),
             ],
           ],
+        ),
+      ),
+    );
+  }
+}
+
+/// An admin action on a member's row. Silent: each one opens a confirmation,
+/// and the outcome makes the sound.
+class _RowAction extends StatelessWidget {
+  const _RowAction({
+    required this.tooltip,
+    required this.icon,
+    required this.color,
+    required this.onTap,
+  });
+
+  final String tooltip;
+  final IconData icon;
+  final Color color;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Tooltip(
+      message: tooltip,
+      child: Pressable(
+        onTap: onTap,
+        sound: null,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
+          child: Icon(icon, color: color, size: 20),
         ),
       ),
     );
