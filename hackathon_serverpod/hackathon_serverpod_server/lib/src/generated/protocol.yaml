@@ -20,6 +20,7 @@ group:
   - regenerateInviteCode:
   - transferAdmin:
   - updateGroup:
+  - updateMyProfile:
 shop:
   - listRewards:
   - listPurchases:

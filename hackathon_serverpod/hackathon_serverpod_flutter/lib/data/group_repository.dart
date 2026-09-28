@@ -35,4 +35,18 @@ class GroupRepository {
 
   Future<Group> regenerateInviteCode() =>
       guardServerCall(client.group.regenerateInviteCode);
+
+  /// The signed-in member's own name and avatar. A field left null keeps its
+  /// current value.
+  Future<GroupMember> updateMyProfile({
+    String? displayName,
+    String? avatarEmoji,
+    String? avatarColor,
+  }) => guardServerCall(
+    () => client.group.updateMyProfile(
+      displayName: displayName,
+      avatarEmoji: avatarEmoji,
+      avatarColor: avatarColor,
+    ),
+  );
 }

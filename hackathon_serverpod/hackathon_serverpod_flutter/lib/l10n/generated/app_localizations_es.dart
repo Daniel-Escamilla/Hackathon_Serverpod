@@ -541,6 +541,17 @@ class AppLocalizationsEs extends AppLocalizations {
       'Todavía no hay nadie más en el grupo para cumplirla.';
 
   @override
+  String notEnoughCoins(int missing, int balance, int price) {
+    String _temp0 = intl.Intl.pluralLogic(
+      missing,
+      locale: localeName,
+      other: 'Te faltan $missing monedas',
+      one: 'Te falta 1 moneda',
+    );
+    return '$_temp0: tienes $balance y este premio cuesta $price. Haz tareas para conseguirlas.';
+  }
+
+  @override
   String get purchaseSentTitle => 'Compra enviada';
 
   @override
@@ -812,4 +823,67 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get signOutBody =>
       'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.';
+
+  @override
+  String get mySettings => 'Mis ajustes';
+
+  @override
+  String get profileSection => 'Tu perfil';
+
+  @override
+  String get avatarEmojiLabel => 'Tu emoji';
+
+  @override
+  String get avatarColorLabel => 'Color';
+
+  @override
+  String get avatarColorSky => 'Azul cielo';
+
+  @override
+  String get avatarColorLime => 'Lima';
+
+  @override
+  String get avatarColorCoral => 'Coral';
+
+  @override
+  String get avatarColorViolet => 'Violeta';
+
+  @override
+  String get avatarColorCream => 'Crema';
+
+  @override
+  String get displayNameLabel => 'Tu nombre';
+
+  @override
+  String get displayNameHint => 'Como te verá el grupo';
+
+  @override
+  String get displayNameEmptyError => 'Escribe un nombre.';
+
+  @override
+  String get saveProfile => 'Guardar perfil';
+
+  @override
+  String get profileSaved => 'Perfil guardado';
+
+  @override
+  String get profileSaveError => 'No se pudo guardar el perfil';
+
+  @override
+  String get accountSection => 'Cuenta';
+
+  @override
+  String get changePassword => 'Cambiar contraseña';
+
+  @override
+  String get languageSection => 'Idioma';
+
+  @override
+  String get languageSystem => 'El del teléfono';
+
+  @override
+  String get languageSpanish => 'Español';
+
+  @override
+  String get languageEnglish => 'English';
 }

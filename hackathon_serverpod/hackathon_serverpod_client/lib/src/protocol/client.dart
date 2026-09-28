@@ -400,6 +400,23 @@ class EndpointGroup extends _isc.EndpointRef {
       'finePercent': finePercent,
     },
   );
+
+  /// The signed-in member changes how the group sees them: their name and
+  /// their avatar. Any member may, about themselves only. A field left null
+  /// keeps its current value.
+  _ida.Future<_ir4oz66a.GroupMember> updateMyProfile({
+    String? displayName,
+    String? avatarEmoji,
+    String? avatarColor,
+  }) => caller.callServerEndpoint<_ir4oz66a.GroupMember>(
+    'group',
+    'updateMyProfile',
+    {
+      'displayName': displayName,
+      'avatarEmoji': avatarEmoji,
+      'avatarColor': avatarColor,
+    },
+  );
 }
 
 /// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).

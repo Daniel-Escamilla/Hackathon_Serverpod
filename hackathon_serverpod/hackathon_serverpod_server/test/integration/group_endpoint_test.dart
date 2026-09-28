@@ -525,6 +525,60 @@ void main() {
         expect(unchanged.name, createdGroup.name);
         expect(unchanged.finePercent, createdGroup.finePercent);
       });
+
+      test('then any member changes their own name and avatar', () async {
+        final updated = await endpoints.group.updateMyProfile(
+          sessionOf(_bobAuthUserId),
+          displayName: '  Roberto ',
+          avatarEmoji: '🦊',
+          avatarColor: 'lime',
+        );
+        expect(updated.id, bob.id);
+        expect(updated.displayName, 'Roberto');
+        expect(updated.avatarEmoji, '🦊');
+        expect(updated.avatarColor, 'lime');
+
+        final members = await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        );
+        expect(members.map((m) => m.displayName), ['Alice', 'Roberto']);
+      });
+
+      test('then a field left out of the update keeps its value', () async {
+        await endpoints.group.updateMyProfile(
+          sessionOf(_bobAuthUserId),
+          avatarEmoji: '🦊',
+        );
+        final updated = await endpoints.group.updateMyProfile(
+          sessionOf(_bobAuthUserId),
+          displayName: 'Roberto',
+        );
+        expect(updated.avatarEmoji, '🦊');
+        expect(updated.displayName, 'Roberto');
+      });
+
+      test('then a blank name is refused and nothing changes', () async {
+        await expectLater(
+          endpoints.group.updateMyProfile(
+            sessionOf(_bobAuthUserId),
+            displayName: '   ',
+          ),
+          throwsA(anything),
+        );
+
+        final row = await GroupMember.db.findById(session, bob.id!);
+        expect(row!.displayName, 'Bob');
+      });
+
+      test('then someone with no group cannot update a profile', () async {
+        await expectLater(
+          endpoints.group.updateMyProfile(
+            sessionOf(_carolAuthUserId),
+            displayName: 'Carol',
+          ),
+          _throwsGroupError(GroupErrorReason.noMembership),
+        );
+      });
     });
   });
 

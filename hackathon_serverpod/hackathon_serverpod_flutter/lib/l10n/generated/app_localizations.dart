@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
+import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
 
 // ignore_for_file: type=lint
@@ -92,7 +93,10 @@ abstract class AppLocalizations {
       ];
 
   /// A list of this localizations delegate's supported locales.
-  static const List<Locale> supportedLocales = <Locale>[Locale('es')];
+  static const List<Locale> supportedLocales = <Locale>[
+    Locale('en'),
+    Locale('es'),
+  ];
 
   /// No description provided for @appTitle.
   ///
@@ -1102,6 +1106,12 @@ abstract class AppLocalizations {
   /// **'Todavía no hay nadie más en el grupo para cumplirla.'**
   String get noOtherMembers;
 
+  /// Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows
+  ///
+  /// In es, this message translates to:
+  /// **'{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.'**
+  String notEnoughCoins(int missing, int balance, int price);
+
   /// No description provided for @purchaseSentTitle.
   ///
   /// In es, this message translates to:
@@ -1587,6 +1597,132 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.'**
   String get signOutBody;
+
+  /// Button in the group tab that opens the member's own settings, and the title of that screen
+  ///
+  /// In es, this message translates to:
+  /// **'Mis ajustes'**
+  String get mySettings;
+
+  /// Settings screen: heading of the avatar and name section
+  ///
+  /// In es, this message translates to:
+  /// **'Tu perfil'**
+  String get profileSection;
+
+  /// Settings screen: label over the grid of emoji to pick an avatar from
+  ///
+  /// In es, this message translates to:
+  /// **'Tu emoji'**
+  String get avatarEmojiLabel;
+
+  /// Settings screen: label over the avatar background colours
+  ///
+  /// In es, this message translates to:
+  /// **'Color'**
+  String get avatarColorLabel;
+
+  /// Screen-reader name of an avatar background colour
+  ///
+  /// In es, this message translates to:
+  /// **'Azul cielo'**
+  String get avatarColorSky;
+
+  /// Screen-reader name of an avatar background colour
+  ///
+  /// In es, this message translates to:
+  /// **'Lima'**
+  String get avatarColorLime;
+
+  /// Screen-reader name of an avatar background colour
+  ///
+  /// In es, this message translates to:
+  /// **'Coral'**
+  String get avatarColorCoral;
+
+  /// Screen-reader name of an avatar background colour
+  ///
+  /// In es, this message translates to:
+  /// **'Violeta'**
+  String get avatarColorViolet;
+
+  /// Screen-reader name of an avatar background colour
+  ///
+  /// In es, this message translates to:
+  /// **'Crema'**
+  String get avatarColorCream;
+
+  /// Settings screen: label of the name field
+  ///
+  /// In es, this message translates to:
+  /// **'Tu nombre'**
+  String get displayNameLabel;
+
+  /// Settings screen: hint inside the empty name field
+  ///
+  /// In es, this message translates to:
+  /// **'Como te verá el grupo'**
+  String get displayNameHint;
+
+  /// Settings screen: shown when saving with a blank name
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe un nombre.'**
+  String get displayNameEmptyError;
+
+  /// Settings screen: saves the avatar and the name
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar perfil'**
+  String get saveProfile;
+
+  /// Message after the profile was saved
+  ///
+  /// In es, this message translates to:
+  /// **'Perfil guardado'**
+  String get profileSaved;
+
+  /// Message when saving the profile failed for a reason without its own sentence
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo guardar el perfil'**
+  String get profileSaveError;
+
+  /// Settings screen: heading of the password section
+  ///
+  /// In es, this message translates to:
+  /// **'Cuenta'**
+  String get accountSection;
+
+  /// Settings screen: opens the code-by-email flow that sets a new password
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar contraseña'**
+  String get changePassword;
+
+  /// Settings screen: heading of the language choice
+  ///
+  /// In es, this message translates to:
+  /// **'Idioma'**
+  String get languageSection;
+
+  /// Language option that follows the phone's own language
+  ///
+  /// In es, this message translates to:
+  /// **'El del teléfono'**
+  String get languageSystem;
+
+  /// Language option. Always written in Spanish, whatever the app's language, so it can be found
+  ///
+  /// In es, this message translates to:
+  /// **'Español'**
+  String get languageSpanish;
+
+  /// Language option. Always written in English, whatever the app's language, so it can be found
+  ///
+  /// In es, this message translates to:
+  /// **'English'**
+  String get languageEnglish;
 }
 
 class _AppLocalizationsDelegate
@@ -1600,7 +1736,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['es'].contains(locale.languageCode);
+      <String>['en', 'es'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1609,6 +1745,8 @@ class _AppLocalizationsDelegate
 AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
     case 'es':
       return AppLocalizationsEs();
   }

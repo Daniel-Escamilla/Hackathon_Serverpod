@@ -10,8 +10,10 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
+import '../../ui/member_avatar.dart';
 import '../../ui/pressable.dart';
 import '../group/group_controller.dart';
+import '../wallet/wallet_controller.dart';
 import 'shop_controller.dart';
 
 class BuyRewardScreen extends StatefulWidget {
@@ -33,6 +35,10 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
     final group = context.watch<GroupController>();
     final myMemberId = group.myMemberId;
     final others = group.members.where((m) => m.id != myMemberId).toList();
+    final wallet = context.watch<WalletController>();
+    final price = widget.reward.price;
+    final canAfford =
+        wallet.hasLoaded && wallet.balance >= 0 && wallet.balance >= price;
 
     return Scaffold(
       appBar: AppBar(),
@@ -71,8 +77,19 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
             ),
           ),
           const SizedBox(height: 24),
-          if (!group.hasLoaded)
+          if (!group.hasLoaded || !wallet.hasLoaded)
             const Center(child: CircularProgressIndicator())
+          else if (!canAfford)
+            InfoRow(
+              icon: Icons.savings_rounded,
+              text: wallet.balance < 0
+                  ? l10n.negativeBalanceNotice
+                  : l10n.notEnoughCoins(
+                      price - wallet.balance,
+                      wallet.balance,
+                      price,
+                    ),
+            )
           else if (others.isEmpty)
             InfoRow(icon: Icons.info_outline_rounded, text: l10n.noOtherMembers)
           else ...[
@@ -98,11 +115,10 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                     ),
                     child: Row(
                       children: [
-                        CircleAvatar(
-                          backgroundColor: AppColors.sky,
-                          child: Text(
-                            member.displayName.substring(0, 1).toUpperCase(),
-                          ),
+                        MemberAvatar(
+                          name: member.displayName,
+                          emoji: member.avatarEmoji,
+                          color: member.avatarColor,
                         ),
                         const SizedBox(width: 12),
                         Expanded(
@@ -129,7 +145,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
           AppButton(
             label: l10n.rewardAmount(widget.reward.price),
             loading: _loading,
-            onPressed: _selectedMemberId == null ? null : _submit,
+            onPressed: !canAfford || _selectedMemberId == null ? null : _submit,
           ),
         ],
       ),
