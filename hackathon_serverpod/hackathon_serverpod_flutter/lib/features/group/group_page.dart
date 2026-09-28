@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
-import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../app_theme.dart';
-import '../../client.dart';
+import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../data/app_failure.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -16,6 +15,7 @@ import '../../ui/feedback.dart';
 import '../../ui/pressable.dart';
 import '../../ui/sounds.dart';
 import 'group_controller.dart';
+import 'group_settings_screen.dart';
 
 class GroupPage extends StatelessWidget {
   const GroupPage({super.key});
@@ -69,10 +69,8 @@ class _Body extends StatelessWidget {
       );
     }
 
-    final myUserId = client.auth.authInfoListenable.value?.authUserId;
-    final me = controller.members
-        .where((m) => m.authUserId == myUserId)
-        .firstOrNull;
+    final myMemberId = controller.myMemberId;
+    final me = controller.members.where((m) => m.id == myMemberId).firstOrNull;
     final isAdmin = me?.role == GroupMemberRole.admin;
 
     return RefreshIndicator(
@@ -129,6 +127,16 @@ class _Body extends StatelessWidget {
                     compact: true,
                     onPressed: () => _regenerateCode(context),
                   ),
+                  const SizedBox(height: 6),
+                  AppButton(
+                    label: l10n.groupSettings,
+                    kind: AppButtonKind.quiet,
+                    compact: true,
+                    onPressed: () => pushPage(
+                      context,
+                      GroupSettingsScreen(group: group, controller: controller),
+                    ),
+                  ),
                 ],
               ],
             ),
@@ -142,13 +150,33 @@ class _Body extends StatelessWidget {
           for (final member in controller.members)
             _MemberRow(
               member: member,
-              isYou: member.authUserId == myUserId,
-              canExpel: isAdmin && member.authUserId != myUserId,
+              isYou: member.id == myMemberId,
+              canExpel: isAdmin && member.id != myMemberId,
               onExpel: () => _expel(context, member),
             ),
+          const SizedBox(height: 26),
+          AppButton(
+            label: l10n.signOut,
+            kind: AppButtonKind.quiet,
+            onPressed: () => _signOut(context),
+          ),
         ],
       ),
     );
+  }
+
+  /// Signing out only clears the session: `AuthGate` sees it and takes the
+  /// app back to the welcome screen, so another account can sign in.
+  Future<void> _signOut(BuildContext context) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.signOutTitle,
+      body: l10n.signOutBody,
+      action: l10n.signOut,
+    );
+    if (!confirmed) return;
+    await controller.auth.signOut();
   }
 
   String _typeLabel(AppLocalizations l10n, GroupType type) => switch (type) {

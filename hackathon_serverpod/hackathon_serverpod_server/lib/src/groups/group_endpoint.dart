@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../shop/shop_service.dart';
 import 'current_member.dart';
@@ -14,6 +15,7 @@ const _inviteCodeLength = 6;
 /// Create a group and join one by invite code (PRODUCT.md §7, §10.3).
 class GroupEndpoint extends Endpoint {
   final ShopService _shopService = const ShopService();
+  final EventService _eventService = const EventService();
 
   @override
   bool get requireLogin => true;
@@ -93,8 +95,36 @@ class GroupEndpoint extends Endpoint {
         authUserId: authUserId,
         displayName: resolvedDisplayName,
         role: GroupMemberRole.member,
+        balance: await _carriedOverDebt(
+          session,
+          groupId: group.id!,
+          authUserId: authUserId,
+        ),
       ),
     );
+  }
+
+  /// A debt (negative balance) from a previous membership of [authUserId] in
+  /// this *same* group carries over on rejoining, so leaving and rejoining
+  /// can't be used to erase a fine. Coins earned do not carry over —
+  /// PRODUCT.md §4.6 already says leaving loses the balance; this only closes
+  /// the one direction that can be abused (today, reachable via an admin's
+  /// `expelMember` followed by rejoining with a code that still works).
+  Future<int> _carriedOverDebt(
+    Session session, {
+    required int groupId,
+    required UuidValue authUserId,
+  }) async {
+    final previous = await GroupMember.db.findFirstRow(
+      session,
+      where: (t) =>
+          t.groupId.equals(groupId) &
+          t.authUserId.equals(authUserId) &
+          t.leftAt.notEquals(null),
+      orderBy: (t) => t.leftAt.desc(),
+    );
+    if (previous == null || previous.balance >= 0) return 0;
+    return previous.balance;
   }
 
   /// The signed-in member's group: its name, profile and invite code.
@@ -147,6 +177,13 @@ class GroupEndpoint extends Endpoint {
       session,
       target.copyWith(leftAt: DateTime.now().toUtc()),
     );
+    // Their app is still watching the group; this is what sends it away.
+    await _eventService.publish(
+      session,
+      groupId: admin.groupId,
+      kind: GroupEventKind.memberExpelled,
+      memberId: target.id,
+    );
   }
 
   /// The admin replaces the invite code. The old one stops working at once;
@@ -163,6 +200,99 @@ class GroupEndpoint extends Endpoint {
     return Group.db.updateRow(
       session,
       group.copyWith(inviteCode: await _freeInviteCode(session)),
+    );
+  }
+
+  /// The admin hands the role over to [memberId] and becomes a plain member
+  /// (PRODUCT.md §7). Never to themselves, and never to a child (§8).
+  ///
+  /// Both roles change in one transaction on the admin's row read locked:
+  /// two hand-overs sent at once would otherwise both pass the admin check
+  /// and leave the group with two admins.
+  Future<GroupMember> transferAdmin(Session session, int memberId) async {
+    final admin = await _requireAdmin(session);
+    if (memberId == admin.id) {
+      throw GroupException(reason: GroupErrorReason.cannotTransferAdmin);
+    }
+
+    return session.db.transaction((transaction) async {
+      final lockedAdmin = await GroupMember.db.findById(
+        session,
+        admin.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (lockedAdmin == null ||
+          lockedAdmin.role != GroupMemberRole.admin ||
+          lockedAdmin.leftAt != null) {
+        throw GroupException(reason: GroupErrorReason.notAdmin);
+      }
+
+      final target = await GroupMember.db.findById(
+        session,
+        memberId,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (target == null ||
+          target.groupId != lockedAdmin.groupId ||
+          target.leftAt != null) {
+        throw GroupException(reason: GroupErrorReason.memberNotFound);
+      }
+      if (target.role == GroupMemberRole.child) {
+        throw GroupException(reason: GroupErrorReason.cannotTransferAdmin);
+      }
+
+      // In a family the admin is also a guardian and stays one (§8).
+      final group = await Group.db.findById(
+        session,
+        lockedAdmin.groupId,
+        transaction: transaction,
+      );
+      await GroupMember.db.updateRow(
+        session,
+        lockedAdmin.copyWith(
+          role: group?.type == GroupType.family
+              ? GroupMemberRole.guardian
+              : GroupMemberRole.member,
+        ),
+        transaction: transaction,
+      );
+      return GroupMember.db.updateRow(
+        session,
+        target.copyWith(role: GroupMemberRole.admin),
+        transaction: transaction,
+      );
+    });
+  }
+
+  /// The admin renames the group or changes its fine percentage (PRODUCT.md
+  /// §7, §4.4). A field left null keeps its current value; the profile is not
+  /// here because it never changes after creation.
+  Future<Group> updateGroup(
+    Session session, {
+    String? name,
+    int? finePercent,
+  }) async {
+    final admin = await _requireAdmin(session);
+    final trimmedName = name?.trim();
+    if (trimmedName != null && trimmedName.isEmpty) {
+      throw ArgumentError.value(name, 'name', 'must not be blank');
+    }
+    if (finePercent != null && (finePercent < 0 || finePercent > 100)) {
+      throw RangeError.range(finePercent, 0, 100, 'finePercent');
+    }
+
+    final group = await Group.db.findById(session, admin.groupId);
+    if (group == null) {
+      throw GroupException(reason: GroupErrorReason.noMembership);
+    }
+    return Group.db.updateRow(
+      session,
+      group.copyWith(
+        name: trimmedName ?? group.name,
+        finePercent: finePercent ?? group.finePercent,
+      ),
     );
   }
 

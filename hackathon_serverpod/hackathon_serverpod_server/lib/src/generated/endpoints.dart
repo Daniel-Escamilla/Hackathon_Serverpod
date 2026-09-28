@@ -10,6 +10,8 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
 import 'package:hackathon_serverpod_server/src/generated/groups/group_type.dart'
     as _ik8b7v56;
 import 'package:serverpod/serverpod.dart' as _is;
@@ -19,11 +21,12 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
-import '../greetings/greeting_endpoint.dart' as _il624ik7;
+import '../events/event_endpoint.dart' as _i7r7roa3;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
 import '../tasks/task_endpoint.dart' as _i3nmwja6;
 import '../wallet/wallet_endpoint.dart' as _il5vx24y;
+export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -41,10 +44,10 @@ class Endpoints extends _is.EndpointDispatch {
           'jwtRefresh',
           null,
         ),
-      'greeting': _il624ik7.GreetingEndpoint()
+      'event': _i7r7roa3.EventEndpoint()
         ..initialize(
           server,
-          'greeting',
+          'event',
           null,
         ),
       'group': _irt1w8ui.GroupEndpoint()
@@ -278,28 +281,23 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
-    connectors['greeting'] = _is.EndpointConnector(
-      name: 'greeting',
-      endpoint: endpoints['greeting']!,
+    connectors['event'] = _is.EndpointConnector(
+      name: 'event',
+      endpoint: endpoints['event']!,
       methodConnectors: {
-        'hello': _is.MethodConnector(
-          name: 'hello',
-          params: {
-            'name': _is.ParameterDescription(
-              name: 'name',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
+        'watchGroup': _is.MethodStreamConnector(
+          name: 'watchGroup',
+          params: {},
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
           call:
               (
                 _is.Session session,
                 Map<String, dynamic> params,
-              ) async =>
-                  (endpoints['greeting'] as _il624ik7.GreetingEndpoint).hello(
-                    session,
-                    params['name'],
-                  ),
+                Map<String, Stream> streamParams,
+              ) => (endpoints['event'] as _i7r7roa3.EventEndpoint).watchGroup(
+                session,
+              ),
         ),
       },
     );
@@ -412,6 +410,50 @@ class Endpoints extends _is.EndpointDispatch {
               ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
                   .regenerateInviteCode(session),
         ),
+        'transferAdmin': _is.MethodConnector(
+          name: 'transferAdmin',
+          params: {
+            'memberId': _is.ParameterDescription(
+              name: 'memberId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).transferAdmin(
+                    session,
+                    params['memberId'],
+                  ),
+        ),
+        'updateGroup': _is.MethodConnector(
+          name: 'updateGroup',
+          params: {
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'finePercent': _is.ParameterDescription(
+              name: 'finePercent',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).updateGroup(
+                    session,
+                    name: params['name'],
+                    finePercent: params['finePercent'],
+                  ),
+        ),
       },
     );
     connectors['shop'] = _is.EndpointConnector(
@@ -427,6 +469,16 @@ class Endpoints extends _is.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
                   .listRewards(session),
+        ),
+        'listPurchases': _is.MethodConnector(
+          name: 'listPurchases',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
+                  .listPurchases(session),
         ),
         'proposeReward': _is.MethodConnector(
           name: 'proposeReward',
@@ -624,6 +676,16 @@ class Endpoints extends _is.EndpointDispatch {
                 Map<String, dynamic> params,
               ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
                   .listTasks(session),
+        ),
+        'listTaskVotes': _is.MethodConnector(
+          name: 'listTaskVotes',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .listTaskVotes(session),
         ),
         'proposeTask': _is.MethodConnector(
           name: 'proposeTask',
@@ -832,5 +894,10 @@ class Endpoints extends _is.EndpointDispatch {
       ..initializeEndpoints(server);
     modules['serverpod_auth_core'] = _iacs.Endpoints()
       ..initializeEndpoints(server);
+  }
+
+  @override
+  _is.FutureCallDispatch? get futureCalls {
+    return _isvvvywu.FutureCalls();
   }
 }

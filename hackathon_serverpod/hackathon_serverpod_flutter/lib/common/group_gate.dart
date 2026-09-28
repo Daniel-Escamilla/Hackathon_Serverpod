@@ -1,31 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
-import '../client.dart';
+import '../data/membership_repository.dart';
 import '../features/group/group_choice_screen.dart';
 import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../ui/app_button.dart';
 
+/// Sends a signed-in user to their group, or to the screen that creates or
+/// joins one when they have none yet.
 class GroupGate extends StatefulWidget {
-  const GroupGate({super.key});
+  const GroupGate({
+    this.membership = const MembershipRepository(),
+    this.home = const HomeShell(),
+    super.key,
+  });
+
+  final MembershipRepository membership;
+
+  /// Where a member of a group lands. A test swaps it for something that
+  /// needs no server.
+  final Widget home;
 
   @override
   State<GroupGate> createState() => _GroupGateState();
 }
 
 class _GroupGateState extends State<GroupGate> {
-  late Future<bool> _hasGroup = _checkMembership();
-
-  Future<bool> _checkMembership() async {
-    try {
-      await client.group.myGroup();
-      return true;
-    } on GroupException catch (e) {
-      if (e.reason == GroupErrorReason.noMembership) return false;
-      rethrow;
-    }
-  }
+  late Future<bool> _hasGroup = widget.membership.hasGroup();
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +51,11 @@ class _GroupGateState extends State<GroupGate> {
                     AppButton(
                       label: AppLocalizations.of(context).retry,
                       kind: AppButtonKind.secondary,
-                      onPressed: () =>
-                          setState(() => _hasGroup = _checkMembership()),
+                      // A block body: an arrow would hand the Future back
+                      // to setState, which asserts.
+                      onPressed: () => setState(() {
+                        _hasGroup = widget.membership.hasGroup();
+                      }),
                     ),
                   ],
                 ),
@@ -59,7 +63,7 @@ class _GroupGateState extends State<GroupGate> {
             ),
           );
         }
-        return snapshot.data! ? const HomeShell() : const GroupChoiceScreen();
+        return snapshot.data! ? widget.home : const GroupChoiceScreen();
       },
     );
   }

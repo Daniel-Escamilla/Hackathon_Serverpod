@@ -1,14 +1,19 @@
 import 'package:serverpod/serverpod.dart';
 
+import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
 import 'reward_templates.dart';
 
 /// Voting, buying and fulfilling rewards (PRODUCT.md §4.1, §4.4, §6).
 class ShopService {
-  const ShopService({this.walletService = const WalletService()});
+  const ShopService({
+    this.walletService = const WalletService(),
+    this.eventService = const EventService(),
+  });
 
   final WalletService walletService;
+  final EventService eventService;
 
   /// Copies the profile's reward templates into [group] as `active` items — they
   /// skip the vote that member-proposed rewards go through (PRODUCT.md §6). Family
@@ -40,60 +45,102 @@ class ShopService {
   /// the result can no longer change — the same majority rule as a task
   /// (PRODUCT.md §4.1: `ceil((members - 1) / 2)` approvals). A rejected reward
   /// carries no fine (PRODUCT.md §6).
+  ///
+  /// Reads [item] locked, in the same transaction as the vote and the
+  /// recount: otherwise on a double tap both calls find no vote yet, both
+  /// insert, and the second fails on the unique (itemId, memberId) index
+  /// with a server error instead of just updating the vote (#101).
+  /// Adds [item] to the group's shop as a proposal, open to a vote.
+  Future<RewardItem> propose(Session session, RewardItem item) async {
+    final proposed = await RewardItem.db.insertRow(session, item);
+    await eventService.publish(
+      session,
+      groupId: proposed.groupId,
+      kind: GroupEventKind.rewardProposed,
+      rewardId: proposed.id,
+    );
+    return proposed;
+  }
+
   Future<RewardItem> castVote(
     Session session, {
     required RewardItem item,
     required GroupMember voter,
     required bool approve,
   }) async {
-    if (item.status != RewardItemStatus.proposed) {
-      throw StateError('This reward is not open for voting.');
-    }
-    if (voter.id == item.createdById) {
-      throw StateError('The proposer cannot vote on their own reward.');
-    }
-
-    final existingVote = await RewardVote.db.findFirstRow(
-      session,
-      where: (t) => t.itemId.equals(item.id!) & t.memberId.equals(voter.id!),
-    );
-    if (existingVote == null) {
-      await RewardVote.db.insertRow(
+    final voted = await session.db.transaction((transaction) async {
+      final locked = await RewardItem.db.findById(
         session,
-        RewardVote(itemId: item.id!, memberId: voter.id!, approve: approve),
+        item.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
       );
-    } else {
-      await RewardVote.db.updateRow(
+      if (locked == null || locked.status != RewardItemStatus.proposed) {
+        throw ShopException(reason: ShopErrorReason.rewardNotOpen);
+      }
+      if (voter.id == locked.createdById) {
+        throw ShopException(reason: ShopErrorReason.ownReward);
+      }
+
+      final existingVote = await RewardVote.db.findFirstRow(
         session,
-        existingVote.copyWith(approve: approve),
+        where: (t) =>
+            t.itemId.equals(locked.id!) & t.memberId.equals(voter.id!),
+        transaction: transaction,
       );
-    }
+      if (existingVote == null) {
+        await RewardVote.db.insertRow(
+          session,
+          RewardVote(itemId: locked.id!, memberId: voter.id!, approve: approve),
+          transaction: transaction,
+        );
+      } else {
+        await RewardVote.db.updateRow(
+          session,
+          existingVote.copyWith(approve: approve),
+          transaction: transaction,
+        );
+      }
 
-    final otherMembers = await GroupMember.db.count(
+      final otherMembers = await GroupMember.db.count(
+        session,
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.id.notEquals(locked.createdById),
+        transaction: transaction,
+      );
+      final needed = (otherMembers / 2).ceil();
+
+      final votes = await RewardVote.db.find(
+        session,
+        where: (t) => t.itemId.equals(locked.id!),
+        transaction: transaction,
+      );
+      final approveCount = votes.where((v) => v.approve).length;
+      final denyCount = votes.length - approveCount;
+
+      RewardItemStatus? resolution;
+      if (approveCount >= needed) {
+        resolution = RewardItemStatus.active;
+      } else if (denyCount > otherMembers - needed) {
+        resolution = RewardItemStatus.rejected;
+      }
+
+      if (resolution == null) return locked;
+      return RewardItem.db.updateRow(
+        session,
+        locked.copyWith(status: resolution),
+        transaction: transaction,
+      );
+    });
+    await eventService.publish(
       session,
-      where: (t) =>
-          t.groupId.equals(item.groupId) &
-          t.leftAt.equals(null) &
-          t.id.notEquals(item.createdById),
+      groupId: voted.groupId,
+      kind: GroupEventKind.rewardVoteCast,
+      rewardId: voted.id,
     );
-    final needed = (otherMembers / 2).ceil();
-
-    final votes = await RewardVote.db.find(
-      session,
-      where: (t) => t.itemId.equals(item.id!),
-    );
-    final approveCount = votes.where((v) => v.approve).length;
-    final denyCount = votes.length - approveCount;
-
-    RewardItemStatus? resolution;
-    if (approveCount >= needed) {
-      resolution = RewardItemStatus.active;
-    } else if (denyCount > otherMembers - needed) {
-      resolution = RewardItemStatus.rejected;
-    }
-
-    if (resolution == null) return item;
-    return RewardItem.db.updateRow(session, item.copyWith(status: resolution));
+    return voted;
   }
 
   /// Buys [item] for [buyer], to be fulfilled by [provider]. Decrements stock (if
@@ -104,21 +151,21 @@ class ShopService {
     required RewardItem item,
     required GroupMember buyer,
     required GroupMember provider,
-  }) {
+  }) async {
     if (item.status != RewardItemStatus.active) {
-      throw StateError('This reward is not available.');
+      throw ShopException(reason: ShopErrorReason.rewardNotAvailable);
     }
     if (provider.id == buyer.id) {
-      throw StateError('Choose someone else to fulfil the reward.');
+      throw ShopException(reason: ShopErrorReason.invalidProvider);
     }
     if (buyer.balance < 0) {
-      throw StateError('Cannot buy with a negative balance.');
+      throw ShopException(reason: ShopErrorReason.negativeBalance);
     }
     if (item.stock != null && item.stock! <= 0) {
-      throw StateError('This reward is out of stock.');
+      throw ShopException(reason: ShopErrorReason.outOfStock);
     }
 
-    return session.db.transaction((transaction) async {
+    final purchase = await session.db.transaction((transaction) async {
       if (item.stock != null) {
         await RewardItem.db.updateRow(
           session,
@@ -150,10 +197,21 @@ class ShopService {
 
       return purchase;
     });
+    await eventService.publish(
+      session,
+      groupId: item.groupId,
+      kind: GroupEventKind.purchased,
+      purchaseId: purchase.id,
+    );
+    return purchase;
   }
 
   /// The provider accepts or refuses [purchase]. Refusing fines the provider,
   /// refunds the buyer and restores stock (PRODUCT.md §4.4, §6).
+  ///
+  /// Reads the purchase locked and checks `pending` on that row: a double tap
+  /// on "refuse" otherwise lets both calls pass the check before either
+  /// commits, fining the provider and refunding the buyer twice (#101).
   Future<void> respond(
     Session session, {
     required Purchase purchase,
@@ -161,29 +219,42 @@ class ShopService {
     required Group group,
     required bool accept,
   }) async {
-    if (purchase.status != PurchaseStatus.pending) {
-      throw StateError('This purchase is not pending a response.');
-    }
-
-    if (accept) {
-      await Purchase.db.updateRow(
-        session,
-        purchase.copyWith(status: PurchaseStatus.accepted),
-      );
-      return;
-    }
-
     await session.db.transaction((transaction) async {
+      final locked = await Purchase.db.findById(
+        session,
+        purchase.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null || locked.status != PurchaseStatus.pending) {
+        throw ShopException(reason: ShopErrorReason.purchaseNotOpen);
+      }
+
+      if (accept) {
+        await Purchase.db.updateRow(
+          session,
+          locked.copyWith(status: PurchaseStatus.accepted),
+          transaction: transaction,
+        );
+        return;
+      }
+
       await Purchase.db.updateRow(
         session,
-        purchase.copyWith(status: PurchaseStatus.refused),
+        locked.copyWith(status: PurchaseStatus.refused),
         transaction: transaction,
       );
 
-      if (item.stock != null) {
+      final lockedItem = await RewardItem.db.findById(
+        session,
+        item.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (lockedItem?.stock != null) {
         await RewardItem.db.updateRow(
           session,
-          item.copyWith(stock: item.stock! + 1),
+          lockedItem!.copyWith(stock: lockedItem.stock! + 1),
           transaction: transaction,
         );
       }
@@ -209,16 +280,29 @@ class ShopService {
         transaction: transaction,
       );
     });
+    await eventService.publish(
+      session,
+      groupId: item.groupId,
+      kind: GroupEventKind.purchaseResponded,
+      purchaseId: purchase.id,
+    );
   }
 
   /// The provider marks an accepted purchase as fulfilled.
-  Future<Purchase> markDelivered(Session session, Purchase purchase) {
+  Future<Purchase> markDelivered(Session session, Purchase purchase) async {
     if (purchase.status != PurchaseStatus.accepted) {
-      throw StateError('Only an accepted purchase can be marked delivered.');
+      throw ShopException(reason: ShopErrorReason.purchaseNotOpen);
     }
-    return Purchase.db.updateRow(
+    final delivered = await Purchase.db.updateRow(
       session,
       purchase.copyWith(status: PurchaseStatus.delivered),
     );
+    await eventService.publish(
+      session,
+      groupId: delivered.groupId,
+      kind: GroupEventKind.purchaseDelivered,
+      purchaseId: delivered.id,
+    );
+    return delivered;
   }
 }

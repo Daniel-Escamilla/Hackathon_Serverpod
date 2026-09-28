@@ -9,8 +9,8 @@ emailIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
-greeting:
-  - hello:
+event:
+  - watchGroup:
 group:
   - createGroup:
   - joinGroup:
@@ -18,8 +18,11 @@ group:
   - listMembers:
   - expelMember:
   - regenerateInviteCode:
+  - transferAdmin:
+  - updateGroup:
 shop:
   - listRewards:
+  - listPurchases:
   - proposeReward:
   - voteReward:
   - requestWish:
@@ -29,6 +32,7 @@ shop:
   - markDelivered:
 task:
   - listTasks:
+  - listTaskVotes:
   - proposeTask:
   - voteTaskProposal:
   - counterOfferTask:

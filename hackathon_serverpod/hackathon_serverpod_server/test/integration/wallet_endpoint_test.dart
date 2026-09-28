@@ -280,6 +280,56 @@ void main() {
           );
         },
       );
+
+      test(
+        "then it also nets the task cycle's specific fine reasons "
+        '(proposalDenied, validationDenied, voteExpired)',
+        () async {
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: 20,
+            reason: CoinTransactionReason.earned,
+          );
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: -3,
+            reason: CoinTransactionReason.proposalDenied,
+          );
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: -4,
+            reason: CoinTransactionReason.validationDenied,
+          );
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: alice.id!,
+            amount: -5,
+            reason: CoinTransactionReason.voteExpired,
+          );
+
+          final authedAsAlice = sessionBuilder.copyWith(
+            authentication: AuthenticationOverride.authenticationInfo(
+              aliceAuthUserId,
+              {},
+            ),
+          );
+
+          final ranking = await endpoints.wallet.getWeeklyRanking(
+            authedAsAlice,
+          );
+          final aliceRanking = ranking.firstWhere(
+            (r) => r.memberId == alice.id,
+          );
+          expect(aliceRanking.netCoins, 8); // 20 - 3 - 4 - 5
+        },
+      );
     });
   });
 }

@@ -13,8 +13,12 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
 import 'dart:io' as _idi;
-import 'package:hackathon_serverpod_server/src/generated/greetings/greeting.dart'
-    as _ikht4he2;
+import 'package:hackathon_serverpod_server/src/generated/events/group_event.dart'
+    as _i5i7k9r4;
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
+import 'package:hackathon_serverpod_server/src/generated/future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
+    as _i7db9b19;
 import 'package:hackathon_serverpod_server/src/generated/groups/group.dart'
     as _i96jc0h6;
 import 'package:hackathon_serverpod_server/src/generated/groups/group_member.dart'
@@ -27,6 +31,8 @@ import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
 import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
     as _i0sdpywk;
+import 'package:hackathon_serverpod_server/src/generated/tasks/task_vote.dart'
+    as _ini4h15w;
 import 'package:hackathon_serverpod_server/src/generated/wallet/coin_movement.dart'
     as _ijihwky5;
 import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
@@ -163,11 +169,13 @@ void withServerpod(
 }
 
 class TestEndpoints {
+  late final futureCalls = _FutureCalls();
+
   late final _EmailIdpEndpoint emailIdp;
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
-  late final _GreetingEndpoint greeting;
+  late final _EventEndpoint event;
 
   late final _GroupEndpoint group;
 
@@ -193,7 +201,7 @@ class _InternalTestEndpoints extends TestEndpoints
       endpoints,
       serializationManager,
     );
-    greeting = _GreetingEndpoint(
+    event = _EventEndpoint(
       endpoints,
       serializationManager,
     );
@@ -214,6 +222,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
   }
+}
+
+class _FutureCalls {
+  late final taskVote = _TaskVoteFutureCall();
 }
 
 class _EmailIdpEndpoint {
@@ -534,8 +546,8 @@ class _JwtRefreshEndpoint {
   }
 }
 
-class _GreetingEndpoint {
-  _GreetingEndpoint(
+class _EventEndpoint {
+  _EventEndpoint(
     this._endpointDispatch,
     this._serializationManager,
   );
@@ -544,35 +556,36 @@ class _GreetingEndpoint {
 
   final _is.SerializationManager _serializationManager;
 
-  _ida.Future<_ikht4he2.Greeting> hello(
+  _ida.Stream<_i5i7k9r4.GroupEvent> watchGroup(
     _ist.TestSessionBuilder sessionBuilder,
-    String name,
-  ) async {
-    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
-      var _localUniqueSession =
-          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
-            endpoint: 'greeting',
-            method: 'hello',
-          );
-      try {
-        var _localCallContext = await _endpointDispatch.getMethodCallContext(
-          createSessionCallback: (_) => _localUniqueSession,
-          endpointPath: 'greeting',
-          methodName: 'hello',
-          parameters: _ist.testObjectToJson({'name': name}),
-          serializationManager: _serializationManager,
+  ) {
+    var _localTestStreamManager =
+        _ist.TestStreamManager<_i5i7k9r4.GroupEvent>();
+    _ist.callStreamFunctionAndHandleExceptions(
+      () async {
+        var _localUniqueSession =
+            (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+              endpoint: 'event',
+              method: 'watchGroup',
+            );
+        var _localCallContext = await _endpointDispatch
+            .getMethodStreamCallContext(
+              createSessionCallback: (_) => _localUniqueSession,
+              endpointPath: 'event',
+              methodName: 'watchGroup',
+              arguments: {},
+              requestedInputStreams: [],
+              serializationManager: _serializationManager,
+            );
+        await _localTestStreamManager.callStreamMethod(
+          _localCallContext,
+          _localUniqueSession,
+          {},
         );
-        var _localReturnValue =
-            await (_localCallContext.method.call(
-                  _localUniqueSession,
-                  _localCallContext.arguments,
-                )
-                as _ida.Future<_ikht4he2.Greeting>);
-        return _localReturnValue;
-      } finally {
-        await _localUniqueSession.close();
-      }
-    });
+      },
+      _localTestStreamManager.outputStreamController,
+    );
+    return _localTestStreamManager.outputStreamController.stream;
   }
 }
 
@@ -778,6 +791,72 @@ class _GroupEndpoint {
       }
     });
   }
+
+  _ida.Future<_is20wtgg.GroupMember> transferAdmin(
+    _ist.TestSessionBuilder sessionBuilder,
+    int memberId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'group',
+            method: 'transferAdmin',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'group',
+          methodName: 'transferAdmin',
+          parameters: _ist.testObjectToJson({'memberId': memberId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_is20wtgg.GroupMember>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i96jc0h6.Group> updateGroup(
+    _ist.TestSessionBuilder sessionBuilder, {
+    String? name,
+    int? finePercent,
+  }) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'group',
+            method: 'updateGroup',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'group',
+          methodName: 'updateGroup',
+          parameters: _ist.testObjectToJson({
+            'name': name,
+            'finePercent': finePercent,
+          }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i96jc0h6.Group>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
 }
 
 class _ShopEndpoint {
@@ -813,6 +892,36 @@ class _ShopEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<List<_iub5jn2z.RewardItem>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_il4ufzf6.Purchase>> listPurchases(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shop',
+            method: 'listPurchases',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shop',
+          methodName: 'listPurchases',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_il4ufzf6.Purchase>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1099,6 +1208,36 @@ class _TaskEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<List<_i0sdpywk.Task>>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<List<_ini4h15w.TaskVote>> listTaskVotes(
+    _ist.TestSessionBuilder sessionBuilder,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'listTaskVotes',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'listTaskVotes',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<List<_ini4h15w.TaskVote>>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1416,5 +1555,28 @@ class _WalletEndpoint {
         await _localUniqueSession.close();
       }
     });
+  }
+}
+
+class _TaskVoteFutureCall {
+  Future<void> expireVote(
+    _ist.TestSessionBuilder sessionBuilder,
+    int taskId,
+    DateTime expectedVoteClosesAt,
+  ) async {
+    var object = _i7db9b19.TaskVoteFutureCallExpireVoteModel(
+      taskId: taskId,
+      expectedVoteClosesAt: expectedVoteClosesAt,
+    );
+    var _localUniqueSession =
+        (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild();
+    try {
+      await _isvvvywu.TaskVoteExpireVoteFutureCall().invoke(
+        _localUniqueSession,
+        object,
+      );
+    } finally {
+      await _localUniqueSession.close();
+    }
   }
 }

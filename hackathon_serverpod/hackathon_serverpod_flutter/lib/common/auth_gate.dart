@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
-import '../client.dart';
+import '../data/auth_repository.dart';
 import '../features/auth/welcome_screen.dart';
 import 'group_gate.dart';
 
@@ -9,12 +8,14 @@ import 'group_gate.dart';
 /// state changes, so signing in or out anywhere in the app routes here
 /// automatically instead of every screen managing its own redirect.
 class AuthGate extends StatelessWidget {
-  const AuthGate({super.key});
+  const AuthGate({this.auth = const AuthRepository(), super.key});
+
+  final AuthRepository auth;
 
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder(
-      valueListenable: client.auth.authInfoListenable,
+      valueListenable: auth.session,
       builder: (context, authInfo, _) {
         if (authInfo == null) return const WelcomeScreen();
         return const GroupGate();

@@ -48,11 +48,9 @@ The root `pubspec.yaml` (`name: _`) is a Dart workspace, so a single `flutter pu
 
 That `pubspec.lock` is **committed on purpose** — four people on Linux, macOS and Windows need identical dependency versions, and the server `Dockerfile` does `COPY pubspec.lock .` and fails without it. Never add it back to `.gitignore`, and never run `flutter pub upgrade` as a side effect of another task: it rewrites the lock for the whole team. Pinned toolchain: Flutter 3.44.4, Dart 3.12.2, Serverpod CLI 4.0.0 (see the README).
 
-- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/greetings/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
+- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/groups/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
 - `hackathon_serverpod_client` — 100% generated from the server. Never hand-edit; the Flutter app depends on it by path.
 - `hackathon_serverpod_flutter` — the app. `lib/client.dart` owns the global `client` (a deliberate global, not DI), `lib/main.dart` boots `prototype_app.dart` (now just the `MaterialApp` shell, wired to the real `AuthGate`), and screens live under `lib/features/<feature>/`.
-
-Still-unused scaffold leftovers: the `Greeting` model/endpoint/test, and `screens/greetings_screen.dart` + `screens/sign_in_screen.dart`, which nothing imports.
 
 ## Commands
 
@@ -71,8 +69,8 @@ cd hackathon_serverpod_server
 dart analyze --fatal-infos          # CI setting; unawaited_futures and avoid_print are on here
 dart format --set-exit-if-changed .
 dart test                                                    # whole suite
-dart test test/integration/greeting_endpoint_test.dart       # one file
-dart test -n 'returned greeting includes name'               # one test by name
+dart test test/integration/wallet_endpoint_test.dart         # one file
+dart test -n 'a fine can take the balance negative'          # one test by name
 dart test -t integration                                     # the only declared tag (dart_test.yaml)
 
 cd ../hackathon_serverpod_flutter
@@ -95,7 +93,7 @@ flutter test
 
 `lib/client.dart` builds the client from `getServerUrl()`, which prefers `--dart-define=SERVER_URL=...`, then falls back to `assets/config.json`, then to `http://localhost:8080/`. The server serves a *runtime* version of that file — `server.dart` mounts `AppConfigRoute` at `/assets/assets/config.json`, filled from the API URL in `config/<mode>.yaml` — so a Flutter **web** build served by the server always gets the right URL, whatever host it runs on.
 
-A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does not pass it today, which is harmless only while the screens stay local placeholders.
+A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does: it detects this computer's LAN address, lets whoever runs it correct it, and takes a `SERVER_URL` from the environment instead when one is set.
 
 ## Serving the Flutter app from the server
 
@@ -122,7 +120,8 @@ Agreed 2026-09-21. They cover the app under `hackathon_serverpod_flutter/lib`.
 | Pieces | `lib/ui/` | Flutter, the l10n, the theme |
 | Screens | `lib/features/<feature>/` | Everything above |
 
-- **Only `lib/data/` imports `client`.** A screen calling `client.something` is exactly what this rule prevents: error handling scattered across widgets, and no way to test a screen without a server running.
+- **Only `lib/data/` imports `client`** (plus `main.dart`, which initialises it). A screen calling `client.something` is exactly what this rule prevents: error handling scattered across widgets, and no way to test a screen without a server running. Each controller takes its repository in the constructor (`TasksController(repository: ...)`), so a test hands it a fake.
+- Repositories wrap each call in `guardServerCall`. A controller loading two things at once uses `Future.wait`, not a record's `.wait`: the latter wraps the failure in a `ParallelWaitError` and the `AppException` is lost.
 - Repositories throw `AppException`, never a raw server error. The translation lives in `data/app_failure.dart`, in one function.
 - Which sentence a failure shows is decided in the UI, from the ARB (`ui/failure_messages.dart`). The data layer never holds display text.
 
@@ -206,10 +205,10 @@ now the app's real `MaterialApp` shell — `main.dart` runs it, and it points at
 What runs today, all against the server: email sign-in, creating a group or joining one by code,
 the group screen (members, invite code, and for the admin, expelling a member and replacing the
 code), the wallet with its history, proposing/voting/counter-offering/validating tasks, and
-browsing/proposing/voting/buying shop rewards. The backend has groups, wallet, shop and most of the
-task cycle; `docs/PLAN.md` says what is left and when. Two known gaps: there is no endpoint yet to
-list a member's past purchases, and no endpoint to vote on a task's completion once it has been
-claimed (only its initial proposal goes to a vote).
+browsing/proposing/voting/buying shop rewards, and signing out. The backend has groups, wallet,
+shop and the whole task cycle; `docs/PLAN.md` says what is left and when. Endpoints the app does
+not call yet: `listPurchases`, `respondToPurchase`, `markDelivered`, `requestWish`,
+`approveChildPurchase`, `transferAdmin` and `getWeeklyRanking`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits

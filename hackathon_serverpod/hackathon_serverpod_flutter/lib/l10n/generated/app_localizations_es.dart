@@ -27,6 +27,12 @@ class AppLocalizationsEs extends AppLocalizations {
   String get increaseAmount => 'Sumar';
 
   @override
+  String get showPassword => 'Mostrar contraseña';
+
+  @override
+  String get hidePassword => 'Ocultar contraseña';
+
+  @override
   String get navTasks => 'Tareas';
 
   @override
@@ -144,6 +150,28 @@ class AppLocalizationsEs extends AppLocalizations {
   String get passwordErrorGeneric => 'No se pudo crear la cuenta.';
 
   @override
+  String get forgotPasswordLink => '¿Has olvidado la contraseña?';
+
+  @override
+  String get resetPasswordTitle => 'Recupera tu contraseña';
+
+  @override
+  String get resetPasswordSubtitle =>
+      'Te enviaremos un código para elegir una nueva.';
+
+  @override
+  String get resetPasswordSendCode => 'Enviar código';
+
+  @override
+  String get newPasswordTitle => 'Elige una contraseña nueva';
+
+  @override
+  String get newPasswordButton => 'Cambiar contraseña';
+
+  @override
+  String get passwordChanged => 'Contraseña cambiada. Entra con la nueva.';
+
+  @override
   String get groupChoiceGreeting => '¡Hola!';
 
   @override
@@ -232,6 +260,24 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupSettings => 'Configuración del grupo';
 
   @override
+  String get groupSettingsFineLabel => 'Multa';
+
+  @override
+  String get groupSettingsFineHint =>
+      'Lo que paga quien recibe una multa, sobre el valor de la tarea o de la recompensa.';
+
+  @override
+  String groupSettingsFineValue(int percent) {
+    return '$percent %';
+  }
+
+  @override
+  String get groupSettingsSave => 'Guardar cambios';
+
+  @override
+  String get groupSettingsSaved => 'Configuración guardada.';
+
+  @override
   String get codeCopied => 'Código copiado';
 
   @override
@@ -244,16 +290,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tasksEmpty => 'Todavía no hay tareas. Propón la primera.';
 
   @override
-  String get sectionAwaitingVote => 'Esperan un voto';
-
-  @override
-  String get sectionCounterOffered => 'Contraofertadas';
+  String get sectionAwaitingVote => 'Esperan tu voto';
 
   @override
   String get sectionAvailable => 'Disponibles';
-
-  @override
-  String get sectionInValidation => 'En validación';
 
   @override
   String get statusProposal => 'Propuesta';
@@ -357,8 +397,35 @@ class AppLocalizationsEs extends AppLocalizations {
       'No se pudo reclamar. Puede que ya la haya cogido otra persona.';
 
   @override
-  String get validationPendingNotice =>
-      'Todavía no se puede votar la validación: falta el endpoint en el backend.';
+  String get claimTaken =>
+      'Alguien se te ha adelantado: ya la ha cogido otra persona.';
+
+  @override
+  String get validationQuestion =>
+      '¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.';
+
+  @override
+  String get validationYourOwn =>
+      'La has reclamado tú: ahora el grupo decide si está hecha.';
+
+  @override
+  String get validationApprove => 'Sí, está hecha';
+
+  @override
+  String get validationDeny => 'No está hecha';
+
+  @override
+  String get validationDenyTitle => '¿Seguro que no está hecha?';
+
+  @override
+  String get validationDenyBody =>
+      'Si la mayoría vota que no, quien la reclamó paga una multa y la tarea vuelve a estar disponible.';
+
+  @override
+  String get validationApproved => 'Has votado que está hecha';
+
+  @override
+  String get validationDenied => 'Has votado que no está hecha';
 
   @override
   String get newTaskTitle => 'Nueva tarea';
@@ -511,6 +578,15 @@ class AppLocalizationsEs extends AppLocalizations {
   String get reasonRefunded => 'Devolución';
 
   @override
+  String get reasonProposalDenied => 'Propuesta rechazada';
+
+  @override
+  String get reasonValidationDenied => 'Validación rechazada';
+
+  @override
+  String get reasonVoteExpired => 'No votaste a tiempo';
+
+  @override
   String get cancel => 'Cancelar';
 
   @override
@@ -569,5 +645,171 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorCannotExpelSelf => 'No puedes expulsarte a ti del grupo.';
 
   @override
+  String get errorCannotTransferAdmin =>
+      'El cargo de admin solo se puede ceder a otra persona adulta del grupo.';
+
+  @override
+  String get errorTaskNotFound => 'Esa tarea ya no existe.';
+
+  @override
+  String get errorTaskNotOpen =>
+      'Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.';
+
+  @override
+  String get errorOwnTask => 'No puedes votar tu propia tarea.';
+
+  @override
+  String get errorNotProposer =>
+      'Solo quien propuso la tarea puede responder a la contraoferta.';
+
+  @override
+  String get errorRewardNotFound => 'Esa recompensa ya no existe.';
+
+  @override
+  String get errorRewardNotOpen =>
+      'La votación de esta recompensa ya se ha cerrado.';
+
+  @override
+  String get errorOwnReward => 'No puedes votar tu propia recompensa.';
+
+  @override
+  String get errorRewardNotAvailable =>
+      'Esta recompensa no está en la tienda ahora mismo.';
+
+  @override
+  String get errorOutOfStock => 'Esta recompensa se ha agotado.';
+
+  @override
+  String get errorNegativeBalance => 'Con saldo negativo no se puede comprar.';
+
+  @override
+  String get errorInvalidProvider =>
+      'Elige a otra persona del grupo para cumplirla.';
+
+  @override
+  String get errorPurchaseNotFound => 'Esa compra ya no existe.';
+
+  @override
+  String get errorPurchaseNotOpen =>
+      'Esta compra ya ha cambiado. Vuelve a la lista para verla al día.';
+
+  @override
+  String get errorNotProvider =>
+      'Solo quien tiene que cumplir la compra puede responderla o entregarla.';
+
+  @override
+  String get errorNoGroup => 'Ya no estás en este grupo.';
+
+  @override
+  String get leftGroupNotice =>
+      'Ya no estás en el grupo. Puedes crear otro o unirte con un código.';
+
+  @override
   String get errorGeneric => 'Algo ha fallado. Inténtalo otra vez.';
+
+  @override
+  String get purchasesToFulfil => 'Te toca cumplir';
+
+  @override
+  String get purchasesMine => 'Tus compras';
+
+  @override
+  String get purchaseUnknownReward => 'Recompensa';
+
+  @override
+  String get purchaseSomeone => 'Alguien';
+
+  @override
+  String get purchaseAccept => 'Aceptar';
+
+  @override
+  String get purchaseRefuse => 'Negarme';
+
+  @override
+  String get purchaseRefuseTitle => '¿Negarte a cumplirla?';
+
+  @override
+  String get purchaseRefuseNotice =>
+      'Si te niegas pagas una multa, y quien compró recupera sus monedas.';
+
+  @override
+  String get purchaseMarkDelivered => 'Marcar como entregada';
+
+  @override
+  String get purchaseAccepted => 'Compra aceptada: ahora te toca cumplirla';
+
+  @override
+  String get purchaseRefused => 'Te has negado: se ha cobrado la multa';
+
+  @override
+  String get purchaseDelivered => 'Entregada. ¡Bien hecho!';
+
+  @override
+  String get purchaseStatusPendingApproval => 'Esperando al tutor';
+
+  @override
+  String get purchaseStatusPending => 'Por aceptar';
+
+  @override
+  String get purchaseStatusAccepted => 'Aceptada';
+
+  @override
+  String get purchaseStatusDelivered => 'Entregada';
+
+  @override
+  String get purchaseStatusRefused => 'Rechazada';
+
+  @override
+  String purchaseBoughtBy(String name) {
+    return 'La compró $name';
+  }
+
+  @override
+  String purchaseProvidedBy(String name) {
+    return 'Le toca cumplirla a $name';
+  }
+
+  @override
+  String get sectionYoursInValidation => 'Tuyas en validación';
+
+  @override
+  String get sectionInVoting => 'En votación';
+
+  @override
+  String get votersTitle => 'Quién ha votado';
+
+  @override
+  String get votersNone => 'Todavía no ha votado nadie.';
+
+  @override
+  String get voteInFavour => 'A favor';
+
+  @override
+  String get voteAgainst => 'En contra';
+
+  @override
+  String get ownProposalNotice =>
+      'La has propuesto tú: vota el resto del grupo.';
+
+  @override
+  String get alreadyVotedNotice => 'Ya has votado. Falta que vote el resto.';
+
+  @override
+  String get counterOfferWaitingNotice =>
+      'Quien la propuso está decidiendo si acepta la contraoferta.';
+
+  @override
+  String voteCounterOffer(int reward) {
+    return 'Contraoferta: $reward';
+  }
+
+  @override
+  String get signOut => 'Cerrar sesión';
+
+  @override
+  String get signOutTitle => '¿Cerrar sesión?';
+
+  @override
+  String get signOutBody =>
+      'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.';
 }

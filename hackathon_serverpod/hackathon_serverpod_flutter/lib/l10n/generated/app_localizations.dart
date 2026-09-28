@@ -130,6 +130,18 @@ abstract class AppLocalizations {
   /// **'Sumar'**
   String get increaseAmount;
 
+  /// Tooltip of the eye in a password field while the password is hidden
+  ///
+  /// In es, this message translates to:
+  /// **'Mostrar contraseña'**
+  String get showPassword;
+
+  /// Tooltip of the eye in a password field while the password is shown
+  ///
+  /// In es, this message translates to:
+  /// **'Ocultar contraseña'**
+  String get hidePassword;
+
   /// No description provided for @navTasks.
   ///
   /// In es, this message translates to:
@@ -352,6 +364,48 @@ abstract class AppLocalizations {
   /// **'No se pudo crear la cuenta.'**
   String get passwordErrorGeneric;
 
+  /// Link under the sign-in form that starts the password reset.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Has olvidado la contraseña?'**
+  String get forgotPasswordLink;
+
+  /// Title of the first password reset step, where the email is typed.
+  ///
+  /// In es, this message translates to:
+  /// **'Recupera tu contraseña'**
+  String get resetPasswordTitle;
+
+  /// Explains what happens after typing the email in the password reset.
+  ///
+  /// In es, this message translates to:
+  /// **'Te enviaremos un código para elegir una nueva.'**
+  String get resetPasswordSubtitle;
+
+  /// Button that asks the server to email the password reset code.
+  ///
+  /// In es, this message translates to:
+  /// **'Enviar código'**
+  String get resetPasswordSendCode;
+
+  /// Title of the last password reset step.
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una contraseña nueva'**
+  String get newPasswordTitle;
+
+  /// Button that saves the new password and ends the reset.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar contraseña'**
+  String get newPasswordButton;
+
+  /// Message shown back on the sign-in screen once the password has been reset.
+  ///
+  /// In es, this message translates to:
+  /// **'Contraseña cambiada. Entra con la nueva.'**
+  String get passwordChanged;
+
   /// No description provided for @groupChoiceGreeting.
   ///
   /// In es, this message translates to:
@@ -526,6 +580,36 @@ abstract class AppLocalizations {
   /// **'Configuración del grupo'**
   String get groupSettings;
 
+  /// Label above the fine percentage slider in the group settings screen
+  ///
+  /// In es, this message translates to:
+  /// **'Multa'**
+  String get groupSettingsFineLabel;
+
+  /// Explains what the fine percentage applies to, under its label
+  ///
+  /// In es, this message translates to:
+  /// **'Lo que paga quien recibe una multa, sobre el valor de la tarea o de la recompensa.'**
+  String get groupSettingsFineHint;
+
+  /// The fine percentage currently picked on the slider
+  ///
+  /// In es, this message translates to:
+  /// **'{percent} %'**
+  String groupSettingsFineValue(int percent);
+
+  /// Primary button that saves the group's name and fine percentage
+  ///
+  /// In es, this message translates to:
+  /// **'Guardar cambios'**
+  String get groupSettingsSave;
+
+  /// Message after the group settings are saved
+  ///
+  /// In es, this message translates to:
+  /// **'Configuración guardada.'**
+  String get groupSettingsSaved;
+
   /// No description provided for @codeCopied.
   ///
   /// In es, this message translates to:
@@ -553,26 +637,14 @@ abstract class AppLocalizations {
   /// No description provided for @sectionAwaitingVote.
   ///
   /// In es, this message translates to:
-  /// **'Esperan un voto'**
+  /// **'Esperan tu voto'**
   String get sectionAwaitingVote;
-
-  /// No description provided for @sectionCounterOffered.
-  ///
-  /// In es, this message translates to:
-  /// **'Contraofertadas'**
-  String get sectionCounterOffered;
 
   /// No description provided for @sectionAvailable.
   ///
   /// In es, this message translates to:
   /// **'Disponibles'**
   String get sectionAvailable;
-
-  /// No description provided for @sectionInValidation.
-  ///
-  /// In es, this message translates to:
-  /// **'En validación'**
-  String get sectionInValidation;
 
   /// No description provided for @statusProposal.
   ///
@@ -760,11 +832,59 @@ abstract class AppLocalizations {
   /// **'No se pudo reclamar. Puede que ya la haya cogido otra persona.'**
   String get claimError;
 
-  /// No description provided for @validationPendingNotice.
+  /// Shown when another member claimed the task first
   ///
   /// In es, this message translates to:
-  /// **'Todavía no se puede votar la validación: falta el endpoint en el backend.'**
-  String get validationPendingNotice;
+  /// **'Alguien se te ha adelantado: ya la ha cogido otra persona.'**
+  String get claimTaken;
+
+  /// Shown to the group on a task someone has claimed as done
+  ///
+  /// In es, this message translates to:
+  /// **'¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.'**
+  String get validationQuestion;
+
+  /// Shown instead of the vote buttons to whoever claimed the task
+  ///
+  /// In es, this message translates to:
+  /// **'La has reclamado tú: ahora el grupo decide si está hecha.'**
+  String get validationYourOwn;
+
+  /// Button that votes a claimed task as done
+  ///
+  /// In es, this message translates to:
+  /// **'Sí, está hecha'**
+  String get validationApprove;
+
+  /// Button that votes a claimed task as not done, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'No está hecha'**
+  String get validationDeny;
+
+  /// Title of the dialog before voting a claimed task as not done
+  ///
+  /// In es, this message translates to:
+  /// **'¿Seguro que no está hecha?'**
+  String get validationDenyTitle;
+
+  /// Body of the dialog before voting a claimed task as not done
+  ///
+  /// In es, this message translates to:
+  /// **'Si la mayoría vota que no, quien la reclamó paga una multa y la tarea vuelve a estar disponible.'**
+  String get validationDenyBody;
+
+  /// Message after voting a claimed task as done
+  ///
+  /// In es, this message translates to:
+  /// **'Has votado que está hecha'**
+  String get validationApproved;
+
+  /// Message after voting a claimed task as not done
+  ///
+  /// In es, this message translates to:
+  /// **'Has votado que no está hecha'**
+  String get validationDenied;
 
   /// No description provided for @newTaskTitle.
   ///
@@ -1054,6 +1174,24 @@ abstract class AppLocalizations {
   /// **'Devolución'**
   String get reasonRefunded;
 
+  /// No description provided for @reasonProposalDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'Propuesta rechazada'**
+  String get reasonProposalDenied;
+
+  /// No description provided for @reasonValidationDenied.
+  ///
+  /// In es, this message translates to:
+  /// **'Validación rechazada'**
+  String get reasonValidationDenied;
+
+  /// No description provided for @reasonVoteExpired.
+  ///
+  /// In es, this message translates to:
+  /// **'No votaste a tiempo'**
+  String get reasonVoteExpired;
+
   /// Dismisses a confirmation without doing anything
   ///
   /// In es, this message translates to:
@@ -1150,11 +1288,305 @@ abstract class AppLocalizations {
   /// **'No puedes expulsarte a ti del grupo.'**
   String get errorCannotExpelSelf;
 
+  /// Shown when the admin tries to hand the role to themselves or to a child
+  ///
+  /// In es, this message translates to:
+  /// **'El cargo de admin solo se puede ceder a otra persona adulta del grupo.'**
+  String get errorCannotTransferAdmin;
+
+  /// A task call named a task that is not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa tarea ya no existe.'**
+  String get errorTaskNotFound;
+
+  /// The task moved on before the action: vote closed, counter-offer answered, or someone else claimed it
+  ///
+  /// In es, this message translates to:
+  /// **'Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.'**
+  String get errorTaskNotOpen;
+
+  /// Voting on or counter-offering your own proposal, or voting on your own completion
+  ///
+  /// In es, this message translates to:
+  /// **'No puedes votar tu propia tarea.'**
+  String get errorOwnTask;
+
+  /// Someone other than the proposer answered a counter-offer
+  ///
+  /// In es, this message translates to:
+  /// **'Solo quien propuso la tarea puede responder a la contraoferta.'**
+  String get errorNotProposer;
+
+  /// A shop call named a reward that is not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa recompensa ya no existe.'**
+  String get errorRewardNotFound;
+
+  /// Voting on a reward whose vote is over
+  ///
+  /// In es, this message translates to:
+  /// **'La votación de esta recompensa ya se ha cerrado.'**
+  String get errorRewardNotOpen;
+
+  /// The proposer tried to vote on their own reward
+  ///
+  /// In es, this message translates to:
+  /// **'No puedes votar tu propia recompensa.'**
+  String get errorOwnReward;
+
+  /// Buying a reward that is not active
+  ///
+  /// In es, this message translates to:
+  /// **'Esta recompensa no está en la tienda ahora mismo.'**
+  String get errorRewardNotAvailable;
+
+  /// Buying a reward with no stock left
+  ///
+  /// In es, this message translates to:
+  /// **'Esta recompensa se ha agotado.'**
+  String get errorOutOfStock;
+
+  /// Buying while the balance is below zero
+  ///
+  /// In es, this message translates to:
+  /// **'Con saldo negativo no se puede comprar.'**
+  String get errorNegativeBalance;
+
+  /// The provider chosen for a purchase is the buyer or not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Elige a otra persona del grupo para cumplirla.'**
+  String get errorInvalidProvider;
+
+  /// A shop call named a purchase that is not in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Esa compra ya no existe.'**
+  String get errorPurchaseNotFound;
+
+  /// The purchase was already answered, or is not accepted yet
+  ///
+  /// In es, this message translates to:
+  /// **'Esta compra ya ha cambiado. Vuelve a la lista para verla al día.'**
+  String get errorPurchaseNotOpen;
+
+  /// Someone other than the provider answered or delivered a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Solo quien tiene que cumplir la compra puede responderla o entregarla.'**
+  String get errorNotProvider;
+
+  /// A call was refused because the member has left or been expelled
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no estás en este grupo.'**
+  String get errorNoGroup;
+
+  /// Shown on the create-or-join screen after being expelled from the group
+  ///
+  /// In es, this message translates to:
+  /// **'Ya no estás en el grupo. Puedes crear otro o unirte con un código.'**
+  String get leftGroupNotice;
+
   /// No description provided for @errorGeneric.
   ///
   /// In es, this message translates to:
   /// **'Algo ha fallado. Inténtalo otra vez.'**
   String get errorGeneric;
+
+  /// Shop section: purchases the signed-in member was chosen to fulfil
+  ///
+  /// In es, this message translates to:
+  /// **'Te toca cumplir'**
+  String get purchasesToFulfil;
+
+  /// Shop section: the signed-in member's purchases still in progress
+  ///
+  /// In es, this message translates to:
+  /// **'Tus compras'**
+  String get purchasesMine;
+
+  /// Title of a purchase whose reward is no longer in the shop list
+  ///
+  /// In es, this message translates to:
+  /// **'Recompensa'**
+  String get purchaseUnknownReward;
+
+  /// Name shown for a member who is no longer in the group
+  ///
+  /// In es, this message translates to:
+  /// **'Alguien'**
+  String get purchaseSomeone;
+
+  /// Button: the provider takes the purchase on
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptar'**
+  String get purchaseAccept;
+
+  /// Button: the provider refuses the purchase, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'Negarme'**
+  String get purchaseRefuse;
+
+  /// Title of the dialog before refusing a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'¿Negarte a cumplirla?'**
+  String get purchaseRefuseTitle;
+
+  /// Warns the provider what refusing a purchase costs
+  ///
+  /// In es, this message translates to:
+  /// **'Si te niegas pagas una multa, y quien compró recupera sus monedas.'**
+  String get purchaseRefuseNotice;
+
+  /// Button: the provider has fulfilled an accepted purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Marcar como entregada'**
+  String get purchaseMarkDelivered;
+
+  /// Message after accepting a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Compra aceptada: ahora te toca cumplirla'**
+  String get purchaseAccepted;
+
+  /// Message after refusing a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Te has negado: se ha cobrado la multa'**
+  String get purchaseRefused;
+
+  /// Message after marking a purchase delivered
+  ///
+  /// In es, this message translates to:
+  /// **'Entregada. ¡Bien hecho!'**
+  String get purchaseDelivered;
+
+  /// Purchase status: a child's purchase waiting for a guardian
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando al tutor'**
+  String get purchaseStatusPendingApproval;
+
+  /// Purchase status: waiting for the provider to accept
+  ///
+  /// In es, this message translates to:
+  /// **'Por aceptar'**
+  String get purchaseStatusPending;
+
+  /// Purchase status: accepted, not yet delivered
+  ///
+  /// In es, this message translates to:
+  /// **'Aceptada'**
+  String get purchaseStatusAccepted;
+
+  /// Purchase status: fulfilled
+  ///
+  /// In es, this message translates to:
+  /// **'Entregada'**
+  String get purchaseStatusDelivered;
+
+  /// Purchase status: the provider refused it
+  ///
+  /// In es, this message translates to:
+  /// **'Rechazada'**
+  String get purchaseStatusRefused;
+
+  /// Who bought a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'La compró {name}'**
+  String purchaseBoughtBy(String name);
+
+  /// Who has to fulfil a purchase
+  ///
+  /// In es, this message translates to:
+  /// **'Le toca cumplirla a {name}'**
+  String purchaseProvidedBy(String name);
+
+  /// Tasks tab section: tasks the signed-in member claimed, waiting for the group
+  ///
+  /// In es, this message translates to:
+  /// **'Tuyas en validación'**
+  String get sectionYoursInValidation;
+
+  /// Tasks tab section: open votes with nothing left for the signed-in member to do
+  ///
+  /// In es, this message translates to:
+  /// **'En votación'**
+  String get sectionInVoting;
+
+  /// Heading of the list of votes on a task
+  ///
+  /// In es, this message translates to:
+  /// **'Quién ha votado'**
+  String get votersTitle;
+
+  /// Shown when a task's open vote has no votes yet
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no ha votado nadie.'**
+  String get votersNone;
+
+  /// A yes vote in the voters list
+  ///
+  /// In es, this message translates to:
+  /// **'A favor'**
+  String get voteInFavour;
+
+  /// A no vote in the voters list
+  ///
+  /// In es, this message translates to:
+  /// **'En contra'**
+  String get voteAgainst;
+
+  /// Shown instead of the vote buttons on the member's own proposal
+  ///
+  /// In es, this message translates to:
+  /// **'La has propuesto tú: vota el resto del grupo.'**
+  String get ownProposalNotice;
+
+  /// Shown instead of the vote buttons once the member has voted
+  ///
+  /// In es, this message translates to:
+  /// **'Ya has votado. Falta que vote el resto.'**
+  String get alreadyVotedNotice;
+
+  /// Shown to everyone but the proposer on a counter-offered task
+  ///
+  /// In es, this message translates to:
+  /// **'Quien la propuso está decidiendo si acepta la contraoferta.'**
+  String get counterOfferWaitingNotice;
+
+  /// A counter-offer vote in the voters list
+  ///
+  /// In es, this message translates to:
+  /// **'Contraoferta: {reward}'**
+  String voteCounterOffer(int reward);
+
+  /// Button at the bottom of the group tab, and the confirm button of its dialog
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get signOut;
+
+  /// Title of the dialog that confirms signing out
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar sesión?'**
+  String get signOutTitle;
+
+  /// Body of the dialog that confirms signing out
+  ///
+  /// In es, this message translates to:
+  /// **'Volverás a la pantalla de inicio y podrás entrar con otra cuenta.'**
+  String get signOutBody;
 }
 
 class _AppLocalizationsDelegate

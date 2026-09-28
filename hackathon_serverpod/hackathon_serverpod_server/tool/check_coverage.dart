@@ -177,9 +177,9 @@ h1{margin:6px 0 4px;font-size:clamp(28px,5vw,38px);font-weight:700;letter-spacin
   transform-origin:50% 50%;transform:rotate(-90deg);
   stroke-dasharray:100 100;stroke-dashoffset:100;
   transition:stroke-dashoffset 1s cubic-bezier(.22,.9,.3,1),stroke .4s ease}
-.gauge-threshold{position:absolute;top:50%;left:50%;width:2px;height:20px;
-  background:var(--ink-soft);opacity:.55;border-radius:1px;
-  transform-origin:50% -55px;transform:translate(-50%,-75px) rotate(270deg)}
+.gauge-threshold{position:absolute;top:50%;left:50%;width:3px;height:22px;
+  margin:-11px 0 0 -1.5px;background:var(--ink);opacity:.7;border-radius:2px;
+  transform:rotate(var(--angle)) translateY(-63px)}
 .gauge-center{position:absolute;inset:0;display:flex;flex-direction:column;
   align-items:center;justify-content:center;text-align:center}
 .gauge-pct{font-size:28px;font-weight:700;letter-spacing:-.01em}
@@ -364,7 +364,11 @@ void _writeHtmlReport(
   required int totalHit,
   required int totalFound,
 }) {
-  final outDir = Directory('coverage/html')..createSync(recursive: true);
+  // Wiped first: pages of files that no longer exist, or another tool's
+  // report written to the same folder, would otherwise linger beside ours.
+  final outDir = Directory('coverage/html');
+  if (outDir.existsSync()) outDir.deleteSync(recursive: true);
+  outDir.createSync(recursive: true);
   final totalPct = totalFound > 0 ? 100 * totalHit / totalFound : 0.0;
   final root = Directory.current.path;
 
@@ -399,7 +403,7 @@ void _writeHtmlReport(
       <circle class="gauge-track" cx="50" cy="50" r="42" pathLength="100" />
       <circle class="gauge-fill" id="gaugeFill" cx="50" cy="50" r="42" pathLength="100" />
     </svg>
-    <div class="gauge-threshold" title="Mínimo ${_minPercent.toStringAsFixed(0)}%"></div>
+    <div class="gauge-threshold" style="--angle:${(_minPercent * 3.6).toStringAsFixed(1)}deg" title="Mínimo ${_minPercent.toStringAsFixed(0)}%"></div>
     <div class="gauge-center">
       <div class="gauge-pct mono" id="gaugePct">0%</div>
       <div class="gauge-frac mono">$totalHit / $totalFound</div>
@@ -410,7 +414,7 @@ void _writeHtmlReport(
     <div class="legend-row"><span class="legend-swatch" style="background:var(--good)"></span> ≥ 90% · sólido</div>
     <div class="legend-row"><span class="legend-swatch" style="background:var(--accent)"></span> ≥ ${_minPercent.toStringAsFixed(0)}%</div>
     <div class="legend-row"><span class="legend-swatch" style="background:var(--bad)"></span> &lt; ${_minPercent.toStringAsFixed(0)}%</div>
-    <div class="legend-row"><span class="legend-swatch" style="background:var(--ink-soft);opacity:.55"></span> marca gris · mínimo</div>
+    <div class="legend-row"><span class="legend-swatch" style="background:var(--ink);opacity:.7;width:3px"></span> marca en el anillo · mínimo</div>
   </div>
 </div>
 

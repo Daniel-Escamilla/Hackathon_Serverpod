@@ -13,10 +13,14 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:hackathon_serverpod_server/src/generated/groups/group_member.dart'
     as _is20wtgg;
+import 'package:hackathon_serverpod_server/src/generated/shop/purchase.dart'
+    as _il4ufzf6;
 import 'package:hackathon_serverpod_server/src/generated/shop/reward_item.dart'
     as _iub5jn2z;
 import 'package:hackathon_serverpod_server/src/generated/tasks/task.dart'
     as _i0sdpywk;
+import 'package:hackathon_serverpod_server/src/generated/tasks/task_vote.dart'
+    as _ini4h15w;
 import 'package:hackathon_serverpod_server/src/generated/wallet/coin_movement.dart'
     as _ijihwky5;
 import 'package:hackathon_serverpod_server/src/generated/wallet/ranking_entry.dart'
@@ -27,7 +31,11 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
-import 'greetings/greeting.dart' as _izw8z7ou;
+import 'events/group_event.dart' as _iecilz9e;
+import 'events/group_event_kind.dart' as _il82a0w2;
+import 'future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
+    as _if11z8io;
+import 'groups/child_login_code.dart' as _ivjbsthj;
 import 'groups/group.dart' as _i9ztykbt;
 import 'groups/group_error_reason.dart' as _i7quka6t;
 import 'groups/group_exception.dart' as _i3la3wci;
@@ -40,7 +48,11 @@ import 'shop/purchase_status.dart' as _ifglcefk;
 import 'shop/reward_item.dart' as _ikfprkod;
 import 'shop/reward_item_status.dart' as _i2lcnj26;
 import 'shop/reward_vote.dart' as _iod77io3;
+import 'shop/shop_error_reason.dart' as _il3xdzmd;
+import 'shop/shop_exception.dart' as _i0uw1vc9;
 import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_error_reason.dart' as _iorvycr6;
+import 'tasks/task_exception.dart' as _ima0h3gh;
 import 'tasks/task_kind.dart' as _i4hckegz;
 import 'tasks/task_recurrence.dart' as _ieirl7mq;
 import 'tasks/task_status.dart' as _i65tv1la;
@@ -50,7 +62,9 @@ import 'wallet/coin_movement.dart' as _ii2179p0;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
-export 'greetings/greeting.dart';
+export 'events/group_event.dart';
+export 'events/group_event_kind.dart';
+export 'groups/child_login_code.dart';
 export 'groups/group.dart';
 export 'groups/group_error_reason.dart';
 export 'groups/group_exception.dart';
@@ -63,7 +77,11 @@ export 'shop/purchase_status.dart';
 export 'shop/reward_item.dart';
 export 'shop/reward_item_status.dart';
 export 'shop/reward_vote.dart';
+export 'shop/shop_error_reason.dart';
+export 'shop/shop_exception.dart';
 export 'tasks/task.dart';
+export 'tasks/task_error_reason.dart';
+export 'tasks/task_exception.dart';
 export 'tasks/task_kind.dart';
 export 'tasks/task_recurrence.dart';
 export 'tasks/task_status.dart';
@@ -82,6 +100,86 @@ class Protocol extends _is.DatabaseSerializationManager {
   static final Protocol _instance = Protocol._().._registerHostProtocols();
 
   static List<_isp.TableDefinition> get targetTableDefinitions => [
+    _isp.TableDefinition(
+      name: 'child_login_code',
+      dartName: 'ChildLoginCode',
+      schema: 'public',
+      module: 'hackathon_serverpod',
+      columns: [
+        _isp.ColumnDefinition(
+          name: 'id',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int?',
+          columnDefault: 'serial',
+        ),
+        _isp.ColumnDefinition(
+          name: 'memberId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: false,
+          dartType: 'int',
+        ),
+        _isp.ColumnDefinition(
+          name: 'codeHash',
+          columnType: _isp.ColumnType.text,
+          isNullable: false,
+          dartType: 'String',
+        ),
+        _isp.ColumnDefinition(
+          name: 'expiresAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: false,
+          dartType: 'DateTime',
+        ),
+        _isp.ColumnDefinition(
+          name: 'usedAt',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+      ],
+      foreignKeys: [
+        _isp.ForeignKeyDefinition(
+          constraintName: 'child_login_code_fk_0',
+          columns: ['memberId'],
+          referenceTable: 'group_member',
+          referenceTableSchema: 'public',
+          referenceColumns: ['id'],
+          onUpdate: _isp.ForeignKeyAction.noAction,
+          onDelete: _isp.ForeignKeyAction.noAction,
+          matchType: null,
+        ),
+      ],
+      indexes: [
+        _isp.IndexDefinition(
+          indexName: 'child_login_code_member_id_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'memberId',
+            ),
+          ],
+          type: 'btree',
+          isUnique: false,
+          isPrimary: false,
+        ),
+        _isp.IndexDefinition(
+          indexName: 'child_login_code_code_hash_idx',
+          tableSpace: null,
+          elements: [
+            _isp.IndexElementDefinition(
+              type: _isp.IndexElementDefinitionType.column,
+              definition: 'codeHash',
+            ),
+          ],
+          type: 'btree',
+          isUnique: true,
+          isPrimary: false,
+        ),
+      ],
+      managed: true,
+    ),
     _isp.TableDefinition(
       name: 'coin_transaction',
       dartName: 'CoinTransaction',
@@ -950,8 +1048,17 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
 
-    if (t == _izw8z7ou.Greeting) {
-      return _izw8z7ou.Greeting.fromJson(data) as T;
+    if (t == _iecilz9e.GroupEvent) {
+      return _iecilz9e.GroupEvent.fromJson(data) as T;
+    }
+    if (t == _il82a0w2.GroupEventKind) {
+      return _il82a0w2.GroupEventKind.fromJson(data) as T;
+    }
+    if (t == _if11z8io.TaskVoteFutureCallExpireVoteModel) {
+      return _if11z8io.TaskVoteFutureCallExpireVoteModel.fromJson(data) as T;
+    }
+    if (t == _ivjbsthj.ChildLoginCode) {
+      return _ivjbsthj.ChildLoginCode.fromJson(data) as T;
     }
     if (t == _i9ztykbt.Group) {
       return _i9ztykbt.Group.fromJson(data) as T;
@@ -989,8 +1096,20 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _iod77io3.RewardVote) {
       return _iod77io3.RewardVote.fromJson(data) as T;
     }
+    if (t == _il3xdzmd.ShopErrorReason) {
+      return _il3xdzmd.ShopErrorReason.fromJson(data) as T;
+    }
+    if (t == _i0uw1vc9.ShopException) {
+      return _i0uw1vc9.ShopException.fromJson(data) as T;
+    }
     if (t == _i253is06.Task) {
       return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _iorvycr6.TaskErrorReason) {
+      return _iorvycr6.TaskErrorReason.fromJson(data) as T;
+    }
+    if (t == _ima0h3gh.TaskException) {
+      return _ima0h3gh.TaskException.fromJson(data) as T;
     }
     if (t == _i4hckegz.TaskKind) {
       return _i4hckegz.TaskKind.fromJson(data) as T;
@@ -1019,8 +1138,22 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _izo0hjq0.RankingEntry) {
       return _izo0hjq0.RankingEntry.fromJson(data) as T;
     }
-    if (t == _is.getType<_izw8z7ou.Greeting?>()) {
-      return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
+    if (t == _is.getType<_iecilz9e.GroupEvent?>()) {
+      return (data != null ? _iecilz9e.GroupEvent.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_il82a0w2.GroupEventKind?>()) {
+      return (data != null ? _il82a0w2.GroupEventKind.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_if11z8io.TaskVoteFutureCallExpireVoteModel?>()) {
+      return (data != null
+              ? _if11z8io.TaskVoteFutureCallExpireVoteModel.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _is.getType<_ivjbsthj.ChildLoginCode?>()) {
+      return (data != null ? _ivjbsthj.ChildLoginCode.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_i9ztykbt.Group?>()) {
       return (data != null ? _i9ztykbt.Group.fromJson(data) : null) as T;
@@ -1064,8 +1197,24 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _is.getType<_iod77io3.RewardVote?>()) {
       return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
     }
+    if (t == _is.getType<_il3xdzmd.ShopErrorReason?>()) {
+      return (data != null ? _il3xdzmd.ShopErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_i0uw1vc9.ShopException?>()) {
+      return (data != null ? _i0uw1vc9.ShopException.fromJson(data) : null)
+          as T;
+    }
     if (t == _is.getType<_i253is06.Task?>()) {
       return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _is.getType<_iorvycr6.TaskErrorReason?>()) {
+      return (data != null ? _iorvycr6.TaskErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _is.getType<_ima0h3gh.TaskException?>()) {
+      return (data != null ? _ima0h3gh.TaskException.fromJson(data) : null)
+          as T;
     }
     if (t == _is.getType<_i4hckegz.TaskKind?>()) {
       return (data != null ? _i4hckegz.TaskKind.fromJson(data) : null) as T;
@@ -1112,8 +1261,20 @@ class Protocol extends _is.DatabaseSerializationManager {
               .toList()
           as T;
     }
+    if (t == List<_il4ufzf6.Purchase>) {
+      return (data as List)
+              .map((e) => deserialize<_il4ufzf6.Purchase>(e))
+              .toList()
+          as T;
+    }
     if (t == List<_i0sdpywk.Task>) {
       return (data as List).map((e) => deserialize<_i0sdpywk.Task>(e)).toList()
+          as T;
+    }
+    if (t == List<_ini4h15w.TaskVote>) {
+      return (data as List)
+              .map((e) => deserialize<_ini4h15w.TaskVote>(e))
+              .toList()
           as T;
     }
     if (t == List<_ijihwky5.CoinMovement>) {
@@ -1142,7 +1303,11 @@ class Protocol extends _is.DatabaseSerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _izw8z7ou.Greeting => 'Greeting',
+      _iecilz9e.GroupEvent => 'GroupEvent',
+      _il82a0w2.GroupEventKind => 'GroupEventKind',
+      _if11z8io.TaskVoteFutureCallExpireVoteModel =>
+        'TaskVoteFutureCallExpireVoteModel',
+      _ivjbsthj.ChildLoginCode => 'ChildLoginCode',
       _i9ztykbt.Group => 'Group',
       _i7quka6t.GroupErrorReason => 'GroupErrorReason',
       _i3la3wci.GroupException => 'GroupException',
@@ -1155,7 +1320,11 @@ class Protocol extends _is.DatabaseSerializationManager {
       _ikfprkod.RewardItem => 'RewardItem',
       _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
       _iod77io3.RewardVote => 'RewardVote',
+      _il3xdzmd.ShopErrorReason => 'ShopErrorReason',
+      _i0uw1vc9.ShopException => 'ShopException',
       _i253is06.Task => 'Task',
+      _iorvycr6.TaskErrorReason => 'TaskErrorReason',
+      _ima0h3gh.TaskException => 'TaskException',
       _i4hckegz.TaskKind => 'TaskKind',
       _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
       _i65tv1la.TaskStatus => 'TaskStatus',
@@ -1182,8 +1351,14 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
 
     switch (data) {
-      case _izw8z7ou.Greeting():
-        return 'Greeting';
+      case _iecilz9e.GroupEvent():
+        return 'GroupEvent';
+      case _il82a0w2.GroupEventKind():
+        return 'GroupEventKind';
+      case _if11z8io.TaskVoteFutureCallExpireVoteModel():
+        return 'TaskVoteFutureCallExpireVoteModel';
+      case _ivjbsthj.ChildLoginCode():
+        return 'ChildLoginCode';
       case _i9ztykbt.Group():
         return 'Group';
       case _i7quka6t.GroupErrorReason():
@@ -1208,8 +1383,16 @@ class Protocol extends _is.DatabaseSerializationManager {
         return 'RewardItemStatus';
       case _iod77io3.RewardVote():
         return 'RewardVote';
+      case _il3xdzmd.ShopErrorReason():
+        return 'ShopErrorReason';
+      case _i0uw1vc9.ShopException():
+        return 'ShopException';
       case _i253is06.Task():
         return 'Task';
+      case _iorvycr6.TaskErrorReason():
+        return 'TaskErrorReason';
+      case _ima0h3gh.TaskException():
+        return 'TaskException';
       case _i4hckegz.TaskKind():
         return 'TaskKind';
       case _ieirl7mq.TaskRecurrence():
@@ -1254,8 +1437,19 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'Greeting') {
-      return deserialize<_izw8z7ou.Greeting>(data['data']);
+    if (dataClassName == 'GroupEvent') {
+      return deserialize<_iecilz9e.GroupEvent>(data['data']);
+    }
+    if (dataClassName == 'GroupEventKind') {
+      return deserialize<_il82a0w2.GroupEventKind>(data['data']);
+    }
+    if (dataClassName == 'TaskVoteFutureCallExpireVoteModel') {
+      return deserialize<_if11z8io.TaskVoteFutureCallExpireVoteModel>(
+        data['data'],
+      );
+    }
+    if (dataClassName == 'ChildLoginCode') {
+      return deserialize<_ivjbsthj.ChildLoginCode>(data['data']);
     }
     if (dataClassName == 'Group') {
       return deserialize<_i9ztykbt.Group>(data['data']);
@@ -1293,8 +1487,20 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (dataClassName == 'RewardVote') {
       return deserialize<_iod77io3.RewardVote>(data['data']);
     }
+    if (dataClassName == 'ShopErrorReason') {
+      return deserialize<_il3xdzmd.ShopErrorReason>(data['data']);
+    }
+    if (dataClassName == 'ShopException') {
+      return deserialize<_i0uw1vc9.ShopException>(data['data']);
+    }
     if (dataClassName == 'Task') {
       return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskErrorReason') {
+      return deserialize<_iorvycr6.TaskErrorReason>(data['data']);
+    }
+    if (dataClassName == 'TaskException') {
+      return deserialize<_ima0h3gh.TaskException>(data['data']);
     }
     if (dataClassName == 'TaskKind') {
       return deserialize<_i4hckegz.TaskKind>(data['data']);
@@ -1364,6 +1570,8 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
     switch (t) {
+      case _ivjbsthj.ChildLoginCode:
+        return _ivjbsthj.ChildLoginCode.t;
       case _i9ztykbt.Group:
         return _i9ztykbt.Group.t;
       case _iio6btzp.GroupMember:

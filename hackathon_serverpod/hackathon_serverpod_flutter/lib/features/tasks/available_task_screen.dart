@@ -6,8 +6,10 @@ import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
 import '../../common/widgets.dart';
+import '../../data/app_failure.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import 'tasks_controller.dart';
 
@@ -59,7 +61,13 @@ class AvailableTaskScreen extends StatelessWidget {
       }
     } catch (e) {
       if (context.mounted) {
-        showMessage(context, l10n.claimError, isError: true);
+        showMessage(
+          context,
+          failureOf(e) == AppFailure.taskNotOpen
+              ? l10n.claimTaken
+              : failureMessage(e, l10n, fallback: l10n.claimError),
+          isError: true,
+        );
       }
     }
   }

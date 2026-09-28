@@ -20,6 +20,20 @@ class ShopEndpoint extends Endpoint {
     );
   }
 
+  /// The signed-in member's purchases: the ones they bought and the ones they
+  /// were chosen to fulfil, most recent first (PRODUCT.md §6). Other members'
+  /// purchases between themselves stay out.
+  Future<List<Purchase>> listPurchases(Session session) async {
+    final member = await currentGroupMember(session);
+    return Purchase.db.find(
+      session,
+      where: (t) =>
+          t.groupId.equals(member.groupId) &
+          (t.buyerId.equals(member.id!) | t.providerId.equals(member.id!)),
+      orderBy: (t) => t.id.desc(),
+    );
+  }
+
   /// Propose a new reward. Starts `proposed` and goes to a vote in piso/pareja.
   Future<RewardItem> proposeReward(
     Session session,
@@ -29,7 +43,7 @@ class ShopEndpoint extends Endpoint {
     int? stock,
   }) async {
     final member = await currentGroupMember(session);
-    return RewardItem.db.insertRow(
+    return _shopService.propose(
       session,
       RewardItem(
         groupId: member.groupId,
@@ -73,7 +87,7 @@ class ShopEndpoint extends Endpoint {
 
     final provider = await GroupMember.db.findById(session, providerId);
     if (provider == null || provider.groupId != member.groupId) {
-      throw StateError('Provider not found in your group.');
+      throw ShopException(reason: ShopErrorReason.invalidProvider);
     }
 
     return _shopService.purchase(
@@ -102,9 +116,7 @@ class ShopEndpoint extends Endpoint {
     final member = await currentGroupMember(session);
     final purchase = await _findGroupPurchase(session, member, purchaseId);
     if (purchase.providerId != member.id) {
-      throw StateError(
-        'Only the assigned provider can respond to this purchase.',
-      );
+      throw ShopException(reason: ShopErrorReason.notProvider);
     }
 
     final item = await RewardItem.db.findById(session, purchase.itemId);
@@ -127,9 +139,7 @@ class ShopEndpoint extends Endpoint {
     final member = await currentGroupMember(session);
     final purchase = await _findGroupPurchase(session, member, purchaseId);
     if (purchase.providerId != member.id) {
-      throw StateError(
-        'Only the assigned provider can mark this purchase delivered.',
-      );
+      throw ShopException(reason: ShopErrorReason.notProvider);
     }
 
     await _shopService.markDelivered(session, purchase);
@@ -142,7 +152,7 @@ class ShopEndpoint extends Endpoint {
   ) async {
     final item = await RewardItem.db.findById(session, itemId);
     if (item == null || item.groupId != member.groupId) {
-      throw StateError('Reward not found in your group.');
+      throw ShopException(reason: ShopErrorReason.rewardNotFound);
     }
     return item;
   }
@@ -154,7 +164,7 @@ class ShopEndpoint extends Endpoint {
   ) async {
     final purchase = await Purchase.db.findById(session, purchaseId);
     if (purchase == null || purchase.groupId != member.groupId) {
-      throw StateError('Purchase not found in your group.');
+      throw ShopException(reason: ShopErrorReason.purchaseNotFound);
     }
     return purchase;
   }

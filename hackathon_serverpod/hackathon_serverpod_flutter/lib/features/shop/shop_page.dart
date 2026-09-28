@@ -7,8 +7,10 @@ import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../group/group_controller.dart';
 import 'buy_reward_screen.dart';
 import 'propose_reward_screen.dart';
+import 'purchase_screen.dart';
 import 'reward_vote_screen.dart';
 import 'shop_controller.dart';
 
@@ -66,6 +68,28 @@ class _Body extends StatelessWidget {
         .where((r) => r.status == RewardItemStatus.proposed)
         .toList();
 
+    final myMemberId = context.watch<GroupController>().myMemberId;
+    final live = controller.purchases.where(
+      (p) =>
+          p.status == PurchaseStatus.pendingApproval ||
+          p.status == PurchaseStatus.pending ||
+          p.status == PurchaseStatus.accepted,
+    );
+    final toFulfil = live.where((p) => p.providerId == myMemberId).toList();
+    final bought = live.where((p) => p.buyerId == myMemberId).toList();
+    Widget purchaseTile(Purchase purchase) => Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: _PurchaseTile(
+        purchase: purchase,
+        title:
+            controller.rewardFor(purchase)?.title ?? l10n.purchaseUnknownReward,
+        onTap: () => pushPage(
+          context,
+          PurchaseScreen(purchase: purchase, myMemberId: myMemberId),
+        ),
+      ),
+    );
+
     return RefreshIndicator(
       onRefresh: controller.load,
       child: ListView(
@@ -80,6 +104,16 @@ class _Body extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
+          if (toFulfil.isNotEmpty) ...[
+            _SectionTitle(l10n.purchasesToFulfil),
+            for (final purchase in toFulfil) purchaseTile(purchase),
+            const SizedBox(height: 8),
+          ],
+          if (bought.isNotEmpty) ...[
+            _SectionTitle(l10n.purchasesMine),
+            for (final purchase in bought) purchaseTile(purchase),
+            const SizedBox(height: 8),
+          ],
           if (active.isEmpty && proposed.isEmpty)
             Padding(
               padding: const EdgeInsets.only(top: 60),
@@ -113,6 +147,53 @@ class _Body extends StatelessWidget {
                 ),
               ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 10, top: 6),
+    child: Text(label, style: Theme.of(context).textTheme.titleMedium),
+  );
+}
+
+class _PurchaseTile extends StatelessWidget {
+  const _PurchaseTile({
+    required this.purchase,
+    required this.title,
+    required this.onTap,
+  });
+
+  final Purchase purchase;
+  final String title;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return SoftCard(
+      onTap: onTap,
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.w900),
+            ),
+          ),
+          StatusPill(
+            label: purchaseStatusLabel(l10n, purchase.status),
+            color: purchaseStatusColor(purchase.status),
+          ),
+          const Icon(Icons.chevron_right_rounded),
         ],
       ),
     );

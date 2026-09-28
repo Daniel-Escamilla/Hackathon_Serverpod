@@ -13,11 +13,17 @@
 import 'package:serverpod/serverpod.dart' as _is;
 
 /// Why a CoinTransaction happened (PRODUCT.md §4.6: ganado, multado, gastado, devuelto).
+/// `fined` is a fine outside the task cycle (ShopService: refusing to fulfil a
+/// purchased reward). The task cycle's three fines each have their own value
+/// so the wallet history says why, not just "multado" for all of them.
 enum CoinTransactionReason implements _is.SerializableModel {
   earned,
   fined,
   spent,
-  refunded;
+  refunded,
+  proposalDenied,
+  validationDenied,
+  voteExpired;
 
   static CoinTransactionReason fromJson(String name) {
     switch (name) {
@@ -29,6 +35,12 @@ enum CoinTransactionReason implements _is.SerializableModel {
         return CoinTransactionReason.spent;
       case 'refunded':
         return CoinTransactionReason.refunded;
+      case 'proposalDenied':
+        return CoinTransactionReason.proposalDenied;
+      case 'validationDenied':
+        return CoinTransactionReason.validationDenied;
+      case 'voteExpired':
+        return CoinTransactionReason.voteExpired;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "CoinTransactionReason"',

@@ -1,7 +1,13 @@
 ### Why a CoinTransaction happened (PRODUCT.md §4.6: ganado, multado, gastado, devuelto).
+### `fined` is a fine outside the task cycle (ShopService: refusing to fulfil a
+### purchased reward). The task cycle's three fines each have their own value
+### so the wallet history says why, not just "multado" for all of them.
 enum: CoinTransactionReason
 values:
   - earned
   - fined
   - spent
   - refunded
+  - proposalDenied
+  - validationDenied
+  - voteExpired

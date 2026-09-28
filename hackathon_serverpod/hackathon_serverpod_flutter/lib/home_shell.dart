@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
 import 'app_theme.dart';
 import 'common/navigation.dart';
+import 'data/app_failure.dart';
 import 'features/group/group_controller.dart';
 import 'features/group/group_page.dart';
 import 'features/shop/shop_controller.dart';
@@ -34,6 +38,33 @@ class HomeTabController extends ChangeNotifier {
   }
 }
 
+/// Whether [error], held by any of the tab controllers, means the member is no
+/// longer in the group: expelled while the app was open.
+bool meansNoGroup(Object? error) =>
+    error != null && failureOf(error) == AppFailure.noGroup;
+
+/// The data behind [HomeShell]'s tabs, each owned by one controller.
+enum HomeData { tasks, shop, wallet, group }
+
+/// What a live event from the group's stream makes out of date, so
+/// [HomeShell] reloads just that. Anything that moves coins — a validation
+/// paying, a purchase charging, a refusal fining and refunding — also
+/// reloads the wallet.
+@visibleForTesting
+Set<HomeData> staleAfter(GroupEventKind kind) => switch (kind) {
+  GroupEventKind.taskProposed ||
+  GroupEventKind.taskVoteCast ||
+  GroupEventKind.taskCounterOffered ||
+  GroupEventKind.taskClaimed => {HomeData.tasks},
+  GroupEventKind.taskValidated => {HomeData.tasks, HomeData.wallet},
+  GroupEventKind.rewardProposed ||
+  GroupEventKind.rewardVoteCast ||
+  GroupEventKind.purchaseDelivered => {HomeData.shop},
+  GroupEventKind.purchased ||
+  GroupEventKind.purchaseResponded => {HomeData.shop, HomeData.wallet},
+  GroupEventKind.memberExpelled => {HomeData.group},
+};
+
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key, this.initialIndex = 0});
 
@@ -49,9 +80,84 @@ class _HomeShellState extends State<HomeShell> {
   final _shopController = ShopController()..load();
   final _walletController = WalletController()..load();
   final _groupController = GroupController()..load();
+  StreamSubscription<GroupEvent>? _events;
+  bool _leaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchGroup();
+    for (final controller in _controllers) {
+      controller.addListener(_leaveIfNoGroup);
+    }
+  }
+
+  List<ChangeNotifier> get _controllers => [
+    _tasksController,
+    _shopController,
+    _walletController,
+    _groupController,
+  ];
+
+  /// A load refused with "no membership" means the member was expelled while
+  /// the stream was down, so the event never arrived.
+  void _leaveIfNoGroup() {
+    if ([
+      _tasksController.error,
+      _shopController.error,
+      _walletController.error,
+      _groupController.error,
+    ].any(meansNoGroup)) {
+      _leaveGroup();
+    }
+  }
+
+  void _leaveGroup() {
+    if (_leaving || !mounted) return;
+    _leaving = true;
+    unawaited(_events?.cancel());
+    _events = null;
+    leaveHome(context, AppLocalizations.of(context).leftGroupNotice);
+  }
+
+  /// Listens to the group's live stream (PRODUCT.md §10.4) so a vote, a
+  /// claim or a purchase made on another phone shows up here without pulling
+  /// to refresh. If the connection drops, it tries again a few seconds later.
+  void _watchGroup() {
+    _events = _groupController.repository.watchGroup().listen(
+      _onGroupEvent,
+      onError: (Object _) => _retryWatch(),
+      onDone: _retryWatch,
+      cancelOnError: true,
+    );
+  }
+
+  void _retryWatch() {
+    _events = null;
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted && !_leaving && _events == null) _watchGroup();
+    });
+  }
+
+  void _onGroupEvent(GroupEvent event) {
+    if (event.kind == GroupEventKind.memberExpelled &&
+        event.memberId == _groupController.myMemberId) {
+      _leaveGroup();
+      return;
+    }
+    for (final data in staleAfter(event.kind)) {
+      unawaited(switch (data) {
+        HomeData.tasks => _tasksController.load(),
+        HomeData.shop => _shopController.load(),
+        HomeData.wallet => _walletController.load(),
+        HomeData.group => _groupController.load(),
+      });
+    }
+  }
 
   @override
   void dispose() {
+    unawaited(_events?.cancel());
     _tabController.dispose();
     _tasksController.dispose();
     _shopController.dispose();

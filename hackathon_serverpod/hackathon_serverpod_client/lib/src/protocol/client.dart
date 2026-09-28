@@ -11,8 +11,8 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _ida;
-import 'package:hackathon_serverpod_client/src/protocol/greetings/greeting.dart'
-    as _icy68nvy;
+import 'package:hackathon_serverpod_client/src/protocol/events/group_event.dart'
+    as _ixxl2uus;
 import 'package:hackathon_serverpod_client/src/protocol/groups/group.dart'
     as _iubjh9pq;
 import 'package:hackathon_serverpod_client/src/protocol/groups/group_member.dart'
@@ -25,6 +25,8 @@ import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
     as _ibcsn808;
 import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
     as _i7vt05yn;
+import 'package:hackathon_serverpod_client/src/protocol/tasks/task_vote.dart'
+    as _itpz8rf5;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_movement.dart'
     as _ibr29qpn;
 import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
@@ -262,21 +264,25 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
       );
 }
 
-/// This is an example endpoint that returns a greeting message through
-/// its [hello] method.
+/// Live updates for the signed-in member's group (PRODUCT.md §10.4, issue #65).
 /// {@category Endpoint}
-class EndpointGreeting extends _isc.EndpointRef {
-  EndpointGreeting(_isc.EndpointCaller caller) : super(caller);
+class EndpointEvent extends _isc.EndpointRef {
+  EndpointEvent(_isc.EndpointCaller caller) : super(caller);
 
   @override
-  String get name => 'greeting';
+  String get name => 'event';
 
-  /// Returns a personalized greeting message: "Hello {name}".
-  _ida.Future<_icy68nvy.Greeting> hello(String name) =>
-      caller.callServerEndpoint<_icy68nvy.Greeting>(
-        'greeting',
-        'hello',
-        {'name': name},
+  /// Subscribes to the group's Stream: every `GroupEvent` published for it
+  /// from this point on, until the client stops listening.
+  _ida.Stream<_ixxl2uus.GroupEvent> watchGroup() =>
+      caller.callStreamingServerEndpoint<
+        _ida.Stream<_ixxl2uus.GroupEvent>,
+        _ixxl2uus.GroupEvent
+      >(
+        'event',
+        'watchGroup',
+        {},
+        {},
       );
 }
 
@@ -366,6 +372,34 @@ class EndpointGroup extends _isc.EndpointRef {
         'regenerateInviteCode',
         {},
       );
+
+  /// The admin hands the role over to [memberId] and becomes a plain member
+  /// (PRODUCT.md §7). Never to themselves, and never to a child (§8).
+  ///
+  /// Both roles change in one transaction on the admin's row read locked:
+  /// two hand-overs sent at once would otherwise both pass the admin check
+  /// and leave the group with two admins.
+  _ida.Future<_ir4oz66a.GroupMember> transferAdmin(int memberId) =>
+      caller.callServerEndpoint<_ir4oz66a.GroupMember>(
+        'group',
+        'transferAdmin',
+        {'memberId': memberId},
+      );
+
+  /// The admin renames the group or changes its fine percentage (PRODUCT.md
+  /// §7, §4.4). A field left null keeps its current value; the profile is not
+  /// here because it never changes after creation.
+  _ida.Future<_iubjh9pq.Group> updateGroup({
+    String? name,
+    int? finePercent,
+  }) => caller.callServerEndpoint<_iubjh9pq.Group>(
+    'group',
+    'updateGroup',
+    {
+      'name': name,
+      'finePercent': finePercent,
+    },
+  );
 }
 
 /// List, propose, vote, buy and fulfil rewards (PRODUCT.md §6, §10.3).
@@ -381,6 +415,16 @@ class EndpointShop extends _isc.EndpointRef {
       caller.callServerEndpoint<List<_ibcsn808.RewardItem>>(
         'shop',
         'listRewards',
+        {},
+      );
+
+  /// The signed-in member's purchases: the ones they bought and the ones they
+  /// were chosen to fulfil, most recent first (PRODUCT.md §6). Other members'
+  /// purchases between themselves stay out.
+  _ida.Future<List<_idofij3t.Purchase>> listPurchases() =>
+      caller.callServerEndpoint<List<_idofij3t.Purchase>>(
+        'shop',
+        'listPurchases',
         {},
       );
 
@@ -491,6 +535,18 @@ class EndpointTask extends _isc.EndpointRef {
       caller.callServerEndpoint<List<_i7vt05yn.Task>>(
         'task',
         'listTasks',
+        {},
+      );
+
+  /// The votes cast so far in the group's open votes: the proposal votes of
+  /// tasks still `proposed` or `counterOffered` and the completion votes of
+  /// tasks `inValidation`. Lets the app show who has voted and leave out of
+  /// "waiting for your vote" what the member already voted (PRODUCT.md §11).
+  /// Closed votes stay out, so the list does not grow with the history.
+  _ida.Future<List<_itpz8rf5.TaskVote>> listTaskVotes() =>
+      caller.callServerEndpoint<List<_itpz8rf5.TaskVote>>(
+        'task',
+        'listTaskVotes',
         {},
       );
 
@@ -656,7 +712,7 @@ class Client extends _isc.ServerpodClientShared {
        ) {
     emailIdp = EndpointEmailIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
-    greeting = EndpointGreeting(this);
+    event = EndpointEvent(this);
     group = EndpointGroup(this);
     shop = EndpointShop(this);
     task = EndpointTask(this);
@@ -668,7 +724,7 @@ class Client extends _isc.ServerpodClientShared {
 
   late final EndpointJwtRefresh jwtRefresh;
 
-  late final EndpointGreeting greeting;
+  late final EndpointEvent event;
 
   late final EndpointGroup group;
 
@@ -684,7 +740,7 @@ class Client extends _isc.ServerpodClientShared {
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
     'jwtRefresh': jwtRefresh,
-    'greeting': greeting,
+    'event': event,
     'group': group,
     'shop': shop,
     'task': task,
