@@ -5,6 +5,7 @@ import 'package:hackathon_serverpod_flutter/common/navigation.dart';
 import 'package:hackathon_serverpod_flutter/features/group/group_controller.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/shop_controller.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/tasks_controller.dart';
+import 'package:hackathon_serverpod_flutter/features/wallet/wallet_controller.dart';
 import 'package:hackathon_serverpod_flutter/l10n/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -89,6 +90,14 @@ class FakeGroupController extends GroupController {
   int? get myMemberId => me;
 }
 
+/// A balance set by hand instead of loaded from the server.
+class FakeWalletController extends WalletController {
+  FakeWalletController({int balance = 100}) {
+    this.balance = balance;
+    hasLoaded = true;
+  }
+}
+
 GroupMember member(int id, String name) => GroupMember(
   id: id,
   groupId: 1,
@@ -108,10 +117,14 @@ Future<void> openScreen(
   TasksController? tasks,
   ShopController? shop,
   GroupController? group,
+  WalletController? wallet,
 }) async {
   await tester.pumpWidget(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider<WalletController>.value(
+          value: wallet ?? FakeWalletController(),
+        ),
         ChangeNotifierProvider<TasksController>.value(
           value: tasks ?? FakeTasksController(),
         ),

@@ -22,6 +22,8 @@ abstract class GroupMember
     required this.groupId,
     required this.authUserId,
     required this.displayName,
+    this.avatarEmoji,
+    this.avatarColor,
     required this.role,
     _ik3oel1z.GroupMemberStatus? status,
     int? balance,
@@ -36,6 +38,8 @@ abstract class GroupMember
     required int groupId,
     required _is.UuidValue authUserId,
     required String displayName,
+    String? avatarEmoji,
+    String? avatarColor,
     required _iboql8hx.GroupMemberRole role,
     _ik3oel1z.GroupMemberStatus? status,
     int? balance,
@@ -51,6 +55,8 @@ abstract class GroupMember
         jsonSerialization['authUserId'],
       ),
       displayName: jsonSerialization['displayName'] as String,
+      avatarEmoji: jsonSerialization['avatarEmoji'] as String?,
+      avatarColor: jsonSerialization['avatarColor'] as String?,
       role: _iboql8hx.GroupMemberRole.fromJson(
         (jsonSerialization['role'] as String),
       ),
@@ -82,6 +88,12 @@ abstract class GroupMember
 
   String displayName;
 
+  /// The emoji the member picked as their picture. Null until they pick one: the app shows their initial instead.
+  String? avatarEmoji;
+
+  /// The avatar's background, a colour name from the app's palette (sky, lime, coral...). Null means the default. The app owns the palette, so an unknown name falls back to the default rather than failing.
+  String? avatarColor;
+
   _iboql8hx.GroupMemberRole role;
 
   _ik3oel1z.GroupMemberStatus status;
@@ -105,6 +117,8 @@ abstract class GroupMember
     int? groupId,
     _is.UuidValue? authUserId,
     String? displayName,
+    String? avatarEmoji,
+    String? avatarColor,
     _iboql8hx.GroupMemberRole? role,
     _ik3oel1z.GroupMemberStatus? status,
     int? balance,
@@ -119,6 +133,8 @@ abstract class GroupMember
       'groupId': groupId,
       'authUserId': authUserId.toJson(),
       'displayName': displayName,
+      if (avatarEmoji != null) 'avatarEmoji': avatarEmoji,
+      if (avatarColor != null) 'avatarColor': avatarColor,
       'role': role.toJson(),
       'status': status.toJson(),
       'balance': balance,
@@ -135,6 +151,8 @@ abstract class GroupMember
       'groupId': groupId,
       'authUserId': authUserId.toJson(),
       'displayName': displayName,
+      if (avatarEmoji != null) 'avatarEmoji': avatarEmoji,
+      if (avatarColor != null) 'avatarColor': avatarColor,
       'role': role.toJson(),
       'status': status.toJson(),
       'balance': balance,
@@ -179,6 +197,8 @@ class _GroupMemberImpl extends GroupMember {
     required int groupId,
     required _is.UuidValue authUserId,
     required String displayName,
+    String? avatarEmoji,
+    String? avatarColor,
     required _iboql8hx.GroupMemberRole role,
     _ik3oel1z.GroupMemberStatus? status,
     int? balance,
@@ -189,6 +209,8 @@ class _GroupMemberImpl extends GroupMember {
          groupId: groupId,
          authUserId: authUserId,
          displayName: displayName,
+         avatarEmoji: avatarEmoji,
+         avatarColor: avatarColor,
          role: role,
          status: status,
          balance: balance,
@@ -205,6 +227,8 @@ class _GroupMemberImpl extends GroupMember {
     int? groupId,
     _is.UuidValue? authUserId,
     String? displayName,
+    Object? avatarEmoji = _Undefined,
+    Object? avatarColor = _Undefined,
     _iboql8hx.GroupMemberRole? role,
     _ik3oel1z.GroupMemberStatus? status,
     int? balance,
@@ -216,6 +240,8 @@ class _GroupMemberImpl extends GroupMember {
       groupId: groupId ?? this.groupId,
       authUserId: authUserId ?? this.authUserId,
       displayName: displayName ?? this.displayName,
+      avatarEmoji: avatarEmoji is String? ? avatarEmoji : this.avatarEmoji,
+      avatarColor: avatarColor is String? ? avatarColor : this.avatarColor,
       role: role ?? this.role,
       status: status ?? this.status,
       balance: balance ?? this.balance,
@@ -242,6 +268,16 @@ class GroupMemberUpdateTable extends _is.UpdateTable<GroupMemberTable> {
 
   _is.ColumnValue<String, String> displayName(String value) => _is.ColumnValue(
     table.displayName,
+    value,
+  );
+
+  _is.ColumnValue<String, String> avatarEmoji(String? value) => _is.ColumnValue(
+    table.avatarEmoji,
+    value,
+  );
+
+  _is.ColumnValue<String, String> avatarColor(String? value) => _is.ColumnValue(
+    table.avatarColor,
     value,
   );
 
@@ -291,6 +327,14 @@ class GroupMemberTable extends _is.Table<int?> {
       'displayName',
       this,
     );
+    avatarEmoji = _is.ColumnString(
+      'avatarEmoji',
+      this,
+    );
+    avatarColor = _is.ColumnString(
+      'avatarColor',
+      this,
+    );
     role = _is.ColumnEnum(
       'role',
       this,
@@ -326,6 +370,12 @@ class GroupMemberTable extends _is.Table<int?> {
 
   late final _is.ColumnString displayName;
 
+  /// The emoji the member picked as their picture. Null until they pick one: the app shows their initial instead.
+  late final _is.ColumnString avatarEmoji;
+
+  /// The avatar's background, a colour name from the app's palette (sky, lime, coral...). Null means the default. The app owns the palette, so an unknown name falls back to the default rather than failing.
+  late final _is.ColumnString avatarColor;
+
   late final _is.ColumnEnum<_iboql8hx.GroupMemberRole> role;
 
   late final _is.ColumnEnum<_ik3oel1z.GroupMemberStatus> status;
@@ -344,6 +394,8 @@ class GroupMemberTable extends _is.Table<int?> {
     groupId,
     authUserId,
     displayName,
+    avatarEmoji,
+    avatarColor,
     role,
     status,
     balance,

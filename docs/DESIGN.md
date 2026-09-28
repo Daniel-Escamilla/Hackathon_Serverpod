@@ -22,7 +22,8 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 3. **Cantidades de monedas: siempre `CoinAmount`**, para que se lean igual en todas partes.
 4. **Avisos: `showMessage`.** Lo que no se puede deshacer pasa antes por `confirmAction`, y su botón
    dice lo que hace ("Expulsar", no "Sí").
-5. **Ningún texto escrito a mano**: todo va al ARB (`lib/l10n/app_es.arb`).
+5. **Ningún texto escrito a mano**: todo va al ARB, en español (`lib/l10n/app_es.arb`) **y** en
+   inglés (`lib/l10n/app_en.arb`).
 6. **Colores y tipos, del tema** (`lib/app_theme.dart`), nunca un `Color(0x…)` suelto en una pantalla.
 
 ## Componentes (`lib/ui/`)
@@ -32,6 +33,7 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 | `AppButton` | Todos los botones. Tipos abajo |
 | `Pressable` | Cualquier cosa tocable que no sea un botón: mismo rebote, vibración y sonido |
 | `CoinAmount` | Una cantidad de monedas con su icono y cifras tabulares |
+| `MemberAvatar` | La foto de un miembro: el emoji y el color que eligió en sus ajustes, o su inicial si aún no eligió |
 | `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
 | `confirmAction` | Pregunta antes de algo destructivo |
 

@@ -12,8 +12,10 @@ import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
+import '../../ui/member_avatar.dart';
 import '../../ui/pressable.dart';
 import '../../ui/sounds.dart';
+import '../settings/settings_screen.dart';
 import 'group_controller.dart';
 import 'group_settings_screen.dart';
 
@@ -156,6 +158,12 @@ class _Body extends StatelessWidget {
             ),
           const SizedBox(height: 26),
           AppButton(
+            label: l10n.mySettings,
+            kind: AppButtonKind.secondary,
+            onPressed: () => pushPage(context, const SettingsScreen()),
+          ),
+          const SizedBox(height: 8),
+          AppButton(
             label: l10n.signOut,
             kind: AppButtonKind.quiet,
             onPressed: () => _signOut(context),
@@ -260,9 +268,10 @@ class _MemberRow extends StatelessWidget {
       child: SoftCard(
         child: Row(
           children: [
-            CircleAvatar(
-              backgroundColor: AppColors.sky,
-              child: Text(member.displayName.substring(0, 1).toUpperCase()),
+            MemberAvatar(
+              name: member.displayName,
+              emoji: member.avatarEmoji,
+              color: member.avatarColor,
             ),
             const SizedBox(width: 12),
             Expanded(

@@ -296,6 +296,43 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The signed-in member changes how the group sees them: their name and
+  /// their avatar. Any member may, about themselves only. A field left null
+  /// keeps its current value.
+  Future<GroupMember> updateMyProfile(
+    Session session, {
+    String? displayName,
+    String? avatarEmoji,
+    String? avatarColor,
+  }) async {
+    final member = await currentGroupMember(session);
+    final trimmedName = displayName?.trim();
+    if (trimmedName != null && trimmedName.isEmpty) {
+      throw ArgumentError.value(
+        displayName,
+        'displayName',
+        'must not be blank',
+      );
+    }
+    // Room for an emoji built from several code points (a flag, a family),
+    // not for arbitrary text.
+    if (avatarEmoji != null && avatarEmoji.length > 16) {
+      throw ArgumentError.value(avatarEmoji, 'avatarEmoji', 'is too long');
+    }
+    if (avatarColor != null && avatarColor.length > 16) {
+      throw ArgumentError.value(avatarColor, 'avatarColor', 'is too long');
+    }
+
+    return GroupMember.db.updateRow(
+      session,
+      member.copyWith(
+        displayName: trimmedName ?? member.displayName,
+        avatarEmoji: avatarEmoji ?? member.avatarEmoji,
+        avatarColor: avatarColor ?? member.avatarColor,
+      ),
+    );
+  }
+
   Future<GroupMember> _requireAdmin(Session session) async {
     final member = await currentGroupMember(session);
     if (member.role != GroupMemberRole.admin) {

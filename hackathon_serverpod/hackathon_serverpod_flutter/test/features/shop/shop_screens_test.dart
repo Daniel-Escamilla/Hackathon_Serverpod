@@ -79,6 +79,54 @@ void main() {
       expect(find.text('🎁'), findsOneWidget);
     });
 
+    testWidgets(
+      'short of coins, it says how many are missing and will not buy',
+      (tester) async {
+        await openScreen(
+          tester,
+          BuyRewardScreen(reward: reward),
+          shop: shop,
+          group: members,
+          wallet: FakeWalletController(balance: 10),
+        );
+
+        expect(
+          find.text(
+            'Te faltan 5 monedas: tienes 10 y este premio cuesta 15. '
+            'Haz tareas para conseguirlas.',
+          ),
+          findsOneWidget,
+        );
+        expect(find.text('Carla'), findsNothing);
+
+        await tapLabel(tester, '15 monedas');
+        expect(shop.calls, isEmpty);
+      },
+    );
+
+    testWidgets('with a negative balance, it explains before trying', (
+      tester,
+    ) async {
+      await openScreen(
+        tester,
+        BuyRewardScreen(reward: reward),
+        shop: shop,
+        group: members,
+        wallet: FakeWalletController(balance: -5),
+      );
+
+      expect(
+        find.text(
+          'Con saldo negativo no puedes comprar en la tienda, pero sí seguir '
+          'haciendo tareas para recuperarte.',
+        ),
+        findsOneWidget,
+      );
+
+      await tapLabel(tester, '15 monedas');
+      expect(shop.calls, isEmpty);
+    });
+
     testWidgets('a negative balance says why it cannot buy', (tester) async {
       shop.failWith = ShopException(reason: ShopErrorReason.negativeBalance);
       await openScreen(

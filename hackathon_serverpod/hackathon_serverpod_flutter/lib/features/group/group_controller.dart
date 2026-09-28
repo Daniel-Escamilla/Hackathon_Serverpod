@@ -71,4 +71,24 @@ class GroupController extends ChangeNotifier {
     group = await repository.regenerateInviteCode();
     notifyListeners();
   }
+
+  /// The signed-in member's own row, or null until the members have loaded.
+  GroupMember? get myMember {
+    final id = myMemberId;
+    return members.firstWhereOrNull((m) => m.id == id);
+  }
+
+  Future<void> updateMyProfile({
+    String? displayName,
+    String? avatarEmoji,
+    String? avatarColor,
+  }) async {
+    final updated = await repository.updateMyProfile(
+      displayName: displayName,
+      avatarEmoji: avatarEmoji,
+      avatarColor: avatarColor,
+    );
+    members = [for (final m in members) m.id == updated.id ? updated : m];
+    notifyListeners();
+  }
 }

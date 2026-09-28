@@ -289,6 +289,15 @@
   "whoWillFulfil": "¿Quién la cumplirá?",
   "selectMember": "Selecciona a una persona",
   "noOtherMembers": "Todavía no hay nadie más en el grupo para cumplirla.",
+  "notEnoughCoins": "{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.",
+  "@notEnoughCoins": {
+    "description": "Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows",
+    "placeholders": {
+      "missing": { "type": "int" },
+      "balance": { "type": "int" },
+      "price": { "type": "int" }
+    }
+  },
   "purchaseSentTitle": "Compra enviada",
   "purchaseSentMessage": "Debe aceptar antes de cumplirla.",
   "backToShop": "Volver a la tienda",
@@ -578,5 +587,90 @@
   "signOutBody": "Volverás a la pantalla de inicio y podrás entrar con otra cuenta.",
   "@signOutBody": {
     "description": "Body of the dialog that confirms signing out"
+  },
+
+  "mySettings": "Mis ajustes",
+  "@mySettings": {
+    "description": "Button in the group tab that opens the member's own settings, and the title of that screen"
+  },
+  "profileSection": "Tu perfil",
+  "@profileSection": {
+    "description": "Settings screen: heading of the avatar and name section"
+  },
+  "avatarEmojiLabel": "Tu emoji",
+  "@avatarEmojiLabel": {
+    "description": "Settings screen: label over the grid of emoji to pick an avatar from"
+  },
+  "avatarColorLabel": "Color",
+  "@avatarColorLabel": {
+    "description": "Settings screen: label over the avatar background colours"
+  },
+  "avatarColorSky": "Azul cielo",
+  "@avatarColorSky": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorLime": "Lima",
+  "@avatarColorLime": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorCoral": "Coral",
+  "@avatarColorCoral": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorViolet": "Violeta",
+  "@avatarColorViolet": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorCream": "Crema",
+  "@avatarColorCream": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "displayNameLabel": "Tu nombre",
+  "@displayNameLabel": {
+    "description": "Settings screen: label of the name field"
+  },
+  "displayNameHint": "Como te verá el grupo",
+  "@displayNameHint": {
+    "description": "Settings screen: hint inside the empty name field"
+  },
+  "displayNameEmptyError": "Escribe un nombre.",
+  "@displayNameEmptyError": {
+    "description": "Settings screen: shown when saving with a blank name"
+  },
+  "saveProfile": "Guardar perfil",
+  "@saveProfile": {
+    "description": "Settings screen: saves the avatar and the name"
+  },
+  "profileSaved": "Perfil guardado",
+  "@profileSaved": {
+    "description": "Message after the profile was saved"
+  },
+  "profileSaveError": "No se pudo guardar el perfil",
+  "@profileSaveError": {
+    "description": "Message when saving the profile failed for a reason without its own sentence"
+  },
+  "accountSection": "Cuenta",
+  "@accountSection": {
+    "description": "Settings screen: heading of the password section"
+  },
+  "changePassword": "Cambiar contraseña",
+  "@changePassword": {
+    "description": "Settings screen: opens the code-by-email flow that sets a new password"
+  },
+  "languageSection": "Idioma",
+  "@languageSection": {
+    "description": "Settings screen: heading of the language choice"
+  },
+  "languageSystem": "El del teléfono",
+  "@languageSystem": {
+    "description": "Language option that follows the phone's own language"
+  },
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Language option. Always written in Spanish, whatever the app's language, so it can be found"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Language option. Always written in English, whatever the app's language, so it can be found"
   }
 }

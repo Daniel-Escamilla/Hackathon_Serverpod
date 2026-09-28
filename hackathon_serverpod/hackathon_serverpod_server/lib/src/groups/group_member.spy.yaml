@@ -5,6 +5,10 @@ fields:
   groupId: int, relation(parent=group)
   authUserId: UuidValue
   displayName: String
+  ### The emoji the member picked as their picture. Null until they pick one: the app shows their initial instead.
+  avatarEmoji: String?
+  ### The avatar's background, a colour name from the app's palette (sky, lime, coral...). Null means the default. The app owns the palette, so an unknown name falls back to the default rather than failing.
+  avatarColor: String?
   role: GroupMemberRole
   status: GroupMemberStatus, default=active
   ### Result of the CoinTransaction history, kept here for fast reads (PRODUCT.md §10.2).

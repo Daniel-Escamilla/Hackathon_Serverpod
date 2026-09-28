@@ -454,6 +454,37 @@ class Endpoints extends _is.EndpointDispatch {
                     finePercent: params['finePercent'],
                   ),
         ),
+        'updateMyProfile': _is.MethodConnector(
+          name: 'updateMyProfile',
+          params: {
+            'displayName': _is.ParameterDescription(
+              name: 'displayName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'avatarEmoji': _is.ParameterDescription(
+              name: 'avatarEmoji',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'avatarColor': _is.ParameterDescription(
+              name: 'avatarColor',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .updateMyProfile(
+                    session,
+                    displayName: params['displayName'],
+                    avatarEmoji: params['avatarEmoji'],
+                    avatarColor: params['avatarColor'],
+                  ),
+        ),
       },
     );
     connectors['shop'] = _is.EndpointConnector(
