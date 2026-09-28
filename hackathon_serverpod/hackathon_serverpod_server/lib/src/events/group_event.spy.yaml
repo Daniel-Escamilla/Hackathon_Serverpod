@@ -7,8 +7,11 @@ fields:
   kind: GroupEventKind
   ### The task [kind] is about; null for `purchased` and `memberExpelled`.
   taskId: int?
-  ### The purchase, when [kind] is `purchased`; null otherwise.
+  ### The purchase, for `purchased`, `purchaseResponded` and `purchaseDelivered`;
+  ### null otherwise.
   purchaseId: int?
+  ### The reward, for `rewardProposed` and `rewardVoteCast`; null otherwise.
+  rewardId: int?
   ### The member who left, when [kind] is `memberExpelled`; null otherwise.
   memberId: int?
   occurredAt: DateTime

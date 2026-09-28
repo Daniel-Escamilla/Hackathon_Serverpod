@@ -50,13 +50,25 @@ class ShopService {
   /// recount: otherwise on a double tap both calls find no vote yet, both
   /// insert, and the second fails on the unique (itemId, memberId) index
   /// with a server error instead of just updating the vote (#101).
+  /// Adds [item] to the group's shop as a proposal, open to a vote.
+  Future<RewardItem> propose(Session session, RewardItem item) async {
+    final proposed = await RewardItem.db.insertRow(session, item);
+    await eventService.publish(
+      session,
+      groupId: proposed.groupId,
+      kind: GroupEventKind.rewardProposed,
+      rewardId: proposed.id,
+    );
+    return proposed;
+  }
+
   Future<RewardItem> castVote(
     Session session, {
     required RewardItem item,
     required GroupMember voter,
     required bool approve,
-  }) {
-    return session.db.transaction((transaction) async {
+  }) async {
+    final voted = await session.db.transaction((transaction) async {
       final locked = await RewardItem.db.findById(
         session,
         item.id!,
@@ -122,6 +134,13 @@ class ShopService {
         transaction: transaction,
       );
     });
+    await eventService.publish(
+      session,
+      groupId: voted.groupId,
+      kind: GroupEventKind.rewardVoteCast,
+      rewardId: voted.id,
+    );
+    return voted;
   }
 
   /// Buys [item] for [buyer], to be fulfilled by [provider]. Decrements stock (if
@@ -261,16 +280,29 @@ class ShopService {
         transaction: transaction,
       );
     });
+    await eventService.publish(
+      session,
+      groupId: item.groupId,
+      kind: GroupEventKind.purchaseResponded,
+      purchaseId: purchase.id,
+    );
   }
 
   /// The provider marks an accepted purchase as fulfilled.
-  Future<Purchase> markDelivered(Session session, Purchase purchase) {
+  Future<Purchase> markDelivered(Session session, Purchase purchase) async {
     if (purchase.status != PurchaseStatus.accepted) {
       throw ShopException(reason: ShopErrorReason.purchaseNotOpen);
     }
-    return Purchase.db.updateRow(
+    final delivered = await Purchase.db.updateRow(
       session,
       purchase.copyWith(status: PurchaseStatus.delivered),
     );
+    await eventService.publish(
+      session,
+      groupId: delivered.groupId,
+      kind: GroupEventKind.purchaseDelivered,
+      purchaseId: delivered.id,
+    );
+    return delivered;
   }
 }

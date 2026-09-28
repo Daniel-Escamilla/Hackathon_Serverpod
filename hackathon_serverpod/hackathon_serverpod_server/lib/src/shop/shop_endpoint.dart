@@ -43,7 +43,7 @@ class ShopEndpoint extends Endpoint {
     int? stock,
   }) async {
     final member = await currentGroupMember(session);
-    return RewardItem.db.insertRow(
+    return _shopService.propose(
       session,
       RewardItem(
         groupId: member.groupId,
