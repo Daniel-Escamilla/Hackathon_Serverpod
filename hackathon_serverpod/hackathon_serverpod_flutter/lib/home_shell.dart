@@ -43,6 +43,28 @@ class HomeTabController extends ChangeNotifier {
 bool meansNoGroup(Object? error) =>
     error != null && failureOf(error) == AppFailure.noGroup;
 
+/// The data behind [HomeShell]'s tabs, each owned by one controller.
+enum HomeData { tasks, shop, wallet, group }
+
+/// What a live event from the group's stream makes out of date, so
+/// [HomeShell] reloads just that. Anything that moves coins — a validation
+/// paying, a purchase charging, a refusal fining and refunding — also
+/// reloads the wallet.
+@visibleForTesting
+Set<HomeData> staleAfter(GroupEventKind kind) => switch (kind) {
+  GroupEventKind.taskProposed ||
+  GroupEventKind.taskVoteCast ||
+  GroupEventKind.taskCounterOffered ||
+  GroupEventKind.taskClaimed => {HomeData.tasks},
+  GroupEventKind.taskValidated => {HomeData.tasks, HomeData.wallet},
+  GroupEventKind.rewardProposed ||
+  GroupEventKind.rewardVoteCast ||
+  GroupEventKind.purchaseDelivered => {HomeData.shop},
+  GroupEventKind.purchased ||
+  GroupEventKind.purchaseResponded => {HomeData.shop, HomeData.wallet},
+  GroupEventKind.memberExpelled => {HomeData.group},
+};
+
 class HomeShell extends StatefulWidget {
   const HomeShell({super.key, this.initialIndex = 0});
 
@@ -118,24 +140,18 @@ class _HomeShellState extends State<HomeShell> {
   }
 
   void _onGroupEvent(GroupEvent event) {
-    switch (event.kind) {
-      case GroupEventKind.taskProposed:
-      case GroupEventKind.taskVoteCast:
-      case GroupEventKind.taskCounterOffered:
-      case GroupEventKind.taskClaimed:
-        unawaited(_tasksController.load());
-      case GroupEventKind.taskValidated:
-        unawaited(_tasksController.load());
-        unawaited(_walletController.load());
-      case GroupEventKind.purchased:
-        unawaited(_shopController.load());
-        unawaited(_walletController.load());
-      case GroupEventKind.memberExpelled:
-        if (event.memberId == _groupController.myMemberId) {
-          _leaveGroup();
-        } else {
-          unawaited(_groupController.load());
-        }
+    if (event.kind == GroupEventKind.memberExpelled &&
+        event.memberId == _groupController.myMemberId) {
+      _leaveGroup();
+      return;
+    }
+    for (final data in staleAfter(event.kind)) {
+      unawaited(switch (data) {
+        HomeData.tasks => _tasksController.load(),
+        HomeData.shop => _shopController.load(),
+        HomeData.wallet => _walletController.load(),
+        HomeData.group => _groupController.load(),
+      });
     }
   }
 
