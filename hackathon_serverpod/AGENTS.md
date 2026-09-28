@@ -202,13 +202,11 @@ A household-chores app where the group agrees on every task and pays for it in c
 `lib/app_theme.dart`. `prototype_app.dart` started as her 2555-line static design reference and is
 now the app's real `MaterialApp` shell — `main.dart` runs it, and it points at `AuthGate`.
 
-What runs today, all against the server: email sign-in, creating a group or joining one by code,
-the group screen (members, invite code, and for the admin, expelling a member and replacing the
-code), the wallet with its history, proposing/voting/counter-offering/validating tasks, and
-browsing/proposing/voting/buying shop rewards, and signing out. The backend has groups, wallet,
-shop and the whole task cycle; `docs/PLAN.md` says what is left and when. Endpoints the app does
-not call yet: `listPurchases`, `respondToPurchase`, `markDelivered`, `requestWish`,
-`approveChildPurchase`, `transferAdmin` and `getWeeklyRanking`.
+What runs today, all against the server, is listed version by version in the root
+[`CHANGELOG.md`](../CHANGELOG.md). In short: accounts, groups and their admin, the whole task cycle
+with its fines, the shop from proposal to delivery, the wallet, and live updates for all of it.
+`docs/PLAN.md` says what is left and when. Endpoints the app does not call yet, all out of the MVP:
+`transferAdmin`, `getWeeklyRanking`, and family mode's `requestWish` and `approveChildPurchase`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits
