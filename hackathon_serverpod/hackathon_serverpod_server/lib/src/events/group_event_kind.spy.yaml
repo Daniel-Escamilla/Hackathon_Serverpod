@@ -6,6 +6,9 @@
 ### to "in validation" on the other phones after a reload.
 ### `memberExpelled` tells the expelled member's app to leave the group, and
 ### everyone else's to drop them from the member list.
+### The four shop kinds make the shop live too (PLAN.md §1, "tiempo real"): a
+### reward proposed or voted, and a purchase answered (accepted or refused,
+### with its fine and refund) or delivered.
 enum: GroupEventKind
 values:
   - taskProposed
@@ -15,3 +18,7 @@ values:
   - taskClaimed
   - purchased
   - memberExpelled
+  - rewardProposed
+  - rewardVoteCast
+  - purchaseResponded
+  - purchaseDelivered

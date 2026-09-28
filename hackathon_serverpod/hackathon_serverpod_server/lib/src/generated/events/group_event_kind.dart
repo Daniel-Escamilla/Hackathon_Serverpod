@@ -20,6 +20,9 @@ import 'package:serverpod/serverpod.dart' as _is;
 /// to "in validation" on the other phones after a reload.
 /// `memberExpelled` tells the expelled member's app to leave the group, and
 /// everyone else's to drop them from the member list.
+/// The four shop kinds make the shop live too (PLAN.md §1, "tiempo real"): a
+/// reward proposed or voted, and a purchase answered (accepted or refused,
+/// with its fine and refund) or delivered.
 enum GroupEventKind implements _is.SerializableModel {
   taskProposed,
   taskVoteCast,
@@ -27,7 +30,11 @@ enum GroupEventKind implements _is.SerializableModel {
   taskValidated,
   taskClaimed,
   purchased,
-  memberExpelled;
+  memberExpelled,
+  rewardProposed,
+  rewardVoteCast,
+  purchaseResponded,
+  purchaseDelivered;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -45,6 +52,14 @@ enum GroupEventKind implements _is.SerializableModel {
         return GroupEventKind.purchased;
       case 'memberExpelled':
         return GroupEventKind.memberExpelled;
+      case 'rewardProposed':
+        return GroupEventKind.rewardProposed;
+      case 'rewardVoteCast':
+        return GroupEventKind.rewardVoteCast;
+      case 'purchaseResponded':
+        return GroupEventKind.purchaseResponded;
+      case 'purchaseDelivered':
+        return GroupEventKind.purchaseDelivered;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

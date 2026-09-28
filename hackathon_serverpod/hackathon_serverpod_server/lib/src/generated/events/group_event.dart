@@ -23,6 +23,7 @@ abstract class GroupEvent
     required this.kind,
     this.taskId,
     this.purchaseId,
+    this.rewardId,
     this.memberId,
     required this.occurredAt,
   });
@@ -32,6 +33,7 @@ abstract class GroupEvent
     required _iis0559s.GroupEventKind kind,
     int? taskId,
     int? purchaseId,
+    int? rewardId,
     int? memberId,
     required DateTime occurredAt,
   }) = _GroupEventImpl;
@@ -44,6 +46,7 @@ abstract class GroupEvent
       ),
       taskId: jsonSerialization['taskId'] as int?,
       purchaseId: jsonSerialization['purchaseId'] as int?,
+      rewardId: jsonSerialization['rewardId'] as int?,
       memberId: jsonSerialization['memberId'] as int?,
       occurredAt: _is.DateTimeJsonExtension.fromJson(
         jsonSerialization['occurredAt'],
@@ -58,8 +61,12 @@ abstract class GroupEvent
   /// The task [kind] is about; null for `purchased` and `memberExpelled`.
   int? taskId;
 
-  /// The purchase, when [kind] is `purchased`; null otherwise.
+  /// The purchase, for `purchased`, `purchaseResponded` and `purchaseDelivered`;
+  /// null otherwise.
   int? purchaseId;
+
+  /// The reward, for `rewardProposed` and `rewardVoteCast`; null otherwise.
+  int? rewardId;
 
   /// The member who left, when [kind] is `memberExpelled`; null otherwise.
   int? memberId;
@@ -74,6 +81,7 @@ abstract class GroupEvent
     _iis0559s.GroupEventKind? kind,
     int? taskId,
     int? purchaseId,
+    int? rewardId,
     int? memberId,
     DateTime? occurredAt,
   });
@@ -85,6 +93,7 @@ abstract class GroupEvent
       'kind': kind.toJson(),
       if (taskId != null) 'taskId': taskId,
       if (purchaseId != null) 'purchaseId': purchaseId,
+      if (rewardId != null) 'rewardId': rewardId,
       if (memberId != null) 'memberId': memberId,
       'occurredAt': occurredAt.toJson(),
     };
@@ -98,6 +107,7 @@ abstract class GroupEvent
       'kind': kind.toJson(),
       if (taskId != null) 'taskId': taskId,
       if (purchaseId != null) 'purchaseId': purchaseId,
+      if (rewardId != null) 'rewardId': rewardId,
       if (memberId != null) 'memberId': memberId,
       'occurredAt': occurredAt.toJson(),
     };
@@ -117,6 +127,7 @@ class _GroupEventImpl extends GroupEvent {
     required _iis0559s.GroupEventKind kind,
     int? taskId,
     int? purchaseId,
+    int? rewardId,
     int? memberId,
     required DateTime occurredAt,
   }) : super._(
@@ -124,6 +135,7 @@ class _GroupEventImpl extends GroupEvent {
          kind: kind,
          taskId: taskId,
          purchaseId: purchaseId,
+         rewardId: rewardId,
          memberId: memberId,
          occurredAt: occurredAt,
        );
@@ -137,6 +149,7 @@ class _GroupEventImpl extends GroupEvent {
     _iis0559s.GroupEventKind? kind,
     Object? taskId = _Undefined,
     Object? purchaseId = _Undefined,
+    Object? rewardId = _Undefined,
     Object? memberId = _Undefined,
     DateTime? occurredAt,
   }) {
@@ -145,6 +158,7 @@ class _GroupEventImpl extends GroupEvent {
       kind: kind ?? this.kind,
       taskId: taskId is int? ? taskId : this.taskId,
       purchaseId: purchaseId is int? ? purchaseId : this.purchaseId,
+      rewardId: rewardId is int? ? rewardId : this.rewardId,
       memberId: memberId is int? ? memberId : this.memberId,
       occurredAt: occurredAt ?? this.occurredAt,
     );
