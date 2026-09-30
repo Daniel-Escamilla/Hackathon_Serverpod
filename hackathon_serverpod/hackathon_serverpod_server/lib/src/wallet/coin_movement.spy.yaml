@@ -1,0 +1,16 @@
+### One line of the wallet history: the movement, plus the title of whatever
+### caused it.
+###
+### `CoinTransaction` holds `taskId` and `purchaseId` but not their titles, so
+### on its own it can only say what kind of movement happened, never what it was
+### for. Built per request from the transaction and the row it points at; not a
+### table of its own.
+class: CoinMovement
+fields:
+  id: int
+  amount: int
+  reason: CoinTransactionReason
+  ### The task's or the reward's title. Null when whatever it pointed at is
+  ### gone, or when the movement points at nothing.
+  title: String?
+  createdAt: DateTime

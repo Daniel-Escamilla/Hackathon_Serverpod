@@ -1,0 +1,729 @@
+{
+  "@@locale": "es",
+
+  "appTitle": "Prototipo de tareas",
+
+  "retry": "Reintentar",
+  "coinsLabel": "monedas",
+  "reject": "Rechazar",
+  "decreaseAmount": "Restar",
+  "increaseAmount": "Sumar",
+  "showPassword": "Mostrar contraseña",
+  "@showPassword": {
+    "description": "Tooltip of the eye in a password field while the password is hidden"
+  },
+  "hidePassword": "Ocultar contraseña",
+  "@hidePassword": {
+    "description": "Tooltip of the eye in a password field while the password is shown"
+  },
+
+  "navTasks": "Tareas",
+  "navShop": "Tienda",
+  "navWallet": "Cartera",
+  "navGroup": "Grupo",
+  "proposeTask": "Proponer",
+
+  "activityTitle": "Actividad",
+  "activityEmptyMessage": "Todavía no hay un listado de actividad del servidor.",
+
+  "groupCheckError": "No se pudo comprobar tu grupo.",
+
+  "welcomeHeadline": "Las tareas,\npor fin justas.",
+  "welcomeSubtitle": "Los acuerdos de casa se deciden entre todos.",
+  "welcomeSignIn": "Entrar con email",
+  "welcomeCreateAccount": "Crear una cuenta",
+  "welcomeGoogle": "Entrar con Google",
+  "googleSignInError": "No se pudo entrar con Google.",
+
+  "signInTitle": "Entra en tu cuenta",
+  "emailFieldLabel": "Email",
+  "emailHint": "mayte@email.com",
+  "passwordFieldLabel": "Contraseña",
+  "passwordHint": "••••••••",
+  "signInSubmit": "Entrar",
+  "signInErrorInvalidCredentials": "Email o contraseña incorrectos.",
+  "authErrorTooManyAttempts": "Demasiados intentos. Prueba en unos minutos.",
+  "signInErrorUnknown": "No se pudo iniciar sesión.",
+
+  "createAccountTitle": "Crea tu cuenta",
+  "createAccountContinue": "Continuar",
+  "createAccountErrorGeneric": "No se pudo empezar el registro. ¿Ya tienes cuenta con ese email?",
+  "createAccountErrorStart": "No se pudo empezar el registro.",
+  "createAccountErrorRegistered": "Ese email ya tiene cuenta. Inicia sesión.",
+
+  "verifyEmailTitle": "Revisa tu email",
+  "verifyEmailSubtitle": "Hemos enviado un código de verificación a {email}.",
+  "@verifyEmailSubtitle": {
+    "placeholders": {
+      "email": { "type": "String" }
+    }
+  },
+  "codeHint": "284619",
+  "verifyButton": "Verificar",
+  "codeErrorExpired": "El código ha caducado. Vuelve a empezar.",
+  "codeErrorInvalid": "Código incorrecto.",
+  "codeErrorGeneric": "No se pudo verificar el código.",
+
+  "choosePasswordTitle": "Elige una contraseña",
+  "createAccountButton": "Crear cuenta",
+  "passwordErrorPolicy": "La contraseña no cumple los requisitos.",
+  "passwordErrorExpired": "La sesión de registro ha caducado. Vuelve a empezar.",
+  "passwordErrorGeneric": "No se pudo crear la cuenta.",
+
+  "forgotPasswordLink": "¿Has olvidado la contraseña?",
+  "@forgotPasswordLink": {
+    "description": "Link under the sign-in form that starts the password reset."
+  },
+  "resetPasswordTitle": "Recupera tu contraseña",
+  "@resetPasswordTitle": {
+    "description": "Title of the first password reset step, where the email is typed."
+  },
+  "resetPasswordSubtitle": "Te enviaremos un código para elegir una nueva.",
+  "@resetPasswordSubtitle": {
+    "description": "Explains what happens after typing the email in the password reset."
+  },
+  "resetPasswordSendCode": "Enviar código",
+  "@resetPasswordSendCode": {
+    "description": "Button that asks the server to email the password reset code."
+  },
+  "newPasswordTitle": "Elige una contraseña nueva",
+  "@newPasswordTitle": {
+    "description": "Title of the last password reset step."
+  },
+  "newPasswordButton": "Cambiar contraseña",
+  "@newPasswordButton": {
+    "description": "Button that saves the new password and ends the reset."
+  },
+  "passwordChanged": "Contraseña cambiada. Entra con la nueva.",
+  "@passwordChanged": {
+    "description": "Message shown back on the sign-in screen once the password has been reset."
+  },
+
+  "groupChoiceGreeting": "¡Hola!",
+  "groupChoiceQuestion": "¿Cómo quieres\nempezar?",
+  "createGroupTitle": "Crear un grupo",
+  "createGroupSubtitle": "Prepara vuestro espacio",
+  "joinGroupTitle": "Unirme con un código",
+  "joinGroupCardSubtitle": "Entra en un grupo existente",
+
+  "createGroupHeadline": "Crea vuestro grupo",
+  "createGroupHint": "Elige cómo compartís casa",
+  "profileSharedFlat": "Piso compartido",
+  "profileCouple": "Pareja",
+  "profileFamily": "Familia",
+  "groupNameLabel": "Nombre del grupo",
+  "groupNameHint": "Casa de Mayte y Juan",
+  "createGroupSubmit": "Crear grupo",
+  "createGroupErrorEmpty": "Ponle un nombre al grupo.",
+  "createGroupErrorGeneric": "No se pudo crear el grupo.",
+
+  "joinGroupHeadline": "Únete a tu gente",
+  "joinGroupSubtitle": "Introduce el código que te han compartido.",
+  "joinGroupCodeHint": "NIDO-482",
+  "joinGroupCaseNote": "El código no distingue mayúsculas",
+  "joinGroupSubmit": "Entrar al grupo",
+  "joinGroupError": "No se encontró ningún grupo con ese código.",
+
+  "groupSuccessTitle": "¡Ya tenéis casa!",
+  "groupCodeLabel": "Código del grupo",
+  "shareCode": "Compartir código",
+  "goToTasks": "Ir a las tareas",
+
+  "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.",
+  "membersTitle": "Miembros",
+  "groupSettings": "Configuración del grupo",
+  "groupSettingsFineLabel": "Multa",
+  "@groupSettingsFineLabel": {
+    "description": "Label above the fine percentage slider in the group settings screen"
+  },
+  "groupSettingsFineHint": "Lo que paga quien recibe una multa, sobre el valor de la tarea o de la recompensa.",
+  "@groupSettingsFineHint": {
+    "description": "Explains what the fine percentage applies to, under its label"
+  },
+  "groupSettingsFineValue": "{percent} %",
+  "@groupSettingsFineValue": {
+    "description": "The fine percentage currently picked on the slider",
+    "placeholders": {
+      "percent": { "type": "int" }
+    }
+  },
+  "groupSettingsSave": "Guardar cambios",
+  "@groupSettingsSave": {
+    "description": "Primary button that saves the group's name and fine percentage"
+  },
+  "groupSettingsSaved": "Configuración guardada.",
+  "@groupSettingsSaved": {
+    "description": "Message after the group settings are saved"
+  },
+  "codeCopied": "Código copiado",
+  "copyCode": "Copiar código",
+
+  "tasksLoadError": "No se pudieron cargar las tareas.",
+  "tasksEmpty": "Todavía no hay tareas. Propón la primera.",
+  "sectionAwaitingVote": "Esperan tu voto",
+  "sectionAvailable": "Disponibles",
+  "statusProposal": "Propuesta",
+  "statusCounterOffer": "Contraoferta",
+  "statusAvailable": "Disponible",
+  "statusValidation": "Validación",
+
+  "waitingYourVote": "Esperando tu voto",
+  "votingClosingSoon": "La votación está a punto de cerrar",
+  "remainingTime": "Quedan {hours} h {minutes} min",
+  "@remainingTime": {
+    "placeholders": {
+      "hours": { "type": "int" },
+      "minutes": { "type": "int" }
+    }
+  },
+  "approve": "Aprobar",
+  "counterOffer": "Contraofertar",
+  "voteApproved": "Has aprobado la propuesta",
+  "voteRejected": "Propuesta rechazada",
+  "voteError": "No se pudo registrar tu voto",
+  "counterOfferError": "No se pudo enviar la contraoferta",
+
+  "counterOfferSheetTitle": "Haz una contraoferta",
+  "counterOfferSheetSubtitle": "¿Cuántas monedas te parecerían justas?",
+  "counterOfferPauseNotice": "La votación se pausará hasta que el autor responda",
+  "sendCounterOffer": "Enviar contraoferta",
+
+  "counterOfferPausedStatus": "Votación pausada",
+  "counterOfferDecisionNotice": "Han contraofertado un nuevo precio para esta tarea. Si aceptas, la votación empieza de cero con esa cifra.",
+  "acceptCounterOffer": "Aceptar la contraoferta",
+  "withdrawNoFine": "Retirar sin multa",
+  "counterOfferAccepted": "Contraoferta aceptada",
+  "proposalWithdrawn": "Propuesta retirada",
+  "counterOfferDecisionError": "No se pudo procesar tu decisión",
+
+  "notReserved": "No se reserva: reclama cuando esté hecha",
+  "markDone": "Ya está hecha",
+  "claimedTitle": "¡Reclamada!",
+  "claimedMessage": "Ahora el grupo debe confirmar que está hecha.",
+  "inValidationValue": "En validación · {reward} monedas",
+  "@inValidationValue": {
+    "placeholders": {
+      "reward": { "type": "int" }
+    }
+  },
+  "backToTasks": "Volver a tareas",
+  "claimError": "No se pudo reclamar. Puede que ya la haya cogido otra persona.",
+  "claimTaken": "Alguien se te ha adelantado: ya la ha cogido otra persona.",
+  "@claimTaken": {
+    "description": "Shown when another member claimed the task first"
+  },
+
+  "validationQuestion": "¿Está hecha de verdad? Si la mayoría dice que sí, se paga la recompensa.",
+  "@validationQuestion": {
+    "description": "Shown to the group on a task someone has claimed as done"
+  },
+  "validationYourOwn": "La has reclamado tú: ahora el grupo decide si está hecha.",
+  "@validationYourOwn": {
+    "description": "Shown instead of the vote buttons to whoever claimed the task"
+  },
+  "validationApprove": "Sí, está hecha",
+  "@validationApprove": {
+    "description": "Button that votes a claimed task as done"
+  },
+  "validationDeny": "No está hecha",
+  "@validationDeny": {
+    "description": "Button that votes a claimed task as not done, and the confirm button of its dialog"
+  },
+  "validationDenyTitle": "¿Seguro que no está hecha?",
+  "@validationDenyTitle": {
+    "description": "Title of the dialog before voting a claimed task as not done"
+  },
+  "validationDenyBody": "Si la mayoría vota que no, quien la reclamó paga una multa y la tarea vuelve a estar disponible.",
+  "@validationDenyBody": {
+    "description": "Body of the dialog before voting a claimed task as not done"
+  },
+  "validationApproved": "Has votado que está hecha",
+  "@validationApproved": {
+    "description": "Message after voting a claimed task as done"
+  },
+  "validationDenied": "Has votado que no está hecha",
+  "@validationDenied": {
+    "description": "Message after voting a claimed task as not done"
+  },
+
+  "newTaskTitle": "Nueva tarea",
+  "titleFieldLabel": "Título",
+  "taskTitleHint": "Limpiar el baño",
+  "descriptionLabel": "Descripción",
+  "taskDescriptionHint": "Ducha, lavabo, espejo y suelo",
+  "rewardLabel": "Recompensa",
+  "rewardHintNote": "Una tarea normal suele valer 10",
+  "reviewProposal": "Revisar propuesta",
+  "taskTitleEmptyError": "Ponle un título a la tarea.",
+
+  "reviewDealStatus": "Revisa el trato",
+  "voteWindowNotice": "El grupo tendrá 24 horas para votar",
+  "rejectFineNotice": "Si la rechazan, recibirás una multa sobre estas monedas",
+  "submitToVote": "Enviar a votación",
+  "sentToVoteTitle": "Enviada a votación",
+  "sentToVoteMessage": "Avisaremos al grupo para que decida el trato.",
+  "rewardAmount": "{reward} monedas",
+  "@rewardAmount": {
+    "placeholders": {
+      "reward": { "type": "int" }
+    }
+  },
+  "proposeError": "No se pudo enviar la propuesta",
+
+  "shopSubtitle": "Convierte tus monedas en planes",
+  "shopLoadError": "No se pudo cargar la tienda.",
+  "shopEmpty": "Todavía no hay recompensas. Propón la primera.",
+  "awaitingVoteSection": "Esperando votación",
+
+  "awaitingYourVote": "Espera tu voto",
+  "approveReward": "Aprobar recompensa",
+  "rewardApproved": "Recompensa aprobada",
+  "rewardRejected": "Recompensa rechazada",
+
+  "newRewardTitle": "Nueva recompensa",
+  "rewardTitleHint": "Desayuno en la cama",
+  "rewardDescriptionHint": "Café, tostadas y fruta",
+  "priceLabel": "Precio",
+  "rewardVotingNotice": "El grupo votará antes de publicarla",
+  "rewardTitleEmptyError": "Ponle un título a la recompensa.",
+  "rewardSentToVote": "Recompensa enviada a votación",
+  "rewardSubmitError": "No se pudo enviar la recompensa",
+
+  "whoWillFulfil": "¿Quién la cumplirá?",
+  "selectMember": "Selecciona a una persona",
+  "noOtherMembers": "Todavía no hay nadie más en el grupo para cumplirla.",
+  "notEnoughCoins": "{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.",
+  "@notEnoughCoins": {
+    "description": "Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows",
+    "placeholders": {
+      "missing": { "type": "int" },
+      "balance": { "type": "int" },
+      "price": { "type": "int" }
+    }
+  },
+  "purchaseSentTitle": "Compra enviada",
+  "purchaseSentMessage": "Debe aceptar antes de cumplirla.",
+  "backToShop": "Volver a la tienda",
+  "purchaseError": "No se pudo completar la compra",
+
+  "walletLoadError": "No se pudo cargar la cartera.",
+  "negativeBalanceNotice": "Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.",
+  "recentMovements": "Últimos movimientos",
+  "noMovements": "Todavía no hay movimientos.",
+  "reasonEarned": "Tarea completada",
+  "reasonFined": "Multa",
+  "reasonSpent": "Compra en la tienda",
+  "reasonRefunded": "Devolución",
+  "reasonProposalDenied": "Propuesta rechazada",
+  "reasonValidationDenied": "Validación rechazada",
+  "reasonVoteExpired": "No votaste a tiempo",
+
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Dismisses a confirmation without doing anything"
+  },
+
+  "memberRoleAdmin": "Admin",
+  "@memberRoleAdmin": {
+    "description": "Badge on the member who administers the group"
+  },
+  "memberYou": "Tú",
+  "@memberYou": {
+    "description": "Badge on the signed-in user's own row"
+  },
+  "expelAction": "Expulsar",
+  "@expelAction": {
+    "description": "Admin action that removes a member from the group"
+  },
+  "expelTitle": "¿Expulsar a {name}?",
+  "@expelTitle": {
+    "description": "Title of the confirmation before expelling a member",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "expelBody": "Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.",
+  "@expelBody": {
+    "description": "Explains the consequences of expelling a member"
+  },
+  "expelDone": "{name} ya no está en el grupo.",
+  "@expelDone": {
+    "description": "Confirmation after a member is expelled",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "groupInviteRegenerate": "Cambiar el código",
+  "@groupInviteRegenerate": {
+    "description": "Admin button that replaces the invite code"
+  },
+  "groupInviteRegenerateTitle": "¿Cambiar el código?",
+  "@groupInviteRegenerateTitle": {
+    "description": "Title of the confirmation before replacing the invite code"
+  },
+  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.",
+  "@groupInviteRegenerateBody": {
+    "description": "Explains what replacing the invite code does and does not affect"
+  },
+  "groupInviteRegenerated": "Código cambiado. El anterior ya no sirve.",
+  "@groupInviteRegenerated": {
+    "description": "Confirmation after the invite code is replaced"
+  },
+
+  "errorInviteCode": "Ese código no existe. Compruébalo con quien te lo pasó.",
+  "@errorInviteCode": {
+    "description": "Shown when no group matches the invite code"
+  },
+  "errorAlreadyInGroup": "Ya estás en un grupo. Sal de él antes de entrar en otro.",
+  "@errorAlreadyInGroup": {
+    "description": "Shown when the user already has an active membership"
+  },
+  "errorNotAdmin": "Solo quien administra el grupo puede hacer esto.",
+  "@errorNotAdmin": {
+    "description": "Shown when a non-admin tries an admin-only action"
+  },
+  "errorMemberNotFound": "Esa persona ya no está en el grupo.",
+  "@errorMemberNotFound": {
+    "description": "Shown when the member to act on has left or is in another group"
+  },
+  "errorCannotExpelSelf": "No puedes expulsarte a ti del grupo.",
+  "@errorCannotExpelSelf": {
+    "description": "Shown when the admin tries to expel themselves"
+  },
+  "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta del grupo.",
+  "@errorCannotTransferAdmin": {
+    "description": "Shown when the admin tries to hand the role to themselves or to a child"
+  },
+  "errorTaskNotFound": "Esa tarea ya no existe.",
+  "@errorTaskNotFound": {
+    "description": "A task call named a task that is not in the group"
+  },
+  "errorTaskNotOpen": "Esta tarea ya ha cambiado. Vuelve a la lista para verla al día.",
+  "@errorTaskNotOpen": {
+    "description": "The task moved on before the action: vote closed, counter-offer answered, or someone else claimed it"
+  },
+  "errorOwnTask": "No puedes votar tu propia tarea.",
+  "@errorOwnTask": {
+    "description": "Voting on or counter-offering your own proposal, or voting on your own completion"
+  },
+  "errorNotProposer": "Solo quien propuso la tarea puede responder a la contraoferta.",
+  "@errorNotProposer": {
+    "description": "Someone other than the proposer answered a counter-offer"
+  },
+  "errorRewardNotFound": "Esa recompensa ya no existe.",
+  "@errorRewardNotFound": {
+    "description": "A shop call named a reward that is not in the group"
+  },
+  "errorRewardNotOpen": "La votación de esta recompensa ya se ha cerrado.",
+  "@errorRewardNotOpen": {
+    "description": "Voting on a reward whose vote is over"
+  },
+  "errorOwnReward": "No puedes votar tu propia recompensa.",
+  "@errorOwnReward": {
+    "description": "The proposer tried to vote on their own reward"
+  },
+  "errorRewardNotAvailable": "Esta recompensa no está en la tienda ahora mismo.",
+  "@errorRewardNotAvailable": {
+    "description": "Buying a reward that is not active"
+  },
+  "errorOutOfStock": "Esta recompensa se ha agotado.",
+  "@errorOutOfStock": {
+    "description": "Buying a reward with no stock left"
+  },
+  "errorNegativeBalance": "Con saldo negativo no se puede comprar.",
+  "@errorNegativeBalance": {
+    "description": "Buying while the balance is below zero"
+  },
+  "errorInvalidProvider": "Elige a otra persona del grupo para cumplirla.",
+  "@errorInvalidProvider": {
+    "description": "The provider chosen for a purchase is the buyer or not in the group"
+  },
+  "errorPurchaseNotFound": "Esa compra ya no existe.",
+  "@errorPurchaseNotFound": {
+    "description": "A shop call named a purchase that is not in the group"
+  },
+  "errorPurchaseNotOpen": "Esta compra ya ha cambiado. Vuelve a la lista para verla al día.",
+  "@errorPurchaseNotOpen": {
+    "description": "The purchase was already answered, or is not accepted yet"
+  },
+  "errorNotProvider": "Solo quien tiene que cumplir la compra puede responderla o entregarla.",
+  "@errorNotProvider": {
+    "description": "Someone other than the provider answered or delivered a purchase"
+  },
+  "errorNoGroup": "Ya no estás en este grupo.",
+  "@errorNoGroup": {
+    "description": "A call was refused because the member has left or been expelled"
+  },
+  "leftGroupNotice": "Ya no estás en el grupo. Puedes crear otro o unirte con un código.",
+  "@leftGroupNotice": {
+    "description": "Shown on the create-or-join screen after being expelled from the group"
+  },
+  "errorGeneric": "Algo ha fallado. Inténtalo otra vez.",
+
+  "purchasesToFulfil": "Te toca cumplir",
+  "@purchasesToFulfil": {
+    "description": "Shop section: purchases the signed-in member was chosen to fulfil"
+  },
+  "purchasesMine": "Tus compras",
+  "@purchasesMine": {
+    "description": "Shop section: the signed-in member's purchases still in progress"
+  },
+  "purchaseUnknownReward": "Recompensa",
+  "@purchaseUnknownReward": {
+    "description": "Title of a purchase whose reward is no longer in the shop list"
+  },
+  "purchaseSomeone": "Alguien",
+  "@purchaseSomeone": {
+    "description": "Name shown for a member who is no longer in the group"
+  },
+  "purchaseAccept": "Aceptar",
+  "@purchaseAccept": {
+    "description": "Button: the provider takes the purchase on"
+  },
+  "purchaseRefuse": "Negarme",
+  "@purchaseRefuse": {
+    "description": "Button: the provider refuses the purchase, and the confirm button of its dialog"
+  },
+  "purchaseRefuseTitle": "¿Negarte a cumplirla?",
+  "@purchaseRefuseTitle": {
+    "description": "Title of the dialog before refusing a purchase"
+  },
+  "purchaseRefuseNotice": "Si te niegas pagas una multa, y quien compró recupera sus monedas.",
+  "@purchaseRefuseNotice": {
+    "description": "Warns the provider what refusing a purchase costs"
+  },
+  "purchaseMarkDelivered": "Marcar como entregada",
+  "@purchaseMarkDelivered": {
+    "description": "Button: the provider has fulfilled an accepted purchase"
+  },
+  "purchaseAccepted": "Compra aceptada: ahora te toca cumplirla",
+  "@purchaseAccepted": {
+    "description": "Message after accepting a purchase"
+  },
+  "purchaseRefused": "Te has negado: se ha cobrado la multa",
+  "@purchaseRefused": {
+    "description": "Message after refusing a purchase"
+  },
+  "purchaseDelivered": "Entregada. ¡Bien hecho!",
+  "@purchaseDelivered": {
+    "description": "Message after marking a purchase delivered"
+  },
+  "purchaseStatusPendingApproval": "Esperando al tutor",
+  "@purchaseStatusPendingApproval": {
+    "description": "Purchase status: a child's purchase waiting for a guardian"
+  },
+  "purchaseStatusPending": "Por aceptar",
+  "@purchaseStatusPending": {
+    "description": "Purchase status: waiting for the provider to accept"
+  },
+  "purchaseStatusAccepted": "Aceptada",
+  "@purchaseStatusAccepted": {
+    "description": "Purchase status: accepted, not yet delivered"
+  },
+  "purchaseStatusDelivered": "Entregada",
+  "@purchaseStatusDelivered": {
+    "description": "Purchase status: fulfilled"
+  },
+  "purchaseStatusRefused": "Rechazada",
+  "@purchaseStatusRefused": {
+    "description": "Purchase status: the provider refused it"
+  },
+  "purchaseBoughtBy": "La compró {name}",
+  "@purchaseBoughtBy": {
+    "description": "Who bought a purchase",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "purchaseProvidedBy": "Le toca cumplirla a {name}",
+  "@purchaseProvidedBy": {
+    "description": "Who has to fulfil a purchase",
+    "placeholders": { "name": { "type": "String" } }
+  },
+  "sectionYoursInValidation": "Tuyas en validación",
+  "@sectionYoursInValidation": {
+    "description": "Tasks tab section: tasks the signed-in member claimed, waiting for the group"
+  },
+  "sectionInVoting": "En votación",
+  "@sectionInVoting": {
+    "description": "Tasks tab section: open votes with nothing left for the signed-in member to do"
+  },
+  "votersTitle": "Quién ha votado",
+  "@votersTitle": {
+    "description": "Heading of the list of votes on a task"
+  },
+  "votersNone": "Todavía no ha votado nadie.",
+  "@votersNone": {
+    "description": "Shown when a task's open vote has no votes yet"
+  },
+  "voteInFavour": "A favor",
+  "@voteInFavour": {
+    "description": "A yes vote in the voters list"
+  },
+  "voteAgainst": "En contra",
+  "@voteAgainst": {
+    "description": "A no vote in the voters list"
+  },
+  "ownProposalNotice": "La has propuesto tú: vota el resto del grupo.",
+  "@ownProposalNotice": {
+    "description": "Shown instead of the vote buttons on the member's own proposal"
+  },
+  "alreadyVotedNotice": "Ya has votado. Falta que vote el resto.",
+  "@alreadyVotedNotice": {
+    "description": "Shown instead of the vote buttons once the member has voted"
+  },
+  "counterOfferWaitingNotice": "Quien la propuso está decidiendo si acepta la contraoferta.",
+  "@counterOfferWaitingNotice": {
+    "description": "Shown to everyone but the proposer on a counter-offered task"
+  },
+  "voteCounterOffer": "Contraoferta: {reward}",
+  "@voteCounterOffer": {
+    "description": "A counter-offer vote in the voters list",
+    "placeholders": { "reward": { "type": "int" } }
+  },
+  "signOut": "Cerrar sesión",
+  "@signOut": {
+    "description": "Button at the bottom of the group tab, and the confirm button of its dialog"
+  },
+  "signOutTitle": "¿Cerrar sesión?",
+  "@signOutTitle": {
+    "description": "Title of the dialog that confirms signing out"
+  },
+  "signOutBody": "Volverás a la pantalla de inicio y podrás entrar con otra cuenta.",
+  "@signOutBody": {
+    "description": "Body of the dialog that confirms signing out"
+  },
+
+  "mySettings": "Mis ajustes",
+  "@mySettings": {
+    "description": "Button in the group tab that opens the member's own settings, and the title of that screen"
+  },
+  "profileSection": "Tu perfil",
+  "@profileSection": {
+    "description": "Settings screen: heading of the avatar and name section"
+  },
+  "avatarEmojiLabel": "Tu emoji",
+  "@avatarEmojiLabel": {
+    "description": "Settings screen: label over the grid of emoji to pick an avatar from"
+  },
+  "avatarColorLabel": "Color",
+  "@avatarColorLabel": {
+    "description": "Settings screen: label over the avatar background colours"
+  },
+  "avatarColorSky": "Azul cielo",
+  "@avatarColorSky": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorLime": "Lima",
+  "@avatarColorLime": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorCoral": "Coral",
+  "@avatarColorCoral": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorViolet": "Violeta",
+  "@avatarColorViolet": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "avatarColorCream": "Crema",
+  "@avatarColorCream": {
+    "description": "Screen-reader name of an avatar background colour"
+  },
+  "displayNameLabel": "Tu nombre",
+  "@displayNameLabel": {
+    "description": "Settings screen: label of the name field"
+  },
+  "displayNameHint": "Como te verá el grupo",
+  "@displayNameHint": {
+    "description": "Settings screen: hint inside the empty name field"
+  },
+  "displayNameEmptyError": "Escribe un nombre.",
+  "@displayNameEmptyError": {
+    "description": "Settings screen: shown when saving with a blank name"
+  },
+  "saveProfile": "Guardar perfil",
+  "@saveProfile": {
+    "description": "Settings screen: saves the avatar and the name"
+  },
+  "profileSaved": "Perfil guardado",
+  "@profileSaved": {
+    "description": "Message after the profile was saved"
+  },
+  "profileSaveError": "No se pudo guardar el perfil",
+  "@profileSaveError": {
+    "description": "Message when saving the profile failed for a reason without its own sentence"
+  },
+  "accountSection": "Cuenta",
+  "@accountSection": {
+    "description": "Settings screen: heading of the password section"
+  },
+  "changePassword": "Cambiar contraseña",
+  "@changePassword": {
+    "description": "Settings screen: opens the code-by-email flow that sets a new password"
+  },
+  "languageSection": "Idioma",
+  "@languageSection": {
+    "description": "Settings screen: heading of the language choice"
+  },
+  "languageSystem": "El del teléfono",
+  "@languageSystem": {
+    "description": "Language option that follows the phone's own language"
+  },
+  "languageSpanish": "Español",
+  "@languageSpanish": {
+    "description": "Language option. Always written in Spanish, whatever the app's language, so it can be found"
+  },
+  "languageEnglish": "English",
+  "@languageEnglish": {
+    "description": "Language option. Always written in English, whatever the app's language, so it can be found"
+  },
+
+  "changePasswordTitle": "Cambia tu contraseña",
+  "@changePasswordTitle": {
+    "description": "Title of the first password step when opened from the settings, signed in"
+  },
+  "changePasswordSubtitle": "Te enviaremos un código a tu email para confirmar que eres tú. Al terminar tendrás que volver a entrar con la contraseña nueva.",
+  "@changePasswordSubtitle": {
+    "description": "Explains the change-password steps, and warns that finishing signs you out (the server ends every session)"
+  },
+  "soundSection": "Sonido",
+  "@soundSection": {
+    "description": "Settings screen: heading of the sound switch"
+  },
+  "soundsToggle": "Sonidos de la app",
+  "@soundsToggle": {
+    "description": "Settings screen: label of the switch that turns every UI sound on or off"
+  },
+  "soundsToggleHint": "Los pops de los botones, la moneda, las multas y los avisos.",
+  "@soundsToggleHint": {
+    "description": "Settings screen: what the sound switch covers, under its label"
+  },
+  "transferAdminAction": "Hacer admin",
+  "@transferAdminAction": {
+    "description": "Tooltip of the admin's icon on a member's row that hands them the admin role"
+  },
+  "transferAdminTitle": "¿Ceder el cargo de admin a {name}?",
+  "@transferAdminTitle": {
+    "description": "Title of the confirmation before handing the admin role over",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "transferAdminBody": "{name} podrá expulsar, cambiar el código y configurar el grupo. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.",
+  "@transferAdminBody": {
+    "description": "Explains what handing the admin role over means",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  },
+  "transferAdminConfirm": "Ceder el cargo",
+  "@transferAdminConfirm": {
+    "description": "Confirm button of the dialog that hands the admin role over"
+  },
+  "transferAdminDone": "{name} es ahora admin del grupo.",
+  "@transferAdminDone": {
+    "description": "Message after the admin role was handed over",
+    "placeholders": {
+      "name": { "type": "String" }
+    }
+  }
+}

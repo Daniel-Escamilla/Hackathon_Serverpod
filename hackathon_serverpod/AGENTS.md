@@ -48,35 +48,34 @@ The root `pubspec.yaml` (`name: _`) is a Dart workspace, so a single `flutter pu
 
 That `pubspec.lock` is **committed on purpose** — four people on Linux, macOS and Windows need identical dependency versions, and the server `Dockerfile` does `COPY pubspec.lock .` and fails without it. Never add it back to `.gitignore`, and never run `flutter pub upgrade` as a side effect of another task: it rewrites the lock for the whole team. Pinned toolchain: Flutter 3.44.4, Dart 3.12.2, Serverpod CLI 4.0.0 (see the README).
 
-- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/greetings/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
+- `hackathon_serverpod_server` — the backend. A feature is a directory under `lib/src/`: the `.spy.yaml` model(s) and the `<name>_endpoint.dart` sit next to each other (see `lib/src/groups/`). The auth endpoints in `lib/src/auth/` are one-line subclasses of the `serverpod_auth_idp_server` base endpoints; what they actually expose is configured in `lib/server.dart` (`initializeAuthServices`).
 - `hackathon_serverpod_client` — 100% generated from the server. Never hand-edit; the Flutter app depends on it by path.
-- `hackathon_serverpod_flutter` — the app. `lib/client.dart` owns the global `client` (a deliberate global, not DI), `lib/main.dart` is the UI shell, screens live in `lib/screens/`.
-
-Still-unused scaffold leftovers: the `Greeting` model/endpoint/test, and `screens/greetings_screen.dart` + `screens/sign_in_screen.dart`, which nothing imports.
+- `hackathon_serverpod_flutter` — the app. `lib/client.dart` owns the global `client` (a deliberate global, not DI), `lib/main.dart` boots `prototype_app.dart` (now just the `MaterialApp` shell, wired to the real `AuthGate`), and screens live under `lib/features/<feature>/`.
 
 ## Commands
 
 On a fresh clone, `dart run tool/init_local_secrets.dart` in the server package creates the git-ignored `config/passwords.yaml` and `.env`; without them neither `serverpod start` nor `dart test` can start. It never overwrites, and nobody should delete an existing `passwords.yaml` — the local embedded database was initialised with that password.
 
-There are two layers enforcing this, both scoped to the server package only:
-- **Git hooks** (`.githooks/pre-commit`, `.githooks/pre-push`) run `dart format`/`dart analyze --fatal-infos` before a commit and `dart test` before a push. They only run once enabled per clone with `git config core.hooksPath .githooks`; run the format/analyze/test commands yourself regardless of whether that's set, rather than relying on the hook to catch it.
-- **CI** (`.github/workflows/{format,analyze,tests}.yml`, at the repo root) re-checks the same things server-side on every push to `main` or `develop` and on every pull request, so a bypassed or unconfigured hook (`--no-verify`, or `core.hooksPath` never set) still gets caught.
+There are two layers enforcing this:
+- **Git hooks** (`.githooks/pre-commit`, `.githooks/pre-push`) run `dart format`/`dart analyze --fatal-infos` before a commit and `dart test` before a push — **on the server package only**. They only run once enabled per clone with `git config core.hooksPath .githooks`; run the format/analyze/test commands yourself regardless of whether that's set, rather than relying on the hook to catch it.
+- **CI** (`.github/workflows/{format,analyze,tests}.yml`, at the repo root) checks **both packages**, server and app, on every push to `main` or `develop` and on every pull request, so a bypassed or unconfigured hook still gets caught. Each workflow checks the server first and the app second, and runs the app step even when the server one fails, so one PR shows every broken package at once. These are the checks `main`'s protection requires, so the app is held to them too.
 
 Commits go on `develop`; `main` is production. The branch flow is in the [root `AGENTS.md`](../AGENTS.md#branches).
 
-Run each check from the package it covers. CI (the repo root's `.github/workflows/`) gates only the server package, and analysis is stricter there than the default:
+Run each check from the package it covers — these are exactly what CI runs, so passing them locally means passing CI:
 
 ```sh
 cd hackathon_serverpod_server
 dart analyze --fatal-infos          # CI setting; unawaited_futures and avoid_print are on here
 dart format --set-exit-if-changed .
 dart test                                                    # whole suite
-dart test test/integration/greeting_endpoint_test.dart       # one file
-dart test -n 'returned greeting includes name'               # one test by name
+dart test test/integration/wallet_endpoint_test.dart         # one file
+dart test -n 'a fine can take the balance negative'          # one test by name
 dart test -t integration                                     # the only declared tag (dart_test.yaml)
 
 cd ../hackathon_serverpod_flutter
-flutter analyze
+flutter analyze --fatal-infos
+dart format --set-exit-if-changed .
 flutter test
 ```
 
@@ -94,11 +93,45 @@ flutter test
 
 `lib/client.dart` builds the client from `getServerUrl()`, which prefers `--dart-define=SERVER_URL=...`, then falls back to `assets/config.json`, then to `http://localhost:8080/`. The server serves a *runtime* version of that file — `server.dart` mounts `AppConfigRoute` at `/assets/assets/config.json`, filled from the API URL in `config/<mode>.yaml` — so a Flutter **web** build served by the server always gets the right URL, whatever host it runs on.
 
-A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does not pass it today, which is harmless only while the screens stay local placeholders.
+A build installed on a device never goes through that route: it reads the checked-in `hackathon_serverpod_flutter/assets/config.json`, which pins `http://localhost:8080` — i.e. the phone itself. Any device build that needs the backend has to pass `--dart-define=SERVER_URL=http://<LAN-IP>:8080/`. `scripts/run_on_phone.sh` does: it detects this computer's LAN address, lets whoever runs it correct it, and takes a `SERVER_URL` from the environment instead when one is set.
 
 ## Serving the Flutter app from the server
 
 `serverpod: scripts: flutter_build` in the server `pubspec.yaml` builds the Flutter web app into `hackathon_serverpod_server/web/app` (Windows needs `xcopy` because Flutter's `--output` is broken there; both branches `flutter clean` and retry once on failure). `server.dart` mounts that directory at `/` when it exists and otherwise falls back to the `web/pages/build_flutter_app.html` placeholder — so a bare-looking site on port 8082 usually just means the web app has not been built.
+
+## Flutter conventions
+
+Agreed 2026-09-21. They cover the app under `hackathon_serverpod_flutter/lib`.
+
+**The design standard is Playful UI, and it lives in the components.** Read [`docs/DESIGN.md`](../docs/DESIGN.md) before building or changing a screen. The rules that matter most, because they are easy to get wrong:
+
+- **Every button is an `AppButton`** (`lib/ui/app_button.dart`). Never put a `FilledButton`, `OutlinedButton` or `TextButton` in a screen — the press bounce, the haptic and the sound live inside `AppButton`, and a raw Material button silently loses all three. Pick the kind by what the button is for: `primary` (one per screen at most), `secondary`, `quiet` (low-stakes, silent) or `danger` (destructive, always behind `confirmAction`). Add `onBrand` on a violet surface and `compact` in a row.
+- **Anything else tappable** — a task card, a reward tile — goes in a `Pressable`, so it bounces and sounds like a button.
+- **Five sounds, one meaning each** (`AppSound`): `tap` for a button, `success` when something the user did went through, `coin` when coins come in, `fine` when a fine takes them, `error` when something failed. Never reuse one for something else; never add a sound to a quiet action. They are generated by `tool/generate_ui_sounds.dart` — change a sound there, not by dropping in a downloaded file, which the video rules would then have to clear.
+- **Colours, fonts and radii come from `lib/app_theme.dart`.** No `Color(0x…)` literal in a screen.
+
+**No literal anybody reads.** Every string lives in `lib/l10n/app_es.arb` with a `@key` description and reaches the widget through `AppLocalizations.of(context)`. Spanish is the template; `lib/l10n/app_en.arb` is its English translation, so **a new key goes into both files** — the English one without the `@key` block, which is read from the Spanish template. The member picks the language in their settings (`features/settings/locale_controller.dart`, kept on the device); by default the app follows the phone and falls back to Spanish. A hard-coded string in a widget is a bug, not a shortcut — retrofitting them is what makes translation a rewrite instead of a translation.
+
+**Layers, and what each may import:**
+
+| Layer | Where | May import |
+|---|---|---|
+| Data | `lib/data/` | The generated client. No Flutter widgets, no display text |
+| Pieces | `lib/ui/` | Flutter, the l10n, the theme |
+| Screens | `lib/features/<feature>/` | Everything above |
+
+- **Only `lib/data/` imports `client`** (plus `main.dart`, which initialises it). A screen calling `client.something` is exactly what this rule prevents: error handling scattered across widgets, and no way to test a screen without a server running. Each controller takes its repository in the constructor (`TasksController(repository: ...)`), so a test hands it a fake.
+- Repositories wrap each call in `guardServerCall`. A controller loading two things at once uses `Future.wait`, not a record's `.wait`: the latter wraps the failure in a `ParallelWaitError` and the `AppException` is lost.
+- Repositories throw `AppException`, never a raw server error. The translation lives in `data/app_failure.dart`, in one function.
+- Which sentence a failure shows is decided in the UI, from the ARB (`ui/failure_messages.dart`). The data layer never holds display text.
+
+**State with `provider`** (`ChangeNotifier`, no code generation). Each feature has a `<Feature>Controller extends ChangeNotifier` that owns its `load()` call and any mutations; `HomeShell` builds one instance per controller and exposes them through a `MultiProvider`, so a screen reads its data with `context.watch<TasksController>()` and calls its data-changing methods with `context.read<TasksController>()`. A controller that changes data another screen also shows (e.g. a task vote moving coins) calls its own `load()` again rather than reaching into another controller. Form state stays in the widget: a whole controller for a text field is ceremony, not architecture.
+
+**Reusable before repeated.** A widget wanted by a second screen moves to `lib/ui/`. `CoinAmount` is the first: every amount in the app goes through it, so a balance, a reward's price and a line of history all read the same, with tabular figures so columns line up. Messages and confirmations go through `ui/feedback.dart` (`showMessage`, `confirmAction`) — anything that cannot be undone asks first, and its button names the action, not "Sí".
+
+**One thing per file**, named after it: screens end in `Screen`, repositories in `Repository`. Private helpers stay in the file that uses them until a second file wants one.
+
+**Size.** Past roughly 300 lines, split the file. `prototype_app.dart` used to be the 2555-line counterexample — Mayte's design reference — and has since been broken up into `lib/features/`; it is now a 20-line `MaterialApp` shell pointed at the real `AuthGate`.
 
 ## Why this project exists
 
@@ -129,7 +162,7 @@ Ties are broken on "Does it work" first, then down the list in order.
 What follows from that:
 
 - Small and finished beats large and broken. Teams reliably finish about a quarter of what they plan, so scope to one user, one problem, one flow, and make that flow real.
-- The placeholders in the current UI are precisely what the first two criteria penalise: the hardcoded `_members` list in `group_screen.dart`, the in-memory `_items` in `todo_list_screen.dart`, and `_coins = 0` in `main.dart`. Putting those on real models, tables and endpoints is the highest-value work available, and it is the same work that raises the Serverpod-stack score.
+- Placeholders in the UI are precisely what the first two criteria penalise. The three the scaffold shipped with — the hardcoded `_members`, the in-memory `_items` and `_coins = 0` — are gone, replaced by real endpoints; keep it that way. A screen with nothing to show says so, it does not invent data.
 - Prefer deepening one flow over adding a third tab.
 - Serverpod Cloud is the intended deploy target and `lib/server.dart` is already wired for it (`ServerpodCloudEmailIdpConfig`, `ServerpodCloudProvider`); in development, email verification codes are printed to the server console, so sign-in is testable without any mail setup. Outside Serverpod Cloud those emails are not sent unless the provider is switched to `EmailIdpConfigFromPasswords` with a real mail sender — self-hosting without doing that leaves judges stuck at sign-up.
 - Hosting: registrants get **one month of free Serverpod Cloud hosting** (welcome pack); the Starter plan is $5/month after that. The deployment has to stay reachable until judging ends on **2026-10-20 17:00**, so a free month that starts counting before about 21 September runs out mid-judging — budget the extra days rather than let it lapse. Deploy with `serverpod cloud launch` (docs: <https://docs.serverpod.dev/cloud>). Deploying creates a live, billable service: it is the team's decision, never a side effect of another task.
@@ -164,12 +197,16 @@ Third-party SDKs, APIs and data need to be licensed for this use; open-source co
 
 ## About this app
 
-"Hackathon App": a Flutter app with a light theme (Archivo font) and two
-swipeable tabs under a top `TabBar` (full-width sliding indicator) — "Grupo"
-(group members list) and "Tareas" (local to-do list). The app bar shows a
-coin balance (SVG icon in `assets/icons/coin.svg`, fixed-width number field)
-next to the title. Backend is still the default Serverpod scaffold; no
-custom endpoints or data models yet.
+A household-chores app where the group agrees on every task and pays for it in coins (see
+`docs/PRODUCT.md`). The look is Mayte's: Fredoka and Nunito Sans, violet on cream, held in
+`lib/app_theme.dart`. `prototype_app.dart` started as her 2555-line static design reference and is
+now the app's real `MaterialApp` shell — `main.dart` runs it, and it points at `AuthGate`.
+
+What runs today, all against the server, is listed version by version in the root
+[`CHANGELOG.md`](../CHANGELOG.md). In short: accounts, groups and their admin, the whole task cycle
+with its fines, the shop from proposal to delivery, the wallet, and live updates for all of it.
+`docs/PLAN.md` says what is left and when. Endpoints the app does not call yet, all out of the MVP:
+`transferAdmin`, `getWeeklyRanking`, and family mode's `requestWish` and `approveChildPurchase`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits

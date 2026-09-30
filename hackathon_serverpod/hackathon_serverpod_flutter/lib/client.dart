@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 import 'package:serverpod_flutter/serverpod_flutter.dart';
@@ -24,9 +25,28 @@ final serverUrl = getServerUrl();
 /// instead of using a global client object. This is just a simple example.
 late final Client client;
 
+/// The "Web application" OAuth client from Google Cloud Console. Not a secret:
+/// its secret lives in the server's passwords.yaml. Android and iOS use it too,
+/// as the server client, and are recognised by their own package and SHA-1.
+const _googleWebClientId =
+    '266308220325-jvpioj5f1pldrqqj7ika3ujqrfmb22n5.apps.googleusercontent.com';
+
 Future<void> initializeClient() async {
   client = Client(await serverUrl)
     ..connectivityMonitor = FlutterConnectivityMonitor()
     ..authSessionManager = FlutterAuthSessionManager();
   unawaited(client.auth.initialize());
+  unawaited(
+    kIsWeb
+        // Google sends the browser back here. It only works when the app is
+        // served by Serverpod itself, and the origin is registered in Google
+        // Cloud Console.
+        ? client.auth.initializeGoogleSignIn(
+            clientId: _googleWebClientId,
+            redirectUri: '${Uri.base.origin}/auth/callback',
+          )
+        : client.auth.initializeGoogleSignIn(
+            serverClientId: _googleWebClientId,
+          ),
+  );
 }

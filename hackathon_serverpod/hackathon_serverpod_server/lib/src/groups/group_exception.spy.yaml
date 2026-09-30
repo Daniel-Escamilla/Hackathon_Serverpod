@@ -1,0 +1,8 @@
+### A group call refused for a reason the app can act on.
+###
+### Serialisable on purpose: a `StateError` reaches the client as a generic
+### failure, which leaves the app unable to tell "that code does not exist"
+### from "the server is down". This carries the reason across.
+exception: GroupException
+fields:
+  reason: GroupErrorReason

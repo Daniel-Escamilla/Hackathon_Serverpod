@@ -1,13 +1,50 @@
 emailIdp:
-  - login:
   - startRegistration:
+  - login:
   - verifyRegistrationCode:
   - finishRegistration:
   - startPasswordReset:
   - verifyPasswordResetCode:
   - finishPasswordReset:
   - hasAccount:
+googleIdp:
+  - login:
+  - loginWithCode:
+  - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
-greeting:
-  - hello:
+event:
+  - watchGroup:
+group:
+  - createGroup:
+  - joinGroup:
+  - myGroup:
+  - listMembers:
+  - expelMember:
+  - regenerateInviteCode:
+  - transferAdmin:
+  - updateGroup:
+  - updateMyProfile:
+shop:
+  - listRewards:
+  - listPurchases:
+  - proposeReward:
+  - voteReward:
+  - requestWish:
+  - purchaseReward:
+  - approveChildPurchase:
+  - respondToPurchase:
+  - markDelivered:
+task:
+  - listTasks:
+  - listTaskVotes:
+  - proposeTask:
+  - voteTaskProposal:
+  - counterOfferTask:
+  - respondToCounterOffer:
+  - markTaskDone:
+  - voteTaskCompletion:
+wallet:
+  - getBalance:
+  - getHistory:
+  - getWeeklyRanking:

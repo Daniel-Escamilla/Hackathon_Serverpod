@@ -1,0 +1,29 @@
+### A proposed or in-progress household task, the core of the cycle (PRODUCT.md §3, §5, §10.2).
+class: Task
+table: task
+fields:
+  groupId: int, relation(parent=group)
+  title: String
+  description: String
+  ### Coins paid on validation, never on claiming (PRODUCT.md §3). Also the base the fines in §4.4
+  ### are a percentage of.
+  reward: int
+  kind: TaskKind, default=oneOff
+  ### Only set for `mission`-kind tasks (PRODUCT.md §5).
+  recurrence: TaskRecurrence?
+  status: TaskStatus, default=proposed
+  proposedById: int, relation(parent=group_member)
+  ### Who claimed the task by pressing "done". Null until then; whoever gets there first wins the
+  ### race (PRODUCT.md §3, §10.2).
+  doneById: int?, relation(parent=group_member)
+  ### When the open proposal or completion vote closes, for the FutureCall that expires it
+  ### (PRODUCT.md §4.2, §10.5). Null outside an open vote.
+  voteClosesAt: DateTime?
+
+indexes:
+  task_group_id_idx:
+    fields: groupId
+  task_proposed_by_id_idx:
+    fields: proposedById
+  task_done_by_id_idx:
+    fields: doneById

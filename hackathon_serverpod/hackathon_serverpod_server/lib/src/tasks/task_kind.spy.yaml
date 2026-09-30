@@ -1,0 +1,5 @@
+### Two shapes of the same thing, chosen when a Task is proposed (PRODUCT.md §5).
+enum: TaskKind
+values:
+  - oneOff
+  - mission

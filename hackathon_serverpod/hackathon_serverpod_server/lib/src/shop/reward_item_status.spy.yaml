@@ -1,0 +1,7 @@
+### A reward's voting state in piso/pareja (PRODUCT.md §6, §10.2). Family-mode tutors set
+### rewards to `active` directly, skipping the vote.
+enum: RewardItemStatus
+values:
+  - proposed
+  - active
+  - rejected

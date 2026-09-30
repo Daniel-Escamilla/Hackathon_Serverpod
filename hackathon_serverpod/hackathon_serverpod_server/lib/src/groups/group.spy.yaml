@@ -1,0 +1,11 @@
+### A household group: shared flat, couple or family (PRODUCT.md §10.2).
+class: Group
+table: group
+fields:
+  name: String
+  type: GroupType
+  ### Shared to join the group without approval. Unique.
+  inviteCode: String, unique
+  ### Fine percentage applied to task/purchase penalties, PRODUCT.md §4.4.
+  finePercent: int, default=20
+  createdAt: DateTime, default=now

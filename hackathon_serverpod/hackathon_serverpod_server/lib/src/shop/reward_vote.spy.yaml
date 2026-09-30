@@ -1,0 +1,8 @@
+### One member's vote on a proposed RewardItem, same shape as TaskVote (PRODUCT.md §10.2).
+class: RewardVote
+table: reward_vote
+fields:
+  itemId: int, relation(parent=reward_item)
+  ### One vote per member per item.
+  memberId: int, relation(parent=group_member), unique(per=itemId)
+  approve: bool

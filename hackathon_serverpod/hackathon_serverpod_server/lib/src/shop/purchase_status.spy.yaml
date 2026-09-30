@@ -1,0 +1,9 @@
+### PRODUCT.md §6, §10.2. `pendingApproval` is a child's purchase still waiting on a guardian;
+### `pending` is waiting on the provider to accept.
+enum: PurchaseStatus
+values:
+  - pendingApproval
+  - pending
+  - accepted
+  - delivered
+  - refused

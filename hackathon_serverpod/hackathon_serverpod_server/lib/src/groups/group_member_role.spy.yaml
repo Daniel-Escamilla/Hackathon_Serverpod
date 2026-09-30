@@ -1,0 +1,7 @@
+### A member's role within their group (PRODUCT.md §7 and §8).
+enum: GroupMemberRole
+values:
+  - admin
+  - member
+  - guardian
+  - child

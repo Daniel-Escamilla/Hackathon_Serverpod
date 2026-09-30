@@ -11,13 +11,87 @@
 // ignore_for_file: dead_code, unnecessary_type_check
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_client/src/protocol/groups/group_member.dart'
+    as _ir4oz66a;
+import 'package:hackathon_serverpod_client/src/protocol/shop/purchase.dart'
+    as _idofij3t;
+import 'package:hackathon_serverpod_client/src/protocol/shop/reward_item.dart'
+    as _ibcsn808;
+import 'package:hackathon_serverpod_client/src/protocol/tasks/task.dart'
+    as _i7vt05yn;
+import 'package:hackathon_serverpod_client/src/protocol/tasks/task_vote.dart'
+    as _itpz8rf5;
+import 'package:hackathon_serverpod_client/src/protocol/wallet/coin_movement.dart'
+    as _ibr29qpn;
+import 'package:hackathon_serverpod_client/src/protocol/wallet/ranking_entry.dart'
+    as _ixil0pu8;
 import 'package:serverpod_auth_core_client/serverpod_auth_core_client.dart'
     as _iacc;
 import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart'
     as _iaic;
 import 'package:serverpod_client/serverpod_client.dart' as _isc;
-import 'greetings/greeting.dart' as _izw8z7ou;
-export 'greetings/greeting.dart';
+import 'auth/registration_error_reason.dart' as _icyna58o;
+import 'auth/registration_exception.dart' as _i007ol99;
+import 'events/group_event.dart' as _iecilz9e;
+import 'events/group_event_kind.dart' as _il82a0w2;
+import 'groups/child_login_code.dart' as _ivjbsthj;
+import 'groups/group.dart' as _i9ztykbt;
+import 'groups/group_error_reason.dart' as _i7quka6t;
+import 'groups/group_exception.dart' as _i3la3wci;
+import 'groups/group_member.dart' as _iio6btzp;
+import 'groups/group_member_role.dart' as _ixnaxhon;
+import 'groups/group_member_status.dart' as _ivrm4l0w;
+import 'groups/group_type.dart' as _iskz3t6h;
+import 'shop/purchase.dart' as _iw24ridd;
+import 'shop/purchase_status.dart' as _ifglcefk;
+import 'shop/reward_item.dart' as _ikfprkod;
+import 'shop/reward_item_status.dart' as _i2lcnj26;
+import 'shop/reward_vote.dart' as _iod77io3;
+import 'shop/shop_error_reason.dart' as _il3xdzmd;
+import 'shop/shop_exception.dart' as _i0uw1vc9;
+import 'tasks/task.dart' as _i253is06;
+import 'tasks/task_error_reason.dart' as _iorvycr6;
+import 'tasks/task_exception.dart' as _ima0h3gh;
+import 'tasks/task_kind.dart' as _i4hckegz;
+import 'tasks/task_recurrence.dart' as _ieirl7mq;
+import 'tasks/task_status.dart' as _i65tv1la;
+import 'tasks/task_vote.dart' as _ikgry9hi;
+import 'tasks/task_vote_phase.dart' as _i40o7ktz;
+import 'wallet/coin_movement.dart' as _ii2179p0;
+import 'wallet/coin_transaction.dart' as _iyltnat0;
+import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
+import 'wallet/ranking_entry.dart' as _izo0hjq0;
+export 'auth/registration_error_reason.dart';
+export 'auth/registration_exception.dart';
+export 'events/group_event.dart';
+export 'events/group_event_kind.dart';
+export 'groups/child_login_code.dart';
+export 'groups/group.dart';
+export 'groups/group_error_reason.dart';
+export 'groups/group_exception.dart';
+export 'groups/group_member.dart';
+export 'groups/group_member_role.dart';
+export 'groups/group_member_status.dart';
+export 'groups/group_type.dart';
+export 'shop/purchase.dart';
+export 'shop/purchase_status.dart';
+export 'shop/reward_item.dart';
+export 'shop/reward_item_status.dart';
+export 'shop/reward_vote.dart';
+export 'shop/shop_error_reason.dart';
+export 'shop/shop_exception.dart';
+export 'tasks/task.dart';
+export 'tasks/task_error_reason.dart';
+export 'tasks/task_exception.dart';
+export 'tasks/task_kind.dart';
+export 'tasks/task_recurrence.dart';
+export 'tasks/task_status.dart';
+export 'tasks/task_vote.dart';
+export 'tasks/task_vote_phase.dart';
+export 'wallet/coin_movement.dart';
+export 'wallet/coin_transaction.dart';
+export 'wallet/coin_transaction_reason.dart';
+export 'wallet/ranking_entry.dart';
 export 'client.dart';
 
 class Protocol extends _isc.SerializationManager {
@@ -54,11 +128,255 @@ class Protocol extends _isc.SerializationManager {
       }
     }
 
-    if (t == _izw8z7ou.Greeting) {
-      return _izw8z7ou.Greeting.fromJson(data) as T;
+    if (t == _icyna58o.RegistrationErrorReason) {
+      return _icyna58o.RegistrationErrorReason.fromJson(data) as T;
     }
-    if (t == _isc.getType<_izw8z7ou.Greeting?>()) {
-      return (data != null ? _izw8z7ou.Greeting.fromJson(data) : null) as T;
+    if (t == _i007ol99.RegistrationException) {
+      return _i007ol99.RegistrationException.fromJson(data) as T;
+    }
+    if (t == _iecilz9e.GroupEvent) {
+      return _iecilz9e.GroupEvent.fromJson(data) as T;
+    }
+    if (t == _il82a0w2.GroupEventKind) {
+      return _il82a0w2.GroupEventKind.fromJson(data) as T;
+    }
+    if (t == _ivjbsthj.ChildLoginCode) {
+      return _ivjbsthj.ChildLoginCode.fromJson(data) as T;
+    }
+    if (t == _i9ztykbt.Group) {
+      return _i9ztykbt.Group.fromJson(data) as T;
+    }
+    if (t == _i7quka6t.GroupErrorReason) {
+      return _i7quka6t.GroupErrorReason.fromJson(data) as T;
+    }
+    if (t == _i3la3wci.GroupException) {
+      return _i3la3wci.GroupException.fromJson(data) as T;
+    }
+    if (t == _iio6btzp.GroupMember) {
+      return _iio6btzp.GroupMember.fromJson(data) as T;
+    }
+    if (t == _ixnaxhon.GroupMemberRole) {
+      return _ixnaxhon.GroupMemberRole.fromJson(data) as T;
+    }
+    if (t == _ivrm4l0w.GroupMemberStatus) {
+      return _ivrm4l0w.GroupMemberStatus.fromJson(data) as T;
+    }
+    if (t == _iskz3t6h.GroupType) {
+      return _iskz3t6h.GroupType.fromJson(data) as T;
+    }
+    if (t == _iw24ridd.Purchase) {
+      return _iw24ridd.Purchase.fromJson(data) as T;
+    }
+    if (t == _ifglcefk.PurchaseStatus) {
+      return _ifglcefk.PurchaseStatus.fromJson(data) as T;
+    }
+    if (t == _ikfprkod.RewardItem) {
+      return _ikfprkod.RewardItem.fromJson(data) as T;
+    }
+    if (t == _i2lcnj26.RewardItemStatus) {
+      return _i2lcnj26.RewardItemStatus.fromJson(data) as T;
+    }
+    if (t == _iod77io3.RewardVote) {
+      return _iod77io3.RewardVote.fromJson(data) as T;
+    }
+    if (t == _il3xdzmd.ShopErrorReason) {
+      return _il3xdzmd.ShopErrorReason.fromJson(data) as T;
+    }
+    if (t == _i0uw1vc9.ShopException) {
+      return _i0uw1vc9.ShopException.fromJson(data) as T;
+    }
+    if (t == _i253is06.Task) {
+      return _i253is06.Task.fromJson(data) as T;
+    }
+    if (t == _iorvycr6.TaskErrorReason) {
+      return _iorvycr6.TaskErrorReason.fromJson(data) as T;
+    }
+    if (t == _ima0h3gh.TaskException) {
+      return _ima0h3gh.TaskException.fromJson(data) as T;
+    }
+    if (t == _i4hckegz.TaskKind) {
+      return _i4hckegz.TaskKind.fromJson(data) as T;
+    }
+    if (t == _ieirl7mq.TaskRecurrence) {
+      return _ieirl7mq.TaskRecurrence.fromJson(data) as T;
+    }
+    if (t == _i65tv1la.TaskStatus) {
+      return _i65tv1la.TaskStatus.fromJson(data) as T;
+    }
+    if (t == _ikgry9hi.TaskVote) {
+      return _ikgry9hi.TaskVote.fromJson(data) as T;
+    }
+    if (t == _i40o7ktz.TaskVotePhase) {
+      return _i40o7ktz.TaskVotePhase.fromJson(data) as T;
+    }
+    if (t == _ii2179p0.CoinMovement) {
+      return _ii2179p0.CoinMovement.fromJson(data) as T;
+    }
+    if (t == _iyltnat0.CoinTransaction) {
+      return _iyltnat0.CoinTransaction.fromJson(data) as T;
+    }
+    if (t == _inbrsz7i.CoinTransactionReason) {
+      return _inbrsz7i.CoinTransactionReason.fromJson(data) as T;
+    }
+    if (t == _izo0hjq0.RankingEntry) {
+      return _izo0hjq0.RankingEntry.fromJson(data) as T;
+    }
+    if (t == _isc.getType<_icyna58o.RegistrationErrorReason?>()) {
+      return (data != null
+              ? _icyna58o.RegistrationErrorReason.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_i007ol99.RegistrationException?>()) {
+      return (data != null
+              ? _i007ol99.RegistrationException.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_iecilz9e.GroupEvent?>()) {
+      return (data != null ? _iecilz9e.GroupEvent.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_il82a0w2.GroupEventKind?>()) {
+      return (data != null ? _il82a0w2.GroupEventKind.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ivjbsthj.ChildLoginCode?>()) {
+      return (data != null ? _ivjbsthj.ChildLoginCode.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i9ztykbt.Group?>()) {
+      return (data != null ? _i9ztykbt.Group.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i7quka6t.GroupErrorReason?>()) {
+      return (data != null ? _i7quka6t.GroupErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i3la3wci.GroupException?>()) {
+      return (data != null ? _i3la3wci.GroupException.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iio6btzp.GroupMember?>()) {
+      return (data != null ? _iio6btzp.GroupMember.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ixnaxhon.GroupMemberRole?>()) {
+      return (data != null ? _ixnaxhon.GroupMemberRole.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ivrm4l0w.GroupMemberStatus?>()) {
+      return (data != null ? _ivrm4l0w.GroupMemberStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iskz3t6h.GroupType?>()) {
+      return (data != null ? _iskz3t6h.GroupType.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iw24ridd.Purchase?>()) {
+      return (data != null ? _iw24ridd.Purchase.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ifglcefk.PurchaseStatus?>()) {
+      return (data != null ? _ifglcefk.PurchaseStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ikfprkod.RewardItem?>()) {
+      return (data != null ? _ikfprkod.RewardItem.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i2lcnj26.RewardItemStatus?>()) {
+      return (data != null ? _i2lcnj26.RewardItemStatus.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_iod77io3.RewardVote?>()) {
+      return (data != null ? _iod77io3.RewardVote.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_il3xdzmd.ShopErrorReason?>()) {
+      return (data != null ? _il3xdzmd.ShopErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i0uw1vc9.ShopException?>()) {
+      return (data != null ? _i0uw1vc9.ShopException.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i253is06.Task?>()) {
+      return (data != null ? _i253is06.Task.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iorvycr6.TaskErrorReason?>()) {
+      return (data != null ? _iorvycr6.TaskErrorReason.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ima0h3gh.TaskException?>()) {
+      return (data != null ? _ima0h3gh.TaskException.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i4hckegz.TaskKind?>()) {
+      return (data != null ? _i4hckegz.TaskKind.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ieirl7mq.TaskRecurrence?>()) {
+      return (data != null ? _ieirl7mq.TaskRecurrence.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_i65tv1la.TaskStatus?>()) {
+      return (data != null ? _i65tv1la.TaskStatus.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_ikgry9hi.TaskVote?>()) {
+      return (data != null ? _ikgry9hi.TaskVote.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_i40o7ktz.TaskVotePhase?>()) {
+      return (data != null ? _i40o7ktz.TaskVotePhase.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_ii2179p0.CoinMovement?>()) {
+      return (data != null ? _ii2179p0.CoinMovement.fromJson(data) : null) as T;
+    }
+    if (t == _isc.getType<_iyltnat0.CoinTransaction?>()) {
+      return (data != null ? _iyltnat0.CoinTransaction.fromJson(data) : null)
+          as T;
+    }
+    if (t == _isc.getType<_inbrsz7i.CoinTransactionReason?>()) {
+      return (data != null
+              ? _inbrsz7i.CoinTransactionReason.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _isc.getType<_izo0hjq0.RankingEntry?>()) {
+      return (data != null ? _izo0hjq0.RankingEntry.fromJson(data) : null) as T;
+    }
+    if (t == List<_ir4oz66a.GroupMember>) {
+      return (data as List)
+              .map((e) => deserialize<_ir4oz66a.GroupMember>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ibcsn808.RewardItem>) {
+      return (data as List)
+              .map((e) => deserialize<_ibcsn808.RewardItem>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_idofij3t.Purchase>) {
+      return (data as List)
+              .map((e) => deserialize<_idofij3t.Purchase>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_i7vt05yn.Task>) {
+      return (data as List).map((e) => deserialize<_i7vt05yn.Task>(e)).toList()
+          as T;
+    }
+    if (t == List<_itpz8rf5.TaskVote>) {
+      return (data as List)
+              .map((e) => deserialize<_itpz8rf5.TaskVote>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ibr29qpn.CoinMovement>) {
+      return (data as List)
+              .map((e) => deserialize<_ibr29qpn.CoinMovement>(e))
+              .toList()
+          as T;
+    }
+    if (t == List<_ixil0pu8.RankingEntry>) {
+      return (data as List)
+              .map((e) => deserialize<_ixil0pu8.RankingEntry>(e))
+              .toList()
+          as T;
     }
     try {
       return _iaic.Protocol().deserialize<T>(data, t);
@@ -71,7 +389,37 @@ class Protocol extends _isc.SerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
-      _izw8z7ou.Greeting => 'Greeting',
+      _icyna58o.RegistrationErrorReason => 'RegistrationErrorReason',
+      _i007ol99.RegistrationException => 'RegistrationException',
+      _iecilz9e.GroupEvent => 'GroupEvent',
+      _il82a0w2.GroupEventKind => 'GroupEventKind',
+      _ivjbsthj.ChildLoginCode => 'ChildLoginCode',
+      _i9ztykbt.Group => 'Group',
+      _i7quka6t.GroupErrorReason => 'GroupErrorReason',
+      _i3la3wci.GroupException => 'GroupException',
+      _iio6btzp.GroupMember => 'GroupMember',
+      _ixnaxhon.GroupMemberRole => 'GroupMemberRole',
+      _ivrm4l0w.GroupMemberStatus => 'GroupMemberStatus',
+      _iskz3t6h.GroupType => 'GroupType',
+      _iw24ridd.Purchase => 'Purchase',
+      _ifglcefk.PurchaseStatus => 'PurchaseStatus',
+      _ikfprkod.RewardItem => 'RewardItem',
+      _i2lcnj26.RewardItemStatus => 'RewardItemStatus',
+      _iod77io3.RewardVote => 'RewardVote',
+      _il3xdzmd.ShopErrorReason => 'ShopErrorReason',
+      _i0uw1vc9.ShopException => 'ShopException',
+      _i253is06.Task => 'Task',
+      _iorvycr6.TaskErrorReason => 'TaskErrorReason',
+      _ima0h3gh.TaskException => 'TaskException',
+      _i4hckegz.TaskKind => 'TaskKind',
+      _ieirl7mq.TaskRecurrence => 'TaskRecurrence',
+      _i65tv1la.TaskStatus => 'TaskStatus',
+      _ikgry9hi.TaskVote => 'TaskVote',
+      _i40o7ktz.TaskVotePhase => 'TaskVotePhase',
+      _ii2179p0.CoinMovement => 'CoinMovement',
+      _iyltnat0.CoinTransaction => 'CoinTransaction',
+      _inbrsz7i.CoinTransactionReason => 'CoinTransactionReason',
+      _izo0hjq0.RankingEntry => 'RankingEntry',
       _ => null,
     };
   }
@@ -89,8 +437,68 @@ class Protocol extends _isc.SerializationManager {
     }
 
     switch (data) {
-      case _izw8z7ou.Greeting():
-        return 'Greeting';
+      case _icyna58o.RegistrationErrorReason():
+        return 'RegistrationErrorReason';
+      case _i007ol99.RegistrationException():
+        return 'RegistrationException';
+      case _iecilz9e.GroupEvent():
+        return 'GroupEvent';
+      case _il82a0w2.GroupEventKind():
+        return 'GroupEventKind';
+      case _ivjbsthj.ChildLoginCode():
+        return 'ChildLoginCode';
+      case _i9ztykbt.Group():
+        return 'Group';
+      case _i7quka6t.GroupErrorReason():
+        return 'GroupErrorReason';
+      case _i3la3wci.GroupException():
+        return 'GroupException';
+      case _iio6btzp.GroupMember():
+        return 'GroupMember';
+      case _ixnaxhon.GroupMemberRole():
+        return 'GroupMemberRole';
+      case _ivrm4l0w.GroupMemberStatus():
+        return 'GroupMemberStatus';
+      case _iskz3t6h.GroupType():
+        return 'GroupType';
+      case _iw24ridd.Purchase():
+        return 'Purchase';
+      case _ifglcefk.PurchaseStatus():
+        return 'PurchaseStatus';
+      case _ikfprkod.RewardItem():
+        return 'RewardItem';
+      case _i2lcnj26.RewardItemStatus():
+        return 'RewardItemStatus';
+      case _iod77io3.RewardVote():
+        return 'RewardVote';
+      case _il3xdzmd.ShopErrorReason():
+        return 'ShopErrorReason';
+      case _i0uw1vc9.ShopException():
+        return 'ShopException';
+      case _i253is06.Task():
+        return 'Task';
+      case _iorvycr6.TaskErrorReason():
+        return 'TaskErrorReason';
+      case _ima0h3gh.TaskException():
+        return 'TaskException';
+      case _i4hckegz.TaskKind():
+        return 'TaskKind';
+      case _ieirl7mq.TaskRecurrence():
+        return 'TaskRecurrence';
+      case _i65tv1la.TaskStatus():
+        return 'TaskStatus';
+      case _ikgry9hi.TaskVote():
+        return 'TaskVote';
+      case _i40o7ktz.TaskVotePhase():
+        return 'TaskVotePhase';
+      case _ii2179p0.CoinMovement():
+        return 'CoinMovement';
+      case _iyltnat0.CoinTransaction():
+        return 'CoinTransaction';
+      case _inbrsz7i.CoinTransactionReason():
+        return 'CoinTransactionReason';
+      case _izo0hjq0.RankingEntry():
+        return 'RankingEntry';
     }
     className = _iaic.Protocol().getClassNameForObject(data);
     if (className != null) {
@@ -113,8 +521,98 @@ class Protocol extends _isc.SerializationManager {
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
     }
-    if (dataClassName == 'Greeting') {
-      return deserialize<_izw8z7ou.Greeting>(data['data']);
+    if (dataClassName == 'RegistrationErrorReason') {
+      return deserialize<_icyna58o.RegistrationErrorReason>(data['data']);
+    }
+    if (dataClassName == 'RegistrationException') {
+      return deserialize<_i007ol99.RegistrationException>(data['data']);
+    }
+    if (dataClassName == 'GroupEvent') {
+      return deserialize<_iecilz9e.GroupEvent>(data['data']);
+    }
+    if (dataClassName == 'GroupEventKind') {
+      return deserialize<_il82a0w2.GroupEventKind>(data['data']);
+    }
+    if (dataClassName == 'ChildLoginCode') {
+      return deserialize<_ivjbsthj.ChildLoginCode>(data['data']);
+    }
+    if (dataClassName == 'Group') {
+      return deserialize<_i9ztykbt.Group>(data['data']);
+    }
+    if (dataClassName == 'GroupErrorReason') {
+      return deserialize<_i7quka6t.GroupErrorReason>(data['data']);
+    }
+    if (dataClassName == 'GroupException') {
+      return deserialize<_i3la3wci.GroupException>(data['data']);
+    }
+    if (dataClassName == 'GroupMember') {
+      return deserialize<_iio6btzp.GroupMember>(data['data']);
+    }
+    if (dataClassName == 'GroupMemberRole') {
+      return deserialize<_ixnaxhon.GroupMemberRole>(data['data']);
+    }
+    if (dataClassName == 'GroupMemberStatus') {
+      return deserialize<_ivrm4l0w.GroupMemberStatus>(data['data']);
+    }
+    if (dataClassName == 'GroupType') {
+      return deserialize<_iskz3t6h.GroupType>(data['data']);
+    }
+    if (dataClassName == 'Purchase') {
+      return deserialize<_iw24ridd.Purchase>(data['data']);
+    }
+    if (dataClassName == 'PurchaseStatus') {
+      return deserialize<_ifglcefk.PurchaseStatus>(data['data']);
+    }
+    if (dataClassName == 'RewardItem') {
+      return deserialize<_ikfprkod.RewardItem>(data['data']);
+    }
+    if (dataClassName == 'RewardItemStatus') {
+      return deserialize<_i2lcnj26.RewardItemStatus>(data['data']);
+    }
+    if (dataClassName == 'RewardVote') {
+      return deserialize<_iod77io3.RewardVote>(data['data']);
+    }
+    if (dataClassName == 'ShopErrorReason') {
+      return deserialize<_il3xdzmd.ShopErrorReason>(data['data']);
+    }
+    if (dataClassName == 'ShopException') {
+      return deserialize<_i0uw1vc9.ShopException>(data['data']);
+    }
+    if (dataClassName == 'Task') {
+      return deserialize<_i253is06.Task>(data['data']);
+    }
+    if (dataClassName == 'TaskErrorReason') {
+      return deserialize<_iorvycr6.TaskErrorReason>(data['data']);
+    }
+    if (dataClassName == 'TaskException') {
+      return deserialize<_ima0h3gh.TaskException>(data['data']);
+    }
+    if (dataClassName == 'TaskKind') {
+      return deserialize<_i4hckegz.TaskKind>(data['data']);
+    }
+    if (dataClassName == 'TaskRecurrence') {
+      return deserialize<_ieirl7mq.TaskRecurrence>(data['data']);
+    }
+    if (dataClassName == 'TaskStatus') {
+      return deserialize<_i65tv1la.TaskStatus>(data['data']);
+    }
+    if (dataClassName == 'TaskVote') {
+      return deserialize<_ikgry9hi.TaskVote>(data['data']);
+    }
+    if (dataClassName == 'TaskVotePhase') {
+      return deserialize<_i40o7ktz.TaskVotePhase>(data['data']);
+    }
+    if (dataClassName == 'CoinMovement') {
+      return deserialize<_ii2179p0.CoinMovement>(data['data']);
+    }
+    if (dataClassName == 'CoinTransaction') {
+      return deserialize<_iyltnat0.CoinTransaction>(data['data']);
+    }
+    if (dataClassName == 'CoinTransactionReason') {
+      return deserialize<_inbrsz7i.CoinTransactionReason>(data['data']);
+    }
+    if (dataClassName == 'RankingEntry') {
+      return deserialize<_izo0hjq0.RankingEntry>(data['data']);
     }
     if (dataClassName.startsWith('serverpod_auth_idp.')) {
       data['className'] = dataClassName.substring(19);

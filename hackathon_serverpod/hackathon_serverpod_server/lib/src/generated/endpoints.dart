@@ -10,14 +10,24 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/future_calls.dart'
+    as _isvvvywu;
+import 'package:hackathon_serverpod_server/src/generated/groups/group_type.dart'
+    as _ik8b7v56;
 import 'package:serverpod/serverpod.dart' as _is;
 import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
+import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
-import '../greetings/greeting_endpoint.dart' as _il624ik7;
+import '../events/event_endpoint.dart' as _i7r7roa3;
+import '../groups/group_endpoint.dart' as _irt1w8ui;
+import '../shop/shop_endpoint.dart' as _ig43k7x5;
+import '../tasks/task_endpoint.dart' as _i3nmwja6;
+import '../wallet/wallet_endpoint.dart' as _il5vx24y;
+export 'future_calls.dart' show ServerpodFutureCallsGetter;
 
 class Endpoints extends _is.EndpointDispatch {
   @override
@@ -29,16 +39,46 @@ class Endpoints extends _is.EndpointDispatch {
           'emailIdp',
           null,
         ),
+      'googleIdp': _i71axiz0.GoogleIdpEndpoint()
+        ..initialize(
+          server,
+          'googleIdp',
+          null,
+        ),
       'jwtRefresh': _inwq3ztq.JwtRefreshEndpoint()
         ..initialize(
           server,
           'jwtRefresh',
           null,
         ),
-      'greeting': _il624ik7.GreetingEndpoint()
+      'event': _i7r7roa3.EventEndpoint()
         ..initialize(
           server,
-          'greeting',
+          'event',
+          null,
+        ),
+      'group': _irt1w8ui.GroupEndpoint()
+        ..initialize(
+          server,
+          'group',
+          null,
+        ),
+      'shop': _ig43k7x5.ShopEndpoint()
+        ..initialize(
+          server,
+          'shop',
+          null,
+        ),
+      'task': _i3nmwja6.TaskEndpoint()
+        ..initialize(
+          server,
+          'task',
+          null,
+        ),
+      'wallet': _il5vx24y.WalletEndpoint()
+        ..initialize(
+          server,
+          'wallet',
           null,
         ),
     };
@@ -46,6 +86,25 @@ class Endpoints extends _is.EndpointDispatch {
       name: 'emailIdp',
       endpoint: endpoints['emailIdp']!,
       methodConnectors: {
+        'startRegistration': _is.MethodConnector(
+          name: 'startRegistration',
+          params: {
+            'email': _is.ParameterDescription(
+              name: 'email',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
+                  .startRegistration(
+                    session,
+                    email: params['email'],
+                  ),
+        ),
         'login': _is.MethodConnector(
           name: 'login',
           params: {
@@ -69,25 +128,6 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     email: params['email'],
                     password: params['password'],
-                  ),
-        ),
-        'startRegistration': _is.MethodConnector(
-          name: 'startRegistration',
-          params: {
-            'email': _is.ParameterDescription(
-              name: 'email',
-              type: _is.getType<String>(),
-              nullable: false,
-            ),
-          },
-          call:
-              (
-                _is.Session session,
-                Map<String, dynamic> params,
-              ) async => (endpoints['emailIdp'] as _iuc1hd5t.EmailIdpEndpoint)
-                  .startRegistration(
-                    session,
-                    email: params['email'],
                   ),
         ),
         'verifyRegistrationCode': _is.MethodConnector(
@@ -222,6 +262,78 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
+    connectors['googleIdp'] = _is.EndpointConnector(
+      name: 'googleIdp',
+      endpoint: endpoints['googleIdp']!,
+      methodConnectors: {
+        'login': _is.MethodConnector(
+          name: 'login',
+          params: {
+            'idToken': _is.ParameterDescription(
+              name: 'idToken',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'accessToken': _is.ParameterDescription(
+              name: 'accessToken',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint).login(
+                    session,
+                    idToken: params['idToken'],
+                    accessToken: params['accessToken'],
+                  ),
+        ),
+        'loginWithCode': _is.MethodConnector(
+          name: 'loginWithCode',
+          params: {
+            'code': _is.ParameterDescription(
+              name: 'code',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'codeVerifier': _is.ParameterDescription(
+              name: 'codeVerifier',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'redirectUri': _is.ParameterDescription(
+              name: 'redirectUri',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint)
+                  .loginWithCode(
+                    session,
+                    code: params['code'],
+                    codeVerifier: params['codeVerifier'],
+                    redirectUri: params['redirectUri'],
+                  ),
+        ),
+        'hasAccount': _is.MethodConnector(
+          name: 'hasAccount',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['googleIdp'] as _i71axiz0.GoogleIdpEndpoint)
+                  .hasAccount(session),
+        ),
+      },
+    );
     connectors['jwtRefresh'] = _is.EndpointConnector(
       name: 'jwtRefresh',
       endpoint: endpoints['jwtRefresh']!,
@@ -248,15 +360,308 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
-    connectors['greeting'] = _is.EndpointConnector(
-      name: 'greeting',
-      endpoint: endpoints['greeting']!,
+    connectors['event'] = _is.EndpointConnector(
+      name: 'event',
+      endpoint: endpoints['event']!,
       methodConnectors: {
-        'hello': _is.MethodConnector(
-          name: 'hello',
+        'watchGroup': _is.MethodStreamConnector(
+          name: 'watchGroup',
+          params: {},
+          streamParams: {},
+          returnType: _is.MethodStreamReturnType.streamType,
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+                Map<String, Stream> streamParams,
+              ) => (endpoints['event'] as _i7r7roa3.EventEndpoint).watchGroup(
+                session,
+              ),
+        ),
+      },
+    );
+    connectors['group'] = _is.EndpointConnector(
+      name: 'group',
+      endpoint: endpoints['group']!,
+      methodConnectors: {
+        'createGroup': _is.MethodConnector(
+          name: 'createGroup',
           params: {
             'name': _is.ParameterDescription(
               name: 'name',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'type': _is.ParameterDescription(
+              name: 'type',
+              type: _is.getType<_ik8b7v56.GroupType>(),
+              nullable: false,
+            ),
+            'displayName': _is.ParameterDescription(
+              name: 'displayName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).createGroup(
+                    session,
+                    params['name'],
+                    params['type'],
+                    displayName: params['displayName'],
+                  ),
+        ),
+        'joinGroup': _is.MethodConnector(
+          name: 'joinGroup',
+          params: {
+            'inviteCode': _is.ParameterDescription(
+              name: 'inviteCode',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'displayName': _is.ParameterDescription(
+              name: 'displayName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).joinGroup(
+                    session,
+                    params['inviteCode'],
+                    displayName: params['displayName'],
+                  ),
+        ),
+        'myGroup': _is.MethodConnector(
+          name: 'myGroup',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .myGroup(session),
+        ),
+        'listMembers': _is.MethodConnector(
+          name: 'listMembers',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .listMembers(session),
+        ),
+        'expelMember': _is.MethodConnector(
+          name: 'expelMember',
+          params: {
+            'memberId': _is.ParameterDescription(
+              name: 'memberId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).expelMember(
+                    session,
+                    params['memberId'],
+                  ),
+        ),
+        'regenerateInviteCode': _is.MethodConnector(
+          name: 'regenerateInviteCode',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .regenerateInviteCode(session),
+        ),
+        'transferAdmin': _is.MethodConnector(
+          name: 'transferAdmin',
+          params: {
+            'memberId': _is.ParameterDescription(
+              name: 'memberId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).transferAdmin(
+                    session,
+                    params['memberId'],
+                  ),
+        ),
+        'updateGroup': _is.MethodConnector(
+          name: 'updateGroup',
+          params: {
+            'name': _is.ParameterDescription(
+              name: 'name',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'finePercent': _is.ParameterDescription(
+              name: 'finePercent',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['group'] as _irt1w8ui.GroupEndpoint).updateGroup(
+                    session,
+                    name: params['name'],
+                    finePercent: params['finePercent'],
+                  ),
+        ),
+        'updateMyProfile': _is.MethodConnector(
+          name: 'updateMyProfile',
+          params: {
+            'displayName': _is.ParameterDescription(
+              name: 'displayName',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'avatarEmoji': _is.ParameterDescription(
+              name: 'avatarEmoji',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'avatarColor': _is.ParameterDescription(
+              name: 'avatarColor',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .updateMyProfile(
+                    session,
+                    displayName: params['displayName'],
+                    avatarEmoji: params['avatarEmoji'],
+                    avatarColor: params['avatarColor'],
+                  ),
+        ),
+      },
+    );
+    connectors['shop'] = _is.EndpointConnector(
+      name: 'shop',
+      endpoint: endpoints['shop']!,
+      methodConnectors: {
+        'listRewards': _is.MethodConnector(
+          name: 'listRewards',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
+                  .listRewards(session),
+        ),
+        'listPurchases': _is.MethodConnector(
+          name: 'listPurchases',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
+                  .listPurchases(session),
+        ),
+        'proposeReward': _is.MethodConnector(
+          name: 'proposeReward',
+          params: {
+            'title': _is.ParameterDescription(
+              name: 'title',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'description': _is.ParameterDescription(
+              name: 'description',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'price': _is.ParameterDescription(
+              name: 'price',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'stock': _is.ParameterDescription(
+              name: 'stock',
+              type: _is.getType<int?>(),
+              nullable: true,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).proposeReward(
+                    session,
+                    params['title'],
+                    params['description'],
+                    params['price'],
+                    stock: params['stock'],
+                  ),
+        ),
+        'voteReward': _is.MethodConnector(
+          name: 'voteReward',
+          params: {
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'approve': _is.ParameterDescription(
+              name: 'approve',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).voteReward(
+                    session,
+                    params['itemId'],
+                    params['approve'],
+                  ),
+        ),
+        'requestWish': _is.MethodConnector(
+          name: 'requestWish',
+          params: {
+            'title': _is.ParameterDescription(
+              name: 'title',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'description': _is.ParameterDescription(
+              name: 'description',
               type: _is.getType<String>(),
               nullable: false,
             ),
@@ -266,10 +671,332 @@ class Endpoints extends _is.EndpointDispatch {
                 _is.Session session,
                 Map<String, dynamic> params,
               ) async =>
-                  (endpoints['greeting'] as _il624ik7.GreetingEndpoint).hello(
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).requestWish(
                     session,
-                    params['name'],
+                    params['title'],
+                    params['description'],
                   ),
+        ),
+        'purchaseReward': _is.MethodConnector(
+          name: 'purchaseReward',
+          params: {
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'providerId': _is.ParameterDescription(
+              name: 'providerId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).purchaseReward(
+                    session,
+                    params['itemId'],
+                    params['providerId'],
+                  ),
+        ),
+        'approveChildPurchase': _is.MethodConnector(
+          name: 'approveChildPurchase',
+          params: {
+            'purchaseId': _is.ParameterDescription(
+              name: 'purchaseId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'approve': _is.ParameterDescription(
+              name: 'approve',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
+                  .approveChildPurchase(
+                    session,
+                    params['purchaseId'],
+                    params['approve'],
+                  ),
+        ),
+        'respondToPurchase': _is.MethodConnector(
+          name: 'respondToPurchase',
+          params: {
+            'purchaseId': _is.ParameterDescription(
+              name: 'purchaseId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'accept': _is.ParameterDescription(
+              name: 'accept',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['shop'] as _ig43k7x5.ShopEndpoint)
+                  .respondToPurchase(
+                    session,
+                    params['purchaseId'],
+                    params['accept'],
+                  ),
+        ),
+        'markDelivered': _is.MethodConnector(
+          name: 'markDelivered',
+          params: {
+            'purchaseId': _is.ParameterDescription(
+              name: 'purchaseId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).markDelivered(
+                    session,
+                    params['purchaseId'],
+                  ),
+        ),
+      },
+    );
+    connectors['task'] = _is.EndpointConnector(
+      name: 'task',
+      endpoint: endpoints['task']!,
+      methodConnectors: {
+        'listTasks': _is.MethodConnector(
+          name: 'listTasks',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .listTasks(session),
+        ),
+        'listTaskVotes': _is.MethodConnector(
+          name: 'listTaskVotes',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .listTaskVotes(session),
+        ),
+        'proposeTask': _is.MethodConnector(
+          name: 'proposeTask',
+          params: {
+            'title': _is.ParameterDescription(
+              name: 'title',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'description': _is.ParameterDescription(
+              name: 'description',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+            'reward': _is.ParameterDescription(
+              name: 'reward',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['task'] as _i3nmwja6.TaskEndpoint).proposeTask(
+                    session,
+                    params['title'],
+                    params['description'],
+                    params['reward'],
+                  ),
+        ),
+        'voteTaskProposal': _is.MethodConnector(
+          name: 'voteTaskProposal',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'approve': _is.ParameterDescription(
+              name: 'approve',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .voteTaskProposal(
+                    session,
+                    params['taskId'],
+                    params['approve'],
+                  ),
+        ),
+        'counterOfferTask': _is.MethodConnector(
+          name: 'counterOfferTask',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'counterReward': _is.ParameterDescription(
+              name: 'counterReward',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .counterOfferTask(
+                    session,
+                    params['taskId'],
+                    params['counterReward'],
+                  ),
+        ),
+        'respondToCounterOffer': _is.MethodConnector(
+          name: 'respondToCounterOffer',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'accept': _is.ParameterDescription(
+              name: 'accept',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .respondToCounterOffer(
+                    session,
+                    params['taskId'],
+                    params['accept'],
+                  ),
+        ),
+        'markTaskDone': _is.MethodConnector(
+          name: 'markTaskDone',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['task'] as _i3nmwja6.TaskEndpoint).markTaskDone(
+                    session,
+                    params['taskId'],
+                  ),
+        ),
+        'voteTaskCompletion': _is.MethodConnector(
+          name: 'voteTaskCompletion',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'approve': _is.ParameterDescription(
+              name: 'approve',
+              type: _is.getType<bool>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['task'] as _i3nmwja6.TaskEndpoint)
+                  .voteTaskCompletion(
+                    session,
+                    params['taskId'],
+                    params['approve'],
+                  ),
+        ),
+      },
+    );
+    connectors['wallet'] = _is.EndpointConnector(
+      name: 'wallet',
+      endpoint: endpoints['wallet']!,
+      methodConnectors: {
+        'getBalance': _is.MethodConnector(
+          name: 'getBalance',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['wallet'] as _il5vx24y.WalletEndpoint)
+                  .getBalance(session),
+        ),
+        'getHistory': _is.MethodConnector(
+          name: 'getHistory',
+          params: {
+            'limit': _is.ParameterDescription(
+              name: 'limit',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+            'offset': _is.ParameterDescription(
+              name: 'offset',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['wallet'] as _il5vx24y.WalletEndpoint).getHistory(
+                    session,
+                    limit: params['limit'],
+                    offset: params['offset'],
+                  ),
+        ),
+        'getWeeklyRanking': _is.MethodConnector(
+          name: 'getWeeklyRanking',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['wallet'] as _il5vx24y.WalletEndpoint)
+                  .getWeeklyRanking(session),
         ),
       },
     );
@@ -277,5 +1004,10 @@ class Endpoints extends _is.EndpointDispatch {
       ..initializeEndpoints(server);
     modules['serverpod_auth_core'] = _iacs.Endpoints()
       ..initializeEndpoints(server);
+  }
+
+  @override
+  _is.FutureCallDispatch? get futureCalls {
+    return _isvvvywu.FutureCalls();
   }
 }

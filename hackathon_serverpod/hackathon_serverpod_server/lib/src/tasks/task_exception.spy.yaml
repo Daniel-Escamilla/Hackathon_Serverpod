@@ -1,0 +1,7 @@
+### A task call refused for a reason the app can act on.
+###
+### Serialisable for the same reason as `GroupException`: a `StateError`
+### reaches the client as a generic failure.
+exception: TaskException
+fields:
+  reason: TaskErrorReason

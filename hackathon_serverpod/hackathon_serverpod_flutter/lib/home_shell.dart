@@ -1,0 +1,232 @@
+import 'dart:async';
+
+import 'package:flutter/material.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:provider/provider.dart';
+
+import 'app_theme.dart';
+import 'common/navigation.dart';
+import 'data/app_failure.dart';
+import 'features/group/group_controller.dart';
+import 'features/group/group_page.dart';
+import 'features/shop/shop_controller.dart';
+import 'features/shop/shop_page.dart';
+import 'features/tasks/propose_task_screen.dart';
+import 'features/tasks/tasks_controller.dart';
+import 'features/tasks/tasks_page.dart';
+import 'features/wallet/wallet_controller.dart';
+import 'features/wallet/wallet_page.dart';
+import 'l10n/generated/app_localizations.dart';
+
+/// Which of [HomeShell]'s four tabs is showing. A screen nested inside one
+/// tab (the coin pill in [PageHeader]) reads this through `provider` to jump
+/// to another tab instead of pushing a whole new navigator stack.
+class HomeTabController extends ChangeNotifier {
+  HomeTabController(this.index);
+
+  static const tasks = 0;
+  static const shop = 1;
+  static const wallet = 2;
+  static const group = 3;
+
+  int index;
+
+  void goTo(int value) {
+    if (value == index) return;
+    index = value;
+    notifyListeners();
+  }
+}
+
+/// Whether [error], held by any of the tab controllers, means the member is no
+/// longer in the group: expelled while the app was open.
+bool meansNoGroup(Object? error) =>
+    error != null && failureOf(error) == AppFailure.noGroup;
+
+/// The data behind [HomeShell]'s tabs, each owned by one controller.
+enum HomeData { tasks, shop, wallet, group }
+
+/// What a live event from the group's stream makes out of date, so
+/// [HomeShell] reloads just that. Anything that moves coins — a validation
+/// paying, a purchase charging, a refusal fining and refunding — also
+/// reloads the wallet.
+@visibleForTesting
+Set<HomeData> staleAfter(GroupEventKind kind) => switch (kind) {
+  GroupEventKind.taskProposed ||
+  GroupEventKind.taskVoteCast ||
+  GroupEventKind.taskCounterOffered ||
+  GroupEventKind.taskClaimed => {HomeData.tasks},
+  GroupEventKind.taskValidated => {HomeData.tasks, HomeData.wallet},
+  GroupEventKind.rewardProposed ||
+  GroupEventKind.rewardVoteCast ||
+  GroupEventKind.purchaseDelivered => {HomeData.shop},
+  GroupEventKind.purchased ||
+  GroupEventKind.purchaseResponded => {HomeData.shop, HomeData.wallet},
+  GroupEventKind.memberExpelled => {HomeData.group},
+};
+
+class HomeShell extends StatefulWidget {
+  const HomeShell({super.key, this.initialIndex = 0});
+
+  final int initialIndex;
+
+  @override
+  State<HomeShell> createState() => _HomeShellState();
+}
+
+class _HomeShellState extends State<HomeShell> {
+  late final _tabController = HomeTabController(widget.initialIndex);
+  final _tasksController = TasksController()..load();
+  final _shopController = ShopController()..load();
+  final _walletController = WalletController()..load();
+  final _groupController = GroupController()..load();
+  StreamSubscription<GroupEvent>? _events;
+  bool _leaving = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _watchGroup();
+    for (final controller in _controllers) {
+      controller.addListener(_leaveIfNoGroup);
+    }
+  }
+
+  List<ChangeNotifier> get _controllers => [
+    _tasksController,
+    _shopController,
+    _walletController,
+    _groupController,
+  ];
+
+  /// A load refused with "no membership" means the member was expelled while
+  /// the stream was down, so the event never arrived.
+  void _leaveIfNoGroup() {
+    if ([
+      _tasksController.error,
+      _shopController.error,
+      _walletController.error,
+      _groupController.error,
+    ].any(meansNoGroup)) {
+      _leaveGroup();
+    }
+  }
+
+  void _leaveGroup() {
+    if (_leaving || !mounted) return;
+    _leaving = true;
+    unawaited(_events?.cancel());
+    _events = null;
+    leaveHome(context, AppLocalizations.of(context).leftGroupNotice);
+  }
+
+  /// Listens to the group's live stream (PRODUCT.md §10.4) so a vote, a
+  /// claim or a purchase made on another phone shows up here without pulling
+  /// to refresh. If the connection drops, it tries again a few seconds later.
+  void _watchGroup() {
+    _events = _groupController.repository.watchGroup().listen(
+      _onGroupEvent,
+      onError: (Object _) => _retryWatch(),
+      onDone: _retryWatch,
+      cancelOnError: true,
+    );
+  }
+
+  void _retryWatch() {
+    _events = null;
+    Future<void>.delayed(const Duration(seconds: 3), () {
+      if (mounted && !_leaving && _events == null) _watchGroup();
+    });
+  }
+
+  void _onGroupEvent(GroupEvent event) {
+    if (event.kind == GroupEventKind.memberExpelled &&
+        event.memberId == _groupController.myMemberId) {
+      _leaveGroup();
+      return;
+    }
+    for (final data in staleAfter(event.kind)) {
+      unawaited(switch (data) {
+        HomeData.tasks => _tasksController.load(),
+        HomeData.shop => _shopController.load(),
+        HomeData.wallet => _walletController.load(),
+        HomeData.group => _groupController.load(),
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    unawaited(_events?.cancel());
+    _tabController.dispose();
+    _tasksController.dispose();
+    _shopController.dispose();
+    _walletController.dispose();
+    _groupController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: _tabController),
+        ChangeNotifierProvider.value(value: _tasksController),
+        ChangeNotifierProvider.value(value: _shopController),
+        ChangeNotifierProvider.value(value: _walletController),
+        ChangeNotifierProvider.value(value: _groupController),
+      ],
+      child: Builder(
+        builder: (context) {
+          final l10n = AppLocalizations.of(context);
+          final index = context.watch<HomeTabController>().index;
+          const pages = [
+            TasksPage(),
+            ShopPage(),
+            WalletPage(),
+            GroupPage(),
+          ];
+          return Scaffold(
+            body: SafeArea(
+              child: IndexedStack(index: index, children: pages),
+            ),
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: index,
+              onDestinationSelected: _tabController.goTo,
+              backgroundColor: Colors.white,
+              indicatorColor: AppColors.violet.withValues(alpha: .14),
+              destinations: [
+                NavigationDestination(
+                  icon: const Icon(Icons.task_alt_rounded),
+                  label: l10n.navTasks,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.storefront_rounded),
+                  label: l10n.navShop,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.account_balance_wallet_rounded),
+                  label: l10n.navWallet,
+                ),
+                NavigationDestination(
+                  icon: const Icon(Icons.groups_rounded),
+                  label: l10n.navGroup,
+                ),
+              ],
+            ),
+            floatingActionButton: index == HomeTabController.tasks
+                ? FloatingActionButton.extended(
+                    onPressed: () =>
+                        pushPage(context, const ProposeTaskScreen()),
+                    backgroundColor: AppColors.violet,
+                    foregroundColor: Colors.white,
+                    icon: const Icon(Icons.add_rounded),
+                    label: Text(l10n.proposeTask),
+                  )
+                : null,
+          );
+        },
+      ),
+    );
+  }
+}

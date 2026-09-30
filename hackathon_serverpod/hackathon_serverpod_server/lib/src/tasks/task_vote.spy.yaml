@@ -1,0 +1,13 @@
+### One member's vote on a Task, in one of its two phases (PRODUCT.md §3, §10.2). Same shape as
+### RewardVote, plus the phase and the counter-offer.
+class: TaskVote
+table: task_vote
+fields:
+  taskId: int, relation(parent=task)
+  ### One vote per member per task per phase; a vote round that restarts after an accepted
+  ### counter-offer (PRODUCT.md §4.3) needs its old proposal-phase rows cleared first.
+  memberId: int, relation(parent=group_member), unique(per=[taskId, phase])
+  phase: TaskVotePhase
+  approve: bool
+  ### A different price offered instead of a plain reject, proposal phase only (PRODUCT.md §4.3).
+  counterReward: int?

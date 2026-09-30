@@ -1,0 +1,21 @@
+### A one-use code a guardian generates so a child can sign in on their phone without an
+### email (PRODUCT.md §8 "Menores", §10.2). Only the hash is stored, never the code.
+### Family mode is out of MVP scope (PLAN.md §1): the table exists, nothing uses it yet.
+class: ChildLoginCode
+table: child_login_code
+fields:
+  ### The child's membership this code signs in as.
+  memberId: int, relation(parent=group_member)
+  ### Hash of the code the guardian reads out; the code itself is never stored.
+  codeHash: String
+  ### 24 hours after it is generated (§8).
+  expiresAt: DateTime
+  ### Set when the child signs in with it. A used code never works again.
+  usedAt: DateTime?
+
+indexes:
+  child_login_code_member_id_idx:
+    fields: memberId
+  child_login_code_code_hash_idx:
+    fields: codeHash
+    unique: true

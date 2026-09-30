@@ -1,0 +1,6 @@
+### Which of a Task's two votes this is (PRODUCT.md §3, §10.2): `proposal` decides whether the
+### task is accepted, `completion` decides whether it was actually done.
+enum: TaskVotePhase
+values:
+  - proposal
+  - completion
