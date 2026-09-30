@@ -188,6 +188,8 @@ serverpod create-migration     # only when a model with a `table` changed
   each one means. In Spanish.
 - [`docs/FEEDBACK.md`](docs/FEEDBACK.md) — Serverpod friction as we hit it, for the Most Valuable
   Feedback prize. In English, because that is what goes into the form.
+- [`CHANGELOG.md`](CHANGELOG.md) — what each version adds and fixes. A version is what reaches
+  `main`, tagged `v<version>`.
 - [`TEAM.md`](TEAM.md) — who we are, who represents the team, how a prize is shared.
 - [`AGENTS.md`](AGENTS.md) — the entry point for any coding agent (Codex, Claude Code, Gemini CLI,
   Cursor…): what to read first, the rules that hold everywhere and the commands with and without MCP.

@@ -39,6 +39,9 @@ is designed ([`docs/PRODUCT.md`](PRODUCT.md) §8) but out of scope for this subm
   told someone got there first.
 - **Validate**: the rest of the group confirms the task was really done. Only then are the coins
   paid.
+- The tasks tab is ordered by whose turn it is: what is waiting for your vote first, then what is
+  available, your own claims in validation, and the rest still being voted, each with the time
+  left. Every task shows who has voted and how.
 - **Fines**: a percentage of the task's price, 20 % by default and set per group, paid by whoever
   proposed a rejected task, claimed a task whose validation is denied, or let a vote expire without
   voting. Balances can go negative.
@@ -55,8 +58,9 @@ is designed ([`docs/PRODUCT.md`](PRODUCT.md) §8) but out of scope for this subm
 
 **Live updates**
 
-- Proposals, votes, counter-offers, claims, validations, purchases and expulsions reach every
-  member's phone as they happen, without refreshing.
+- Proposals, votes, counter-offers, claims, validations, expulsions and every step of the shop —
+  a reward proposed or voted, a purchase made, answered or delivered — reach every member's phone
+  as they happen, without refreshing.
 
 ## How it was built
 
