@@ -111,6 +111,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createAccountErrorStart => 'Couldn\'t start the sign-up.';
 
   @override
+  String get createAccountErrorRegistered =>
+      'That email already has an account. Sign in.';
+
+  @override
   String get verifyEmailTitle => 'Check your email';
 
   @override

@@ -18,6 +18,7 @@ extension AppFailureMessage on AppFailure {
     AppFailure.invalidCredentials => l10n.signInErrorInvalidCredentials,
     AppFailure.registrationExpired => l10n.passwordErrorExpired,
     AppFailure.registrationInvalid => l10n.codeErrorInvalid,
+    AppFailure.emailAlreadyRegistered => l10n.createAccountErrorRegistered,
     AppFailure.tooManyAttempts => l10n.authErrorTooManyAttempts,
     AppFailure.taskNotFound => l10n.errorTaskNotFound,
     AppFailure.taskNotOpen => l10n.errorTaskNotOpen,

@@ -12,6 +12,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ## [Unreleased]
 
+### Changed
+
+- **Sign-up with a known email.** An email that already has an account goes straight to sign-in,
+  with the email filled in, instead of waiting for a code that never arrives. The server now says
+  so, which also tells anyone whether an email has an account here.
+
 ## [0.1.0] - 2026-09-28
 
 The first version with the whole task cycle, the shop and the wallet working against the real

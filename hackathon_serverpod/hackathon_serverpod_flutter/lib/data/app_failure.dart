@@ -47,6 +47,9 @@ enum AppFailure {
   /// token it no longer accepts.
   registrationInvalid,
 
+  /// The email already has an account, so it signs in instead of registering.
+  emailAlreadyRegistered,
+
   /// Too many tries in a row; the server makes the caller wait.
   tooManyAttempts,
 
@@ -127,8 +130,8 @@ AppFailure failureOf(Object error) =>
 /// arrives as a generic failure and becomes [AppFailure.unknown]. The group
 /// endpoints declare `GroupException`, the task endpoints `TaskException`, the
 /// shop endpoints `ShopException`, and the email identity provider
-/// `EmailAccountLoginException`, `EmailAccountRequestException` and
-/// `EmailAccountPasswordResetException`.
+/// `EmailAccountLoginException`, `EmailAccountRequestException`,
+/// `EmailAccountPasswordResetException` and our own `RegistrationException`.
 ///
 /// The inner switch has no wildcard on purpose: a reason added on the server
 /// fails the build here until the app decides what it means.
@@ -172,6 +175,10 @@ AppException mapServerError(Object error) => switch (error) {
     ShopErrorReason.purchaseNotFound => AppFailure.purchaseNotFound,
     ShopErrorReason.purchaseNotOpen => AppFailure.purchaseNotOpen,
     ShopErrorReason.notProvider => AppFailure.notProvider,
+  }),
+  RegistrationException(:final reason) => AppException(switch (reason) {
+    RegistrationErrorReason.emailAlreadyRegistered =>
+      AppFailure.emailAlreadyRegistered,
   }),
   EmailAccountLoginException(:final reason) => AppException(switch (reason) {
     EmailAccountLoginExceptionReason.invalidCredentials =>
