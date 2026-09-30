@@ -1,0 +1,87 @@
+<!doctype html>
+<!--
+  The link preview (Open Graph image) WhatsApp, Telegram, Slack and the rest
+  show under a shared link. Rendered to web/og.png at 1200x630 by render.sh;
+  edit here, then run it again. No app name yet: add it above the headline
+  once the team picks one.
+-->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: Fredoka; src: url(../../assets/fonts/Fredoka.ttf); }
+  @font-face { font-family: "Nunito Sans"; src: url(../../assets/fonts/NunitoSans.ttf); }
+
+  :root {
+    --ink: #12152A; --violet: #6558F5; --lime: #DDFB69; --coral: #FF776D;
+    --sky: #A8D7FF; --cream: #F7F4EC; --muted: #687086;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background: var(--cream);
+    font-family: "Nunito Sans", sans-serif;
+    color: var(--ink);
+    position: relative;
+  }
+
+  /* Background shapes, echoing the welcome screen's hero */
+  .blob { position: absolute; border-radius: 50%; }
+  .blob.sky { width: 620px; height: 620px; left: -150px; top: -10px; background: var(--sky); opacity: .45; }
+  .blob.coral { width: 150px; height: 150px; right: -40px; top: -50px; background: var(--coral); opacity: .9; }
+  .blob.lime { width: 240px; height: 240px; right: 90px; bottom: -150px; background: var(--lime); }
+
+  .logo {
+    position: absolute; left: 70px; top: 140px; width: 350px; height: 350px;
+    filter: drop-shadow(0 26px 40px rgba(46, 34, 160, .35));
+    transform: rotate(-4deg);
+  }
+
+  .copy { position: absolute; left: 480px; right: 56px; top: 132px; }
+  h1 {
+    font-family: Fredoka, sans-serif; font-weight: 600;
+    font-size: 66px; line-height: 1.04; letter-spacing: -1px;
+  }
+  h1 .hl {
+    background: linear-gradient(transparent 62%, var(--lime) 62%, var(--lime) 92%, transparent 92%);
+    padding: 0 6px; margin: 0 -6px;
+  }
+  p {
+    margin-top: 22px; font-size: 28px; line-height: 1.32; color: var(--muted);
+    font-weight: 600; max-width: 600px;
+  }
+  .chips { display: flex; gap: 12px; margin-top: 28px; }
+  .chip {
+    font-family: Fredoka, sans-serif; font-weight: 500; font-size: 22px;
+    padding: 9px 20px; border-radius: 999px; background: #fff; color: var(--ink);
+    box-shadow: 0 6px 16px rgba(18, 21, 42, .08);
+  }
+  .chip b { color: var(--violet); font-weight: 600; }
+
+  .url {
+    position: absolute; left: 480px; bottom: 34px;
+    font-family: Fredoka, sans-serif; font-weight: 500; font-size: 22px;
+    color: var(--violet); letter-spacing: .3px;
+  }
+</style>
+</head>
+<body>
+  <div class="blob sky"></div>
+  <div class="blob coral"></div>
+  <div class="blob lime"></div>
+
+  <img class="logo" src="logo.svg" alt="">
+
+  <div class="copy">
+    <h1>Las tareas de casa,<br><span class="hl">por fin justas.</span></h1>
+    <p>Proponed tareas, fijad su precio entre todos y ganad monedas para la tienda del grupo.</p>
+    <div class="chips">
+      <span class="chip"><b>Piso</b> compartido</span>
+      <span class="chip"><b>Pareja</b></span>
+      <span class="chip"><b>Familia</b></span>
+    </div>
+  </div>
+
+  <div class="url">serverpod.youxinlab.com</div>
+</body>
+</html>

@@ -1,11 +1,11 @@
 {
-    "name": "hackathon_serverpod_flutter",
-    "short_name": "hackathon_serverpod_flutter",
+    "name": "Las tareas de casa, por fin justas",
+    "short_name": "Tareas justas",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#F7F4EC",
+    "theme_color": "#6558F5",
+    "description": "Los acuerdos de casa se deciden entre todos: proponed tareas, fijad su precio y ganad monedas para la tienda del grupo.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
