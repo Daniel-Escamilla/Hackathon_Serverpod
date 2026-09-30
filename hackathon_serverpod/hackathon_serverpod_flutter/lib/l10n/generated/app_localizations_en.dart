@@ -70,6 +70,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeCreateAccount => 'Create an account';
 
   @override
+  String get welcomeGoogle => 'Sign in with Google';
+
+  @override
+  String get googleSignInError => 'Couldn\'t sign in with Google.';
+
+  @override
   String get signInTitle => 'Sign in to your account';
 
   @override

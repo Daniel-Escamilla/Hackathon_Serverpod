@@ -218,6 +218,63 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
   );
 }
 
+/// By extending [GoogleIdpBaseEndpoint], signing in with Google is made
+/// available on the server. Its credentials are `googleClientSecret` in
+/// `config/passwords.yaml`: the "Web application" OAuth client's JSON.
+/// {@category Endpoint}
+class EndpointGoogleIdp extends _iaic.EndpointGoogleIdpBase {
+  EndpointGoogleIdp(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'googleIdp';
+
+  /// Validates a Google ID token and either logs in the associated user or
+  /// creates a new user account if the Google account ID is not yet known.
+  ///
+  /// If a new user is created an associated [UserProfile] is also created.
+  @override
+  _ida.Future<_iacc.AuthSuccess> login({
+    required String idToken,
+    required String? accessToken,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'googleIdp',
+    'login',
+    {
+      'idToken': idToken,
+      'accessToken': accessToken,
+    },
+  );
+
+  /// Validates a Google authorization code from the web OAuth2 PKCE flow and
+  /// either logs in the associated user or creates a new account.
+  ///
+  /// This is the web counterpart of [login], which accepts an ID token directly
+  /// (used on native platforms via the `google_sign_in` package).
+  ///
+  /// If a new user is created an associated [UserProfile] is also created.
+  @override
+  _ida.Future<_iacc.AuthSuccess> loginWithCode({
+    required String code,
+    required String codeVerifier,
+    required String redirectUri,
+  }) => caller.callServerEndpoint<_iacc.AuthSuccess>(
+    'googleIdp',
+    'loginWithCode',
+    {
+      'code': code,
+      'codeVerifier': codeVerifier,
+      'redirectUri': redirectUri,
+    },
+  );
+
+  @override
+  _ida.Future<bool> hasAccount() => caller.callServerEndpoint<bool>(
+    'googleIdp',
+    'hasAccount',
+    {},
+  );
+}
+
 /// By extending [RefreshJwtTokensEndpoint], the JWT token refresh endpoint
 /// is made available on the server and enables automatic token refresh on the client.
 /// {@category Endpoint}
@@ -724,6 +781,7 @@ class Client extends _isc.ServerpodClientShared {
          httpClientOverride: httpClientOverride,
        ) {
     emailIdp = EndpointEmailIdp(this);
+    googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
     event = EndpointEvent(this);
     group = EndpointGroup(this);
@@ -734,6 +792,8 @@ class Client extends _isc.ServerpodClientShared {
   }
 
   late final EndpointEmailIdp emailIdp;
+
+  late final EndpointGoogleIdp googleIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
 
@@ -752,6 +812,7 @@ class Client extends _isc.ServerpodClientShared {
   @override
   Map<String, _isc.EndpointRef> get endpointRefLookup => {
     'emailIdp': emailIdp,
+    'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
     'event': event,
     'group': group,

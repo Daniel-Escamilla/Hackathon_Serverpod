@@ -218,6 +218,18 @@ abstract class AppLocalizations {
   /// **'Crear una cuenta'**
   String get welcomeCreateAccount;
 
+  /// No description provided for @welcomeGoogle.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar con Google'**
+  String get welcomeGoogle;
+
+  /// No description provided for @googleSignInError.
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo entrar con Google.'**
+  String get googleSignInError;
+
   /// No description provided for @signInTitle.
   ///
   /// In es, this message translates to:

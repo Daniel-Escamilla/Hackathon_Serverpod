@@ -12,11 +12,11 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ## [Unreleased]
 
-### Changed
+### Added
 
-- **Sign-up with a known email.** An email that already has an account goes straight to sign-in,
-  with the email filled in, instead of waiting for a code that never arrives. The server now says
-  so, which also tells anyone whether an email has an account here.
+- **Sign in with Google** from the welcome screen. The server enables it only when
+  `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
+  on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
 
 ## [0.1.0] - 2026-09-28
 

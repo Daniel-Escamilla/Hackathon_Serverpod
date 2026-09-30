@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:serverpod_auth_idp_server/core.dart';
 import 'package:serverpod_auth_idp_server/providers/email.dart';
+import 'package:serverpod_auth_idp_server/providers/google.dart';
 import 'package:serverpod_cloud_storage/serverpod_cloud_storage.dart';
 
 import 'src/cache_busting.dart';
@@ -32,6 +33,11 @@ void run(List<String> args) async {
       ServerpodCloudEmailIdpConfig(
         appDisplayName: 'hackathon_serverpod',
       ),
+      // Sign in with Google, from `googleClientSecret` in passwords.yaml.
+      // Skipped when that key is missing, so a server without it still boots
+      // and only the Google button fails.
+      if (pod.getPassword('googleClientSecret') != null)
+        GoogleIdpConfigFromPasswords(),
     ],
   );
 
@@ -41,6 +47,11 @@ void run(List<String> args) async {
     StaticRoute.withCacheBusting(cacheBustingConfig),
     cacheBustingConfig.mountPrefix,
   );
+
+  // Where Google sends the web app back after sign-in. It has to be served
+  // from the same origin as the app, so Google sign-in on the web only works
+  // with the app built into web/app and opened from this web server.
+  pod.webServer.addRoute(FlutterWebAuth2CallbackRoute(), '/auth/callback');
 
   // Setup the app config route.
   // We build this configuration based on the servers api url and serve it to
