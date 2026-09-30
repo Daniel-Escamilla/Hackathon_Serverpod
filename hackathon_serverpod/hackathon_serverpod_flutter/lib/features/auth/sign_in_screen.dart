@@ -14,10 +14,14 @@ import 'reset_password_email_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({
+    this.initialEmail = '',
     this.auth = const AuthRepository(),
     this.passwordReset = const PasswordResetRepository(),
     super.key,
   });
+
+  /// The email a registration found already taken, so it is not typed twice.
+  final String initialEmail;
 
   final AuthRepository auth;
 
@@ -29,7 +33,9 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final _emailController = TextEditingController();
+  late final _emailController = TextEditingController(
+    text: widget.initialEmail,
+  );
   final _passwordController = TextEditingController();
   bool _loading = false;
   String? _error;

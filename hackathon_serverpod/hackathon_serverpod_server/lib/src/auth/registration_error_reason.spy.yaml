@@ -1,0 +1,6 @@
+### Why a registration was refused. The app picks the sentence it shows from
+### this, so the server never sends display text (PRODUCT.md §7).
+enum: RegistrationErrorReason
+values:
+  ### The email already has an account: the app sends it to sign-in.
+  - emailAlreadyRegistered

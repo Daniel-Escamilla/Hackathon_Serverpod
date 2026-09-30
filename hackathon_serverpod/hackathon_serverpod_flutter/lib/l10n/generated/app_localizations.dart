@@ -308,6 +308,12 @@ abstract class AppLocalizations {
   /// **'No se pudo empezar el registro.'**
   String get createAccountErrorStart;
 
+  /// No description provided for @createAccountErrorRegistered.
+  ///
+  /// In es, this message translates to:
+  /// **'Ese email ya tiene cuenta. Inicia sesión.'**
+  String get createAccountErrorRegistered;
+
   /// No description provided for @verifyEmailTitle.
   ///
   /// In es, this message translates to:

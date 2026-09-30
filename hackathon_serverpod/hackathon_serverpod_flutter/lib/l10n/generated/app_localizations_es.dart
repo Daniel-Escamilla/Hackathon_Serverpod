@@ -117,6 +117,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get createAccountErrorStart => 'No se pudo empezar el registro.';
 
   @override
+  String get createAccountErrorRegistered =>
+      'Ese email ya tiene cuenta. Inicia sesión.';
+
+  @override
   String get verifyEmailTitle => 'Revisa tu email';
 
   @override

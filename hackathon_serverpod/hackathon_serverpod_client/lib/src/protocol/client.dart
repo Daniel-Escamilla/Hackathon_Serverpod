@@ -49,6 +49,20 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
   @override
   String get name => 'emailIdp';
 
+  /// Like the base call, except that an email with an account is refused with
+  /// [RegistrationErrorReason.emailAlreadyRegistered] instead of getting a
+  /// dummy request id, so the app can send that person to sign-in.
+  ///
+  /// This tells anyone whether an email has an account here. The team chose
+  /// that over leaving a returning user stuck on a code that never arrives.
+  @override
+  _ida.Future<_isc.UuidValue> startRegistration({required String email}) =>
+      caller.callServerEndpoint<_isc.UuidValue>(
+        'emailIdp',
+        'startRegistration',
+        {'email': email},
+      );
+
   /// Logs in the user and returns a new session.
   ///
   /// Throws an [EmailAccountLoginException] in case of errors, with reason:
@@ -70,24 +84,6 @@ class EndpointEmailIdp extends _iaic.EndpointEmailIdpBase {
       'password': password,
     },
   );
-
-  /// Starts the registration for a new user account with an email-based login
-  /// associated to it.
-  ///
-  /// Upon successful completion of this method, an email will have been
-  /// sent to [email] with a verification link, which the user must open to
-  /// complete the registration.
-  ///
-  /// Always returns a account request ID, which can be used to complete the
-  /// registration. If the email is already registered, the returned ID will not
-  /// be valid.
-  @override
-  _ida.Future<_isc.UuidValue> startRegistration({required String email}) =>
-      caller.callServerEndpoint<_isc.UuidValue>(
-        'emailIdp',
-        'startRegistration',
-        {'email': email},
-      );
 
   /// Verifies an account request code and returns a token
   /// that can be used to complete the account creation.

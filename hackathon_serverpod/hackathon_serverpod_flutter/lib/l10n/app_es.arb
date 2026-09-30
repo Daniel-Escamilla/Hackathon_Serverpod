@@ -49,6 +49,7 @@
   "createAccountContinue": "Continuar",
   "createAccountErrorGeneric": "No se pudo empezar el registro. ¿Ya tienes cuenta con ese email?",
   "createAccountErrorStart": "No se pudo empezar el registro.",
+  "createAccountErrorRegistered": "Ese email ya tiene cuenta. Inicia sesión.",
 
   "verifyEmailTitle": "Revisa tu email",
   "verifyEmailSubtitle": "Hemos enviado un código de verificación a {email}.",
