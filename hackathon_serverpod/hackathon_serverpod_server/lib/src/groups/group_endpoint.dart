@@ -182,6 +182,7 @@ class GroupEndpoint extends Endpoint {
       session,
       groupId: admin.groupId,
       kind: GroupEventKind.memberExpelled,
+      actorMemberId: admin.id,
       memberId: target.id,
     );
   }

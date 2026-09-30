@@ -57,6 +57,7 @@ class ShopService {
       session,
       groupId: proposed.groupId,
       kind: GroupEventKind.rewardProposed,
+      actorMemberId: proposed.createdById,
       rewardId: proposed.id,
     );
     return proposed;
@@ -138,6 +139,7 @@ class ShopService {
       session,
       groupId: voted.groupId,
       kind: GroupEventKind.rewardVoteCast,
+      actorMemberId: voter.id,
       rewardId: voted.id,
     );
     return voted;
@@ -201,6 +203,7 @@ class ShopService {
       session,
       groupId: item.groupId,
       kind: GroupEventKind.purchased,
+      actorMemberId: buyer.id,
       purchaseId: purchase.id,
     );
     return purchase;
@@ -284,6 +287,7 @@ class ShopService {
       session,
       groupId: item.groupId,
       kind: GroupEventKind.purchaseResponded,
+      actorMemberId: purchase.providerId,
       purchaseId: purchase.id,
     );
   }
@@ -301,6 +305,7 @@ class ShopService {
       session,
       groupId: delivered.groupId,
       kind: GroupEventKind.purchaseDelivered,
+      actorMemberId: delivered.providerId,
       purchaseId: delivered.id,
     );
     return delivered;

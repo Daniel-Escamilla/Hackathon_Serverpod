@@ -59,6 +59,7 @@ void main() {
           expect(event.groupId, group.id);
           expect(event.kind, GroupEventKind.taskProposed);
           expect(event.taskId, task.id);
+          expect(event.actorMemberId, task.proposedById);
         },
       );
 
@@ -93,7 +94,7 @@ void main() {
           );
           await flushEventQueue();
 
-          await endpoints.task.markTaskDone(
+          final claimed = await endpoints.task.markTaskDone(
             sessionOf(_claimantAuthUserId),
             task.id!,
           );
@@ -101,6 +102,7 @@ void main() {
           final event = await stream.first;
           expect(event.kind, GroupEventKind.taskClaimed);
           expect(event.taskId, task.id);
+          expect(event.actorMemberId, claimed.doneById);
         },
       );
 
@@ -131,6 +133,8 @@ void main() {
           final event = await stream.first;
           expect(event.kind, GroupEventKind.memberExpelled);
           expect(event.memberId, expelled.id);
+          // The admin did it, not the member who left.
+          expect(event.actorMemberId, allOf(isNotNull, isNot(expelled.id)));
         },
       );
 

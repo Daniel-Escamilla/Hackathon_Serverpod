@@ -56,6 +56,7 @@ class TaskService {
       session,
       groupId: task.groupId,
       kind: GroupEventKind.taskProposed,
+      actorMemberId: proposer.id,
       taskId: task.id,
     );
     return task;
@@ -172,6 +173,7 @@ class TaskService {
       session,
       groupId: resolved.groupId,
       kind: GroupEventKind.taskVoteCast,
+      actorMemberId: voter.id,
       taskId: resolved.id,
     );
     return resolved;
@@ -247,6 +249,7 @@ class TaskService {
       session,
       groupId: countered.groupId,
       kind: GroupEventKind.taskCounterOffered,
+      actorMemberId: voter.id,
       taskId: countered.id,
     );
     return countered;
@@ -367,6 +370,7 @@ class TaskService {
       session,
       groupId: claimed.groupId,
       kind: GroupEventKind.taskClaimed,
+      actorMemberId: claimant.id,
       taskId: claimed.id,
     );
     return claimed;
@@ -507,6 +511,7 @@ class TaskService {
       session,
       groupId: resolved.groupId,
       kind: GroupEventKind.taskValidated,
+      actorMemberId: voter.id,
       taskId: resolved.id,
     );
     return resolved;
