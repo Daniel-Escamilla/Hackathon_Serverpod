@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'app_theme.dart';
 import 'common/navigation.dart';
 import 'data/app_failure.dart';
+import 'features/activity/activity_controller.dart';
 import 'features/group/group_controller.dart';
 import 'features/group/group_page.dart';
 import 'features/shop/shop_controller.dart';
@@ -80,6 +81,9 @@ class _HomeShellState extends State<HomeShell> {
   final _shopController = ShopController()..load();
   final _walletController = WalletController()..load();
   final _groupController = GroupController()..load();
+  late final _activityController = ActivityController(
+    myMemberId: () => _groupController.myMemberId,
+  );
   StreamSubscription<GroupEvent>? _events;
   bool _leaving = false;
 
@@ -145,6 +149,7 @@ class _HomeShellState extends State<HomeShell> {
       _leaveGroup();
       return;
     }
+    _activityController.add(event);
     for (final data in staleAfter(event.kind)) {
       unawaited(switch (data) {
         HomeData.tasks => _tasksController.load(),
@@ -163,6 +168,7 @@ class _HomeShellState extends State<HomeShell> {
     _shopController.dispose();
     _walletController.dispose();
     _groupController.dispose();
+    _activityController.dispose();
     super.dispose();
   }
 
@@ -175,6 +181,7 @@ class _HomeShellState extends State<HomeShell> {
         ChangeNotifierProvider.value(value: _shopController),
         ChangeNotifierProvider.value(value: _walletController),
         ChangeNotifierProvider.value(value: _groupController),
+        ChangeNotifierProvider.value(value: _activityController),
       ],
       child: Builder(
         builder: (context) {
