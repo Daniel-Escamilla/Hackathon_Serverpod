@@ -1,0 +1,25 @@
+# Append to /etc/caddy/Caddyfile on the VPS. Only adds two sites; whatever
+# else the file serves is left as it is.
+
+serverpod.youxinlab.com {
+	reverse_proxy 127.0.0.1:18082
+	encode gzip
+	log {
+		output file /var/log/caddy/serverpod-web.log {
+			roll_size 20MB
+			roll_keep 5
+		}
+	}
+}
+
+api.serverpod.youxinlab.com {
+	# Caddy passes WebSocket upgrades through, which the app's live updates use.
+	reverse_proxy 127.0.0.1:18080
+	encode gzip
+	log {
+		output file /var/log/caddy/serverpod-api.log {
+			roll_size 20MB
+			roll_keep 5
+		}
+	}
+}
