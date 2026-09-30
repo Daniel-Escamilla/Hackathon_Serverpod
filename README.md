@@ -149,6 +149,52 @@ The APK is built against this computer's LAN address, which the script detects a
 correct, so the phone has to be on the same Wi-Fi. To point it somewhere else, set it up front:
 `SERVER_URL=https://<host>/ ./hackathon_serverpod/scripts/run_on_phone.sh`.
 
+### Sign in with Google
+
+The code is in the repo; the one secret it needs is not. Without it the server still boots and
+everything else works; only "Entrar con Google" fails.
+
+1. **Get the secret privately** from whoever holds it (Daniel): the `googleClientSecret` block,
+   through a password manager or a one-time link. Never through git, an issue or the team chat.
+2. **Paste it** into your `hackathon_serverpod_server/config/passwords.yaml`, under
+   `development:`, indented two spaces like the other keys:
+
+   ```yaml
+   development:
+     # ...the keys already there...
+     googleClientSecret: |
+       {
+         "web": {
+           "client_id": "266308220325-jvpioj5f1pldrqqj7ika3ujqrfmb22n5.apps.googleusercontent.com",
+           "client_secret": "<the secret>",
+           "redirect_uris": ["http://localhost:8082/auth/callback"],
+           ...
+         }
+       }
+   ```
+
+   For the Docker backend, which runs in staging mode, the same JSON goes in `.env` as
+   `SERVERPOD_PASSWORD_googleClientSecret`.
+3. **On the web, open the app from the server, not from `flutter run`.** Google only accepts the
+   origin registered in Google Cloud Console, `http://localhost:8082`:
+
+   ```sh
+   cd hackathon_serverpod/hackathon_serverpod_flutter
+   flutter build web --base-href / --output ../hackathon_serverpod_server/web/app
+   ```
+
+   Then (re)start `serverpod start` and open <http://localhost:8082>. Rebuild after changing the
+   app.
+4. **On Android**, send Daniel your debug SHA-1 so it is registered in Google Cloud Console for
+   the package `com.example.hackathon_serverpod_flutter`:
+
+   ```sh
+   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android | grep SHA1
+   ```
+
+While the Google consent screen is in *Testing* mode, only the Google accounts listed as test
+users can sign in: ask to be added.
+
 ## Tests
 
 No Docker needed — the test config manages its own embedded PostgreSQL.

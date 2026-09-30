@@ -99,6 +99,14 @@ A build installed on a device never goes through that route: it reads the checke
 
 `serverpod: scripts: flutter_build` in the server `pubspec.yaml` builds the Flutter web app into `hackathon_serverpod_server/web/app` (Windows needs `xcopy` because Flutter's `--output` is broken there; both branches `flutter clean` and retry once on failure). `server.dart` mounts that directory at `/` when it exists and otherwise falls back to the `web/pages/build_flutter_app.html` placeholder — so a bare-looking site on port 8082 usually just means the web app has not been built.
 
+## Sign in with Google
+
+The server enables Google only when `googleClientSecret` is in `config/passwords.yaml` (`server.dart` checks `pod.getPassword`), so a server without it boots and only the Google button fails — an error from "Entrar con Google" on a teammate's machine is most likely that missing key. `GoogleIdpEndpoint` is in `lib/src/auth/`, the web callback is `FlutterWebAuth2CallbackRoute` at `/auth/callback`, and the app's `lib/client.dart` holds the Web OAuth client id, which is public. The setup each person does is in the README, under "Sign in with Google".
+
+- **Never print, log, commit or paste the secret**, and never ask for it in the conversation. To check it is in place, parse `passwords.yaml` and report only whether the key exists. If someone needs it, point them to whoever holds it.
+- **On the web it only works from `http://localhost:8082`**, the origin registered in Google Cloud Console: the app built into `web/app` and served by `serverpod start`. `flutter run -d chrome` uses another port, and Google rejects it. That is expected, not a bug to fix in code.
+- **On Android** the device's debug SHA-1 has to be registered in Google Cloud Console for `com.example.hackathon_serverpod_flutter`; the code has nothing to change for it. Changing the `applicationId` means a new Android OAuth client.
+
 ## Flutter conventions
 
 Agreed 2026-09-21. They cover the app under `hackathon_serverpod_flutter/lib`.
