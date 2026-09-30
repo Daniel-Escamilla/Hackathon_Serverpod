@@ -71,7 +71,7 @@ class _Notice extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.palette.card,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -92,12 +92,12 @@ class _Notice extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     timeAgo(l10n, event.occurredAt, DateTime.now()),
-                    style: const TextStyle(color: AppColors.muted),
+                    style: TextStyle(color: context.palette.muted),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
+            Icon(Icons.chevron_right_rounded, color: context.palette.muted),
           ],
         ),
       ),
@@ -117,16 +117,16 @@ class _Empty extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(
+            Icon(
               Icons.notifications_none_rounded,
               size: 48,
-              color: AppColors.muted,
+              color: context.palette.muted,
             ),
             const SizedBox(height: 12),
             Text(
               l10n.activityEmptyMessage,
               textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.muted),
+              style: TextStyle(color: context.palette.muted),
             ),
           ],
         ),

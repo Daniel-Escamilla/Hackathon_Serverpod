@@ -222,8 +222,8 @@ class _RewardCard extends StatelessWidget {
           Container(
             width: 60,
             height: 60,
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: context.palette.card,
               shape: BoxShape.circle,
             ),
             alignment: Alignment.center,

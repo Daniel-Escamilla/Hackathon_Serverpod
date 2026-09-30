@@ -42,7 +42,7 @@ class ResultScreen extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.muted, fontSize: 17),
+                style: TextStyle(color: context.palette.muted, fontSize: 17),
               ),
               const SizedBox(height: 28),
               Container(

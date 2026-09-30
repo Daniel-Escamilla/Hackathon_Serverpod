@@ -986,6 +986,13 @@ class AppLocalizationsEs extends AppLocalizations {
       'Los pops de los botones, la moneda, las multas y los avisos.';
 
   @override
+  String get darkModeToggle => 'Modo oscuro';
+
+  @override
+  String get darkModeToggleHint =>
+      'Un gris suave para la noche, en este dispositivo.';
+
+  @override
   String get transferAdminAction => 'Hacer admin';
 
   @override

@@ -71,7 +71,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
         Text(
           l10n.rewardHintNote,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(color: context.palette.muted),
         ),
       ],
       button: l10n.reviewProposal,

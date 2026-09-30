@@ -43,7 +43,7 @@ class WelcomeScreen extends StatelessWidget {
                           Theme.of(
                             context,
                           ).textTheme.bodyLarge?.copyWith(
-                            color: AppColors.muted,
+                            color: context.palette.muted,
                             fontSize: 18,
                           ),
                     ),
