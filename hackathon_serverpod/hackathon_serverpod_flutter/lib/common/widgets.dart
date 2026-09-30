@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
+import '../features/activity/activity_controller.dart';
 import '../features/wallet/wallet_controller.dart';
 import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
@@ -48,10 +49,14 @@ class PageHeader extends StatelessWidget {
           IconButton(
             onPressed: () => pushPage(context, const ActivityScreen()),
             tooltip: AppLocalizations.of(context).activityTitle,
-            // No red dot: there is no activity feed yet, so nothing is ever
-            // unread (see ActivityScreen). Wrap this in a Badge with
-            // isLabelVisible tied to real unread items once there are some.
-            icon: const Icon(Icons.notifications_none_rounded),
+            // The dot only while another member's notice is unread (#156).
+            // Null outside HomeShell, where there are no notices.
+            icon: Badge(
+              isLabelVisible:
+                  context.watch<ActivityController?>()?.hasUnread ?? false,
+              backgroundColor: AppColors.coral,
+              child: const Icon(Icons.notifications_none_rounded),
+            ),
           ),
         ],
       ),

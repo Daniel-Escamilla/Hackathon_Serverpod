@@ -18,7 +18,22 @@
   "proposeTask": "Propose",
 
   "activityTitle": "Activity",
-  "activityEmptyMessage": "There is no activity list from the server yet.",
+  "activityEmptyMessage": "You'll see what the others do here while the app is open.",
+  "activitySomeone": "Someone",
+  "activityTaskProposed": "{name} proposed a task",
+  "activityTaskVoteCast": "{name} voted on a task",
+  "activityTaskCounterOffered": "{name} made a counter-offer",
+  "activityTaskClaimed": "{name} says a task is done",
+  "activityTaskValidated": "{name} voted on whether a task is done",
+  "activityRewardProposed": "{name} proposed a reward",
+  "activityRewardVoteCast": "{name} voted on a reward",
+  "activityPurchased": "{name} bought a reward",
+  "activityPurchaseResponded": "{name} answered a purchase",
+  "activityPurchaseDelivered": "{name} delivered a purchase",
+  "activityMemberExpelled": "{name} expelled a member",
+  "activityJustNow": "Just now",
+  "activityMinutesAgo": "{minutes} min ago",
+  "activityHoursAgo": "{hours} h ago",
 
   "groupCheckError": "Couldn't check your group.",
 
