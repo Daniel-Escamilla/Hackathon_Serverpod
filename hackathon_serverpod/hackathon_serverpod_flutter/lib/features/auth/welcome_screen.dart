@@ -5,6 +5,7 @@ import '../../common/navigation.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import 'create_account_email_screen.dart';
+import 'google_sign_in_button.dart';
 import 'sign_in_screen.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -15,42 +16,55 @@ class WelcomeScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 24, 24, 18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const Spacer(),
-              const _HouseHero(),
-              const SizedBox(height: 38),
-              Text(
-                l10n.welcomeHeadline,
-                style: Theme.of(context).textTheme.displaySmall,
+        // Scrolls on a short screen instead of overflowing; on a tall one the
+        // spacers still push the buttons to the bottom.
+        child: LayoutBuilder(
+          builder: (context, constraints) => SingleChildScrollView(
+            padding: const EdgeInsets.fromLTRB(24, 24, 24, 18),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constraints.maxHeight - 42,
               ),
-              const SizedBox(height: 14),
-              Text(
-                l10n.welcomeSubtitle,
-                style:
-                    Theme.of(
-                      context,
-                    ).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.muted,
-                      fontSize: 18,
+              child: IntrinsicHeight(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const Spacer(),
+                    const _HouseHero(),
+                    const SizedBox(height: 38),
+                    Text(
+                      l10n.welcomeHeadline,
+                      style: Theme.of(context).textTheme.displaySmall,
                     ),
+                    const SizedBox(height: 14),
+                    Text(
+                      l10n.welcomeSubtitle,
+                      style:
+                          Theme.of(
+                            context,
+                          ).textTheme.bodyLarge?.copyWith(
+                            color: AppColors.muted,
+                            fontSize: 18,
+                          ),
+                    ),
+                    const Spacer(),
+                    AppButton(
+                      label: l10n.welcomeSignIn,
+                      onPressed: () => pushPage(context, const SignInScreen()),
+                    ),
+                    const SizedBox(height: 8),
+                    const GoogleSignInButton(),
+                    const SizedBox(height: 8),
+                    AppButton(
+                      label: l10n.welcomeCreateAccount,
+                      kind: AppButtonKind.quiet,
+                      onPressed: () =>
+                          pushPage(context, const CreateAccountEmailScreen()),
+                    ),
+                  ],
+                ),
               ),
-              const Spacer(),
-              AppButton(
-                label: l10n.welcomeSignIn,
-                onPressed: () => pushPage(context, const SignInScreen()),
-              ),
-              const SizedBox(height: 8),
-              AppButton(
-                label: l10n.welcomeCreateAccount,
-                kind: AppButtonKind.quiet,
-                onPressed: () =>
-                    pushPage(context, const CreateAccountEmailScreen()),
-              ),
-            ],
+            ),
           ),
         ),
       ),

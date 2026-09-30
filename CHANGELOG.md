@@ -12,6 +12,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ## [Unreleased]
 
+### Added
+
+- **Sign in with Google** from the welcome screen. The server enables it only when
+  `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
+  on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
+
 ## [0.1.0] - 2026-09-28
 
 The first version with the whole task cycle, the shop and the wallet working against the real
