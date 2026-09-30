@@ -7,7 +7,9 @@ import '../../data/app_failure.dart';
 import '../../data/auth_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
 import 'create_account_code_screen.dart';
+import 'sign_in_screen.dart';
 
 class CreateAccountEmailScreen extends StatefulWidget {
   const CreateAccountEmailScreen({
@@ -55,6 +57,11 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
         );
       }
     } catch (e) {
+      if (e case AppException(failure: AppFailure.emailAlreadyRegistered)) {
+        // Nothing to register: sign-in takes this screen's place, email filled.
+        if (mounted) _goToSignIn(email);
+        return;
+      }
       setState(
         () => _error = switch (e) {
           AppException(failure: AppFailure.tooManyAttempts) =>
@@ -67,6 +74,19 @@ class _CreateAccountEmailScreenState extends State<CreateAccountEmailScreen> {
     } finally {
       if (mounted) setState(() => _loading = false);
     }
+  }
+
+  void _goToSignIn(String email) {
+    showMessage(
+      context,
+      AppLocalizations.of(context).createAccountErrorRegistered,
+    );
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute<void>(
+        builder: (_) =>
+            SignInScreen(initialEmail: email, auth: widget.repository),
+      ),
+    );
   }
 
   @override

@@ -31,6 +31,8 @@ import 'package:serverpod_auth_core_server/serverpod_auth_core_server.dart'
     as _iacs;
 import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
     as _iais;
+import 'auth/registration_error_reason.dart' as _icyna58o;
+import 'auth/registration_exception.dart' as _i007ol99;
 import 'events/group_event.dart' as _iecilz9e;
 import 'events/group_event_kind.dart' as _il82a0w2;
 import 'future_calls_generated_models/task_vote_future_call_expire_vote_model.dart'
@@ -62,6 +64,8 @@ import 'wallet/coin_movement.dart' as _ii2179p0;
 import 'wallet/coin_transaction.dart' as _iyltnat0;
 import 'wallet/coin_transaction_reason.dart' as _inbrsz7i;
 import 'wallet/ranking_entry.dart' as _izo0hjq0;
+export 'auth/registration_error_reason.dart';
+export 'auth/registration_exception.dart';
 export 'events/group_event.dart';
 export 'events/group_event_kind.dart';
 export 'groups/child_login_code.dart';
@@ -1060,6 +1064,12 @@ class Protocol extends _is.DatabaseSerializationManager {
       }
     }
 
+    if (t == _icyna58o.RegistrationErrorReason) {
+      return _icyna58o.RegistrationErrorReason.fromJson(data) as T;
+    }
+    if (t == _i007ol99.RegistrationException) {
+      return _i007ol99.RegistrationException.fromJson(data) as T;
+    }
     if (t == _iecilz9e.GroupEvent) {
       return _iecilz9e.GroupEvent.fromJson(data) as T;
     }
@@ -1149,6 +1159,18 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
     if (t == _izo0hjq0.RankingEntry) {
       return _izo0hjq0.RankingEntry.fromJson(data) as T;
+    }
+    if (t == _is.getType<_icyna58o.RegistrationErrorReason?>()) {
+      return (data != null
+              ? _icyna58o.RegistrationErrorReason.fromJson(data)
+              : null)
+          as T;
+    }
+    if (t == _is.getType<_i007ol99.RegistrationException?>()) {
+      return (data != null
+              ? _i007ol99.RegistrationException.fromJson(data)
+              : null)
+          as T;
     }
     if (t == _is.getType<_iecilz9e.GroupEvent?>()) {
       return (data != null ? _iecilz9e.GroupEvent.fromJson(data) : null) as T;
@@ -1315,6 +1337,8 @@ class Protocol extends _is.DatabaseSerializationManager {
 
   static String? getClassNameForType(Type type) {
     return switch (type) {
+      _icyna58o.RegistrationErrorReason => 'RegistrationErrorReason',
+      _i007ol99.RegistrationException => 'RegistrationException',
       _iecilz9e.GroupEvent => 'GroupEvent',
       _il82a0w2.GroupEventKind => 'GroupEventKind',
       _if11z8io.TaskVoteFutureCallExpireVoteModel =>
@@ -1363,6 +1387,10 @@ class Protocol extends _is.DatabaseSerializationManager {
     }
 
     switch (data) {
+      case _icyna58o.RegistrationErrorReason():
+        return 'RegistrationErrorReason';
+      case _i007ol99.RegistrationException():
+        return 'RegistrationException';
       case _iecilz9e.GroupEvent():
         return 'GroupEvent';
       case _il82a0w2.GroupEventKind():
@@ -1448,6 +1476,12 @@ class Protocol extends _is.DatabaseSerializationManager {
     var dataClassName = data['className'];
     if (dataClassName is! String) {
       return super.deserializeByClassName(data);
+    }
+    if (dataClassName == 'RegistrationErrorReason') {
+      return deserialize<_icyna58o.RegistrationErrorReason>(data['data']);
+    }
+    if (dataClassName == 'RegistrationException') {
+      return deserialize<_i007ol99.RegistrationException>(data['data']);
     }
     if (dataClassName == 'GroupEvent') {
       return deserialize<_iecilz9e.GroupEvent>(data['data']);

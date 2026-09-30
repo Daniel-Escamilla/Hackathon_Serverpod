@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:hackathon_serverpod_flutter/data/app_failure.dart';
 import 'package:hackathon_serverpod_flutter/data/auth_repository.dart';
 import 'package:hackathon_serverpod_flutter/features/auth/create_account_code_screen.dart';
@@ -75,6 +76,17 @@ void main() {
       AppFailure.tooManyAttempts,
       AppFailure.unknown,
     ]);
+  });
+
+  test('an email with an account maps to its own failure', () {
+    expect(
+      mapServerError(
+        RegistrationException(
+          reason: RegistrationErrorReason.emailAlreadyRegistered,
+        ),
+      ).failure,
+      AppFailure.emailAlreadyRegistered,
+    );
   });
 
   group('sign-in', () {
@@ -173,6 +185,24 @@ void main() {
           'No se pudo empezar el registro. ¿Ya tienes cuenta con ese email?',
         ),
         findsOneWidget,
+      );
+    });
+
+    testWidgets('an email with an account goes to sign-in, filled in', (
+      tester,
+    ) async {
+      repository.failWith = AppFailure.emailAlreadyRegistered;
+      await submitEmail(tester);
+
+      expect(find.byType(SignInScreen), findsOneWidget);
+      expect(find.byType(CreateAccountEmailScreen), findsNothing);
+      expect(
+        find.text('Ese email ya tiene cuenta. Inicia sesión.'),
+        findsOneWidget,
+      );
+      expect(
+        tester.widget<TextField>(find.byType(TextField).first).controller!.text,
+        'ana@email.com',
       );
     });
 

@@ -41,6 +41,7 @@
   "createAccountContinue": "Continue",
   "createAccountErrorGeneric": "Couldn't start the sign-up. Do you already have an account with that email?",
   "createAccountErrorStart": "Couldn't start the sign-up.",
+  "createAccountErrorRegistered": "That email already has an account. Sign in.",
 
   "verifyEmailTitle": "Check your email",
   "verifyEmailSubtitle": "We've sent a verification code to {email}.",

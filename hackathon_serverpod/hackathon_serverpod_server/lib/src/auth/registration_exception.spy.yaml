@@ -1,0 +1,8 @@
+### A registration refused for a reason the app can act on.
+###
+### Serverpod's own `EmailAccountRequestException` hides whether an email is
+### taken, on purpose. We trade that for sending a known email straight to
+### sign-in, so this carries the one reason it does not.
+exception: RegistrationException
+fields:
+  reason: RegistrationErrorReason
