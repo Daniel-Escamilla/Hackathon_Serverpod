@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Renders the brand sources in this folder into the Flutter web app:
-#   logo.svg -> web/favicon.png, web/icons/Icon-{192,512}.png, web/logo.svg
+#   logo.svg -> web/favicon.png, web/icons/Icon-{192,512}.png, web/logo.svg,
+#               assets/brand/logo.svg (the welcome screen)
 #            -> web/icons/Icon-maskable-{192,512}.png (full bleed, safe zone)
 #   og.html  -> web/og.png, the 1200x630 link preview
 # Needs Google Chrome (headless) and Python 3 with Pillow. Run from anywhere.
@@ -28,6 +29,7 @@ shot "file://$here/logo.svg" 512 512 "$tmp/logo-512.png"
 shot "file://$tmp/maskable.svg" 512 512 "$tmp/maskable-512.png"
 shot "file://$here/og.html" 1200 630 "$web/og.png"
 cp "$here/logo.svg" "$web/logo.svg"
+cp "$here/logo.svg" "$here/../../assets/brand/logo.svg"
 
 python3 - "$tmp" "$web" <<'PY'
 import sys

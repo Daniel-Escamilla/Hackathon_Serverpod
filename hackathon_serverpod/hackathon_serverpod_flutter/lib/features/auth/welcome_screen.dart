@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
@@ -72,6 +73,8 @@ class WelcomeScreen extends StatelessWidget {
   }
 }
 
+/// The app's logo on the sky circle the screen always had. flutter_svg skips
+/// the SVG's drop-shadow filters, so the shadow is drawn here instead.
 class _HouseHero extends StatelessWidget {
   const _HouseHero();
 
@@ -85,44 +88,27 @@ class _HouseHero extends StatelessWidget {
           color: AppColors.sky.withValues(alpha: .45),
           shape: BoxShape.circle,
         ),
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              width: 136,
-              height: 122,
-              margin: const EdgeInsets.only(top: 38),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(30),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Color(0x22000000),
-                    blurRadius: 22,
-                    offset: Offset(0, 12),
-                  ),
-                ],
-              ),
-              child: const Icon(
-                Icons.groups_rounded,
-                color: AppColors.violet,
-                size: 64,
-              ),
+        alignment: Alignment.center,
+        child: Transform.rotate(
+          angle: -0.07,
+          child: Container(
+            width: 168,
+            height: 168,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(38),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x552E22A0),
+                  blurRadius: 28,
+                  offset: Offset(0, 14),
+                ),
+              ],
             ),
-            const Positioned(
-              top: 33,
-              child: Icon(
-                Icons.roofing_rounded,
-                color: AppColors.coral,
-                size: 150,
-              ),
+            child: SvgPicture.asset(
+              'assets/brand/logo.svg',
+              semanticsLabel: 'Logo',
             ),
-            const Positioned(
-              right: 20,
-              top: 28,
-              child: Icon(Icons.auto_awesome, color: AppColors.lime, size: 42),
-            ),
-          ],
+          ),
         ),
       ),
     );
