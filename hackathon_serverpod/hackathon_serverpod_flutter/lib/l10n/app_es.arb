@@ -34,6 +34,7 @@
   "welcomeCreateAccount": "Crear una cuenta",
   "welcomeGoogle": "Entrar con Google",
   "googleSignInError": "No se pudo entrar con Google.",
+  "googleSignInPopupBlocked": "Tu navegador ha bloqueado la ventana de Google. Permite las ventanas emergentes de esta web y vuelve a probar.",
 
   "signInTitle": "Entra en tu cuenta",
   "emailFieldLabel": "Email",

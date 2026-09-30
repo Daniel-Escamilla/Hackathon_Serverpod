@@ -3,6 +3,7 @@ import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../client.dart';
 import 'app_failure.dart';
+import 'google_popup.dart';
 
 /// Signing in and the three calls of a registration, as `EmailIdpBaseEndpoint`
 /// exposes them: ask for a code, trade the code for a token, set the password.
@@ -54,4 +55,27 @@ class AuthRepository {
         );
         await client.auth.updateSignedInUser(authSuccess);
       });
+
+  /// Web only: signs in with Google through a small window and keeps the
+  /// session. False when the person closed that window or cancelled.
+  ///
+  /// Throws [GooglePopupBlockedException] as it is, so the screen can say the
+  /// browser blocked the window; server errors map to an [AppException].
+  Future<bool> signInWithGoogleWeb() async {
+    final result = await signInWithGooglePopup(
+      clientId: googleWebClientId,
+      redirectUri: googleWebRedirectUri,
+      scopes: GoogleAuthController.defaultScopes,
+    );
+    if (result == null) return false;
+    await guardServerCall(() async {
+      final authSuccess = await client.googleIdp.loginWithCode(
+        code: result.code,
+        codeVerifier: result.codeVerifier,
+        redirectUri: result.redirectUri,
+      );
+      await client.auth.updateSignedInUser(authSuccess);
+    });
+    return true;
+  }
 }

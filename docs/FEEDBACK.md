@@ -90,3 +90,30 @@ nulls, or type `inSet`'s parameter so the inline literal is inferred as `Set<int
 would also beat a runtime one here — this only surfaced because a test happened to reach it.
 
 **Environment.** Serverpod 4.0.0, `serverpod_database` 4.0.0, Dart 3.12.2.
+
+## 3. Google sign-in on the web opens a full tab and never notices it closing
+
+**Date:** 2026-09-30 · **Area:** `serverpod_auth_idp_flutter`, Google web sign-in (OAuth2 PKCE)
+
+**What happened.** On the web, `GoogleAuthController.signIn()` goes through
+`GoogleWebSignInService` → `OAuth2PkceUtil.authorize()`, which calls
+`FlutterWebAuth2.authenticate(options: FlutterWebAuth2Options(useWebview: useWebview))`. On the
+web that becomes `launchUrl` with no window features, so the Google page opens as a **new tab**,
+not the small account-picker window people expect from "Sign in with Google". Worse, nothing
+watches that tab: if the person closes it, the future only fails after `flutter_web_auth_2`'s
+default five-minute timeout, and the sign-in button stays busy the whole time.
+
+**Workaround.** We skipped the controller on the web and wrote the same PKCE request ourselves
+(`lib/data/google_popup_web.dart`): `window.open` with `popup,width=480,height=640`, the answer
+read from the `postMessage` / localStorage that Serverpod's `FlutterWebAuth2CallbackRoute` page
+already sends, the window polled for `closed`, and `client.googleIdp.loginWithCode` called with
+the result. About 120 lines that re-implement what the package does, only to change how the
+window opens.
+
+**Suggested fix.** Let `OAuth2PkceUtil` (or `initializeGoogleSignIn`) take the
+`FlutterWebAuth2Options` — at least `windowName` and the popup features — and on the web open a
+sized popup by default. Watching `popup.closed` and throwing `OAuth2PkceUserCancelledException`
+would let `GoogleAuthController` go back to idle, which it already handles.
+
+**Environment.** Serverpod 4.0.0, `serverpod_auth_idp_flutter` 4.0.0, `flutter_web_auth_2` 5.1.0,
+Firefox and Chrome on Linux.

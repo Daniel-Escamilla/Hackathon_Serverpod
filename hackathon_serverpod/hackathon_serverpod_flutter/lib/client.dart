@@ -28,25 +28,24 @@ late final Client client;
 /// The "Web application" OAuth client from Google Cloud Console. Not a secret:
 /// its secret lives in the server's passwords.yaml. Android and iOS use it too,
 /// as the server client, and are recognised by their own package and SHA-1.
-const _googleWebClientId =
+const googleWebClientId =
     '266308220325-jvpioj5f1pldrqqj7ika3ujqrfmb22n5.apps.googleusercontent.com';
+
+/// Where Google sends the web app back. It only works when the app is served
+/// by Serverpod itself, whose `/auth/callback` route answers it, and the
+/// origin is registered in Google Cloud Console.
+String get googleWebRedirectUri => '${Uri.base.origin}/auth/callback';
 
 Future<void> initializeClient() async {
   client = Client(await serverUrl)
     ..connectivityMonitor = FlutterConnectivityMonitor()
     ..authSessionManager = FlutterAuthSessionManager();
   unawaited(client.auth.initialize());
-  unawaited(
-    kIsWeb
-        // Google sends the browser back here. It only works when the app is
-        // served by Serverpod itself, and the origin is registered in Google
-        // Cloud Console.
-        ? client.auth.initializeGoogleSignIn(
-            clientId: _googleWebClientId,
-            redirectUri: '${Uri.base.origin}/auth/callback',
-          )
-        : client.auth.initializeGoogleSignIn(
-            serverClientId: _googleWebClientId,
-          ),
-  );
+  // The web signs in through its own window (data/google_popup.dart), so only
+  // the phones set up the Google SDK.
+  if (!kIsWeb) {
+    unawaited(
+      client.auth.initializeGoogleSignIn(serverClientId: googleWebClientId),
+    );
+  }
 }
