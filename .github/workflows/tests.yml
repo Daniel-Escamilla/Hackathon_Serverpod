@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: Tests
     runs-on: ubuntu-latest
     env:
       VERSION: '4.0.0'
