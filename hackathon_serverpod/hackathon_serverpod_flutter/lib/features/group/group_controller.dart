@@ -59,6 +59,12 @@ class GroupController extends ChangeNotifier {
     await load();
   }
 
+  /// Both roles change, so the whole list is reloaded rather than patched.
+  Future<void> transferAdmin(int memberId) async {
+    await repository.transferAdmin(memberId);
+    await load();
+  }
+
   Future<void> updateSettings({
     required String name,
     required int finePercent,

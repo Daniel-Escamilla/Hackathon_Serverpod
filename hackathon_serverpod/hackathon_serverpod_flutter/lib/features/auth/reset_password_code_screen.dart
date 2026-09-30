@@ -4,6 +4,7 @@ import 'package:serverpod_auth_idp_client/serverpod_auth_idp_client.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
+import '../../data/auth_repository.dart';
 import '../../data/password_reset_repository.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
@@ -16,12 +17,19 @@ class ResetPasswordCodeScreen extends StatefulWidget {
     required this.email,
     required this.requestId,
     required this.repository,
+    this.signedIn = false,
+    this.auth = const AuthRepository(),
     super.key,
   });
 
   final String email;
   final UuidValue requestId;
   final PasswordResetRepository repository;
+
+  /// Passed through to the last step: set when the flow was opened from the
+  /// settings to change the password, not to recover it.
+  final bool signedIn;
+  final AuthRepository auth;
 
   @override
   State<ResetPasswordCodeScreen> createState() =>
@@ -54,7 +62,12 @@ class _ResetPasswordCodeScreenState extends State<ResetPasswordCodeScreen> {
       if (mounted) {
         pushPage(
           context,
-          ResetPasswordNewScreen(token: token, repository: widget.repository),
+          ResetPasswordNewScreen(
+            token: token,
+            repository: widget.repository,
+            signedIn: widget.signedIn,
+            auth: widget.auth,
+          ),
         );
       }
     } catch (e) {

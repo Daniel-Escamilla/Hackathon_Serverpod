@@ -24,6 +24,10 @@ class GroupRepository {
   Future<void> expelMember(int memberId) =>
       guardServerCall(() => client.group.expelMember(memberId));
 
+  /// The admin hands the role to [memberId] and becomes a plain member.
+  Future<GroupMember> transferAdmin(int memberId) =>
+      guardServerCall(() => client.group.transferAdmin(memberId));
+
   Future<Group> updateGroup({required String name, required int finePercent}) =>
       guardServerCall(
         () => client.group.updateGroup(name: name, finePercent: finePercent),

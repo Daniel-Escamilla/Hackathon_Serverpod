@@ -99,7 +99,8 @@ Para hacer sonar uno a mano: `uiSounds.play(AppSound.success)`.
   que licenciar, y el reglamento pide que el vídeo no lleve música de terceros. Para cambiar uno, se
   toca su receta en ese fichero y se vuelve a ejecutar: `dart run tool/generate_ui_sounds.dart`.
 - **Nunca rompen nada.** Si el audio no carga, la app se queda en silencio y sigue funcionando.
-- **Hay un interruptor general** (`UiSounds.muted`). Todavía no tiene botón en ajustes.
+- **Hay un interruptor general** (`UiSounds.muted`): "Sonidos de la app", en Mis ajustes. Se guarda
+  en el móvil (`features/settings/sound_preference.dart`) y se aplica antes del primer fotograma.
 
 ## Vibración
 
@@ -114,7 +115,6 @@ parecería "nuevo".
 
 ## Pendiente
 
-- El botón de silenciar en ajustes.
 - **`appCoral` no pasa contraste WCAG sobre `appCream`** (~2.36:1, se pide 3:1 hasta para texto
   grande): lo usan el botón `danger` ("Rechazar", "Expulsar") y el aviso de saldo negativo.
   `appMuted` también está justo al límite (~4.42:1 de 4.5:1). Detectado el 22 de septiembre de

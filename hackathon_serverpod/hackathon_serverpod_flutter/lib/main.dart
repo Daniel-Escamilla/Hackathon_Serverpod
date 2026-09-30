@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_theme.dart';
 import 'client.dart';
 import 'features/settings/locale_controller.dart';
+import 'features/settings/sound_preference.dart';
 import 'prototype_app.dart';
 import 'ui/sounds.dart';
 
@@ -12,6 +13,7 @@ Future<void> main() async {
   // Loaded before the first frame so the very first tap already has its pop.
   // Never throws: without audio the app just stays quiet (see UiSounds.load).
   uiSounds = await UiSounds.load();
+  uiSounds.muted = await SoundPreference.loadMuted();
   // Read before the first frame so the app never flashes the wrong language.
   final locale = await LocaleController.load();
   // Flutter's default is its red error screen with a raw stack trace, shown
