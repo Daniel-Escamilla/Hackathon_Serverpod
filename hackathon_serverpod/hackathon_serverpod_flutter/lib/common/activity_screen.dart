@@ -72,7 +72,7 @@ class _Notice extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.palette.card,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
@@ -93,12 +93,12 @@ class _Notice extends StatelessWidget {
                   const SizedBox(height: 2),
                   Text(
                     timeAgo(l10n, event.occurredAt, DateTime.now()),
-                    style: const TextStyle(color: AppColors.muted),
+                    style: TextStyle(color: context.palette.muted),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
+            Icon(Icons.chevron_right_rounded, color: context.palette.muted),
           ],
         ),
       ),

@@ -29,7 +29,7 @@ class TaskVoters extends StatelessWidget {
         Text(l10n.votersTitle, style: Theme.of(context).textTheme.titleMedium),
         const SizedBox(height: 8),
         if (votes.isEmpty)
-          Text(l10n.votersNone, style: const TextStyle(color: AppColors.muted))
+          Text(l10n.votersNone, style: TextStyle(color: context.palette.muted))
         else
           for (final vote in votes)
             Padding(

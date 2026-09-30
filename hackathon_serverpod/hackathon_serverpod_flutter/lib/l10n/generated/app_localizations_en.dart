@@ -1025,6 +1025,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'The button pops, the karma, the fines and the alerts.';
 
   @override
+  String get darkModeToggle => 'Dark mode';
+
+  @override
+  String get darkModeToggleHint =>
+      'A soft grey for the evening, on this device.';
+
+  @override
   String get transferAdminAction => 'Make admin';
 
   @override
