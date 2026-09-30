@@ -48,10 +48,10 @@ class PageHeader extends StatelessWidget {
           IconButton(
             onPressed: () => pushPage(context, const ActivityScreen()),
             tooltip: AppLocalizations.of(context).activityTitle,
-            icon: const Badge(
-              backgroundColor: AppColors.coral,
-              child: Icon(Icons.notifications_none_rounded),
-            ),
+            // No red dot: there is no activity feed yet, so nothing is ever
+            // unread (see ActivityScreen). Wrap this in a Badge with
+            // isLabelVisible tied to real unread items once there are some.
+            icon: const Icon(Icons.notifications_none_rounded),
           ),
         ],
       ),
