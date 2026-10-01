@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_animation.dart';
 import '../../ui/app_button.dart';
 import '../../ui/coin_amount.dart';
 import 'wallet_controller.dart';
@@ -21,7 +22,26 @@ class WalletPage extends StatelessWidget {
           title: AppLocalizations.of(context).navWallet,
           showBalance: false,
         ),
-        Expanded(child: _Body(wallet: wallet)),
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(child: _Body(wallet: wallet)),
+              // Coins coming in, or a fine, played once over the balance.
+              if (wallet.arrival case final arrival?)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: IgnorePointer(
+                    child: AppLottie(
+                      arrival,
+                      key: ValueKey(wallet.arrivalCount),
+                      size: 180,
+                      onFinished: wallet.arrivalShown,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -36,7 +56,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!wallet.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     if (wallet.error != null && wallet.history.isEmpty) {
       return Center(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -15,11 +16,14 @@ class GroupChoiceScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(automaticallyImplyLeading: false),
       body: SafeArea(
-        child: Padding(
+        // Scrolls on a short screen instead of overflowing.
+        child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(24, 12, 24, 28),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const Center(child: AppLottie(AppAnimation.home, size: 140)),
+              const SizedBox(height: 12),
               Text(
                 l10n.groupChoiceGreeting,
                 style: Theme.of(context).textTheme.titleLarge,

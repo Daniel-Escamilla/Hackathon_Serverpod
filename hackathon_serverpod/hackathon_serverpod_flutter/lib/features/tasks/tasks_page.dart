@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/empty_state.dart';
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -38,7 +40,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!controller.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     if (controller.error != null && controller.tasks.isEmpty) {
       return Center(
@@ -106,8 +108,8 @@ class _Body extends StatelessWidget {
         onRefresh: controller.load,
         child: ListView(
           children: [
-            const SizedBox(height: 140),
-            Center(child: Text(l10n.tasksEmpty)),
+            const SizedBox(height: 80),
+            Center(child: EmptyState(l10n.tasksEmpty)),
           ],
         ),
       );

@@ -78,6 +78,24 @@ parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 **Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
 comprueba el propio componente.
 
+**Animaciones Lottie.** Nueve, elegidas por el equipo el 1 de octubre, en
+`assets/animations/` con su autor y su enlace en `CREDITS.md` (LottieFiles, licencia Lottie
+Simple). Como los sonidos, **cada una significa siempre lo mismo**; se pintan con `AppLottie`
+(`lib/ui/app_animation.dart`), que también deja un fotograma quieto a quien tenga las animaciones
+reducidas.
+
+| Animación | Cuándo |
+|---|---|
+| `coins` | Entran monedas en la cartera, con `coin` |
+| `fine` | Una multa quita monedas, con `fine` |
+| `approved` | Pantalla de resultado: tarea reclamada o propuesta enviada |
+| `reward` | Pantalla de resultado: recompensa comprada |
+| `celebrate` | Confeti sobre toda la app al entregar una compra (`showCelebration`) |
+| `notice` | La campanita del aviso en vivo de otro miembro |
+| `empty` | Una lista sin nada todavía (`EmptyState`) |
+| `home` | Elegir, crear o unirse a un grupo |
+| `loading` | Una página entera esperando al servidor (`AppLoading`). Las esperas pequeñas, en un botón o en la cabecera, siguen con su ruedita |
+
 ## Sonido
 
 Cinco sonidos, y **cada uno significa siempre lo mismo**. Un sonido que se usa para dos cosas deja de

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../ui/app_animation.dart';
 import '../data/membership_repository.dart';
 import '../features/group/group_choice_screen.dart';
 import '../home_shell.dart';
@@ -35,7 +36,7 @@ class _GroupGateState extends State<GroupGate> {
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: AppLoading(),
           );
         }
         if (snapshot.hasError) {
