@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'{name} ha expulsado a un miembro'**
   String activityMemberExpelled(String name);
 
+  /// No description provided for @activityMemberUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha cambiado su nombre o su avatar'**
+  String activityMemberUpdated(String name);
+
   /// No description provided for @activityJustNow.
   ///
   /// In es, this message translates to:
@@ -1477,6 +1483,12 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Con saldo negativo no se puede comprar.'**
   String get errorNegativeBalance;
+
+  /// Buying a reward that costs more than the balance
+  ///
+  /// In es, this message translates to:
+  /// **'No te llegan las monedas para esta recompensa.'**
+  String get errorNotEnoughCoins;
 
   /// The provider chosen for a purchase is the buyer or not in the group
   ///

@@ -17,9 +17,18 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
+- **A member's new name or avatar reaches the rest of the group live.** `updateMyProfile`
+  publishes `memberUpdated` on the group's stream; the other phones reload the member list and
+  show it in Activity (#140).
 - **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
   some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
   with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again.
+
+### Fixed
+
+- **The shop no longer sells what the balance cannot pay.** The server refuses a purchase whose
+  price is above the buyer's balance, checked on the locked row so two purchases at once cannot
+  spend the same coins; only fines take a balance below zero (#137).
 
 ## [0.1.0] - 2026-09-28
 

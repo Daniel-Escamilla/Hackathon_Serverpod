@@ -47,6 +47,10 @@ void main() {
     }
   });
 
+  test("a member's new name or avatar reloads the member list (#140)", () {
+    expect(staleAfter(GroupEventKind.memberUpdated), {HomeData.group});
+  });
+
   test('what moves no coins leaves the wallet alone', () {
     for (final kind in [
       GroupEventKind.taskProposed,

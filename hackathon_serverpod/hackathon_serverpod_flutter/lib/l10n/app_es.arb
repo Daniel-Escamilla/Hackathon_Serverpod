@@ -48,6 +48,8 @@
   "@activityPurchaseDelivered": {"placeholders": {"name": {"type": "String"}}},
   "activityMemberExpelled": "{name} ha expulsado a un miembro",
   "@activityMemberExpelled": {"placeholders": {"name": {"type": "String"}}},
+  "activityMemberUpdated": "{name} ha cambiado su nombre o su avatar",
+  "@activityMemberUpdated": {"placeholders": {"name": {"type": "String"}}},
   "activityJustNow": "Ahora mismo",
   "activityMinutesAgo": "Hace {minutes} min",
   "@activityMinutesAgo": {"placeholders": {"minutes": {"type": "int"}}},
@@ -462,6 +464,10 @@
   "errorNegativeBalance": "Con saldo negativo no se puede comprar.",
   "@errorNegativeBalance": {
     "description": "Buying while the balance is below zero"
+  },
+  "errorNotEnoughCoins": "No te llegan las monedas para esta recompensa.",
+  "@errorNotEnoughCoins": {
+    "description": "Buying a reward that costs more than the balance"
   },
   "errorInvalidProvider": "Elige a otra persona del grupo para cumplirla.",
   "@errorInvalidProvider": {

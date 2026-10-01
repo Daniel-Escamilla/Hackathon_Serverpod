@@ -30,6 +30,7 @@ extension AppFailureMessage on AppFailure {
     AppFailure.rewardNotAvailable => l10n.errorRewardNotAvailable,
     AppFailure.outOfStock => l10n.errorOutOfStock,
     AppFailure.negativeBalance => l10n.errorNegativeBalance,
+    AppFailure.notEnoughCoins => l10n.errorNotEnoughCoins,
     AppFailure.invalidProvider => l10n.errorInvalidProvider,
     AppFailure.purchaseNotFound => l10n.errorPurchaseNotFound,
     AppFailure.purchaseNotOpen => l10n.errorPurchaseNotOpen,

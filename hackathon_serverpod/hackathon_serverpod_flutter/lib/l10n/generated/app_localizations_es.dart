@@ -113,6 +113,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String activityMemberUpdated(String name) {
+    return '$name ha cambiado su nombre o su avatar';
+  }
+
+  @override
   String get activityJustNow => 'Ahora mismo';
 
   @override
@@ -777,6 +782,10 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorNegativeBalance => 'Con saldo negativo no se puede comprar.';
+
+  @override
+  String get errorNotEnoughCoins =>
+      'No te llegan las monedas para esta recompensa.';
 
   @override
   String get errorInvalidProvider =>
