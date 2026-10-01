@@ -22,6 +22,7 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../demo/demo_endpoint.dart' as _i46mxkwc;
 import '../events/event_endpoint.dart' as _i7r7roa3;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
@@ -49,6 +50,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'demo': _i46mxkwc.DemoEndpoint()
+        ..initialize(
+          server,
+          'demo',
           null,
         ),
       'event': _i7r7roa3.EventEndpoint()
@@ -357,6 +364,30 @@ class Endpoints extends _is.EndpointDispatch {
                         session,
                         refreshToken: params['refreshToken'],
                       ),
+        ),
+      },
+    );
+    connectors['demo'] = _is.EndpointConnector(
+      name: 'demo',
+      endpoint: endpoints['demo']!,
+      methodConnectors: {
+        'reseed': _is.MethodConnector(
+          name: 'reseed',
+          params: {
+            'secret': _is.ParameterDescription(
+              name: 'secret',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['demo'] as _i46mxkwc.DemoEndpoint).reseed(
+                session,
+                params['secret'],
+              ),
         ),
       },
     );

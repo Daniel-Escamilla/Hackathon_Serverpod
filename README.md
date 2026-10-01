@@ -195,6 +195,30 @@ everything else works; only "Entrar con Google" fails.
 While the Google consent screen is in *Testing* mode, only the Google accounts listed as test
 users can sign in: ask to be added.
 
+### The judges' demo accounts
+
+A task needs two people and a judge opens the app alone, so the submission hands over two accounts
+of a couple, **Ana** (`ana.demo@example.com`) and **Leo** (`leo.demo@example.com`), already in a
+group with some history, two tasks to claim and the shop. `scripts/sembrar_demo.sh` builds it on a
+running server, wiping whatever the two accounts had, so it can be run again any time:
+
+```sh
+cd hackathon_serverpod/scripts
+./sembrar_demo.sh                                   # the local server
+./sembrar_demo.sh https://<api host>/               # a deployed one
+```
+
+The server has to have two entries in its `config/passwords.yaml`, under the run mode it uses
+(`development` locally); without them it refuses every call:
+
+```yaml
+  demoSeedSecret: '<any long random string>'      # what the script asks for
+  demoAccountPassword: '<the password the judges get>'
+```
+
+No vote is left open in the demo: it would close by itself after the vote window and fine
+whoever had not voted. The judges start every vote themselves.
+
 ## Tests
 
 No Docker needed — the test config manages its own embedded PostgreSQL.

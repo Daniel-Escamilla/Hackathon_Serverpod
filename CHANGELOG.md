@@ -17,6 +17,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
+- **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
+  some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
+  with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again.
 
 ## [0.1.0] - 2026-09-28
 

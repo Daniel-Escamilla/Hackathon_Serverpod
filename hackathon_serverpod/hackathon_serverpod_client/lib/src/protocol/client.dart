@@ -317,6 +317,28 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
       );
 }
 
+/// Rebuilds the judges' demo couple (PRODUCT.md §14), called by
+/// `scripts/sembrar_demo.sh`. Public, because the script signs in as nobody,
+/// but dead unless the server's `passwords.yaml` has both `demoSeedSecret`
+/// and `demoAccountPassword`: a server without them refuses every call.
+/// {@category Endpoint}
+class EndpointDemo extends _isc.EndpointRef {
+  EndpointDemo(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'demo';
+
+  /// Wipes and re-creates the demo group when [secret] is the server's
+  /// `demoSeedSecret`, and returns its invite code. Null when refused, with
+  /// no hint of why.
+  _ida.Future<String?> reseed(String secret) =>
+      caller.callServerEndpoint<String?>(
+        'demo',
+        'reseed',
+        {'secret': secret},
+      );
+}
+
 /// Live updates for the signed-in member's group (PRODUCT.md §10.4, issue #65).
 /// {@category Endpoint}
 class EndpointEvent extends _isc.EndpointRef {
@@ -783,6 +805,7 @@ class Client extends _isc.ServerpodClientShared {
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    demo = EndpointDemo(this);
     event = EndpointEvent(this);
     group = EndpointGroup(this);
     shop = EndpointShop(this);
@@ -796,6 +819,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointGoogleIdp googleIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
+
+  late final EndpointDemo demo;
 
   late final EndpointEvent event;
 
@@ -814,6 +839,7 @@ class Client extends _isc.ServerpodClientShared {
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
+    'demo': demo,
     'event': event,
     'group': group,
     'shop': shop,

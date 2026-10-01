@@ -13,6 +13,8 @@ googleIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+demo:
+  - reseed:
 event:
   - watchGroup:
 group:
