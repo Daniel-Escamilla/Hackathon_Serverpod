@@ -113,6 +113,11 @@ class AppLocalizationsEs extends AppLocalizations {
   }
 
   @override
+  String activityMemberUpdated(String name) {
+    return '$name ha cambiado su nombre o su avatar';
+  }
+
+  @override
   String get activityJustNow => 'Ahora mismo';
 
   @override

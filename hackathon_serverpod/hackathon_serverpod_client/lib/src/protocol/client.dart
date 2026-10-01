@@ -456,7 +456,7 @@ class EndpointGroup extends _isc.EndpointRef {
 
   /// The signed-in member changes how the group sees them: their name and
   /// their avatar. Any member may, about themselves only. A field left null
-  /// keeps its current value.
+  /// keeps its current value. The rest of the group sees it live (#140).
   _ida.Future<_ir4oz66a.GroupMember> updateMyProfile({
     String? displayName,
     String? avatarEmoji,

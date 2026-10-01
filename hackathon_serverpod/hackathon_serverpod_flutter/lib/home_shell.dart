@@ -64,7 +64,8 @@ Set<HomeData> staleAfter(GroupEventKind kind) => switch (kind) {
   GroupEventKind.purchaseDelivered => {HomeData.shop},
   GroupEventKind.purchased ||
   GroupEventKind.purchaseResponded => {HomeData.shop, HomeData.wallet},
-  GroupEventKind.memberExpelled => {HomeData.group},
+  GroupEventKind.memberExpelled ||
+  GroupEventKind.memberUpdated => {HomeData.group},
 };
 
 class HomeShell extends StatefulWidget {

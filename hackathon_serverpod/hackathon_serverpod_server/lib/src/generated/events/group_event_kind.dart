@@ -23,6 +23,8 @@ import 'package:serverpod/serverpod.dart' as _is;
 /// The four shop kinds make the shop live too (PLAN.md §1, "tiempo real"): a
 /// reward proposed or voted, and a purchase answered (accepted or refused,
 /// with its fine and refund) or delivered.
+/// `memberUpdated` is a member changing their name or avatar, so the other
+/// phones redraw the member list without a reload (#140).
 enum GroupEventKind implements _is.SerializableModel {
   taskProposed,
   taskVoteCast,
@@ -34,7 +36,8 @@ enum GroupEventKind implements _is.SerializableModel {
   rewardProposed,
   rewardVoteCast,
   purchaseResponded,
-  purchaseDelivered;
+  purchaseDelivered,
+  memberUpdated;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -60,6 +63,8 @@ enum GroupEventKind implements _is.SerializableModel {
         return GroupEventKind.purchaseResponded;
       case 'purchaseDelivered':
         return GroupEventKind.purchaseDelivered;
+      case 'memberUpdated':
+        return GroupEventKind.memberUpdated;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

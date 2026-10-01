@@ -260,6 +260,12 @@ abstract class AppLocalizations {
   /// **'{name} ha expulsado a un miembro'**
   String activityMemberExpelled(String name);
 
+  /// No description provided for @activityMemberUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha cambiado su nombre o su avatar'**
+  String activityMemberUpdated(String name);
+
   /// No description provided for @activityJustNow.
   ///
   /// In es, this message translates to:
