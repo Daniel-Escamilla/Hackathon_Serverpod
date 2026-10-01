@@ -117,3 +117,46 @@ would let `GoogleAuthController` go back to idle, which it already handles.
 
 **Environment.** Serverpod 4.0.0, `serverpod_auth_idp_flutter` 4.0.0, `flutter_web_auth_2` 5.1.0,
 Firefox and Chrome on Linux.
+
+## 4. `withServerpod` leaves `AuthServices` unset, so server code that uses it cannot be tested as is
+
+**Date:** 2026-10-01 · **Area:** `serverpod_test`, `serverpod_auth_core_server`
+
+**What happened.** Our demo seeder creates email accounts on the server with
+`AuthServices.instance.authUsers.create` and `AuthServices.instance.emailIdp.admin
+.createEmailAuthentication`. Under `withServerpod` every call failed with
+`StateError: AuthServices is not set. Call AuthServices.set() to initialize it`. The test server
+does not run `server.dart`, so `pod.initializeAuthServices(...)` never happens, and nothing in the
+generated `serverpod_test_tools.dart` or the testing docs says so. It is easy to miss, because the
+generated auth endpoints still answer the paths that do not reach `AuthServices.instance`.
+
+**Workaround.** A `setUpAll` in the test file that repeats a minimal configuration by hand:
+`AuthServices.set(tokenManagerBuilders: [ServerSideSessionsConfig(...)],
+identityProviderBuilders: [EmailIdpConfig(secretHashPepper: ...)])`. That is a second copy of
+`server.dart`'s auth setup, which can drift from the real one.
+
+**Suggested fix.** Let `withServerpod` take the same auth configuration `server.dart` uses (or
+call a project hook), or have the generated test tools set a test `AuthServices` by default. At
+least, the testing docs could say that `AuthServices` is unset in tests and show the `set` call.
+
+**Environment.** Serverpod 4.0.0, `serverpod_test` 4.0.0, `serverpod_auth_idp_server` 4.0.0.
+
+## 5. The email `login` endpoint cannot be called from a test in the default rollback mode
+
+**Date:** 2026-10-01 · **Area:** `serverpod_test`, `serverpod_auth_idp_server` email login
+
+**What happened.** In a `withServerpod` test with the default `RollbackDatabase.afterEach`,
+`endpoints.emailIdp.login(...)` throws *"Concurrent calls to transaction are not supported when
+database rollbacks are enabled"*. The test tools wrap the call in a transaction, and
+`EmailIdpAuthenticationUtil.authenticate` opens another one inside it through
+`DatabaseRateLimiter.tryRecordAttempt`. So the most ordinary auth test, "can this account sign
+in", needs either rollback disabled for the whole file — and its own cleanup — or a detour.
+
+**Workaround.** We call `AuthServices.instance.emailIdp.utils.authentication.authenticate(...)`
+directly with `transaction: null`, which checks the password without going through the endpoint.
+
+**Suggested fix.** Have the rate limiter join the caller's transaction (or use a savepoint, as
+`DatabaseUtil.runInTransactionOrSavepoint` already does elsewhere in the same package) instead of
+opening a new one, so the endpoint works under rollback like the rest.
+
+**Environment.** Serverpod 4.0.0, `serverpod_test` 4.0.0, `serverpod_auth_idp_server` 4.0.0.

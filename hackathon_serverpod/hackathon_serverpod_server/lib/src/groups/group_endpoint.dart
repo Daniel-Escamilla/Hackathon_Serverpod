@@ -1,16 +1,10 @@
-import 'dart:math';
-
 import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../shop/shop_service.dart';
 import 'current_member.dart';
+import 'invite_code.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
-
-/// Excludes 0/O and 1/I/L: easy to read out loud and to type from a phone,
-/// which is how a group's code is meant to travel (PRODUCT.md §7).
-const _inviteCodeAlphabet = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
-const _inviteCodeLength = 6;
 
 /// Create a group and join one by invite code (PRODUCT.md §7, §10.3).
 class GroupEndpoint extends Endpoint {
@@ -384,25 +378,5 @@ class GroupEndpoint extends Endpoint {
   /// the final guard: two groups picking the same code between this check and
   /// their insert would need a collision in about 887 million, and the loser's
   /// transaction fails cleanly rather than half-creating a group.
-  Future<String> _freeInviteCode(Session session) async {
-    for (var attempt = 0; attempt < 5; attempt++) {
-      final code = _generateInviteCode();
-      final taken = await Group.db.findFirstRow(
-        session,
-        where: (t) => t.inviteCode.equals(code),
-      );
-      if (taken == null) return code;
-    }
-    // Five collisions in a row out of 887 million codes is not bad luck. It is
-    // a server fault, so it stays a plain error rather than a GroupException.
-    throw StateError('Could not generate a unique invite code.');
-  }
-
-  String _generateInviteCode() {
-    final random = Random.secure();
-    return List.generate(
-      _inviteCodeLength,
-      (_) => _inviteCodeAlphabet[random.nextInt(_inviteCodeAlphabet.length)],
-    ).join();
-  }
+  Future<String> _freeInviteCode(Session session) => freeInviteCode(session);
 }

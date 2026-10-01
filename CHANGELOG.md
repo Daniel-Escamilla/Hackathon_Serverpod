@@ -20,6 +20,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **A member's new name or avatar reaches the rest of the group live.** `updateMyProfile`
   publishes `memberUpdated` on the group's stream; the other phones reload the member list and
   show it in Activity (#140).
+- **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
+  some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
+  with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again.
 
 ### Fixed
 
