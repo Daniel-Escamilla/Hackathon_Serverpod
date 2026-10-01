@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
 import '../data/auth_repository.dart';
+import '../features/activity/activity_controller.dart';
 import '../features/group/group_controller.dart';
 import '../features/shop/shop_controller.dart';
 import '../features/tasks/tasks_controller.dart';
@@ -81,6 +82,7 @@ List<SingleChildWidget> _homeProviders(BuildContext context) => [
   ?_forward<ShopController>(context),
   ?_forward<WalletController>(context),
   ?_forward<GroupController>(context),
+  ?_forward<ActivityController>(context),
 ];
 
 SingleChildWidget? _forward<T extends ChangeNotifier>(BuildContext context) {
