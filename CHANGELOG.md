@@ -17,6 +17,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
+- **A member's new name or avatar reaches the rest of the group live.** `updateMyProfile`
+  publishes `memberUpdated` on the group's stream; the other phones reload the member list and
+  show it in Activity (#140).
 
 ## [0.1.0] - 2026-09-28
 

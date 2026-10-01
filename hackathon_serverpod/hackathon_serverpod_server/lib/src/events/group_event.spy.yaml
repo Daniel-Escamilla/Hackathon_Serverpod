@@ -12,7 +12,8 @@ fields:
   purchaseId: int?
   ### The reward, for `rewardProposed` and `rewardVoteCast`; null otherwise.
   rewardId: int?
-  ### The member who left, when [kind] is `memberExpelled`; null otherwise.
+  ### The member who left, when [kind] is `memberExpelled`, or who changed
+  ### their name or avatar, when it is `memberUpdated`; null otherwise.
   memberId: int?
   ### The member who did it: the proposer, the voter, the buyer, the admin who
   ### expelled... Null only for an event nobody triggers. The

@@ -31,6 +31,7 @@
   "activityPurchaseResponded": "{name} answered a purchase",
   "activityPurchaseDelivered": "{name} delivered a purchase",
   "activityMemberExpelled": "{name} expelled a member",
+  "activityMemberUpdated": "{name} changed their name or avatar",
   "activityJustNow": "Just now",
   "activityMinutesAgo": "{minutes} min ago",
   "activityHoursAgo": "{hours} h ago",

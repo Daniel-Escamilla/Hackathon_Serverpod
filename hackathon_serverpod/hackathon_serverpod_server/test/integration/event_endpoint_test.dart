@@ -12,6 +12,8 @@ const _claimAdminAuthUserId = 'c2c2c2c2-c2c2-4c2c-8c2c-c2c2c2c2c2c2';
 const _claimantAuthUserId = 'c3c3c3c3-c3c3-4c3c-8c3c-c3c3c3c3c3c3';
 const _expelAdminAuthUserId = 'c4c4c4c4-c4c4-4c4c-8c4c-c4c4c4c4c4c4';
 const _expelledAuthUserId = 'c5c5c5c5-c5c5-4c5c-8c5c-c5c5c5c5c5c5';
+const _profileWatcherAuthUserId = 'c6c6c6c6-c6c6-4c6c-8c6c-c6c6c6c6c6c6';
+const _profileEditorAuthUserId = 'c7c7c7c7-c7c7-4c7c-8c7c-c7c7c7c7c7c7';
 
 void main() {
   // The stream's own lookup runs alongside the call that publishes, and
@@ -135,6 +137,39 @@ void main() {
           expect(event.memberId, expelled.id);
           // The admin did it, not the member who left.
           expect(event.actorMemberId, allOf(isNotNull, isNot(expelled.id)));
+        },
+      );
+
+      test(
+        'when a member changes their profile then the watcher gets it',
+        () async {
+          final group = await endpoints.group.createGroup(
+            sessionOf(_profileWatcherAuthUserId),
+            'Piso de perfiles',
+            GroupType.sharedFlat,
+            displayName: 'Alice',
+          );
+          await endpoints.group.joinGroup(
+            sessionOf(_profileEditorAuthUserId),
+            group.inviteCode,
+            displayName: 'Bob',
+          );
+          final stream = endpoints.event.watchGroup(
+            sessionOf(_profileWatcherAuthUserId),
+          );
+          await flushEventQueue();
+
+          final updated = await endpoints.group.updateMyProfile(
+            sessionOf(_profileEditorAuthUserId),
+            displayName: 'Roberto',
+            avatarEmoji: '🦊',
+          );
+
+          final event = await stream.first;
+          expect(event.groupId, group.id);
+          expect(event.kind, GroupEventKind.memberUpdated);
+          expect(event.memberId, updated.id);
+          expect(event.actorMemberId, updated.id);
         },
       );
 

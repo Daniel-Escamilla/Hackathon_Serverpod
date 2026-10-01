@@ -71,7 +71,8 @@ abstract class GroupEvent
   /// The reward, for `rewardProposed` and `rewardVoteCast`; null otherwise.
   int? rewardId;
 
-  /// The member who left, when [kind] is `memberExpelled`; null otherwise.
+  /// The member who left, when [kind] is `memberExpelled`, or who changed
+  /// their name or avatar, when it is `memberUpdated`; null otherwise.
   int? memberId;
 
   /// The member who did it: the proposer, the voter, the buyer, the admin who

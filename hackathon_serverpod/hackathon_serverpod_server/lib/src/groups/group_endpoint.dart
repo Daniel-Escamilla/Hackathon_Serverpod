@@ -299,7 +299,7 @@ class GroupEndpoint extends Endpoint {
 
   /// The signed-in member changes how the group sees them: their name and
   /// their avatar. Any member may, about themselves only. A field left null
-  /// keeps its current value.
+  /// keeps its current value. The rest of the group sees it live (#140).
   Future<GroupMember> updateMyProfile(
     Session session, {
     String? displayName,
@@ -324,7 +324,7 @@ class GroupEndpoint extends Endpoint {
       throw ArgumentError.value(avatarColor, 'avatarColor', 'is too long');
     }
 
-    return GroupMember.db.updateRow(
+    final updated = await GroupMember.db.updateRow(
       session,
       member.copyWith(
         displayName: trimmedName ?? member.displayName,
@@ -332,6 +332,14 @@ class GroupEndpoint extends Endpoint {
         avatarColor: avatarColor ?? member.avatarColor,
       ),
     );
+    await _eventService.publish(
+      session,
+      groupId: updated.groupId,
+      kind: GroupEventKind.memberUpdated,
+      actorMemberId: updated.id,
+      memberId: updated.id,
+    );
+    return updated;
   }
 
   Future<GroupMember> _requireAdmin(Session session) async {
