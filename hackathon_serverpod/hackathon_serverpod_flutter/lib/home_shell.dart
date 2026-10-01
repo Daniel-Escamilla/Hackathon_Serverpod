@@ -203,7 +203,7 @@ class _HomeShellState extends State<HomeShell> {
             bottomNavigationBar: NavigationBar(
               selectedIndex: index,
               onDestinationSelected: _tabController.goTo,
-              backgroundColor: Colors.white,
+              backgroundColor: context.palette.card,
               indicatorColor: AppColors.violet.withValues(alpha: .14),
               destinations: [
                 NavigationDestination(

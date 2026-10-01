@@ -98,7 +98,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
           ),
           Text(
             l10n.groupSettingsFineHint,
-            style: const TextStyle(color: AppColors.muted),
+            style: TextStyle(color: context.palette.muted),
           ),
           Slider(
             value: _finePercent.toDouble(),

@@ -329,6 +329,8 @@
   "soundSection": "Sound",
   "soundsToggle": "App sounds",
   "soundsToggleHint": "The button pops, the coin, the fines and the alerts.",
+  "darkModeToggle": "Dark mode",
+  "darkModeToggleHint": "A soft grey for the evening, on this device.",
   "transferAdminAction": "Make admin",
   "transferAdminTitle": "Hand the admin role to {name}?",
   "transferAdminBody": "{name} will be able to expel members, change the code and configure the group. You'll become a regular member, and only {name} can give the role back.",

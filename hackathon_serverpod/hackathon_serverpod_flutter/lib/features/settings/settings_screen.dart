@@ -17,6 +17,7 @@ import '../../ui/sounds.dart';
 import '../auth/reset_password_email_screen.dart';
 import '../group/group_controller.dart';
 import 'locale_controller.dart';
+import 'theme_controller.dart';
 import 'sound_preference.dart';
 
 /// The member's own settings: how the group sees them, their password, the
@@ -205,6 +206,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 26),
           _SectionTitle(l10n.soundSection),
           _SoundRow(on: _soundsOn, onChanged: _setSounds),
+          // Null only in tests that build this screen without the app root.
+          if (context.watch<ThemeController?>() case final theme?) ...[
+            const SizedBox(height: 12),
+            _SoundRow(
+              title: l10n.darkModeToggle,
+              hint: l10n.darkModeToggleHint,
+              on: theme.dark,
+              onChanged: theme.setDark,
+            ),
+          ],
           const SizedBox(height: 26),
           _SectionTitle(l10n.languageSection),
           for (final (option, label) in [
@@ -244,13 +255,13 @@ class _Choice extends StatelessWidget {
     required this.selected,
     required this.onTap,
     required this.child,
-    this.color = Colors.white,
+    this.color,
   });
 
   final bool selected;
   final VoidCallback onTap;
   final Widget child;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +274,7 @@ class _Choice extends StatelessWidget {
         height: 46,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: color,
+          color: color ?? context.palette.card,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: selected
@@ -281,9 +292,19 @@ class _Choice extends StatelessWidget {
 /// The switch for every UI sound at once. The whole card toggles it, not only
 /// the switch itself.
 class _SoundRow extends StatelessWidget {
-  const _SoundRow({required this.on, required this.onChanged});
+  const _SoundRow({
+    required this.on,
+    required this.onChanged,
+    this.title,
+    this.hint,
+  });
 
   final bool on;
+
+  /// Defaults to the sound switch's own wording; the dark mode switch
+  /// reuses this row with its own.
+  final String? title;
+  final String? hint;
   final ValueChanged<bool> onChanged;
 
   @override
@@ -302,13 +323,13 @@ class _SoundRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.soundsToggle,
+                      title ?? l10n.soundsToggle,
                       style: const TextStyle(fontWeight: FontWeight.w900),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      l10n.soundsToggleHint,
-                      style: const TextStyle(color: AppColors.muted),
+                      hint ?? l10n.soundsToggleHint,
+                      style: TextStyle(color: context.palette.muted),
                     ),
                   ],
                 ),
@@ -357,7 +378,7 @@ class _LanguageRow extends StatelessWidget {
                   selected
                       ? Icons.radio_button_checked_rounded
                       : Icons.radio_button_off_rounded,
-                  color: selected ? AppColors.violet : AppColors.muted,
+                  color: selected ? AppColors.violet : context.palette.muted,
                 ),
               ],
             ),

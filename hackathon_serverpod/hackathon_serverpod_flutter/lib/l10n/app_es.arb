@@ -722,6 +722,8 @@
     "description": "Settings screen: label of the switch that turns every UI sound on or off"
   },
   "soundsToggleHint": "Los pops de los botones, la moneda, las multas y los avisos.",
+  "darkModeToggle": "Modo oscuro",
+  "darkModeToggleHint": "Un gris suave para la noche, en este dispositivo.",
   "@soundsToggleHint": {
     "description": "Settings screen: what the sound switch covers, under its label"
   },

@@ -1862,6 +1862,18 @@ abstract class AppLocalizations {
   /// **'Los pops de los botones, la moneda, las multas y los avisos.'**
   String get soundsToggleHint;
 
+  /// No description provided for @darkModeToggle.
+  ///
+  /// In es, this message translates to:
+  /// **'Modo oscuro'**
+  String get darkModeToggle;
+
+  /// No description provided for @darkModeToggleHint.
+  ///
+  /// In es, this message translates to:
+  /// **'Un gris suave para la noche, en este dispositivo.'**
+  String get darkModeToggleHint;
+
   /// Tooltip of the admin's icon on a member's row that hands them the admin role
   ///
   /// In es, this message translates to:

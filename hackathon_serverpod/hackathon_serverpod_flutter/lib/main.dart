@@ -4,6 +4,7 @@ import 'app_theme.dart';
 import 'client.dart';
 import 'features/settings/locale_controller.dart';
 import 'features/settings/sound_preference.dart';
+import 'features/settings/theme_controller.dart';
 import 'prototype_app.dart';
 import 'ui/sounds.dart';
 
@@ -16,6 +17,8 @@ Future<void> main() async {
   uiSounds.muted = await SoundPreference.loadMuted();
   // Read before the first frame so the app never flashes the wrong language.
   final locale = await LocaleController.load();
+  // Same for light or dark: the first frame already has the right colours.
+  final theme = await ThemeController.load();
   // Flutter's default is its red error screen with a raw stack trace, shown
   // to whoever is using the app — including a judge. This builder has no
   // BuildContext to reach AppLocalizations, so the one string here is
@@ -36,5 +39,5 @@ Future<void> main() async {
       ),
     ),
   );
-  runApp(PrototypeApp(locale: locale));
+  runApp(PrototypeApp(locale: locale, theme: theme));
 }

@@ -102,9 +102,9 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                   sound: null,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.palette.card,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: _selectedMemberId == member.id
@@ -133,7 +133,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                               : Icons.circle_outlined,
                           color: _selectedMemberId == member.id
                               ? AppColors.violet
-                              : AppColors.muted,
+                              : context.palette.muted,
                         ),
                       ],
                     ),

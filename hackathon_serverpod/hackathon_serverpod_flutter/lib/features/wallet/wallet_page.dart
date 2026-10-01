@@ -150,8 +150,8 @@ class _MovementRow extends StatelessWidget {
                   ),
                   Text(
                     _formatDate(movement.createdAt),
-                    style: const TextStyle(
-                      color: AppColors.muted,
+                    style: TextStyle(
+                      color: context.palette.muted,
                       fontSize: 13,
                     ),
                   ),

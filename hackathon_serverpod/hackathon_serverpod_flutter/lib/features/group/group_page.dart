@@ -104,7 +104,7 @@ class _Body extends StatelessWidget {
                 const Divider(height: 28),
                 Text(
                   l10n.groupCodeLabel,
-                  style: const TextStyle(color: AppColors.muted),
+                  style: TextStyle(color: context.palette.muted),
                 ),
                 Row(
                   children: [

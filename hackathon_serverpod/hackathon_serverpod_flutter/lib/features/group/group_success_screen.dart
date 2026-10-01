@@ -40,7 +40,7 @@ class GroupSuccessScreen extends StatelessWidget {
                   children: [
                     Text(
                       l10n.groupCodeLabel,
-                      style: const TextStyle(color: AppColors.muted),
+                      style: TextStyle(color: context.palette.muted),
                     ),
                     const SizedBox(height: 4),
                     Text(
