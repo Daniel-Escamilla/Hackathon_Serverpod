@@ -8,6 +8,7 @@ import 'app_theme.dart';
 import 'common/navigation.dart';
 import 'data/app_failure.dart';
 import 'features/activity/activity_controller.dart';
+import 'features/activity/live_notice.dart';
 import 'features/group/group_controller.dart';
 import 'features/group/group_page.dart';
 import 'features/shop/shop_controller.dart';
@@ -149,7 +150,9 @@ class _HomeShellState extends State<HomeShell> {
       _leaveGroup();
       return;
     }
-    _activityController.add(event);
+    if (_activityController.add(event) && mounted) {
+      showLiveNotice(context, event, _groupController.members);
+    }
     for (final data in staleAfter(event.kind)) {
       unawaited(switch (data) {
         HomeData.tasks => _tasksController.load(),
