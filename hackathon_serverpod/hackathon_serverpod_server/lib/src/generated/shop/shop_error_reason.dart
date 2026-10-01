@@ -33,6 +33,10 @@ enum ShopErrorReason implements _is.SerializableModel {
   /// Nothing can be bought with a negative balance (PRODUCT.md §4).
   negativeBalance,
 
+  /// The balance does not reach the price: buying never takes it below zero,
+  /// only fines do (PRODUCT.md §4).
+  notEnoughCoins,
+
   /// The provider has to be another member of the caller's group.
   invalidProvider,
 
@@ -60,6 +64,8 @@ enum ShopErrorReason implements _is.SerializableModel {
         return ShopErrorReason.outOfStock;
       case 'negativeBalance':
         return ShopErrorReason.negativeBalance;
+      case 'notEnoughCoins':
+        return ShopErrorReason.notEnoughCoins;
       case 'invalidProvider':
         return ShopErrorReason.invalidProvider;
       case 'purchaseNotFound':

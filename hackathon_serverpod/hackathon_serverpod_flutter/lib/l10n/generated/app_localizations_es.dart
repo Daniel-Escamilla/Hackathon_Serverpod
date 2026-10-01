@@ -779,6 +779,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get errorNegativeBalance => 'Con saldo negativo no se puede comprar.';
 
   @override
+  String get errorNotEnoughCoins =>
+      'No te llegan las monedas para esta recompensa.';
+
+  @override
   String get errorInvalidProvider =>
       'Elige a otra persona del grupo para cumplirla.';
 

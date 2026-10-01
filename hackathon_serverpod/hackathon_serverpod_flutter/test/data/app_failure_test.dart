@@ -31,6 +31,7 @@ void main() {
         AppFailure.rewardNotAvailable,
         AppFailure.outOfStock,
         AppFailure.negativeBalance,
+        AppFailure.notEnoughCoins,
         AppFailure.invalidProvider,
         AppFailure.purchaseNotFound,
         AppFailure.purchaseNotOpen,
