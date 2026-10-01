@@ -185,8 +185,98 @@ abstract class AppLocalizations {
   /// No description provided for @activityEmptyMessage.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay un listado de actividad del servidor.'**
+  /// **'Aquí verás lo que hagan los demás mientras tengas la app abierta.'**
   String get activityEmptyMessage;
+
+  /// No description provided for @activitySomeone.
+  ///
+  /// In es, this message translates to:
+  /// **'Alguien'**
+  String get activitySomeone;
+
+  /// No description provided for @activityTaskProposed.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha propuesto una tarea'**
+  String activityTaskProposed(String name);
+
+  /// No description provided for @activityTaskVoteCast.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha votado una tarea'**
+  String activityTaskVoteCast(String name);
+
+  /// No description provided for @activityTaskCounterOffered.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha hecho una contraoferta'**
+  String activityTaskCounterOffered(String name);
+
+  /// No description provided for @activityTaskClaimed.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} dice que ha hecho una tarea'**
+  String activityTaskClaimed(String name);
+
+  /// No description provided for @activityTaskValidated.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha votado si una tarea está hecha'**
+  String activityTaskValidated(String name);
+
+  /// No description provided for @activityRewardProposed.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha propuesto una recompensa'**
+  String activityRewardProposed(String name);
+
+  /// No description provided for @activityRewardVoteCast.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha votado una recompensa'**
+  String activityRewardVoteCast(String name);
+
+  /// No description provided for @activityPurchased.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha comprado una recompensa'**
+  String activityPurchased(String name);
+
+  /// No description provided for @activityPurchaseResponded.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha respondido a una compra'**
+  String activityPurchaseResponded(String name);
+
+  /// No description provided for @activityPurchaseDelivered.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha entregado una compra'**
+  String activityPurchaseDelivered(String name);
+
+  /// No description provided for @activityMemberExpelled.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha expulsado a un miembro'**
+  String activityMemberExpelled(String name);
+
+  /// No description provided for @activityJustNow.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora mismo'**
+  String get activityJustNow;
+
+  /// No description provided for @activityMinutesAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {minutes} min'**
+  String activityMinutesAgo(int minutes);
+
+  /// No description provided for @activityHoursAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {hours} h'**
+  String activityHoursAgo(int hours);
 
   /// No description provided for @groupCheckError.
   ///

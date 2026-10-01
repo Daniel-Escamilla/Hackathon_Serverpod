@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../app_theme.dart';
+import '../features/activity/activity_controller.dart';
 import '../features/wallet/wallet_controller.dart';
 import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
@@ -48,9 +49,13 @@ class PageHeader extends StatelessWidget {
           IconButton(
             onPressed: () => pushPage(context, const ActivityScreen()),
             tooltip: AppLocalizations.of(context).activityTitle,
-            icon: const Badge(
+            // The dot only while another member's notice is unread (#156).
+            // Null outside HomeShell, where there are no notices.
+            icon: Badge(
+              isLabelVisible:
+                  context.watch<ActivityController?>()?.hasUnread ?? false,
               backgroundColor: AppColors.coral,
-              child: Icon(Icons.notifications_none_rounded),
+              child: const Icon(Icons.notifications_none_rounded),
             ),
           ),
         ],

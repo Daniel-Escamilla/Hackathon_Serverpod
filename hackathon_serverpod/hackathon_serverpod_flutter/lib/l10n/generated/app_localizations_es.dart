@@ -52,7 +52,78 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get activityEmptyMessage =>
-      'Todavía no hay un listado de actividad del servidor.';
+      'Aquí verás lo que hagan los demás mientras tengas la app abierta.';
+
+  @override
+  String get activitySomeone => 'Alguien';
+
+  @override
+  String activityTaskProposed(String name) {
+    return '$name ha propuesto una tarea';
+  }
+
+  @override
+  String activityTaskVoteCast(String name) {
+    return '$name ha votado una tarea';
+  }
+
+  @override
+  String activityTaskCounterOffered(String name) {
+    return '$name ha hecho una contraoferta';
+  }
+
+  @override
+  String activityTaskClaimed(String name) {
+    return '$name dice que ha hecho una tarea';
+  }
+
+  @override
+  String activityTaskValidated(String name) {
+    return '$name ha votado si una tarea está hecha';
+  }
+
+  @override
+  String activityRewardProposed(String name) {
+    return '$name ha propuesto una recompensa';
+  }
+
+  @override
+  String activityRewardVoteCast(String name) {
+    return '$name ha votado una recompensa';
+  }
+
+  @override
+  String activityPurchased(String name) {
+    return '$name ha comprado una recompensa';
+  }
+
+  @override
+  String activityPurchaseResponded(String name) {
+    return '$name ha respondido a una compra';
+  }
+
+  @override
+  String activityPurchaseDelivered(String name) {
+    return '$name ha entregado una compra';
+  }
+
+  @override
+  String activityMemberExpelled(String name) {
+    return '$name ha expulsado a un miembro';
+  }
+
+  @override
+  String get activityJustNow => 'Ahora mismo';
+
+  @override
+  String activityMinutesAgo(int minutes) {
+    return 'Hace $minutes min';
+  }
+
+  @override
+  String activityHoursAgo(int hours) {
+    return 'Hace $hours h';
+  }
 
   @override
   String get groupCheckError => 'No se pudo comprobar tu grupo.';
