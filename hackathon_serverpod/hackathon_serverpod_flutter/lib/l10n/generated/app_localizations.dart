@@ -320,6 +320,12 @@ abstract class AppLocalizations {
   /// **'No se pudo entrar con Google.'**
   String get googleSignInError;
 
+  /// No description provided for @googleSignInPopupBlocked.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu navegador ha bloqueado la ventana de Google. Permite las ventanas emergentes de esta web y vuelve a probar.'**
+  String get googleSignInPopupBlocked;
+
   /// No description provided for @signInTitle.
   ///
   /// In es, this message translates to:

@@ -43,6 +43,7 @@
   "welcomeCreateAccount": "Create an account",
   "welcomeGoogle": "Sign in with Google",
   "googleSignInError": "Couldn't sign in with Google.",
+  "googleSignInPopupBlocked": "Your browser blocked the Google window. Allow pop-ups for this site and try again.",
 
   "signInTitle": "Sign in to your account",
   "emailFieldLabel": "Email",
