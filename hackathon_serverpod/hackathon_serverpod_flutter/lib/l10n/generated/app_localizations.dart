@@ -1484,6 +1484,12 @@ abstract class AppLocalizations {
   /// **'Con saldo negativo no se puede comprar.'**
   String get errorNegativeBalance;
 
+  /// Buying a reward that costs more than the balance
+  ///
+  /// In es, this message translates to:
+  /// **'No te llegan las monedas para esta recompensa.'**
+  String get errorNotEnoughCoins;
+
   /// The provider chosen for a purchase is the buyer or not in the group
   ///
   /// In es, this message translates to:

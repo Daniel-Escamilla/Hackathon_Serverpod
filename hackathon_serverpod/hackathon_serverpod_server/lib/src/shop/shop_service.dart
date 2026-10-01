@@ -148,6 +148,10 @@ class ShopService {
   /// Buys [item] for [buyer], to be fulfilled by [provider]. Decrements stock (if
   /// limited) and charges [buyer] in the same transaction as the [Purchase] row
   /// (PRODUCT.md §6).
+  ///
+  /// The balance has to cover the price: only fines take it below zero
+  /// (PRODUCT.md §4). It is checked on the buyer's row, locked, so two
+  /// purchases at once cannot both spend the same coins (#137).
   Future<Purchase> purchase(
     Session session, {
     required RewardItem item,
@@ -160,14 +164,24 @@ class ShopService {
     if (provider.id == buyer.id) {
       throw ShopException(reason: ShopErrorReason.invalidProvider);
     }
-    if (buyer.balance < 0) {
-      throw ShopException(reason: ShopErrorReason.negativeBalance);
-    }
     if (item.stock != null && item.stock! <= 0) {
       throw ShopException(reason: ShopErrorReason.outOfStock);
     }
 
     final purchase = await session.db.transaction((transaction) async {
+      final balance = (await GroupMember.db.findById(
+        session,
+        buyer.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      ))!.balance;
+      if (balance < 0) {
+        throw ShopException(reason: ShopErrorReason.negativeBalance);
+      }
+      if (balance < item.price) {
+        throw ShopException(reason: ShopErrorReason.notEnoughCoins);
+      }
+
       if (item.stock != null) {
         await RewardItem.db.updateRow(
           session,

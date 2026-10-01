@@ -14,6 +14,9 @@ values:
   - outOfStock
   ### Nothing can be bought with a negative balance (PRODUCT.md §4).
   - negativeBalance
+  ### The balance does not reach the price: buying never takes it below zero,
+  ### only fines do (PRODUCT.md §4).
+  - notEnoughCoins
   ### The provider has to be another member of the caller's group.
   - invalidProvider
   ### No purchase with that id in the caller's group.
