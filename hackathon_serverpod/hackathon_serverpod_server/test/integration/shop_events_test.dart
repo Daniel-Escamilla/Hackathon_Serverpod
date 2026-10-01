@@ -106,6 +106,7 @@ void main() {
         final event = await stream.first;
         expect(event.kind, GroupEventKind.rewardProposed);
         expect(event.rewardId, reward.id);
+        expect(event.actorMemberId, c.beaMember.id);
       });
 
       test('when a reward is voted then the proposer hears it', () async {
@@ -124,6 +125,7 @@ void main() {
         final event = await stream.first;
         expect(event.kind, GroupEventKind.rewardVoteCast);
         expect(event.rewardId, reward.id);
+        expect(event.actorMemberId, c.anaMember.id);
       });
 
       test('when a purchase is accepted then the buyer hears it', () async {
@@ -137,6 +139,7 @@ void main() {
         final event = await stream.first;
         expect(event.kind, GroupEventKind.purchaseResponded);
         expect(event.purchaseId, purchase.id);
+        expect(event.actorMemberId, c.anaMember.id);
       });
 
       test('when a purchase is refused then the buyer hears it too', () async {
@@ -150,6 +153,7 @@ void main() {
         final event = await stream.first;
         expect(event.kind, GroupEventKind.purchaseResponded);
         expect(event.purchaseId, purchase.id);
+        expect(event.actorMemberId, c.anaMember.id);
       });
 
       test('when a purchase is delivered then the buyer hears it', () async {
@@ -164,6 +168,7 @@ void main() {
         final event = await stream.first;
         expect(event.kind, GroupEventKind.purchaseDelivered);
         expect(event.purchaseId, purchase.id);
+        expect(event.actorMemberId, c.anaMember.id);
       });
     },
     rollbackDatabase: RollbackDatabase.disabled,

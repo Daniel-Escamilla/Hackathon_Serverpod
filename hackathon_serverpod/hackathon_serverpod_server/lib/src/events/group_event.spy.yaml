@@ -14,4 +14,8 @@ fields:
   rewardId: int?
   ### The member who left, when [kind] is `memberExpelled`; null otherwise.
   memberId: int?
+  ### The member who did it: the proposer, the voter, the buyer, the admin who
+  ### expelled... Null only for an event nobody triggers. The
+  ### app uses it to tell its own actions from everyone else's (#154).
+  actorMemberId: int?
   occurredAt: DateTime
