@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -132,6 +133,7 @@ class PurchaseScreen extends StatelessWidget {
       await controller.markDelivered(purchase.id!);
       if (context.mounted) {
         showMessage(context, l10n.purchaseDelivered, sound: AppSound.success);
+        showCelebration(context);
         Navigator.of(context).pop();
       }
     } catch (e) {

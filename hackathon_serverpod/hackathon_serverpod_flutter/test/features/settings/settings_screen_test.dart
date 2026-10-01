@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_flutter/data/auth_repository.dart';
 import 'package:hackathon_serverpod_flutter/data/password_reset_repository.dart';
@@ -127,16 +128,16 @@ void main() {
       expect(find.widgetWithText(TextField, 'Bea'), findsOneWidget);
     });
 
-    testWidgets('saves the emoji, colour and name picked', (tester) async {
+    testWidgets('saves the character, colour and name picked', (tester) async {
       final group = RecordingGroupController();
       await openSettings(tester, group);
 
-      await tapFound(tester, find.text('🦊'));
+      await tapFound(tester, find.bySemanticsLabel('Calcetín'));
       await tapFound(tester, find.bySemanticsLabel('Lima'));
       await tester.enterText(find.byType(TextField), '  Beatriz ');
       await tapFound(tester, find.text('Guardar perfil'));
 
-      expect(group.saved, ['Beatriz 🦊 lime']);
+      expect(group.saved, ['Beatriz calcetin lime']);
       expect(find.text('Perfil guardado'), findsOneWidget);
     });
 
@@ -255,20 +256,33 @@ void main() {
     Future<void> pumpAvatar(WidgetTester tester, MemberAvatar avatar) =>
         tester.pumpWidget(MaterialApp(home: Scaffold(body: avatar)));
 
-    testWidgets('shows the initial until an emoji is picked', (tester) async {
+    testWidgets('shows the initial until a character is picked', (
+      tester,
+    ) async {
       await pumpAvatar(tester, const MemberAvatar(name: 'bea'));
 
       expect(find.text('B'), findsOneWidget);
     });
 
-    testWidgets('shows the emoji once one is picked', (tester) async {
+    testWidgets('shows the character once one is picked', (tester) async {
       await pumpAvatar(
         tester,
-        const MemberAvatar(name: 'bea', emoji: '🦊', color: 'lime'),
+        const MemberAvatar(name: 'bea', avatar: 'calcetin', color: 'lime'),
+      );
+
+      expect(find.byType(SvgPicture), findsOneWidget);
+      expect(find.text('B'), findsNothing);
+    });
+
+    testWidgets('still shows an emoji picked before the characters', (
+      tester,
+    ) async {
+      await pumpAvatar(
+        tester,
+        const MemberAvatar(name: 'bea', avatar: '🦊', color: 'lime'),
       );
 
       expect(find.text('🦊'), findsOneWidget);
-      expect(find.text('B'), findsNothing);
     });
   });
 }

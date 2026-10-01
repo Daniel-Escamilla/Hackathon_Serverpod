@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../ui/empty_state.dart';
 import '../app_theme.dart';
 import '../features/activity/activity_controller.dart';
 import '../features/activity/activity_text.dart';
@@ -111,26 +112,6 @@ class _Empty extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const Icon(
-              Icons.notifications_none_rounded,
-              size: 48,
-              color: AppColors.muted,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              l10n.activityEmptyMessage,
-              textAlign: TextAlign.center,
-              style: const TextStyle(color: AppColors.muted),
-            ),
-          ],
-        ),
-      ),
-    );
+    return Center(child: EmptyState(l10n.activityEmptyMessage));
   }
 }

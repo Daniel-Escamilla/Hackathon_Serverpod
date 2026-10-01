@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/empty_state.dart';
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -39,7 +41,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!controller.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     if (controller.error != null && controller.rewards.isEmpty) {
       return Center(
@@ -116,8 +118,8 @@ class _Body extends StatelessWidget {
           ],
           if (active.isEmpty && proposed.isEmpty)
             Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: Center(child: Text(l10n.shopEmpty)),
+              padding: const EdgeInsets.only(top: 20),
+              child: Center(child: EmptyState(l10n.shopEmpty)),
             ),
           for (final reward in active)
             Padding(

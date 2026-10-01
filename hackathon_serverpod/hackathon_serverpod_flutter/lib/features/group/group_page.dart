@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -44,7 +45,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!controller.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     final group = controller.group;
     if (controller.error != null || group == null) {
@@ -301,7 +302,7 @@ class _MemberRow extends StatelessWidget {
           children: [
             MemberAvatar(
               name: member.displayName,
-              emoji: member.avatarEmoji,
+              avatar: member.avatarEmoji,
               color: member.avatarColor,
             ),
             const SizedBox(width: 12),

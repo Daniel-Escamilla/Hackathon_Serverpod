@@ -33,7 +33,7 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 | `AppButton` | Todos los botones. Tipos abajo |
 | `Pressable` | Cualquier cosa tocable que no sea un botón: mismo rebote, vibración y sonido |
 | `CoinAmount` | Una cantidad de monedas con su icono y cifras tabulares |
-| `MemberAvatar` | La foto de un miembro: el emoji y el color que eligió en sus ajustes, o su inicial si aún no eligió |
+| `MemberAvatar` | La foto de un miembro: el personaje de casa (taza, planta, calcetín…, en `assets/avatars/`) y el color que eligió en sus ajustes, o su inicial si aún no eligió. Un emoji elegido antes de los personajes se sigue viendo |
 | `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
 | `confirmAction` | Pregunta antes de algo destructivo |
 
@@ -77,6 +77,24 @@ parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 
 **Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
 comprueba el propio componente.
+
+**Animaciones Lottie.** Nueve, elegidas por el equipo el 1 de octubre, en
+`assets/animations/` con su autor y su enlace en `CREDITS.md` (LottieFiles, licencia Lottie
+Simple). Como los sonidos, **cada una significa siempre lo mismo**; se pintan con `AppLottie`
+(`lib/ui/app_animation.dart`), que también deja un fotograma quieto a quien tenga las animaciones
+reducidas.
+
+| Animación | Cuándo |
+|---|---|
+| `coins` | Entran monedas en la cartera, con `coin` |
+| `fine` | Una multa quita monedas, con `fine` |
+| `approved` | Pantalla de resultado: tarea reclamada o propuesta enviada |
+| `reward` | Pantalla de resultado: recompensa comprada |
+| `celebrate` | Confeti sobre toda la app al entregar una compra (`showCelebration`) |
+| `notice` | La campanita del aviso en vivo de otro miembro |
+| `empty` | Una lista sin nada todavía (`EmptyState`) |
+| `home` | Elegir, crear o unirse a un grupo |
+| `loading` | Una página entera esperando al servidor (`AppLoading`). Las esperas pequeñas, en un botón o en la cabecera, siguen con su ruedita |
 
 ## Sonido
 

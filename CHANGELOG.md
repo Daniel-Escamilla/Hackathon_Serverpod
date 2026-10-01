@@ -23,8 +23,17 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
   some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
   with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again.
+- **House characters instead of emoji avatars.** Eight characters drawn for the app (a mug, a
+  plant, a sock, a sponge, a teapot, a toast, a bucket and a light bulb) on the member's colour.
+  An emoji picked before them is still shown.
+- **Lottie animations** for coins coming in, a fine, a result, a purchase delivered (confetti),
+  the live notice, empty lists, choosing a home and loading. Nine, picked by the team from
+  LottieFiles; who made each one is in `assets/animations/CREDITS.md`.
 
 ### Fixed
+
+- **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;
+  a denied proposal, a denied validation and an expired vote are fines too.
 
 - **The shop no longer sells what the balance cannot pay.** The server refuses a purchase whose
   price is above the buyer's balance, checked on the locked row so two purchases at once cannot

@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
 import '../../data/wallet_repository.dart';
+import '../../ui/app_animation.dart';
 import '../../ui/sounds.dart';
 
 class WalletController extends ChangeNotifier {
@@ -54,11 +55,45 @@ class WalletController extends ChangeNotifier {
     if (previouslyKnown == null) return;
 
     final arrived = history.where((m) => !previouslyKnown.contains(m.id));
-    if (arrived.any((m) => m.reason == CoinTransactionReason.earned)) {
+    if (arrived.any((m) => _coinsIn.contains(m.reason))) {
       uiSounds.play(AppSound.coin);
+      _arrive(AppAnimation.coins);
     }
-    if (arrived.any((m) => m.reason == CoinTransactionReason.fined)) {
+    // After the coins, so a fine that came with them is what stays on screen.
+    if (arrived.any((m) => _fines.contains(m.reason))) {
       uiSounds.play(AppSound.fine);
+      _arrive(AppAnimation.fine);
     }
+  }
+
+  /// Every reason that takes coins as a fine: the shop's and the three of
+  /// the task cycle (PRODUCT.md §4.4).
+  static const _fines = {
+    CoinTransactionReason.fined,
+    CoinTransactionReason.proposalDenied,
+    CoinTransactionReason.validationDenied,
+    CoinTransactionReason.voteExpired,
+  };
+  static const _coinsIn = {
+    CoinTransactionReason.earned,
+    CoinTransactionReason.refunded,
+  };
+
+  /// What the wallet should play for the movements that just arrived, until
+  /// it has played it. [arrivalCount] changes with every new one, so the same
+  /// animation twice in a row plays twice.
+  AppAnimation? arrival;
+  int arrivalCount = 0;
+
+  void _arrive(AppAnimation animation) {
+    arrival = animation;
+    arrivalCount++;
+  }
+
+  /// Called by the wallet once the animation has played.
+  void arrivalShown() {
+    if (arrival == null) return;
+    arrival = null;
+    notifyListeners();
   }
 }

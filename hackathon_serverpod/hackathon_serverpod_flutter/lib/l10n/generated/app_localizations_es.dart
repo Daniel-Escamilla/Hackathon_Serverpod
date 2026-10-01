@@ -925,7 +925,31 @@ class AppLocalizationsEs extends AppLocalizations {
   String get profileSection => 'Tu perfil';
 
   @override
-  String get avatarEmojiLabel => 'Tu emoji';
+  String get avatarLabel => 'Tu personaje';
+
+  @override
+  String get avatarTaza => 'Taza';
+
+  @override
+  String get avatarPlanta => 'Planta';
+
+  @override
+  String get avatarCalcetin => 'Calcetín';
+
+  @override
+  String get avatarEsponja => 'Esponja';
+
+  @override
+  String get avatarTetera => 'Tetera';
+
+  @override
+  String get avatarTostada => 'Tostada';
+
+  @override
+  String get avatarCubo => 'Cubo';
+
+  @override
+  String get avatarBombilla => 'Bombilla';
 
   @override
   String get avatarColorLabel => 'Color';

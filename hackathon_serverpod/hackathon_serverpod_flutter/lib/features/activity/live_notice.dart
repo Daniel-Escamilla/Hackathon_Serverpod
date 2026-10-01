@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 
+import '../../ui/app_animation.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
@@ -22,5 +23,10 @@ void showLiveNotice(
           .firstWhereOrNull((m) => m.id == event.actorMemberId)
           ?.displayName ??
       l10n.activitySomeone;
-  showMessage(context, event.sentence(l10n, name), sound: AppSound.tap);
+  showMessage(
+    context,
+    event.sentence(l10n, name),
+    sound: AppSound.tap,
+    leading: const AppLottie(AppAnimation.notice, size: 36),
+  );
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
@@ -55,7 +56,7 @@ class TaskReviewScreen extends StatelessWidget {
         pushPage(
           context,
           ResultScreen(
-            emoji: '🗳️',
+            animation: AppAnimation.approved,
             title: l10n.sentToVoteTitle,
             message: l10n.sentToVoteMessage,
             value: l10n.rewardAmount(reward),

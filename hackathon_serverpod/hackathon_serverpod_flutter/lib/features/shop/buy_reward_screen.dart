@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
@@ -78,7 +79,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
           ),
           const SizedBox(height: 24),
           if (!group.hasLoaded || !wallet.hasLoaded)
-            const Center(child: CircularProgressIndicator())
+            const AppLoading()
           else if (!canAfford)
             InfoRow(
               icon: Icons.savings_rounded,
@@ -117,7 +118,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                       children: [
                         MemberAvatar(
                           name: member.displayName,
-                          emoji: member.avatarEmoji,
+                          avatar: member.avatarEmoji,
                           color: member.avatarColor,
                         ),
                         const SizedBox(width: 12),
@@ -164,7 +165,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
         pushPage(
           context,
           ResultScreen(
-            emoji: '🎁',
+            animation: AppAnimation.reward,
             title: l10n.purchaseSentTitle,
             message: l10n.purchaseSentMessage,
             value: l10n.rewardAmount(widget.reward.price),

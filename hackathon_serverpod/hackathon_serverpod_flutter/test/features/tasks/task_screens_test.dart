@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:hackathon_serverpod_flutter/ui/app_animation.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/available_task_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/counter_offer_decision_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/task_vote_screen.dart';
@@ -124,7 +125,12 @@ void main() {
       await tapLabel(tester, 'Ya está hecha');
 
       expect(tasks.calls, ['done 7']);
-      expect(find.text('✅'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is AppLottie && w.animation == AppAnimation.approved,
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('losing the race says someone else took it', (tester) async {

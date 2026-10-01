@@ -4,6 +4,7 @@ import 'package:hackathon_serverpod_flutter/data/app_failure.dart';
 import 'package:hackathon_serverpod_flutter/data/wallet_repository.dart';
 import 'package:hackathon_serverpod_flutter/features/wallet/wallet_controller.dart';
 import 'package:hackathon_serverpod_flutter/home_shell.dart';
+import 'package:hackathon_serverpod_flutter/ui/app_animation.dart';
 
 CoinMovement movement(int id, int amount, CoinTransactionReason reason) =>
     CoinMovement(
@@ -66,6 +67,41 @@ void main() {
     expect(wallet.balance, -5);
     expect(wallet.history.single.reason, CoinTransactionReason.fined);
   });
+
+  test('the first load plays nothing: every movement looks new', () async {
+    repository.history = [movement(1, 25, CoinTransactionReason.earned)];
+
+    await wallet.load();
+
+    expect(wallet.arrival, isNull);
+  });
+
+  test('coins that arrive later play the coins animation', () async {
+    await wallet.load();
+    repository.history = [movement(1, 25, CoinTransactionReason.earned)];
+
+    await wallet.load();
+
+    expect(wallet.arrival, AppAnimation.coins);
+    wallet.arrivalShown();
+    expect(wallet.arrival, isNull);
+  });
+
+  for (final reason in [
+    CoinTransactionReason.proposalDenied,
+    CoinTransactionReason.validationDenied,
+    CoinTransactionReason.voteExpired,
+    CoinTransactionReason.fined,
+  ]) {
+    test('a ${reason.name} fine plays the fine animation', () async {
+      await wallet.load();
+      repository.history = [movement(2, -5, reason)];
+
+      await wallet.load();
+
+      expect(wallet.arrival, AppAnimation.fine);
+    });
+  }
 
   test('a refused load keeps the failure itself, not a wrapper', () async {
     repository.failWith = AppFailure.noGroup;

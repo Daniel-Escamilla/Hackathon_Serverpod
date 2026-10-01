@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:hackathon_serverpod_flutter/ui/app_animation.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/buy_reward_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/purchase_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/reward_vote_screen.dart';
@@ -76,7 +77,12 @@ void main() {
       await tapLabel(tester, '15 monedas');
 
       expect(shop.calls, ['buy 4 from 3']);
-      expect(find.text('🎁'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is AppLottie && w.animation == AppAnimation.reward,
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets(
