@@ -86,7 +86,7 @@ abstract class GroupMember
 
   String displayName;
 
-  /// The emoji the member picked as their picture. Null until they pick one: the app shows their initial instead.
+  /// The house character the member picked as their picture (`taza`, `planta`... see the app's MemberAvatar), or an emoji from before the characters. Null until they pick one: the app shows their initial instead. The name stays for the column it maps to.
   String? avatarEmoji;
 
   /// The avatar's background, a colour name from the app's palette (sky, lime, coral...). Null means the default. The app owns the palette, so an unknown name falls back to the default rather than failing.

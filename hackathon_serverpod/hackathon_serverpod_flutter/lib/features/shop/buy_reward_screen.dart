@@ -117,7 +117,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                       children: [
                         MemberAvatar(
                           name: member.displayName,
-                          emoji: member.avatarEmoji,
+                          avatar: member.avatarEmoji,
                           color: member.avatarColor,
                         ),
                         const SizedBox(width: 12),

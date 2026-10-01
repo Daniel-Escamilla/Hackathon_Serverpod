@@ -1736,11 +1736,59 @@ abstract class AppLocalizations {
   /// **'Tu perfil'**
   String get profileSection;
 
-  /// Settings screen: label over the grid of emoji to pick an avatar from
+  /// Settings screen: label over the grid of house characters to pick an avatar from
   ///
   /// In es, this message translates to:
-  /// **'Tu emoji'**
-  String get avatarEmojiLabel;
+  /// **'Tu personaje'**
+  String get avatarLabel;
+
+  /// Avatar character: a mug. Read out by screen readers
+  ///
+  /// In es, this message translates to:
+  /// **'Taza'**
+  String get avatarTaza;
+
+  /// Avatar character: a potted plant
+  ///
+  /// In es, this message translates to:
+  /// **'Planta'**
+  String get avatarPlanta;
+
+  /// Avatar character: a sock
+  ///
+  /// In es, this message translates to:
+  /// **'Calcetín'**
+  String get avatarCalcetin;
+
+  /// Avatar character: a kitchen sponge
+  ///
+  /// In es, this message translates to:
+  /// **'Esponja'**
+  String get avatarEsponja;
+
+  /// Avatar character: a teapot
+  ///
+  /// In es, this message translates to:
+  /// **'Tetera'**
+  String get avatarTetera;
+
+  /// Avatar character: a slice of toast
+  ///
+  /// In es, this message translates to:
+  /// **'Tostada'**
+  String get avatarTostada;
+
+  /// Avatar character: a mop bucket
+  ///
+  /// In es, this message translates to:
+  /// **'Cubo'**
+  String get avatarCubo;
+
+  /// Avatar character: a light bulb
+  ///
+  /// In es, this message translates to:
+  /// **'Bombilla'**
+  String get avatarBombilla;
 
   /// Settings screen: label over the avatar background colours
   ///

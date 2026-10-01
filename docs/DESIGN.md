@@ -33,7 +33,7 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 | `AppButton` | Todos los botones. Tipos abajo |
 | `Pressable` | Cualquier cosa tocable que no sea un botón: mismo rebote, vibración y sonido |
 | `CoinAmount` | Una cantidad de monedas con su icono y cifras tabulares |
-| `MemberAvatar` | La foto de un miembro: el emoji y el color que eligió en sus ajustes, o su inicial si aún no eligió |
+| `MemberAvatar` | La foto de un miembro: el personaje de casa (taza, planta, calcetín…, en `assets/avatars/`) y el color que eligió en sus ajustes, o su inicial si aún no eligió. Un emoji elegido antes de los personajes se sigue viendo |
 | `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
 | `confirmAction` | Pregunta antes de algo destructivo |
 

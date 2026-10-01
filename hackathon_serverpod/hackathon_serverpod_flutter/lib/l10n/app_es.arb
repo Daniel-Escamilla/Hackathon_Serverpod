@@ -635,10 +635,26 @@
   "@profileSection": {
     "description": "Settings screen: heading of the avatar and name section"
   },
-  "avatarEmojiLabel": "Tu emoji",
-  "@avatarEmojiLabel": {
-    "description": "Settings screen: label over the grid of emoji to pick an avatar from"
+  "avatarLabel": "Tu personaje",
+  "@avatarLabel": {
+    "description": "Settings screen: label over the grid of house characters to pick an avatar from"
   },
+  "avatarTaza": "Taza",
+  "@avatarTaza": {"description": "Avatar character: a mug. Read out by screen readers"},
+  "avatarPlanta": "Planta",
+  "@avatarPlanta": {"description": "Avatar character: a potted plant"},
+  "avatarCalcetin": "Calcetín",
+  "@avatarCalcetin": {"description": "Avatar character: a sock"},
+  "avatarEsponja": "Esponja",
+  "@avatarEsponja": {"description": "Avatar character: a kitchen sponge"},
+  "avatarTetera": "Tetera",
+  "@avatarTetera": {"description": "Avatar character: a teapot"},
+  "avatarTostada": "Tostada",
+  "@avatarTostada": {"description": "Avatar character: a slice of toast"},
+  "avatarCubo": "Cubo",
+  "@avatarCubo": {"description": "Avatar character: a mop bucket"},
+  "avatarBombilla": "Bombilla",
+  "@avatarBombilla": {"description": "Avatar character: a light bulb"},
   "avatarColorLabel": "Color",
   "@avatarColorLabel": {
     "description": "Settings screen: label over the avatar background colours"

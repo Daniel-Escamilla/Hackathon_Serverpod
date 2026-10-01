@@ -23,6 +23,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
   some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
   with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again.
+- **House characters instead of emoji avatars.** Eight characters drawn for the app (a mug, a
+  plant, a sock, a sponge, a teapot, a toast, a bucket and a light bulb) on the member's colour.
+  An emoji picked before them is still shown.
 
 ### Fixed
 

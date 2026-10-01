@@ -8,14 +8,30 @@ import '../shop/shop_service.dart';
 import '../tasks/task_service.dart';
 
 /// One of the two demo accounts handed to the judges.
-typedef DemoAccount = ({String email, String name, String emoji, String color});
+typedef DemoAccount = ({
+  String email,
+  String name,
+  String avatar,
+  String color,
+});
 
 /// The couple the judges sign in as: a cycle needs two people and a judge
 /// opens the app alone (PRODUCT.md §14). `example.com` is reserved, so these
-/// addresses can never reach a real inbox.
+/// addresses can never reach a real inbox. The avatars are two of the app's
+/// house characters.
 const demoAccounts = <DemoAccount>[
-  (email: 'ana.demo@example.com', name: 'Ana', emoji: '🌻', color: 'coral'),
-  (email: 'leo.demo@example.com', name: 'Leo', emoji: '🦊', color: 'sky'),
+  (
+    email: 'ana.demo@example.com',
+    name: 'Ana',
+    avatar: 'planta',
+    color: 'coral',
+  ),
+  (
+    email: 'leo.demo@example.com',
+    name: 'Leo',
+    avatar: 'calcetin',
+    color: 'sky',
+  ),
 ];
 
 /// Builds the judges' couple group from scratch, through the same services
@@ -309,7 +325,7 @@ class DemoSeeder {
       groupId: group.id!,
       authUserId: authUserId,
       displayName: account.name,
-      avatarEmoji: account.emoji,
+      avatarEmoji: account.avatar,
       avatarColor: account.color,
       role: role,
     ),

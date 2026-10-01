@@ -39,7 +39,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final _nameController = TextEditingController(
     text: _group.myMember?.displayName ?? '',
   );
-  late String? _emoji = _group.myMember?.avatarEmoji;
+  late String? _avatar = _group.myMember?.avatarEmoji;
   late String _color =
       _group.myMember?.avatarColor ?? MemberAvatar.defaultColor;
   bool _saving = false;
@@ -69,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       await _group.updateMyProfile(
         displayName: name,
-        avatarEmoji: _emoji,
+        avatarEmoji: _avatar,
         avatarColor: _color,
       );
       if (mounted) {
@@ -99,6 +99,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'violet': l10n.avatarColorViolet,
       'cream': l10n.avatarColorCream,
     };
+    final avatarNames = {
+      'taza': l10n.avatarTaza,
+      'planta': l10n.avatarPlanta,
+      'calcetin': l10n.avatarCalcetin,
+      'esponja': l10n.avatarEsponja,
+      'tetera': l10n.avatarTetera,
+      'tostada': l10n.avatarTostada,
+      'cubo': l10n.avatarCubo,
+      'bombilla': l10n.avatarBombilla,
+    };
 
     return Scaffold(
       appBar: AppBar(),
@@ -120,25 +130,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     valueListenable: _nameController,
                     builder: (context, name, _) => MemberAvatar(
                       name: name.text,
-                      emoji: _emoji,
+                      avatar: _avatar,
                       color: _color,
                       radius: 40,
                     ),
                   ),
                 ),
                 const SizedBox(height: 18),
-                FieldLabel(l10n.avatarEmojiLabel),
+                FieldLabel(l10n.avatarLabel),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (final emoji in MemberAvatar.emojis)
-                      _Choice(
-                        selected: _emoji == emoji,
-                        onTap: () => setState(() => _emoji = emoji),
-                        child: Text(
-                          emoji,
-                          style: const TextStyle(fontSize: 24),
+                    for (final avatar in MemberAvatar.avatars)
+                      Semantics(
+                        label: avatarNames[avatar],
+                        selected: _avatar == avatar,
+                        button: true,
+                        child: _Choice(
+                          selected: _avatar == avatar,
+                          onTap: () => setState(() => _avatar = avatar),
+                          child: MemberAvatar(
+                            name: '',
+                            avatar: avatar,
+                            color: _color,
+                            radius: 19,
+                          ),
                         ),
                       ),
                   ],
@@ -237,7 +254,7 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-/// One square of the emoji grid or one dot of the colour row: a ring shows
+/// One square of the character grid or one dot of the colour row: a ring shows
 /// the one picked.
 class _Choice extends StatelessWidget {
   const _Choice({
