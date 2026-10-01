@@ -463,6 +463,10 @@
   "@errorNegativeBalance": {
     "description": "Buying while the balance is below zero"
   },
+  "errorNotEnoughCoins": "No te llegan las monedas para esta recompensa.",
+  "@errorNotEnoughCoins": {
+    "description": "Buying a reward that costs more than the balance"
+  },
   "errorInvalidProvider": "Elige a otra persona del grupo para cumplirla.",
   "@errorInvalidProvider": {
     "description": "The provider chosen for a purchase is the buyer or not in the group"

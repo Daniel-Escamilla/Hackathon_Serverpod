@@ -18,6 +18,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
 
+### Fixed
+
+- **The shop no longer sells what the balance cannot pay.** The server refuses a purchase whose
+  price is above the buyer's balance, checked on the locked row so two purchases at once cannot
+  spend the same coins; only fines take a balance below zero (#137).
+
 ## [0.1.0] - 2026-09-28
 
 The first version with the whole task cycle, the shop and the wallet working against the real
