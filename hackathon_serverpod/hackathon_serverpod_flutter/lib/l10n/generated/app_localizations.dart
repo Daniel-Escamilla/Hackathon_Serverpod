@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @coinsLabel.
   ///
   /// In es, this message translates to:
-  /// **'monedas'**
+  /// **'karmas'**
   String get coinsLabel;
 
   /// No description provided for @reject.
@@ -161,7 +161,7 @@ abstract class AppLocalizations {
   /// No description provided for @navWallet.
   ///
   /// In es, this message translates to:
-  /// **'Cartera'**
+  /// **'Karma'**
   String get navWallet;
 
   /// No description provided for @navGroup.
@@ -293,13 +293,13 @@ abstract class AppLocalizations {
   /// No description provided for @welcomeHeadline.
   ///
   /// In es, this message translates to:
-  /// **'Las tareas,\npor fin justas.'**
+  /// **'Lo que haces en casa,\nvuelve.'**
   String get welcomeHeadline;
 
   /// No description provided for @welcomeSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Los acuerdos de casa se deciden entre todos.'**
+  /// **'Cada tarea la valora la casa entera, y cada tarea hecha suma karma.'**
   String get welcomeSubtitle;
 
   /// No description provided for @welcomeSignIn.
@@ -755,7 +755,7 @@ abstract class AppLocalizations {
   /// No description provided for @tasksEmpty.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay tareas. Propón la primera.'**
+  /// **'La casa está en calma. Propón la primera tarea y empieza a sumar karma.'**
   String get tasksEmpty;
 
   /// No description provided for @sectionAwaitingVote.
@@ -857,7 +857,7 @@ abstract class AppLocalizations {
   /// No description provided for @counterOfferSheetSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'¿Cuántas monedas te parecerían justas?'**
+  /// **'¿Cuántos karmas te parecerían justos?'**
   String get counterOfferSheetSubtitle;
 
   /// No description provided for @counterOfferPauseNotice.
@@ -941,7 +941,7 @@ abstract class AppLocalizations {
   /// No description provided for @inValidationValue.
   ///
   /// In es, this message translates to:
-  /// **'En validación · {reward} monedas'**
+  /// **'En validación · {reward} karmas'**
   String inValidationValue(int reward);
 
   /// No description provided for @backToTasks.
@@ -1079,7 +1079,7 @@ abstract class AppLocalizations {
   /// No description provided for @rejectFineNotice.
   ///
   /// In es, this message translates to:
-  /// **'Si la rechazan, recibirás una multa sobre estas monedas'**
+  /// **'Si la rechazan, te llevas mal karma: una multa sobre lo que valía'**
   String get rejectFineNotice;
 
   /// No description provided for @submitToVote.
@@ -1103,7 +1103,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardAmount.
   ///
   /// In es, this message translates to:
-  /// **'{reward} monedas'**
+  /// **'{reward} karmas'**
   String rewardAmount(int reward);
 
   /// No description provided for @proposeError.
@@ -1115,7 +1115,7 @@ abstract class AppLocalizations {
   /// No description provided for @shopSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Convierte tus monedas en planes'**
+  /// **'Convierte tu karma en planes'**
   String get shopSubtitle;
 
   /// No description provided for @shopLoadError.
@@ -1127,7 +1127,7 @@ abstract class AppLocalizations {
   /// No description provided for @shopEmpty.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay recompensas. Propón la primera.'**
+  /// **'Aún no hay nada en la tienda. Propón una recompensa para gastar tu karma.'**
   String get shopEmpty;
 
   /// No description provided for @awaitingVoteSection.
@@ -1229,7 +1229,7 @@ abstract class AppLocalizations {
   /// Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows
   ///
   /// In es, this message translates to:
-  /// **'{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.'**
+  /// **'{missing, plural, =1{Te falta 1 karma} other{Te faltan {missing} karmas}}: tienes {balance} y este premio cuesta {price}. Haz algo por la casa para conseguirlos.'**
   String notEnoughCoins(int missing, int balance, int price);
 
   /// No description provided for @purchaseSentTitle.
@@ -1259,7 +1259,7 @@ abstract class AppLocalizations {
   /// No description provided for @walletLoadError.
   ///
   /// In es, this message translates to:
-  /// **'No se pudo cargar la cartera.'**
+  /// **'No se pudo cargar tu karma.'**
   String get walletLoadError;
 
   /// No description provided for @negativeBalanceNotice.
@@ -1487,7 +1487,7 @@ abstract class AppLocalizations {
   /// Buying a reward that costs more than the balance
   ///
   /// In es, this message translates to:
-  /// **'No te llegan las monedas para esta recompensa.'**
+  /// **'No te llega el karma para esta recompensa.'**
   String get errorNotEnoughCoins;
 
   /// The provider chosen for a purchase is the buyer or not in the group
@@ -1577,7 +1577,7 @@ abstract class AppLocalizations {
   /// Warns the provider what refusing a purchase costs
   ///
   /// In es, this message translates to:
-  /// **'Si te niegas pagas una multa, y quien compró recupera sus monedas.'**
+  /// **'Si te niegas te llevas una multa, y quien compró recupera su karma.'**
   String get purchaseRefuseNotice;
 
   /// Button: the provider has fulfilled an accepted purchase
@@ -1925,7 +1925,7 @@ abstract class AppLocalizations {
   /// Settings screen: what the sound switch covers, under its label
   ///
   /// In es, this message translates to:
-  /// **'Los pops de los botones, la moneda, las multas y los avisos.'**
+  /// **'Los pops de los botones, el karma, las multas y los avisos.'**
   String get soundsToggleHint;
 
   /// Tooltip of the admin's icon on a member's row that hands them the admin role

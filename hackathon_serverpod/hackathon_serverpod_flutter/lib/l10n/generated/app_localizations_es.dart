@@ -15,7 +15,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get retry => 'Reintentar';
 
   @override
-  String get coinsLabel => 'monedas';
+  String get coinsLabel => 'karmas';
 
   @override
   String get reject => 'Rechazar';
@@ -39,7 +39,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get navShop => 'Tienda';
 
   @override
-  String get navWallet => 'Cartera';
+  String get navWallet => 'Karma';
 
   @override
   String get navGroup => 'Grupo';
@@ -134,10 +134,11 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupCheckError => 'No se pudo comprobar tu grupo.';
 
   @override
-  String get welcomeHeadline => 'Las tareas,\npor fin justas.';
+  String get welcomeHeadline => 'Lo que haces en casa,\nvuelve.';
 
   @override
-  String get welcomeSubtitle => 'Los acuerdos de casa se deciden entre todos.';
+  String get welcomeSubtitle =>
+      'Cada tarea la valora la casa entera, y cada tarea hecha suma karma.';
 
   @override
   String get welcomeSignIn => 'Entrar con email';
@@ -377,7 +378,8 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tasksLoadError => 'No se pudieron cargar las tareas.';
 
   @override
-  String get tasksEmpty => 'Todavía no hay tareas. Propón la primera.';
+  String get tasksEmpty =>
+      'La casa está en calma. Propón la primera tarea y empieza a sumar karma.';
 
   @override
   String get sectionAwaitingVote => 'Esperan tu voto';
@@ -431,7 +433,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get counterOfferSheetSubtitle =>
-      '¿Cuántas monedas te parecerían justas?';
+      '¿Cuántos karmas te parecerían justos?';
 
   @override
   String get counterOfferPauseNotice =>
@@ -476,7 +478,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String inValidationValue(int reward) {
-    return 'En validación · $reward monedas';
+    return 'En validación · $reward karmas';
   }
 
   @override
@@ -552,7 +554,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rejectFineNotice =>
-      'Si la rechazan, recibirás una multa sobre estas monedas';
+      'Si la rechazan, te llevas mal karma: una multa sobre lo que valía';
 
   @override
   String get submitToVote => 'Enviar a votación';
@@ -566,20 +568,21 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String rewardAmount(int reward) {
-    return '$reward monedas';
+    return '$reward karmas';
   }
 
   @override
   String get proposeError => 'No se pudo enviar la propuesta';
 
   @override
-  String get shopSubtitle => 'Convierte tus monedas en planes';
+  String get shopSubtitle => 'Convierte tu karma en planes';
 
   @override
   String get shopLoadError => 'No se pudo cargar la tienda.';
 
   @override
-  String get shopEmpty => 'Todavía no hay recompensas. Propón la primera.';
+  String get shopEmpty =>
+      'Aún no hay nada en la tienda. Propón una recompensa para gastar tu karma.';
 
   @override
   String get awaitingVoteSection => 'Esperando votación';
@@ -635,10 +638,10 @@ class AppLocalizationsEs extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       missing,
       locale: localeName,
-      other: 'Te faltan $missing monedas',
-      one: 'Te falta 1 moneda',
+      other: 'Te faltan $missing karmas',
+      one: 'Te falta 1 karma',
     );
-    return '$_temp0: tienes $balance y este premio cuesta $price. Haz tareas para conseguirlas.';
+    return '$_temp0: tienes $balance y este premio cuesta $price. Haz algo por la casa para conseguirlos.';
   }
 
   @override
@@ -654,7 +657,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get purchaseError => 'No se pudo completar la compra';
 
   @override
-  String get walletLoadError => 'No se pudo cargar la cartera.';
+  String get walletLoadError => 'No se pudo cargar tu karma.';
 
   @override
   String get negativeBalanceNotice =>
@@ -785,7 +788,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorNotEnoughCoins =>
-      'No te llegan las monedas para esta recompensa.';
+      'No te llega el karma para esta recompensa.';
 
   @override
   String get errorInvalidProvider =>
@@ -835,7 +838,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get purchaseRefuseNotice =>
-      'Si te niegas pagas una multa, y quien compró recupera sus monedas.';
+      'Si te niegas te llevas una multa, y quien compró recupera su karma.';
 
   @override
   String get purchaseMarkDelivered => 'Marcar como entregada';
@@ -1020,7 +1023,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get soundsToggleHint =>
-      'Los pops de los botones, la moneda, las multas y los avisos.';
+      'Los pops de los botones, el karma, las multas y los avisos.';
 
   @override
   String get transferAdminAction => 'Hacer admin';

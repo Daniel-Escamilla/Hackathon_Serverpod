@@ -14,6 +14,10 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Added
 
+- **The app is KarmaHome.** Its name in the app, the Android launcher, the web page and the
+  server's emails; a new logo, a home in two halves that fit together, on every icon and in the
+  link preview; and a voice to go with it: «Lo que haces en casa, vuelve». Coins are now
+  **karmas**, the Wallet tab is **Karma**, and the welcome screen and empty lists speak it.
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.

@@ -4,7 +4,7 @@
   "appTitle": "KarmaHome",
 
   "retry": "Reintentar",
-  "coinsLabel": "monedas",
+  "coinsLabel": "karmas",
   "reject": "Rechazar",
   "decreaseAmount": "Restar",
   "increaseAmount": "Sumar",
@@ -19,7 +19,7 @@
 
   "navTasks": "Tareas",
   "navShop": "Tienda",
-  "navWallet": "Cartera",
+  "navWallet": "Karma",
   "navGroup": "Grupo",
   "proposeTask": "Proponer",
 
@@ -58,8 +58,8 @@
 
   "groupCheckError": "No se pudo comprobar tu grupo.",
 
-  "welcomeHeadline": "Las tareas,\npor fin justas.",
-  "welcomeSubtitle": "Los acuerdos de casa se deciden entre todos.",
+  "welcomeHeadline": "Lo que haces en casa,\nvuelve.",
+  "welcomeSubtitle": "Cada tarea la valora la casa entera, y cada tarea hecha suma karma.",
   "welcomeSignIn": "Entrar con email",
   "welcomeCreateAccount": "Crear una cuenta",
   "welcomeGoogle": "Entrar con Google",
@@ -190,7 +190,7 @@
   "copyCode": "Copiar código",
 
   "tasksLoadError": "No se pudieron cargar las tareas.",
-  "tasksEmpty": "Todavía no hay tareas. Propón la primera.",
+  "tasksEmpty": "La casa está en calma. Propón la primera tarea y empieza a sumar karma.",
   "sectionAwaitingVote": "Esperan tu voto",
   "sectionAvailable": "Disponibles",
   "statusProposal": "Propuesta",
@@ -215,7 +215,7 @@
   "counterOfferError": "No se pudo enviar la contraoferta",
 
   "counterOfferSheetTitle": "Haz una contraoferta",
-  "counterOfferSheetSubtitle": "¿Cuántas monedas te parecerían justas?",
+  "counterOfferSheetSubtitle": "¿Cuántos karmas te parecerían justos?",
   "counterOfferPauseNotice": "La votación se pausará hasta que el autor responda",
   "sendCounterOffer": "Enviar contraoferta",
 
@@ -231,7 +231,7 @@
   "markDone": "Ya está hecha",
   "claimedTitle": "¡Reclamada!",
   "claimedMessage": "Ahora el grupo debe confirmar que está hecha.",
-  "inValidationValue": "En validación · {reward} monedas",
+  "inValidationValue": "En validación · {reward} karmas",
   "@inValidationValue": {
     "placeholders": {
       "reward": { "type": "int" }
@@ -289,11 +289,11 @@
 
   "reviewDealStatus": "Revisa el trato",
   "voteWindowNotice": "El grupo tendrá 24 horas para votar",
-  "rejectFineNotice": "Si la rechazan, recibirás una multa sobre estas monedas",
+  "rejectFineNotice": "Si la rechazan, te llevas mal karma: una multa sobre lo que valía",
   "submitToVote": "Enviar a votación",
   "sentToVoteTitle": "Enviada a votación",
   "sentToVoteMessage": "Avisaremos al grupo para que decida el trato.",
-  "rewardAmount": "{reward} monedas",
+  "rewardAmount": "{reward} karmas",
   "@rewardAmount": {
     "placeholders": {
       "reward": { "type": "int" }
@@ -301,9 +301,9 @@
   },
   "proposeError": "No se pudo enviar la propuesta",
 
-  "shopSubtitle": "Convierte tus monedas en planes",
+  "shopSubtitle": "Convierte tu karma en planes",
   "shopLoadError": "No se pudo cargar la tienda.",
-  "shopEmpty": "Todavía no hay recompensas. Propón la primera.",
+  "shopEmpty": "Aún no hay nada en la tienda. Propón una recompensa para gastar tu karma.",
   "awaitingVoteSection": "Esperando votación",
 
   "awaitingYourVote": "Espera tu voto",
@@ -323,7 +323,7 @@
   "whoWillFulfil": "¿Quién la cumplirá?",
   "selectMember": "Selecciona a una persona",
   "noOtherMembers": "Todavía no hay nadie más en el grupo para cumplirla.",
-  "notEnoughCoins": "{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.",
+  "notEnoughCoins": "{missing, plural, =1{Te falta 1 karma} other{Te faltan {missing} karmas}}: tienes {balance} y este premio cuesta {price}. Haz algo por la casa para conseguirlos.",
   "@notEnoughCoins": {
     "description": "Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows",
     "placeholders": {
@@ -337,7 +337,7 @@
   "backToShop": "Volver a la tienda",
   "purchaseError": "No se pudo completar la compra",
 
-  "walletLoadError": "No se pudo cargar la cartera.",
+  "walletLoadError": "No se pudo cargar tu karma.",
   "negativeBalanceNotice": "Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.",
   "recentMovements": "Últimos movimientos",
   "noMovements": "Todavía no hay movimientos.",
@@ -465,7 +465,7 @@
   "@errorNegativeBalance": {
     "description": "Buying while the balance is below zero"
   },
-  "errorNotEnoughCoins": "No te llegan las monedas para esta recompensa.",
+  "errorNotEnoughCoins": "No te llega el karma para esta recompensa.",
   "@errorNotEnoughCoins": {
     "description": "Buying a reward that costs more than the balance"
   },
@@ -523,7 +523,7 @@
   "@purchaseRefuseTitle": {
     "description": "Title of the dialog before refusing a purchase"
   },
-  "purchaseRefuseNotice": "Si te niegas pagas una multa, y quien compró recupera sus monedas.",
+  "purchaseRefuseNotice": "Si te niegas te llevas una multa, y quien compró recupera su karma.",
   "@purchaseRefuseNotice": {
     "description": "Warns the provider what refusing a purchase costs"
   },
@@ -744,7 +744,7 @@
   "@soundsToggle": {
     "description": "Settings screen: label of the switch that turns every UI sound on or off"
   },
-  "soundsToggleHint": "Los pops de los botones, la moneda, las multas y los avisos.",
+  "soundsToggleHint": "Los pops de los botones, el karma, las multas y los avisos.",
   "@soundsToggleHint": {
     "description": "Settings screen: what the sound switch covers, under its label"
   },
