@@ -2,8 +2,7 @@
 <!--
   The link preview (Open Graph image) WhatsApp, Telegram, Slack and the rest
   show under a shared link. Rendered to web/og.png at 1200x630 by render.sh;
-  edit here, then run it again. No app name yet: add it above the headline
-  once the team picks one.
+  edit here, then run it again.
 -->
 <html lang="es">
 <head>
@@ -33,11 +32,16 @@
 
   .logo {
     position: absolute; left: 70px; top: 140px; width: 350px; height: 350px;
-    filter: drop-shadow(0 26px 40px rgba(46, 34, 160, .35));
+    filter: drop-shadow(0 26px 40px rgba(18, 21, 42, .28));
     transform: rotate(-4deg);
   }
 
   .copy { position: absolute; left: 480px; right: 56px; top: 132px; }
+  .name {
+    font-family: Fredoka, sans-serif; font-weight: 700; font-size: 40px;
+    letter-spacing: -.5px; margin-bottom: 14px;
+  }
+  .name span { color: var(--violet); }
   h1 {
     font-family: Fredoka, sans-serif; font-weight: 600;
     font-size: 66px; line-height: 1.04; letter-spacing: -1px;
@@ -73,8 +77,9 @@
   <img class="logo" src="logo.svg" alt="">
 
   <div class="copy">
-    <h1>Las tareas de casa,<br><span class="hl">por fin justas.</span></h1>
-    <p>Proponed tareas, fijad su precio entre todos y ganad monedas para la tienda del grupo.</p>
+    <div class="name"><span>Karma</span>Home</div>
+    <h1>Lo que haces en casa,<br><span class="hl">vuelve.</span></h1>
+    <p>Proponed tareas, fijad su valor entre todos y ganad karma para la tienda de casa.</p>
     <div class="chips">
       <span class="chip"><b>Piso</b> compartido</span>
       <span class="chip"><b>Pareja</b></span>

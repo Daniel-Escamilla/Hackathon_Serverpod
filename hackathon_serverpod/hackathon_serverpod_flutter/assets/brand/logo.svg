@@ -1,56 +1,22 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <!--
-    The app's mark: a home whose door is a coin with a tick. A task is only
-    paid once the group agrees it is done, and the house is who agrees.
-    Same palette as lib/app_theme.dart: violet, coral, lime, ink, cream.
+    KarmaHome's mark: a home split into two halves that fit together, like
+    yin and yang. The deal at home is fair because everyone at home makes it.
+    Picked on 5 October from four directions (direction C). Same palette and
+    ink outline as lib/app_theme.dart and the house characters.
   -->
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7C70FF"/>
-      <stop offset="1" stop-color="#4F42DD"/>
-    </linearGradient>
-    <radialGradient id="glow" cx="0.3" cy="0.22" r="0.75">
-      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.22"/>
-      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
-    </radialGradient>
-    <linearGradient id="coin" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#EDFF9E"/>
-      <stop offset="1" stop-color="#C9EC3F"/>
-    </linearGradient>
-    <filter id="lift" x="-30%" y="-30%" width="160%" height="170%">
-      <feDropShadow dx="0" dy="14" stdDeviation="14" flood-color="#1B1466" flood-opacity="0.35"/>
-    </filter>
-    <filter id="soft" x="-30%" y="-30%" width="160%" height="170%">
-      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#12152A" flood-opacity="0.25"/>
-    </filter>
-  </defs>
 
   <!-- Tile -->
-  <rect width="512" height="512" rx="116" fill="url(#bg)"/>
-  <rect width="512" height="512" rx="116" fill="url(#glow)"/>
+  <rect width="512" height="512" rx="116" fill="#F7F4EC"/>
 
   <g id="mark">
-  <!-- House -->
-  <g filter="url(#lift)">
-    <rect x="146" y="228" width="220" height="176" rx="38" fill="#FFFFFF"/>
-    <!-- Chimney, tucked behind the roof -->
-    <rect x="316" y="140" width="42" height="84" rx="14" fill="#FFFFFF"/>
-    <!-- Roof -->
-    <path d="M112 246 L256 128 L400 246" fill="none" stroke="#FF776D"
-          stroke-width="46" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(256 262) scale(3.6) translate(-60 -59)">
+    <path d="M60 18 L20 54 L20 100 L60 100 C80 70 40 45 60 18 Z" fill="#6558F5"/>
+    <path d="M60 18 L100 54 L100 100 L60 100 C80 70 40 45 60 18 Z" fill="#DDFB69"/>
+    <path d="M60 18 C40 45 80 70 60 100" fill="none" stroke="#12152A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="44" cy="76" r="6" fill="#DDFB69" stroke="#12152A" stroke-width="2.5"/>
+    <circle cx="77" cy="56" r="6" fill="#6558F5" stroke="#12152A" stroke-width="2.5"/>
+    <path d="M20 100 V54 L60 18 L100 54 V100 Z" fill="none" stroke="#12152A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
   </g>
-
-  <!-- Coin in the doorway -->
-  <g filter="url(#soft)">
-    <circle cx="256" cy="322" r="60" fill="url(#coin)"/>
-    <circle cx="256" cy="322" r="45" fill="none" stroke="#12152A" stroke-opacity="0.12" stroke-width="6"/>
-    <path d="M230 322 L250 342 L286 302" fill="none" stroke="#12152A"
-          stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
-  </g>
-
-  <!-- Sparkle -->
-  <path d="M410 92 Q414 118 438 122 Q414 126 410 152 Q406 126 382 122 Q406 118 410 92 Z"
-        fill="#DDFB69"/>
-  <circle cx="108" cy="126" r="9" fill="#A8D7FF"/>
   </g>
 </svg>
