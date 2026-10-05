@@ -1,6 +1,6 @@
-# Hackathon Serverpod
+# KarmaHome
 
-Full-stack app built with [Serverpod](https://serverpod.dev) (Dart backend) and Flutter, for the
+A household app where everyone at home agrees on every chore and what it is worth. Full-stack, built with [Serverpod](https://serverpod.dev) (Dart backend) and Flutter, for the
 **Build Something Real** hackathon, 2026-09-15 to 2026-10-14.
 
 A household-chores app where the group agrees on every task and pays for it in coins: someone

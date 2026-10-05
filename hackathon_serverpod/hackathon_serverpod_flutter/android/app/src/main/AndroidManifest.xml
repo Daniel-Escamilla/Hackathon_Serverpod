@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="hackathon_serverpod_flutter"
+        android:label="KarmaHome"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

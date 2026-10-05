@@ -9,7 +9,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'Prototipo de tareas';
+  String get appTitle => 'KarmaHome';
 
   @override
   String get retry => 'Reintentar';

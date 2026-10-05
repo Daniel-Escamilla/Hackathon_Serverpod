@@ -4,13 +4,12 @@ The text description the rules ask for (§ "Include a text description explainin
 functionality of the Project and how it was built"), in English. The app's interface is in
 Spanish; everything here describes it in English.
 
-> **Before submitting:** the app has no final name yet ([`docs/PLAN.md`](PLAN.md) §9), and the
-> [AI disclosure](#use-of-ai-and-agentic-tooling) needs every member to confirm the tools they
-> used. Both are marked **TO CONFIRM** below.
+> **Before submitting:** the [AI disclosure](#use-of-ai-and-agentic-tooling) needs every member to
+> confirm the tools they used. It is marked **TO CONFIRM** below.
 
 ## What it is
 
-A household-chores app where nothing is decided by one person. Someone proposes a task and what it
+**KarmaHome** is a household-chores app where nothing is decided by one person. Someone proposes a task and what it
 is worth; **the group agrees to the deal before the task exists**; anyone does it and claims the
 reward; **the group confirms it is done** before the coins are paid. Coins build up in a wallet and
 are spent in a shop whose rewards the group sets for itself.

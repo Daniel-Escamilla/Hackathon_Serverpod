@@ -1,6 +1,6 @@
 {
-    "name": "Las tareas de casa, por fin justas",
-    "short_name": "Tareas justas",
+    "name": "KarmaHome",
+    "short_name": "KarmaHome",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#F7F4EC",
