@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_animation.dart';
 import '../app_theme.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'app_button.dart';
@@ -18,12 +19,17 @@ void showMessage(
 }) {
   final play = sound ?? (isError ? AppSound.error : null);
   if (play != null) uiSounds.play(play);
+  final picture =
+      leading ??
+      (play == AppSound.success
+          ? const AppLottie(AppAnimation.sparkle, size: 32)
+          : null);
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Row(
         children: [
-          if (leading != null) ...[leading, const SizedBox(width: 12)],
+          if (picture != null) ...[picture, const SizedBox(width: 12)],
           Expanded(
             child: Text(message, style: const TextStyle(color: Colors.white)),
           ),

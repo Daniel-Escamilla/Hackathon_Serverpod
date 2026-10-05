@@ -303,6 +303,13 @@ void main() {
         group: members,
       );
 
+      // Below the fold, under the vote animation: scroll to it as a person
+      // would.
+      await tester.scrollUntilVisible(
+        find.text('Todavía no ha votado nadie.'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Todavía no ha votado nadie.'), findsOneWidget);
     });
 

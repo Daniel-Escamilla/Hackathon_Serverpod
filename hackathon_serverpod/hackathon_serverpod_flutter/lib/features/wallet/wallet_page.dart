@@ -65,7 +65,8 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n.walletLoadError),
+              const AppLottie(AppAnimation.offline, size: 140),
+              Text(l10n.walletLoadError, textAlign: TextAlign.center),
               const SizedBox(height: 12),
               AppButton(
                 label: l10n.retry,
@@ -115,7 +116,7 @@ class _Body extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Text('🪙', style: TextStyle(fontSize: 88)),
+                const AppLottie(AppAnimation.karma, size: 104, repeat: true),
               ],
             ),
           ),

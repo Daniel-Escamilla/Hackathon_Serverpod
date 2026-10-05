@@ -30,7 +30,28 @@ enum AppAnimation {
   home,
 
   /// Waiting for the server.
-  loading;
+  loading,
+
+  /// The member's karma, on the Karma tab's balance card.
+  karma,
+
+  /// A small burst before a success message.
+  sparkle,
+
+  /// Arriving in a home: created or joined.
+  welcome,
+
+  /// A task or a reward waiting for a vote.
+  vote,
+
+  /// The time a vote has left.
+  timer,
+
+  /// Accepting to fulfil someone's purchase.
+  heart,
+
+  /// A page that could not reach the server.
+  offline;
 
   String get asset => 'assets/animations/$name.json';
 }

@@ -95,7 +95,7 @@ parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 **Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
 comprueba el propio componente.
 
-**Animaciones Lottie.** Nueve, elegidas por el equipo el 1 de octubre, en
+**Animaciones Lottie.** Dieciséis, elegidas por el equipo el 1 y el 5 de octubre, en
 `assets/animations/` con su autor y su enlace en `CREDITS.md` (LottieFiles, licencia Lottie
 Simple). Como los sonidos, **cada una significa siempre lo mismo**; se pintan con `AppLottie`
 (`lib/ui/app_animation.dart`), que también deja un fotograma quieto a quien tenga las animaciones
@@ -112,6 +112,13 @@ reducidas.
 | `empty` | Una lista sin nada todavía (`EmptyState`) |
 | `home` | Elegir, crear o unirse a un grupo |
 | `loading` | Una página entera esperando al servidor (`AppLoading`). Las esperas pequeñas, en un botón o en la cabecera, siguen con su ruedita |
+| `karma` | La tarjeta del saldo en la pestaña Karma |
+| `sparkle` | Delante de cualquier mensaje de éxito (`showMessage` con `success`), salvo que traiga su propio dibujo |
+| `welcome` | Al entrar en una casa: creada o con código |
+| `vote` | Arriba de las pantallas de votar una tarea o una recompensa |
+| `timer` | La fila del tiempo que le queda a una votación (`InfoRow` con `leading`) |
+| `heart` | Al aceptar cumplir la compra de otro |
+| `offline` | Una pestaña que no pudo cargar |
 
 ## Sonido
 

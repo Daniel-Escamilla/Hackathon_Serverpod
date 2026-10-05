@@ -190,9 +190,13 @@ class FieldLabel extends StatelessWidget {
 }
 
 class InfoRow extends StatelessWidget {
-  const InfoRow({required this.icon, required this.text, super.key});
+  const InfoRow({this.icon, this.leading, required this.text, super.key})
+    : assert(icon != null || leading != null);
 
-  final IconData icon;
+  final IconData? icon;
+
+  /// Drawn in place of [icon], such as an animation.
+  final Widget? leading;
   final String text;
 
   @override
@@ -200,7 +204,7 @@ class InfoRow extends StatelessWidget {
     return SoftCard(
       child: Row(
         children: [
-          Icon(icon, color: AppColors.violet),
+          leading ?? Icon(icon, color: AppColors.violet),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
