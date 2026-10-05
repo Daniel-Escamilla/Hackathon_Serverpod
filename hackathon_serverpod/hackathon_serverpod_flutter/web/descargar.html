@@ -60,7 +60,7 @@
       font-family: "Nunito Sans", system-ui, sans-serif;
       text-align: center;
     }
-    main { max-width: 420px; }
+    main { max-width: 420px; isolation: isolate; }
     img { width: 128px; height: 128px; }
     h1 {
       font-family: "Fredoka", system-ui, sans-serif;
@@ -70,6 +70,8 @@
     }
     .tagline { font-size: 1.15rem; margin: 0 0 28px; }
     .download {
+      position: relative;
+      top: 0;
       display: inline-block;
       padding: 16px 32px;
       border: 3px solid var(--ink);
@@ -79,10 +81,28 @@
       font-weight: 700;
       font-size: 1.1rem;
       text-decoration: none;
-      box-shadow: 0 5px 0 var(--ink);
-      transition: transform 80ms, box-shadow 80ms;
+      transition: top 80ms;
     }
-    .download:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--ink); }
+    /*
+      The ledge under the button. A box-shadow would leave a hairline along
+      the curve, because the browser clips it to the border's anti-aliased
+      edge; a solid copy of the button underneath has no seam. It sits
+      behind the button only while the button opens no stacking context of
+      its own (no z-index, no transform), hence `top` for the press and the
+      isolation on <main>.
+    */
+    .download::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      z-index: -1;
+      border-radius: inherit;
+      background: var(--ink);
+      transform: translateY(5px);
+      transition: transform 80ms;
+    }
+    .download:active { top: 4px; }
+    .download:active::after { transform: translateY(1px); }
     .help { color: var(--muted); font-size: 0.95rem; line-height: 1.5; margin: 28px 0 0; }
     .help a { color: var(--violet); font-weight: 700; }
   </style>
