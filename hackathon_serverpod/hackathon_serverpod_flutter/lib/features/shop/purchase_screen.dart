@@ -116,6 +116,9 @@ class PurchaseScreen extends StatelessWidget {
           context,
           accept ? l10n.purchaseAccepted : l10n.purchaseRefused,
           sound: accept ? AppSound.success : AppSound.fine,
+          leading: accept
+              ? const AppLottie(AppAnimation.heart, size: 36)
+              : null,
         );
         Navigator.of(context).pop();
       }

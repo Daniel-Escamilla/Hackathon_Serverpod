@@ -9,13 +9,13 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Chores prototype';
+  String get appTitle => 'KarmaHome';
 
   @override
   String get retry => 'Try again';
 
   @override
-  String get coinsLabel => 'coins';
+  String get coinsLabel => 'karma';
 
   @override
   String get reject => 'Reject';
@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navShop => 'Shop';
 
   @override
-  String get navWallet => 'Wallet';
+  String get navWallet => 'Karma';
 
   @override
   String get navGroup => 'Group';
@@ -134,10 +134,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupCheckError => 'Couldn\'t check your group.';
 
   @override
-  String get welcomeHeadline => 'Chores,\nfair at last.';
+  String get welcomeHeadline => 'What you do at home\ncomes back.';
 
   @override
-  String get welcomeSubtitle => 'House deals are decided by everyone.';
+  String get welcomeSubtitle =>
+      'The whole home agrees what each chore is worth, and every chore done adds karma.';
 
   @override
   String get welcomeSignIn => 'Sign in with email';
@@ -378,7 +379,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tasksLoadError => 'Couldn\'t load the tasks.';
 
   @override
-  String get tasksEmpty => 'No tasks yet. Propose the first one.';
+  String get tasksEmpty =>
+      'The home is calm. Propose the first chore and start adding karma.';
 
   @override
   String get sectionAwaitingVote => 'Waiting for your vote';
@@ -431,7 +433,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get counterOfferSheetTitle => 'Make a counter-offer';
 
   @override
-  String get counterOfferSheetSubtitle => 'How many coins would feel fair?';
+  String get counterOfferSheetSubtitle => 'How much karma would feel fair?';
 
   @override
   String get counterOfferPauseNotice =>
@@ -476,13 +478,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String inValidationValue(int reward) {
-    String _temp0 = intl.Intl.pluralLogic(
-      reward,
-      locale: localeName,
-      other: '$reward coins',
-      one: '1 coin',
-    );
-    return 'In validation · $_temp0';
+    return 'In validation · $reward karma';
   }
 
   @override
@@ -558,7 +554,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get rejectFineNotice =>
-      'If it\'s rejected, you\'ll be fined a share of these coins';
+      'If it\'s rejected, you get bad karma: a fine on what it was worth';
 
   @override
   String get submitToVote => 'Send to vote';
@@ -572,26 +568,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String rewardAmount(int reward) {
-    String _temp0 = intl.Intl.pluralLogic(
-      reward,
-      locale: localeName,
-      other: '$reward coins',
-      one: '1 coin',
-    );
-    return '$_temp0';
+    return '$reward karma';
   }
 
   @override
   String get proposeError => 'Couldn\'t send the proposal';
 
   @override
-  String get shopSubtitle => 'Turn your coins into plans';
+  String get shopSubtitle => 'Turn your karma into plans';
 
   @override
   String get shopLoadError => 'Couldn\'t load the shop.';
 
   @override
-  String get shopEmpty => 'No rewards yet. Propose the first one.';
+  String get shopEmpty =>
+      'Nothing in the shop yet. Propose a reward to spend your karma on.';
 
   @override
   String get awaitingVoteSection => 'Waiting for a vote';
@@ -647,10 +638,9 @@ class AppLocalizationsEn extends AppLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       missing,
       locale: localeName,
-      other: 'You\'re $missing coins short',
-      one: 'You\'re 1 coin short',
+      other: 'You\'re $missing karma short',
     );
-    return '$_temp0: you have $balance and this reward costs $price. Do some tasks to earn them.';
+    return '$_temp0: you have $balance and this reward costs $price. Do something for the home to earn it.';
   }
 
   @override
@@ -667,7 +657,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchaseError => 'Couldn\'t complete the purchase';
 
   @override
-  String get walletLoadError => 'Couldn\'t load the wallet.';
+  String get walletLoadError => 'Couldn\'t load your karma.';
 
   @override
   String get negativeBalanceNotice =>
@@ -798,7 +788,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorNotEnoughCoins =>
-      'You don\'t have enough coins for this reward.';
+      'You don\'t have enough karma for this reward.';
 
   @override
   String get errorInvalidProvider =>
@@ -848,7 +838,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get purchaseRefuseNotice =>
-      'If you refuse you pay a fine, and the buyer gets their coins back.';
+      'If you refuse you get a fine, and the buyer gets their karma back.';
 
   @override
   String get purchaseMarkDelivered => 'Mark as delivered';
@@ -1033,7 +1023,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get soundsToggleHint =>
-      'The button pops, the coin, the fines and the alerts.';
+      'The button pops, the karma, the fines and the alerts.';
 
   @override
   String get transferAdminAction => 'Make admin';

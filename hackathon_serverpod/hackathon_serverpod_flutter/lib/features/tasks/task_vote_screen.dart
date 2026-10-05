@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -38,6 +39,7 @@ class TaskVoteScreen extends StatelessWidget {
       ),
       title: task.title,
       content: [
+        const Center(child: AppLottie(AppAnimation.vote, size: 76)),
         BigValueCard(
           color: AppColors.lime,
           value: '${task.reward}',
@@ -49,7 +51,11 @@ class TaskVoteScreen extends StatelessWidget {
         if (task.voteClosesAt != null) ...[
           const SizedBox(height: 12),
           InfoRow(
-            icon: Icons.schedule_rounded,
+            leading: const AppLottie(
+              AppAnimation.timer,
+              size: 28,
+              repeat: true,
+            ),
             text: _remaining(l10n, task.voteClosesAt!),
           ),
         ],

@@ -4,12 +4,29 @@
 documento recoge cómo está hecho en el código para que cualquier pantalla nueva —la haga quien la
 haga, persona o agente— salga igual que las demás.
 
-La app es un juego de monedas entre gente que vive junta, y el "playful" sale de ahí: del **tacto**
-(los botones rebotan), del **sonido** (pops, un "bling" al cobrar) y de la **forma** (redondeada,
-colores planos). No sale de mascotas, confeti ni degradados.
+La app es un juego de karma entre gente que vive junta, y el "playful" sale de ahí: del **tacto**
+(los botones rebotan), del **sonido** (pops, un "bling" al cobrar), de la **forma** (redondeada,
+colores planos, el trazo negro de los personajes) y de unas pocas **animaciones** que siempre
+significan lo mismo. No sale de degradados ni de emoji.
 
 El jurado no puntúa la presentación, pero sí el acabado. El estándar existe para que el acabado
 salga gratis: está dentro de los componentes, así que no hay que acordarse de él en cada pantalla.
+
+## La voz: KarmaHome
+
+**Lo que haces en casa, vuelve.** Cada casa tiene su karma. Lo que haces por los demás vuelve en
+karmas, que se gastan en la tienda en planes con los tuyos. Lo que prometes y no cumples también
+vuelve, como mal karma. Y el valor de cada cosa no lo pone quien la escribe: lo decide la casa entera.
+
+| Antes | Ahora | Cómo se escribe |
+|---|---|---|
+| monedas | **karmas** | «25 karmas», «te faltan 5 karmas»; sin cifra, «tu karma» |
+| cartera | **Karma** | la pestaña del saldo y el historial |
+| multa | **mal karma** | el titular dice mal karma; el detalle sigue diciendo «multa», que se entiende a la primera |
+| grupo | casa | **pendiente**: 35 textos dicen todavía «grupo», y cambiarlos pide revisar el género de cada frase |
+
+En el código todo sigue llamándose `coin` (`CoinAmount`, `CoinTransaction`, `AppSound.coin`): el
+karma es lo que lee la gente, no un cambio de modelo.
 
 ---
 
@@ -19,7 +36,7 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
    pantalla. El rebote, la vibración y el sonido van dentro.
 2. **Algo que se toca y no es un botón** (una tarjeta de tarea, una recompensa): envuélvelo en
    `Pressable`.
-3. **Cantidades de monedas: siempre `CoinAmount`**, para que se lean igual en todas partes.
+3. **Cantidades de karma: siempre `CoinAmount`**, para que se lean igual en todas partes.
 4. **Avisos: `showMessage`.** Lo que no se puede deshacer pasa antes por `confirmAction`, y su botón
    dice lo que hace ("Expulsar", no "Sí").
 5. **Ningún texto escrito a mano**: todo va al ARB, en español (`lib/l10n/app_es.arb`) **y** en
@@ -32,7 +49,7 @@ salga gratis: está dentro de los componentes, así que no hay que acordarse de 
 |---|---|
 | `AppButton` | Todos los botones. Tipos abajo |
 | `Pressable` | Cualquier cosa tocable que no sea un botón: mismo rebote, vibración y sonido |
-| `CoinAmount` | Una cantidad de monedas con su icono y cifras tabulares |
+| `CoinAmount` | Una cantidad de karma con su icono y cifras tabulares |
 | `MemberAvatar` | La foto de un miembro: el personaje de casa (taza, planta, calcetín…, en `assets/avatars/`) y el color que eligió en sus ajustes, o su inicial si aún no eligió. Un emoji elegido antes de los personajes se sigue viendo |
 | `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
 | `confirmAction` | Pregunta antes de algo destructivo |
@@ -78,7 +95,7 @@ parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 **Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
 comprueba el propio componente.
 
-**Animaciones Lottie.** Nueve, elegidas por el equipo el 1 de octubre, en
+**Animaciones Lottie.** Dieciséis, elegidas por el equipo el 1 y el 5 de octubre, en
 `assets/animations/` con su autor y su enlace en `CREDITS.md` (LottieFiles, licencia Lottie
 Simple). Como los sonidos, **cada una significa siempre lo mismo**; se pintan con `AppLottie`
 (`lib/ui/app_animation.dart`), que también deja un fotograma quieto a quien tenga las animaciones
@@ -86,8 +103,8 @@ reducidas.
 
 | Animación | Cuándo |
 |---|---|
-| `coins` | Entran monedas en la cartera, con `coin` |
-| `fine` | Una multa quita monedas, con `fine` |
+| `coins` | Entra karma, con `coin` |
+| `fine` | Una multa quita karma, con `fine` |
 | `approved` | Pantalla de resultado: tarea reclamada o propuesta enviada |
 | `reward` | Pantalla de resultado: recompensa comprada |
 | `celebrate` | Confeti sobre toda la app al entregar una compra (`showCelebration`) |
@@ -95,6 +112,13 @@ reducidas.
 | `empty` | Una lista sin nada todavía (`EmptyState`) |
 | `home` | Elegir, crear o unirse a un grupo |
 | `loading` | Una página entera esperando al servidor (`AppLoading`). Las esperas pequeñas, en un botón o en la cabecera, siguen con su ruedita |
+| `karma` | La tarjeta del saldo en la pestaña Karma |
+| `sparkle` | Delante de cualquier mensaje de éxito (`showMessage` con `success`), salvo que traiga su propio dibujo |
+| `welcome` | Al entrar en una casa: creada o con código |
+| `vote` | Arriba de las pantallas de votar una tarea o una recompensa |
+| `timer` | La fila del tiempo que le queda a una votación (`InfoRow` con `leading`) |
+| `heart` | Al aceptar cumplir la compra de otro |
+| `offline` | Una pestaña que no pudo cargar |
 
 ## Sonido
 
@@ -105,8 +129,8 @@ significar ninguna.
 |---|---|---|
 | `tap` | Un pop | Pulsar un botón `primary` o `secondary` (automático) |
 | `success` | Arpegio que sube | Algo que hizo el usuario ha salido: grupo creado, voto enviado, tarea propuesta |
-| `coin` | "Bling" de moneda | **Entran monedas.** El momento estrella del vídeo |
-| `fine` | "Womp" que baja | Salen monedas por una multa |
+| `coin` | "Bling" de moneda | **Entra karma.** El momento estrella del vídeo |
+| `fine` | "Womp" que baja | Sale karma por una multa |
 | `error` | "Bonk" suave | Algo ha fallado (automático con `showMessage(isError: true)`) |
 
 Para hacer sonar uno a mano: `uiSounds.play(AppSound.success)`.

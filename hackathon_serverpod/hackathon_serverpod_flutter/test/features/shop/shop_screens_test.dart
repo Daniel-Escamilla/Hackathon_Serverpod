@@ -74,7 +74,7 @@ void main() {
       );
 
       await tapLabel(tester, 'Carla');
-      await tapLabel(tester, '15 monedas');
+      await tapLabel(tester, '15 karmas');
 
       expect(shop.calls, ['buy 4 from 3']);
       expect(
@@ -98,14 +98,14 @@ void main() {
 
         expect(
           find.text(
-            'Te faltan 5 monedas: tienes 10 y este premio cuesta 15. '
-            'Haz tareas para conseguirlas.',
+            'Te faltan 5 karmas: tienes 10 y este premio cuesta 15. '
+            'Haz algo por la casa para conseguirlos.',
           ),
           findsOneWidget,
         );
         expect(find.text('Carla'), findsNothing);
 
-        await tapLabel(tester, '15 monedas');
+        await tapLabel(tester, '15 karmas');
         expect(shop.calls, isEmpty);
       },
     );
@@ -129,7 +129,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tapLabel(tester, '15 monedas');
+      await tapLabel(tester, '15 karmas');
       expect(shop.calls, isEmpty);
     });
 
@@ -143,7 +143,7 @@ void main() {
       );
 
       await tapLabel(tester, 'Carla');
-      await tapLabel(tester, '15 monedas');
+      await tapLabel(tester, '15 karmas');
 
       expect(
         find.text('Con saldo negativo no se puede comprar.'),

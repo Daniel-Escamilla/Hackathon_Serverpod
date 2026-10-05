@@ -4,7 +4,7 @@ App de tareas del hogar con recompensas, para el hackathon **Build Something Rea
 Este documento recoge lo que el equipo decidió el **17 de septiembre de 2026** y manda sobre
 cualquier idea anterior. Lo que sigue sin decidir está en [Decisiones pendientes](#13-decisiones-pendientes).
 
-El nombre de la app **está sin decidir**; en el documento aparece como "la app".
+La app se llama **KarmaHome** (decidido el 5 de octubre).
 
 ---
 
@@ -431,7 +431,6 @@ Las que se cerraron el 18 de septiembre están en
 
 | Qué | Estado |
 |---|---|
-| **Nombre de la app** | Sin decidir. Fecha tope: **23 de septiembre**; hace falta para el vídeo, el post y el nombre del servicio en Cloud |
 | **Listas de las plantillas** | Borrador escrito en [§6](#plantillas-borrador-a-revisar-por-mayte); falta que Mayte lo revise |
 | **Misiones periódicas** | Si llegan a entrar, falta decir si cada repetición se vuelve a validar |
 | **Ranking semanal** | Si llega a entrar, falta decir en qué zona horaria se cierra la semana |

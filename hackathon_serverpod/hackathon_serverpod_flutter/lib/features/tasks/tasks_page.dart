@@ -49,7 +49,8 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n.tasksLoadError),
+              const AppLottie(AppAnimation.offline, size: 140),
+              Text(l10n.tasksLoadError, textAlign: TextAlign.center),
               const SizedBox(height: 12),
               AppButton(
                 label: l10n.retry,

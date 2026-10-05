@@ -5,6 +5,8 @@
 #            -> web/icons/Icon-maskable-{192,512}.png (full bleed, safe zone)
 #   og.html  -> web/og.png, the 1200x630 link preview
 # Needs Google Chrome (headless) and Python 3 with Pillow. Run from anywhere.
+# render.mjs beside it does the same with Chrome alone (Windows too), plus the
+# Android launcher icons.
 set -euo pipefail
 
 here="$(cd "$(dirname "$0")" && pwd)"

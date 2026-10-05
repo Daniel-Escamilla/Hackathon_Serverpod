@@ -98,7 +98,7 @@ class _HouseHero extends StatelessWidget {
               borderRadius: BorderRadius.circular(38),
               boxShadow: const [
                 BoxShadow(
-                  color: Color(0x552E22A0),
+                  color: Color(0x4712152A),
                   blurRadius: 28,
                   offset: Offset(0, 14),
                 ),

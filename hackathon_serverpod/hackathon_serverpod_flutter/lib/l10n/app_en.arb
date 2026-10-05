@@ -1,10 +1,10 @@
 {
   "@@locale": "en",
 
-  "appTitle": "Chores prototype",
+  "appTitle": "KarmaHome",
 
   "retry": "Try again",
-  "coinsLabel": "coins",
+  "coinsLabel": "karma",
   "reject": "Reject",
   "decreaseAmount": "Decrease",
   "increaseAmount": "Increase",
@@ -13,7 +13,7 @@
 
   "navTasks": "Tasks",
   "navShop": "Shop",
-  "navWallet": "Wallet",
+  "navWallet": "Karma",
   "navGroup": "Group",
   "proposeTask": "Propose",
 
@@ -38,8 +38,8 @@
 
   "groupCheckError": "Couldn't check your group.",
 
-  "welcomeHeadline": "Chores,\nfair at last.",
-  "welcomeSubtitle": "House deals are decided by everyone.",
+  "welcomeHeadline": "What you do at home\ncomes back.",
+  "welcomeSubtitle": "The whole home agrees what each chore is worth, and every chore done adds karma.",
   "welcomeSignIn": "Sign in with email",
   "welcomeCreateAccount": "Create an account",
   "welcomeGoogle": "Sign in with Google",
@@ -126,7 +126,7 @@
   "copyCode": "Copy code",
 
   "tasksLoadError": "Couldn't load the tasks.",
-  "tasksEmpty": "No tasks yet. Propose the first one.",
+  "tasksEmpty": "The home is calm. Propose the first chore and start adding karma.",
   "sectionAwaitingVote": "Waiting for your vote",
   "sectionAvailable": "Available",
   "statusProposal": "Proposal",
@@ -145,7 +145,7 @@
   "counterOfferError": "Couldn't send the counter-offer",
 
   "counterOfferSheetTitle": "Make a counter-offer",
-  "counterOfferSheetSubtitle": "How many coins would feel fair?",
+  "counterOfferSheetSubtitle": "How much karma would feel fair?",
   "counterOfferPauseNotice": "The vote will pause until the author answers",
   "sendCounterOffer": "Send counter-offer",
 
@@ -161,7 +161,7 @@
   "markDone": "It's done",
   "claimedTitle": "Claimed!",
   "claimedMessage": "Now the group has to confirm it's done.",
-  "inValidationValue": "In validation · {reward, plural, =1{1 coin} other{{reward} coins}}",
+  "inValidationValue": "In validation · {reward} karma",
   "backToTasks": "Back to tasks",
   "claimError": "Couldn't claim it. Someone else may have taken it already.",
   "claimTaken": "Someone beat you to it: another person already took it.",
@@ -187,16 +187,16 @@
 
   "reviewDealStatus": "Review the deal",
   "voteWindowNotice": "The group will have 24 hours to vote",
-  "rejectFineNotice": "If it's rejected, you'll be fined a share of these coins",
+  "rejectFineNotice": "If it's rejected, you get bad karma: a fine on what it was worth",
   "submitToVote": "Send to vote",
   "sentToVoteTitle": "Sent to vote",
   "sentToVoteMessage": "We'll let the group know so they can decide on the deal.",
-  "rewardAmount": "{reward, plural, =1{1 coin} other{{reward} coins}}",
+  "rewardAmount": "{reward} karma",
   "proposeError": "Couldn't send the proposal",
 
-  "shopSubtitle": "Turn your coins into plans",
+  "shopSubtitle": "Turn your karma into plans",
   "shopLoadError": "Couldn't load the shop.",
-  "shopEmpty": "No rewards yet. Propose the first one.",
+  "shopEmpty": "Nothing in the shop yet. Propose a reward to spend your karma on.",
   "awaitingVoteSection": "Waiting for a vote",
 
   "awaitingYourVote": "Waiting for your vote",
@@ -216,13 +216,13 @@
   "whoWillFulfil": "Who will fulfil it?",
   "selectMember": "Pick someone",
   "noOtherMembers": "There's nobody else in the group to fulfil it yet.",
-  "notEnoughCoins": "{missing, plural, =1{You're 1 coin short} other{You're {missing} coins short}}: you have {balance} and this reward costs {price}. Do some tasks to earn them.",
+  "notEnoughCoins": "{missing, plural, other{You're {missing} karma short}}: you have {balance} and this reward costs {price}. Do something for the home to earn it.",
   "purchaseSentTitle": "Purchase sent",
   "purchaseSentMessage": "They have to accept it before fulfilling it.",
   "backToShop": "Back to the shop",
   "purchaseError": "Couldn't complete the purchase",
 
-  "walletLoadError": "Couldn't load the wallet.",
+  "walletLoadError": "Couldn't load your karma.",
   "negativeBalanceNotice": "With a negative balance you can't buy in the shop, but you can keep doing tasks to recover.",
   "recentMovements": "Recent movements",
   "noMovements": "No movements yet.",
@@ -263,7 +263,7 @@
   "errorRewardNotAvailable": "This reward isn't in the shop right now.",
   "errorOutOfStock": "This reward is sold out.",
   "errorNegativeBalance": "You can't buy with a negative balance.",
-  "errorNotEnoughCoins": "You don't have enough coins for this reward.",
+  "errorNotEnoughCoins": "You don't have enough karma for this reward.",
   "errorInvalidProvider": "Pick someone else in the group to fulfil it.",
   "errorPurchaseNotFound": "That purchase no longer exists.",
   "errorPurchaseNotOpen": "This purchase has changed. Go back to the list to see it up to date.",
@@ -279,7 +279,7 @@
   "purchaseAccept": "Accept",
   "purchaseRefuse": "Refuse",
   "purchaseRefuseTitle": "Refuse to fulfil it?",
-  "purchaseRefuseNotice": "If you refuse you pay a fine, and the buyer gets their coins back.",
+  "purchaseRefuseNotice": "If you refuse you get a fine, and the buyer gets their karma back.",
   "purchaseMarkDelivered": "Mark as delivered",
   "purchaseAccepted": "Purchase accepted: now it's yours to fulfil",
   "purchaseRefused": "You refused: the fine has been charged",
@@ -339,7 +339,7 @@
   "changePasswordSubtitle": "We'll email you a code to confirm it's you. Once done, you'll have to sign in again with the new password.",
   "soundSection": "Sound",
   "soundsToggle": "App sounds",
-  "soundsToggleHint": "The button pops, the coin, the fines and the alerts.",
+  "soundsToggleHint": "The button pops, the karma, the fines and the alerts.",
   "transferAdminAction": "Make admin",
   "transferAdminTitle": "Hand the admin role to {name}?",
   "transferAdminBody": "{name} will be able to expel members, change the code and configure the group. You'll become a regular member, and only {name} can give the role back.",

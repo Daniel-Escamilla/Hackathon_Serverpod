@@ -144,7 +144,7 @@ día.
 | Fecha | Qué | Quién |
 |---|---|---|
 | 21 sep | Contrato de endpoints en `develop` | Daniel y Segovia |
-| 23 sep | Nombre de la app decidido | Equipo |
+| 23 sep | Nombre de la app decidido: **KarmaHome**, cerrado el 5 de octubre | Equipo |
 | 30 sep | Ciclo completo y primer despliegue en Cloud | Todos |
 | 7 oct | MVP entero desplegado | Todos |
 | 10 oct | Congelación de funcionalidades | Todos |
@@ -197,7 +197,6 @@ Se acumulan con el principal y cuestan poco mientras se construye:
 
 | Qué | Para cuándo |
 |---|---|
-| **Nombre de la app** | 23 de septiembre |
 | **Misiones periódicas** | Cómo se comporta cada repetición, si llegan a entrar |
 | **Ranking semanal** | En qué zona horaria se cierra la semana, si llega a entrar |
 | **Plantillas de recompensas** | Mayte revisa el borrador de [`PRODUCT.md` §6](PRODUCT.md#6-tienda-y-recompensas) |

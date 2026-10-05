@@ -31,7 +31,7 @@ void run(List<String> args) async {
       // service. If you want to use a custom provider for sending emails, use
       // `EmailIdpConfigFromPasswords`.
       ServerpodCloudEmailIdpConfig(
-        appDisplayName: 'hackathon_serverpod',
+        appDisplayName: 'KarmaHome',
       ),
       // Sign in with Google, from `googleClientSecret` in passwords.yaml.
       // Skipped when that key is missing, so a server without it still boots
