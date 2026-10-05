@@ -80,7 +80,7 @@ void main() {
       await tapLabel(tester, 'Ceder el cargo');
 
       expect(group.handedTo, [2]);
-      expect(find.text('Bea es ahora admin del grupo.'), findsOneWidget);
+      expect(find.text('Bea es ahora admin de la casa.'), findsOneWidget);
     });
 
     testWidgets('backing out of the confirmation hands nothing over', (

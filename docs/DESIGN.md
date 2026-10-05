@@ -23,7 +23,7 @@ vuelve, como mal karma. Y el valor de cada cosa no lo pone quien la escribe: lo 
 | monedas | **karmas** | «25 karmas», «te faltan 5 karmas»; sin cifra, «tu karma» |
 | cartera | **Karma** | la pestaña del saldo y el historial |
 | multa | **mal karma** | el titular dice mal karma; el detalle sigue diciendo «multa», que se entiende a la primera |
-| grupo | casa | **pendiente**: 35 textos dicen todavía «grupo», y cambiarlos pide revisar el género de cada frase |
+| grupo | **casa** | «crea vuestra casa», «únete a una casa con su código»; en inglés, *home* |
 
 En el código todo sigue llamándose `coin` (`CoinAmount`, `CoinTransaction`, `AppSound.coin`): el
 karma es lo que lee la gente, no un cambio de modelo.

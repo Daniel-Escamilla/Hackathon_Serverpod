@@ -95,7 +95,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(controller.saved, isEmpty);
-    expect(find.text('Ponle un nombre al grupo.'), findsOneWidget);
+    expect(find.text('Ponle un nombre a la casa.'), findsOneWidget);
     expect(find.byType(GroupSettingsScreen), findsOneWidget);
   });
 

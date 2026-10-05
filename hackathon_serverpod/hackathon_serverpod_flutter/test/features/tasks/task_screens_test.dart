@@ -224,7 +224,7 @@ void main() {
       );
 
       expect(
-        find.text('La has reclamado tú: ahora el grupo decide si está hecha.'),
+        find.text('La has reclamado tú: ahora la casa decide si está hecha.'),
         findsOneWidget,
       );
       expect(find.text('Sí, está hecha'), findsNothing);
@@ -260,7 +260,7 @@ void main() {
       );
 
       expect(
-        find.text('La has propuesto tú: vota el resto del grupo.'),
+        find.text('La has propuesto tú: vota el resto de la casa.'),
         findsOneWidget,
       );
       expect(find.text('Aprobar'), findsNothing);

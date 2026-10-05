@@ -42,7 +42,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navWallet => 'Karma';
 
   @override
-  String get navGroup => 'Group';
+  String get navGroup => 'Home';
 
   @override
   String get proposeTask => 'Propose';
@@ -131,7 +131,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get groupCheckError => 'Couldn\'t check your group.';
+  String get groupCheckError => 'Couldn\'t check your home.';
 
   @override
   String get welcomeHeadline => 'What you do at home\ncomes back.';
@@ -270,7 +270,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupChoiceQuestion => 'How do you want\nto start?';
 
   @override
-  String get createGroupTitle => 'Create a group';
+  String get createGroupTitle => 'Create a home';
 
   @override
   String get createGroupSubtitle => 'Set up your space';
@@ -279,10 +279,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinGroupTitle => 'Join with a code';
 
   @override
-  String get joinGroupCardSubtitle => 'Enter an existing group';
+  String get joinGroupCardSubtitle => 'Enter a home that already exists';
 
   @override
-  String get createGroupHeadline => 'Create your group';
+  String get createGroupHeadline => 'Create your home';
 
   @override
   String get createGroupHint => 'Choose how you share a home';
@@ -297,19 +297,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileFamily => 'Family';
 
   @override
-  String get groupNameLabel => 'Group name';
+  String get groupNameLabel => 'Home name';
 
   @override
   String get groupNameHint => 'Mayte and Juan\'s place';
 
   @override
-  String get createGroupSubmit => 'Create group';
+  String get createGroupSubmit => 'Create home';
 
   @override
-  String get createGroupErrorEmpty => 'Give the group a name.';
+  String get createGroupErrorEmpty => 'Give the home a name.';
 
   @override
-  String get createGroupErrorGeneric => 'Couldn\'t create the group.';
+  String get createGroupErrorGeneric => 'Couldn\'t create the home.';
 
   @override
   String get joinGroupHeadline => 'Join your people';
@@ -324,16 +324,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinGroupCaseNote => 'The code isn\'t case-sensitive';
 
   @override
-  String get joinGroupSubmit => 'Join the group';
+  String get joinGroupSubmit => 'Join the home';
 
   @override
-  String get joinGroupError => 'No group found with that code.';
+  String get joinGroupError => 'No home found with that code.';
 
   @override
   String get groupSuccessTitle => 'You\'ve got a home!';
 
   @override
-  String get groupCodeLabel => 'Group code';
+  String get groupCodeLabel => 'Home code';
 
   @override
   String get shareCode => 'Share code';
@@ -343,13 +343,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupPendingNotice =>
-      'Sample data: there\'s no endpoint yet to ask the server for your group and its members.';
+      'Sample data: there\'s no endpoint yet to ask the server for your home and its members.';
 
   @override
   String get membersTitle => 'Members';
 
   @override
-  String get groupSettings => 'Group settings';
+  String get groupSettings => 'Home settings';
 
   @override
   String get groupSettingsFineLabel => 'Fine';
@@ -474,7 +474,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get claimedTitle => 'Claimed!';
 
   @override
-  String get claimedMessage => 'Now the group has to confirm it\'s done.';
+  String get claimedMessage => 'Now the home has to confirm it\'s done.';
 
   @override
   String inValidationValue(int reward) {
@@ -498,7 +498,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationYourOwn =>
-      'You claimed it: now the group decides whether it\'s done.';
+      'You claimed it: now the home decides whether it\'s done.';
 
   @override
   String get validationApprove => 'Yes, it\'s done';
@@ -550,7 +550,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewDealStatus => 'Review the deal';
 
   @override
-  String get voteWindowNotice => 'The group will have 24 hours to vote';
+  String get voteWindowNotice => 'The home will have 24 hours to vote';
 
   @override
   String get rejectFineNotice =>
@@ -564,7 +564,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sentToVoteMessage =>
-      'We\'ll let the group know so they can decide on the deal.';
+      'We\'ll let the home know so they can decide on the deal.';
 
   @override
   String rewardAmount(int reward) {
@@ -612,7 +612,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get priceLabel => 'Price';
 
   @override
-  String get rewardVotingNotice => 'The group will vote before it\'s published';
+  String get rewardVotingNotice => 'The home will vote before it\'s published';
 
   @override
   String get rewardTitleEmptyError => 'Give the reward a title.';
@@ -631,7 +631,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOtherMembers =>
-      'There\'s nobody else in the group to fulfil it yet.';
+      'There\'s nobody else in the home to fulfil it yet.';
 
   @override
   String notEnoughCoins(int missing, int balance, int price) {
@@ -709,11 +709,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expelBody =>
-      'They\'ll leave the group and lose their balance. What they did stays in everyone\'s history.';
+      'They\'ll leave the home and lose their karma. What they did stays in everyone\'s history.';
 
   @override
   String expelDone(String name) {
-    return '$name is no longer in the group.';
+    return '$name is no longer in the home.';
   }
 
   @override
@@ -724,7 +724,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupInviteRegenerateBody =>
-      'The current code will stop working. Everyone already in the group stays in.';
+      'The current code will stop working. Everyone already in the home stays in.';
 
   @override
   String get groupInviteRegenerated =>
@@ -736,21 +736,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorAlreadyInGroup =>
-      'You\'re already in a group. Leave it before joining another.';
+      'You\'re already in a home. Leave it before joining another.';
 
   @override
-  String get errorNotAdmin => 'Only the group\'s admin can do this.';
+  String get errorNotAdmin => 'Only the home\'s admin can do this.';
 
   @override
-  String get errorMemberNotFound => 'That person is no longer in the group.';
+  String get errorMemberNotFound => 'That person is no longer in the home.';
 
   @override
-  String get errorCannotExpelSelf =>
-      'You can\'t expel yourself from the group.';
+  String get errorCannotExpelSelf => 'You can\'t expel yourself from the home.';
 
   @override
   String get errorCannotTransferAdmin =>
-      'The admin role can only go to another adult in the group.';
+      'The admin role can only go to another adult in the home.';
 
   @override
   String get errorTaskNotFound => 'That task no longer exists.';
@@ -792,7 +791,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorInvalidProvider =>
-      'Pick someone else in the group to fulfil it.';
+      'Pick someone else in the home to fulfil it.';
 
   @override
   String get errorPurchaseNotFound => 'That purchase no longer exists.';
@@ -806,11 +805,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Only whoever has to fulfil the purchase can answer or deliver it.';
 
   @override
-  String get errorNoGroup => 'You\'re no longer in this group.';
+  String get errorNoGroup => 'You\'re no longer in this home.';
 
   @override
   String get leftGroupNotice =>
-      'You\'re no longer in the group. You can create another one or join with a code.';
+      'You\'re no longer in the home. You can create another one or join with a code.';
 
   @override
   String get errorGeneric => 'Something went wrong. Try again.';
@@ -897,7 +896,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ownProposalNotice =>
-      'You proposed it: the rest of the group votes.';
+      'You proposed it: the rest of the home votes.';
 
   @override
   String get alreadyVotedNotice => 'You\'ve voted. The rest still have to.';
@@ -976,7 +975,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get displayNameLabel => 'Your name';
 
   @override
-  String get displayNameHint => 'How the group will see you';
+  String get displayNameHint => 'How the home will see you';
 
   @override
   String get displayNameEmptyError => 'Write a name.';
@@ -1035,7 +1034,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String transferAdminBody(String name) {
-    return '$name will be able to expel members, change the code and configure the group. You\'ll become a regular member, and only $name can give the role back.';
+    return '$name will be able to expel members, change the code and configure the home. You\'ll become a regular member, and only $name can give the role back.';
   }
 
   @override
@@ -1043,6 +1042,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String transferAdminDone(String name) {
-    return '$name is now the group\'s admin.';
+    return '$name is now the home\'s admin.';
   }
 }
