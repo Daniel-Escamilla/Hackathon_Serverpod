@@ -4,4 +4,7 @@ class: RankingEntry
 fields:
   memberId: int
   displayName: String
+  ### The member's picture, as GroupMember keeps it, so the ranking draws them.
+  avatarEmoji: String?
+  avatarColor: String?
   netCoins: int

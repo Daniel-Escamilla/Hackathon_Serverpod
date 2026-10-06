@@ -291,6 +291,64 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The signed-in member leaves their home (#141). Like an expelled member,
+  /// they lose their balance and their row stays for everyone's history.
+  /// When the admin leaves, the role goes to whoever has been there longest
+  /// (never a child, §8), so the home is never left without one. Leaving an
+  /// empty home just leaves it empty.
+  ///
+  /// The leaving member's row is read locked, in the same transaction as the
+  /// hand-over: two taps, or the admin leaving while handing the role over by
+  /// hand, would otherwise leave two admins or none.
+  Future<void> leaveGroup(Session session) async {
+    final member = await currentGroupMember(session);
+
+    await session.db.transaction((transaction) async {
+      final locked = await GroupMember.db.findById(
+        session,
+        member.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null || locked.leftAt != null) {
+        throw GroupException(reason: GroupErrorReason.noMembership);
+      }
+
+      await GroupMember.db.updateRow(
+        session,
+        locked.copyWith(leftAt: DateTime.now().toUtc()),
+        transaction: transaction,
+      );
+      if (locked.role != GroupMemberRole.admin) return;
+
+      final successor = await GroupMember.db.findFirstRow(
+        session,
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.role.notEquals(GroupMemberRole.child),
+        orderBy: (t) => t.joinedAt,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (successor != null) {
+        await GroupMember.db.updateRow(
+          session,
+          successor.copyWith(role: GroupMemberRole.admin),
+          transaction: transaction,
+        );
+      }
+    });
+
+    await _eventService.publish(
+      session,
+      groupId: member.groupId,
+      kind: GroupEventKind.memberLeft,
+      actorMemberId: member.id,
+      memberId: member.id,
+    );
+  }
+
   /// The signed-in member changes how the group sees them: their name and
   /// their avatar. Any member may, about themselves only. A field left null
   /// keeps its current value. The rest of the group sees it live (#140).

@@ -25,6 +25,8 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 /// with its fine and refund) or delivered.
 /// `memberUpdated` is a member changing their name or avatar, so the other
 /// phones redraw the member list without a reload (#140).
+/// `memberLeft` is a member leaving on their own (#141); the admin role may
+/// have moved with it, so the others reload the member list.
 enum GroupEventKind implements _isc.SerializableModel {
   taskProposed,
   taskVoteCast,
@@ -37,7 +39,8 @@ enum GroupEventKind implements _isc.SerializableModel {
   rewardVoteCast,
   purchaseResponded,
   purchaseDelivered,
-  memberUpdated;
+  memberUpdated,
+  memberLeft;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -65,6 +68,8 @@ enum GroupEventKind implements _isc.SerializableModel {
         return GroupEventKind.purchaseDelivered;
       case 'memberUpdated':
         return GroupEventKind.memberUpdated;
+      case 'memberLeft':
+        return GroupEventKind.memberLeft;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

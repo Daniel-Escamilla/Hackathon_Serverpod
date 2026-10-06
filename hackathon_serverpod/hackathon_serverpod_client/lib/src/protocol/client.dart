@@ -476,6 +476,21 @@ class EndpointGroup extends _isc.EndpointRef {
     },
   );
 
+  /// The signed-in member leaves their home (#141). Like an expelled member,
+  /// they lose their balance and their row stays for everyone's history.
+  /// When the admin leaves, the role goes to whoever has been there longest
+  /// (never a child, §8), so the home is never left without one. Leaving an
+  /// empty home just leaves it empty.
+  ///
+  /// The leaving member's row is read locked, in the same transaction as the
+  /// hand-over: two taps, or the admin leaving while handing the role over by
+  /// hand, would otherwise leave two admins or none.
+  _ida.Future<void> leaveGroup() => caller.callServerEndpoint<void>(
+    'group',
+    'leaveGroup',
+    {},
+  );
+
   /// The signed-in member changes how the group sees them: their name and
   /// their avatar. Any member may, about themselves only. A field left null
   /// keeps its current value. The rest of the group sees it live (#140).
@@ -755,7 +770,7 @@ class EndpointWallet extends _isc.EndpointRef {
   );
 
   /// This week's ranking: coins earned minus fines, spending excluded. Resets every
-  /// Monday (PRODUCT.md §4.6).
+  /// Monday at 00:00 in Madrid (PRODUCT.md §4.6, see week.dart).
   _ida.Future<List<_ixil0pu8.RankingEntry>> getWeeklyRanking() =>
       caller.callServerEndpoint<List<_ixil0pu8.RankingEntry>>(
         'wallet',

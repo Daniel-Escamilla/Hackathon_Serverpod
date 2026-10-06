@@ -174,6 +174,90 @@ void main() {
       });
     });
 
+    group('when someone leaves their home (#141)', () {
+      late Group home;
+      late GroupMember bob;
+      late GroupMember carol;
+
+      setUp(() async {
+        home = await endpoints.group.createGroup(
+          sessionOf(_aliceAuthUserId),
+          'Piso de salir',
+          GroupType.sharedFlat,
+          displayName: 'Alice',
+        );
+        bob = await endpoints.group.joinGroup(
+          sessionOf(_bobAuthUserId),
+          home.inviteCode,
+          displayName: 'Bob',
+        );
+        carol = await endpoints.group.joinGroup(
+          sessionOf(_carolAuthUserId),
+          home.inviteCode,
+          displayName: 'Carol',
+        );
+      });
+
+      test('then a plain member is out and the admin stays', () async {
+        await endpoints.group.leaveGroup(sessionOf(_carolAuthUserId));
+
+        final left = await GroupMember.db.findById(session, carol.id!);
+        expect(left!.leftAt, isNotNull);
+        await expectLater(
+          endpoints.group.myGroup(sessionOf(_carolAuthUserId)),
+          _throwsGroupError(GroupErrorReason.noMembership),
+        );
+        final members = await endpoints.group.listMembers(
+          sessionOf(_aliceAuthUserId),
+        );
+        expect(members.map((m) => m.displayName), ['Alice', 'Bob']);
+        expect(members.first.role, GroupMemberRole.admin);
+      });
+
+      test('then the admin leaving hands the role to the oldest', () async {
+        await endpoints.group.leaveGroup(sessionOf(_aliceAuthUserId));
+
+        final newAdmin = await GroupMember.db.findById(session, bob.id!);
+        expect(newAdmin!.role, GroupMemberRole.admin);
+        final stillMember = await GroupMember.db.findById(session, carol.id!);
+        expect(stillMember!.role, GroupMemberRole.member);
+      });
+
+      test('then the last one out leaves the home empty', () async {
+        await endpoints.group.leaveGroup(sessionOf(_carolAuthUserId));
+        await endpoints.group.leaveGroup(sessionOf(_bobAuthUserId));
+        await endpoints.group.leaveGroup(sessionOf(_aliceAuthUserId));
+
+        final active = await GroupMember.db.find(
+          session,
+          where: (t) => t.groupId.equals(home.id!) & t.leftAt.equals(null),
+        );
+        expect(active, isEmpty);
+        expect(await Group.db.findById(session, home.id!), isNotNull);
+      });
+
+      test('then whoever left can join another home', () async {
+        await endpoints.group.leaveGroup(sessionOf(_bobAuthUserId));
+
+        final other = await endpoints.group.createGroup(
+          sessionOf(_bobAuthUserId),
+          'Piso nuevo',
+          GroupType.couple,
+          displayName: 'Bob',
+        );
+        expect(other.id, isNot(home.id));
+      });
+
+      test('then someone with no home cannot leave one', () async {
+        await endpoints.group.leaveGroup(sessionOf(_carolAuthUserId));
+
+        await expectLater(
+          endpoints.group.leaveGroup(sessionOf(_carolAuthUserId)),
+          _throwsGroupError(GroupErrorReason.noMembership),
+        );
+      });
+    });
+
     group('when the admin protects the group', () {
       late Group createdGroup;
       late GroupMember bob;

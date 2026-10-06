@@ -564,6 +564,16 @@ class Endpoints extends _is.EndpointDispatch {
                     finePercent: params['finePercent'],
                   ),
         ),
+        'leaveGroup': _is.MethodConnector(
+          name: 'leaveGroup',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .leaveGroup(session),
+        ),
         'updateMyProfile': _is.MethodConnector(
           name: 'updateMyProfile',
           params: {
