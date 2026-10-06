@@ -1,9 +1,12 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import 'weekly_ranking.dart';
+import '../wallet/wallet_controller.dart';
 import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
@@ -88,7 +91,12 @@ class _Body extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Text('🏠', style: TextStyle(fontSize: 48)),
+                    SvgPicture.asset(
+                      'assets/brand/logo.svg',
+                      width: 52,
+                      height: 52,
+                      excludeFromSemantics: true,
+                    ),
                     const SizedBox(width: 12),
                     Expanded(
                       child: Text(
@@ -159,6 +167,11 @@ class _Body extends StatelessWidget {
               onExpel: () => _expel(context, member),
             ),
           const SizedBox(height: 26),
+          WeeklyRanking(
+            entries: context.watch<WalletController>().ranking,
+            myMemberId: myMemberId,
+          ),
+          const SizedBox(height: 26),
           AppButton(
             label: l10n.mySettings,
             kind: AppButtonKind.secondary,
@@ -170,9 +183,38 @@ class _Body extends StatelessWidget {
             kind: AppButtonKind.quiet,
             onPressed: () => _signOut(context),
           ),
+          const SizedBox(height: 8),
+          AppButton(
+            label: l10n.leaveHomeAction,
+            kind: AppButtonKind.danger,
+            onPressed: () => _leave(context, group),
+          ),
         ],
       ),
     );
+  }
+
+  /// Leaves the home for good (#141), and back to create-or-join.
+  Future<void> _leave(BuildContext context, Group group) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.leaveHomeTitle(group.name),
+      body: l10n.leaveHomeBody,
+      action: l10n.leaveHomeConfirm,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      await controller.leave();
+      if (context.mounted) {
+        leaveHome(context, l10n.leftHomeNotice, isError: false);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showMessage(context, failureMessage(e, l10n), isError: true);
+      }
+    }
   }
 
   /// Back to the welcome screen, so another account can sign in.

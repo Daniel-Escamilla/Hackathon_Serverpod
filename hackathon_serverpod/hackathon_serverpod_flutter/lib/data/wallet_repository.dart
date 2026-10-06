@@ -15,4 +15,8 @@ class WalletRepository {
       guardServerCall(
         () => client.wallet.getHistory(limit: limit, offset: offset),
       );
+
+  /// This week's ranking in the home, best first.
+  Future<List<RankingEntry>> getWeeklyRanking() =>
+      guardServerCall(client.wallet.getWeeklyRanking);
 }

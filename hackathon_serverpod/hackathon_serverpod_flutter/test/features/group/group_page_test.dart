@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:hackathon_serverpod_flutter/data/app_failure.dart';
 import 'package:hackathon_serverpod_flutter/data/auth_repository.dart';
 import 'package:hackathon_serverpod_flutter/features/group/group_page.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
@@ -41,13 +42,26 @@ class AdminGroupController extends FakeGroupController {
 
   final fakeAuth = FakeAuth();
   final handedTo = <int>[];
+  int leaveCalls = 0;
 
   @override
   AuthRepository get auth => fakeAuth;
 
   @override
   Future<void> transferAdmin(int memberId) async => handedTo.add(memberId);
+
+  /// Refused, so the test stays on this screen instead of following the app
+  /// back to its root.
+  @override
+  Future<void> leave() async {
+    leaveCalls++;
+    throw const AppException(AppFailure.noGroup);
+  }
 }
+
+/// A wallet whose weekly ranking is set by hand.
+FakeWalletController walletWithRanking(List<RankingEntry> ranking) =>
+    FakeWalletController()..ranking = ranking;
 
 /// The group tab as the app shows it: in a Scaffold, the way HomeShell hosts
 /// it, so its messages have somewhere to appear.
@@ -101,6 +115,75 @@ void main() {
 
       expect(find.byTooltip('Hacer admin'), findsNothing);
       expect(find.byTooltip('Expulsar'), findsNothing);
+    });
+  });
+
+  group('the weekly ranking', () {
+    testWidgets('lists the home best first and marks you', (tester) async {
+      await openScreen(
+        tester,
+        groupTab,
+        group: AdminGroupController(me: 1),
+        wallet: walletWithRanking([
+          RankingEntry(memberId: 2, displayName: 'Bea', netCoins: 30),
+          RankingEntry(memberId: 1, displayName: 'Ana', netCoins: 10),
+        ]),
+      );
+
+      await tester.scrollUntilVisible(
+        find.text('Ranking de la semana'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(find.text('Ana · Tú'), findsOneWidget);
+      final bea = tester.getTopLeft(find.text('Bea').last);
+      final ana = tester.getTopLeft(find.text('Ana · Tú'));
+      expect(bea.dy, lessThan(ana.dy));
+    });
+
+    testWidgets('with nobody above zero it says so', (tester) async {
+      await openScreen(
+        tester,
+        groupTab,
+        group: AdminGroupController(me: 1),
+        wallet: walletWithRanking([
+          RankingEntry(memberId: 1, displayName: 'Ana', netCoins: 0),
+        ]),
+      );
+
+      await tester.scrollUntilVisible(
+        find.text('Nadie ha sumado karma esta semana todavía.'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      expect(
+        find.text('Nadie ha sumado karma esta semana todavía.'),
+        findsOneWidget,
+      );
+    });
+  });
+
+  group('leaving the home', () {
+    testWidgets('asks first and does nothing on cancel', (tester) async {
+      final group = AdminGroupController(me: 2);
+      await openScreen(tester, groupTab, group: group);
+
+      await scrollAndTap(tester, find.text('Salir de la casa'));
+      expect(find.text('¿Salir de Piso de prueba?'), findsOneWidget);
+      await tapLabel(tester, 'Cancelar');
+
+      expect(group.leaveCalls, 0);
+    });
+
+    testWidgets('a confirmed leave reaches the server', (tester) async {
+      final group = AdminGroupController(me: 2);
+      await openScreen(tester, groupTab, group: group);
+
+      await scrollAndTap(tester, find.text('Salir de la casa'));
+      await tester.tap(find.text('Salir').last);
+      await tester.pumpAndSettle();
+
+      expect(group.leaveCalls, 1);
     });
   });
 

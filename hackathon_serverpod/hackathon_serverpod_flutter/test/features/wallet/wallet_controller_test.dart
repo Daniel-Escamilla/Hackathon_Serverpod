@@ -31,6 +31,9 @@ class FakeWalletRepository extends WalletRepository {
     int limit = 50,
     int offset = 0,
   }) async => history;
+
+  @override
+  Future<List<RankingEntry>> getWeeklyRanking() async => const [];
 }
 
 void main() {

@@ -1957,6 +1957,126 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{name} es ahora admin de la casa.'**
   String transferAdminDone(String name);
+
+  /// Casa tab: heading of the weekly ranking
+  ///
+  /// In es, this message translates to:
+  /// **'Ranking de la semana'**
+  String get rankingTitle;
+
+  /// Under the ranking heading: when the week starts again (Madrid time)
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a empezar el lunes a las 00:00.'**
+  String get rankingResets;
+
+  /// Ranking with nobody above zero yet
+  ///
+  /// In es, this message translates to:
+  /// **'Nadie ha sumado karma esta semana todavía.'**
+  String get rankingEmpty;
+
+  /// Casa tab: button to leave the home
+  ///
+  /// In es, this message translates to:
+  /// **'Salir de la casa'**
+  String get leaveHomeAction;
+
+  /// Confirmation title; name is the home
+  ///
+  /// In es, this message translates to:
+  /// **'¿Salir de {name}?'**
+  String leaveHomeTitle(String name);
+
+  /// Confirmation body for leaving the home
+  ///
+  /// In es, this message translates to:
+  /// **'Perderás tu karma, y lo que hiciste seguirá en el historial de todos. Si administras la casa, el cargo pasa a quien lleve más tiempo en ella.'**
+  String get leaveHomeBody;
+
+  /// Confirmation button for leaving the home
+  ///
+  /// In es, this message translates to:
+  /// **'Salir'**
+  String get leaveHomeConfirm;
+
+  /// Shown on the create-or-join screen after leaving on your own
+  ///
+  /// In es, this message translates to:
+  /// **'Has salido de la casa. Puedes crear otra o unirte con un código.'**
+  String get leftHomeNotice;
+
+  /// Activity: another member left the home
+  ///
+  /// In es, this message translates to:
+  /// **'{name} se ha ido de la casa'**
+  String activityMemberLeft(String name);
+
+  /// Propose task: label over the chips of typical chores
+  ///
+  /// In es, this message translates to:
+  /// **'Ideas rápidas'**
+  String get typicalTasksLabel;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Sacar la basura'**
+  String get typicalTaskTrash;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Regar las plantas'**
+  String get typicalTaskPlants;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Fregar los platos'**
+  String get typicalTaskDishes;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Poner una lavadora'**
+  String get typicalTaskLaundry;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar las sábanas'**
+  String get typicalTaskSheets;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer la compra'**
+  String get typicalTaskShopping;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Pasar la aspiradora'**
+  String get typicalTaskHoover;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer la cena'**
+  String get typicalTaskDinner;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar la nevera'**
+  String get typicalTaskFridge;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar el baño'**
+  String get typicalTaskBathroom;
 }
 
 class _AppLocalizationsDelegate

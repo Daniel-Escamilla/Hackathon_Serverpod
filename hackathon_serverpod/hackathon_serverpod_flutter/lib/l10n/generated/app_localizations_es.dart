@@ -1044,4 +1044,70 @@ class AppLocalizationsEs extends AppLocalizations {
   String transferAdminDone(String name) {
     return '$name es ahora admin de la casa.';
   }
+
+  @override
+  String get rankingTitle => 'Ranking de la semana';
+
+  @override
+  String get rankingResets => 'Vuelve a empezar el lunes a las 00:00.';
+
+  @override
+  String get rankingEmpty => 'Nadie ha sumado karma esta semana todavía.';
+
+  @override
+  String get leaveHomeAction => 'Salir de la casa';
+
+  @override
+  String leaveHomeTitle(String name) {
+    return '¿Salir de $name?';
+  }
+
+  @override
+  String get leaveHomeBody =>
+      'Perderás tu karma, y lo que hiciste seguirá en el historial de todos. Si administras la casa, el cargo pasa a quien lleve más tiempo en ella.';
+
+  @override
+  String get leaveHomeConfirm => 'Salir';
+
+  @override
+  String get leftHomeNotice =>
+      'Has salido de la casa. Puedes crear otra o unirte con un código.';
+
+  @override
+  String activityMemberLeft(String name) {
+    return '$name se ha ido de la casa';
+  }
+
+  @override
+  String get typicalTasksLabel => 'Ideas rápidas';
+
+  @override
+  String get typicalTaskTrash => 'Sacar la basura';
+
+  @override
+  String get typicalTaskPlants => 'Regar las plantas';
+
+  @override
+  String get typicalTaskDishes => 'Fregar los platos';
+
+  @override
+  String get typicalTaskLaundry => 'Poner una lavadora';
+
+  @override
+  String get typicalTaskSheets => 'Cambiar las sábanas';
+
+  @override
+  String get typicalTaskShopping => 'Hacer la compra';
+
+  @override
+  String get typicalTaskHoover => 'Pasar la aspiradora';
+
+  @override
+  String get typicalTaskDinner => 'Hacer la cena';
+
+  @override
+  String get typicalTaskFridge => 'Limpiar la nevera';
+
+  @override
+  String get typicalTaskBathroom => 'Limpiar el baño';
 }

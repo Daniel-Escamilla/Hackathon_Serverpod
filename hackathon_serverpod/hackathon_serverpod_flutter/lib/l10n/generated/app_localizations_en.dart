@@ -1044,4 +1044,70 @@ class AppLocalizationsEn extends AppLocalizations {
   String transferAdminDone(String name) {
     return '$name is now the home\'s admin.';
   }
+
+  @override
+  String get rankingTitle => 'This week\'s ranking';
+
+  @override
+  String get rankingResets => 'It starts again on Monday at 00:00.';
+
+  @override
+  String get rankingEmpty => 'Nobody has added karma this week yet.';
+
+  @override
+  String get leaveHomeAction => 'Leave the home';
+
+  @override
+  String leaveHomeTitle(String name) {
+    return 'Leave $name?';
+  }
+
+  @override
+  String get leaveHomeBody =>
+      'You\'ll lose your karma, and what you did stays in everyone\'s history. If you run the home, the role goes to whoever has been there longest.';
+
+  @override
+  String get leaveHomeConfirm => 'Leave';
+
+  @override
+  String get leftHomeNotice =>
+      'You left the home. You can create another one or join with a code.';
+
+  @override
+  String activityMemberLeft(String name) {
+    return '$name left the home';
+  }
+
+  @override
+  String get typicalTasksLabel => 'Quick ideas';
+
+  @override
+  String get typicalTaskTrash => 'Take the rubbish out';
+
+  @override
+  String get typicalTaskPlants => 'Water the plants';
+
+  @override
+  String get typicalTaskDishes => 'Do the dishes';
+
+  @override
+  String get typicalTaskLaundry => 'Put a wash on';
+
+  @override
+  String get typicalTaskSheets => 'Change the sheets';
+
+  @override
+  String get typicalTaskShopping => 'Do the shopping';
+
+  @override
+  String get typicalTaskHoover => 'Hoover';
+
+  @override
+  String get typicalTaskDinner => 'Make dinner';
+
+  @override
+  String get typicalTaskFridge => 'Clean the fridge';
+
+  @override
+  String get typicalTaskBathroom => 'Clean the bathroom';
 }

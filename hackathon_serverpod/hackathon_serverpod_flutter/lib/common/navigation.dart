@@ -46,8 +46,9 @@ void leaveHome(
   BuildContext context,
   String message, {
   Widget destination = const AuthGate(),
+  bool isError = true,
 }) {
-  showMessage(context, message, isError: true);
+  showMessage(context, message, isError: isError);
   Navigator.of(context).pushAndRemoveUntil(
     MaterialPageRoute<void>(builder: (_) => destination),
     (_) => false,

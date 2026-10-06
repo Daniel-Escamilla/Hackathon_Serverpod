@@ -95,7 +95,7 @@ parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 **Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
 comprueba el propio componente.
 
-**Animaciones Lottie.** Dieciséis, elegidas por el equipo el 1 y el 5 de octubre, en
+**Animaciones Lottie.** Diecisiete, elegidas por el equipo el 1 y el 5 de octubre, en
 `assets/animations/` con su autor y su enlace en `CREDITS.md` (LottieFiles, licencia Lottie
 Simple). Como los sonidos, **cada una significa siempre lo mismo**; se pintan con `AppLottie`
 (`lib/ui/app_animation.dart`), que también deja un fotograma quieto a quien tenga las animaciones
@@ -119,6 +119,7 @@ reducidas.
 | `timer` | La fila del tiempo que le queda a una votación (`InfoRow` con `leading`) |
 | `heart` | Al aceptar cumplir la compra de otro |
 | `offline` | Una pestaña que no pudo cargar |
+| `rank` | El ranking de la semana en la pestaña Casa |
 
 ## Sonido
 
