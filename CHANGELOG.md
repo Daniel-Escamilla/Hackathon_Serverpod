@@ -50,6 +50,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
   price is above the buyer's balance, checked on the locked row so two purchases at once cannot
   spend the same coins; only fines take a balance below zero (#137).
 
+- **The animations play.** `assets/animations/` was never declared in the app's `pubspec.yaml`,
+  so none of the 17 Lottie animations was bundled and every one failed to load.
+
 ## [0.1.0] - 2026-09-28
 
 The first version with the whole task cycle, the shop and the wallet working against the real
