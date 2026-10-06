@@ -65,6 +65,10 @@ class GroupController extends ChangeNotifier {
     await load();
   }
 
+  /// Leaves the home. The caller takes the person back to the start: there
+  /// is no home left to reload.
+  Future<void> leave() => repository.leaveGroup();
+
   Future<void> updateSettings({
     required String name,
     required int finePercent,

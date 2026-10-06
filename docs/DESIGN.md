@@ -23,7 +23,7 @@ vuelve, como mal karma. Y el valor de cada cosa no lo pone quien la escribe: lo 
 | monedas | **karmas** | «25 karmas», «te faltan 5 karmas»; sin cifra, «tu karma» |
 | cartera | **Karma** | la pestaña del saldo y el historial |
 | multa | **mal karma** | el titular dice mal karma; el detalle sigue diciendo «multa», que se entiende a la primera |
-| grupo | casa | **pendiente**: 35 textos dicen todavía «grupo», y cambiarlos pide revisar el género de cada frase |
+| grupo | **casa** | «crea vuestra casa», «únete a una casa con su código»; en inglés, *home* |
 
 En el código todo sigue llamándose `coin` (`CoinAmount`, `CoinTransaction`, `AppSound.coin`): el
 karma es lo que lee la gente, no un cambio de modelo.
@@ -95,7 +95,7 @@ parpadeo. Lo aplica `PressScale`, que usan `AppButton` y `Pressable`.
 **Quien tenga las animaciones reducidas en su sistema no ve el rebote.** No hay que hacer nada: lo
 comprueba el propio componente.
 
-**Animaciones Lottie.** Dieciséis, elegidas por el equipo el 1 y el 5 de octubre, en
+**Animaciones Lottie.** Diecisiete, elegidas por el equipo el 1 y el 5 de octubre, en
 `assets/animations/` con su autor y su enlace en `CREDITS.md` (LottieFiles, licencia Lottie
 Simple). Como los sonidos, **cada una significa siempre lo mismo**; se pintan con `AppLottie`
 (`lib/ui/app_animation.dart`), que también deja un fotograma quieto a quien tenga las animaciones
@@ -119,6 +119,7 @@ reducidas.
 | `timer` | La fila del tiempo que le queda a una votación (`InfoRow` con `leading`) |
 | `heart` | Al aceptar cumplir la compra de otro |
 | `offline` | Una pestaña que no pudo cargar |
+| `rank` | El ranking de la semana en la pestaña Casa |
 
 ## Sonido
 

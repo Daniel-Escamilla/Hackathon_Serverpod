@@ -66,6 +66,8 @@ Set<HomeData> staleAfter(GroupEventKind kind) => switch (kind) {
   GroupEventKind.purchaseResponded => {HomeData.shop, HomeData.wallet},
   GroupEventKind.memberExpelled ||
   GroupEventKind.memberUpdated => {HomeData.group},
+  // The ranking lists the members, and the admin role may have moved.
+  GroupEventKind.memberLeft => {HomeData.group, HomeData.wallet},
 };
 
 class HomeShell extends StatefulWidget {

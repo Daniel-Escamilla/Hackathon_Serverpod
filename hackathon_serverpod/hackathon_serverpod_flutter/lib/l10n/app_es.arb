@@ -20,7 +20,7 @@
   "navTasks": "Tareas",
   "navShop": "Tienda",
   "navWallet": "Karma",
-  "navGroup": "Grupo",
+  "navGroup": "Casa",
   "proposeTask": "Proponer",
 
   "activityTitle": "Actividad",
@@ -56,7 +56,7 @@
   "activityHoursAgo": "Hace {hours} h",
   "@activityHoursAgo": {"placeholders": {"hours": {"type": "int"}}},
 
-  "groupCheckError": "No se pudo comprobar tu grupo.",
+  "groupCheckError": "No se pudo comprobar tu casa.",
 
   "welcomeHeadline": "Lo que haces en casa,\nvuelve.",
   "welcomeSubtitle": "Cada tarea la valora la casa entera, y cada tarea hecha suma karma.",
@@ -132,37 +132,37 @@
 
   "groupChoiceGreeting": "¡Hola!",
   "groupChoiceQuestion": "¿Cómo quieres\nempezar?",
-  "createGroupTitle": "Crear un grupo",
+  "createGroupTitle": "Crear una casa",
   "createGroupSubtitle": "Prepara vuestro espacio",
   "joinGroupTitle": "Unirme con un código",
-  "joinGroupCardSubtitle": "Entra en un grupo existente",
+  "joinGroupCardSubtitle": "Entra en una casa que ya existe",
 
-  "createGroupHeadline": "Crea vuestro grupo",
+  "createGroupHeadline": "Cread vuestra casa",
   "createGroupHint": "Elige cómo compartís casa",
   "profileSharedFlat": "Piso compartido",
   "profileCouple": "Pareja",
   "profileFamily": "Familia",
-  "groupNameLabel": "Nombre del grupo",
+  "groupNameLabel": "Nombre de la casa",
   "groupNameHint": "Casa de Mayte y Juan",
-  "createGroupSubmit": "Crear grupo",
-  "createGroupErrorEmpty": "Ponle un nombre al grupo.",
-  "createGroupErrorGeneric": "No se pudo crear el grupo.",
+  "createGroupSubmit": "Crear casa",
+  "createGroupErrorEmpty": "Ponle un nombre a la casa.",
+  "createGroupErrorGeneric": "No se pudo crear la casa.",
 
   "joinGroupHeadline": "Únete a tu gente",
   "joinGroupSubtitle": "Introduce el código que te han compartido.",
   "joinGroupCodeHint": "NIDO-482",
   "joinGroupCaseNote": "El código no distingue mayúsculas",
-  "joinGroupSubmit": "Entrar al grupo",
-  "joinGroupError": "No se encontró ningún grupo con ese código.",
+  "joinGroupSubmit": "Entrar en la casa",
+  "joinGroupError": "No hay ninguna casa con ese código.",
 
   "groupSuccessTitle": "¡Ya tenéis casa!",
-  "groupCodeLabel": "Código del grupo",
+  "groupCodeLabel": "Código de la casa",
   "shareCode": "Compartir código",
   "goToTasks": "Ir a las tareas",
 
-  "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.",
+  "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu casa y sus miembros al servidor.",
   "membersTitle": "Miembros",
-  "groupSettings": "Configuración del grupo",
+  "groupSettings": "Configuración de la casa",
   "groupSettingsFineLabel": "Multa",
   "@groupSettingsFineLabel": {
     "description": "Label above the fine percentage slider in the group settings screen"
@@ -230,7 +230,7 @@
   "notReserved": "No se reserva: reclama cuando esté hecha",
   "markDone": "Ya está hecha",
   "claimedTitle": "¡Reclamada!",
-  "claimedMessage": "Ahora el grupo debe confirmar que está hecha.",
+  "claimedMessage": "Ahora la casa debe confirmar que está hecha.",
   "inValidationValue": "En validación · {reward} karmas",
   "@inValidationValue": {
     "placeholders": {
@@ -248,7 +248,7 @@
   "@validationQuestion": {
     "description": "Shown to the group on a task someone has claimed as done"
   },
-  "validationYourOwn": "La has reclamado tú: ahora el grupo decide si está hecha.",
+  "validationYourOwn": "La has reclamado tú: ahora la casa decide si está hecha.",
   "@validationYourOwn": {
     "description": "Shown instead of the vote buttons to whoever claimed the task"
   },
@@ -288,11 +288,11 @@
   "taskTitleEmptyError": "Ponle un título a la tarea.",
 
   "reviewDealStatus": "Revisa el trato",
-  "voteWindowNotice": "El grupo tendrá 24 horas para votar",
+  "voteWindowNotice": "La casa tendrá 24 horas para votar",
   "rejectFineNotice": "Si la rechazan, te llevas mal karma: una multa sobre lo que valía",
   "submitToVote": "Enviar a votación",
   "sentToVoteTitle": "Enviada a votación",
-  "sentToVoteMessage": "Avisaremos al grupo para que decida el trato.",
+  "sentToVoteMessage": "Avisaremos a la casa para que decida el trato.",
   "rewardAmount": "{reward} karmas",
   "@rewardAmount": {
     "placeholders": {
@@ -315,14 +315,14 @@
   "rewardTitleHint": "Desayuno en la cama",
   "rewardDescriptionHint": "Café, tostadas y fruta",
   "priceLabel": "Precio",
-  "rewardVotingNotice": "El grupo votará antes de publicarla",
+  "rewardVotingNotice": "La casa votará antes de publicarla",
   "rewardTitleEmptyError": "Ponle un título a la recompensa.",
   "rewardSentToVote": "Recompensa enviada a votación",
   "rewardSubmitError": "No se pudo enviar la recompensa",
 
   "whoWillFulfil": "¿Quién la cumplirá?",
   "selectMember": "Selecciona a una persona",
-  "noOtherMembers": "Todavía no hay nadie más en el grupo para cumplirla.",
+  "noOtherMembers": "Todavía no hay nadie más en la casa para cumplirla.",
   "notEnoughCoins": "{missing, plural, =1{Te falta 1 karma} other{Te faltan {missing} karmas}}: tienes {balance} y este premio cuesta {price}. Haz algo por la casa para conseguirlos.",
   "@notEnoughCoins": {
     "description": "Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows",
@@ -373,11 +373,11 @@
       "name": { "type": "String" }
     }
   },
-  "expelBody": "Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.",
+  "expelBody": "Saldrá de la casa y perderá su karma. Lo que hizo seguirá en el historial de todos.",
   "@expelBody": {
     "description": "Explains the consequences of expelling a member"
   },
-  "expelDone": "{name} ya no está en el grupo.",
+  "expelDone": "{name} ya no está en la casa.",
   "@expelDone": {
     "description": "Confirmation after a member is expelled",
     "placeholders": {
@@ -392,7 +392,7 @@
   "@groupInviteRegenerateTitle": {
     "description": "Title of the confirmation before replacing the invite code"
   },
-  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.",
+  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en la casa sigue dentro.",
   "@groupInviteRegenerateBody": {
     "description": "Explains what replacing the invite code does and does not affect"
   },
@@ -405,23 +405,23 @@
   "@errorInviteCode": {
     "description": "Shown when no group matches the invite code"
   },
-  "errorAlreadyInGroup": "Ya estás en un grupo. Sal de él antes de entrar en otro.",
+  "errorAlreadyInGroup": "Ya estás en una casa. Sal de ella antes de entrar en otra.",
   "@errorAlreadyInGroup": {
     "description": "Shown when the user already has an active membership"
   },
-  "errorNotAdmin": "Solo quien administra el grupo puede hacer esto.",
+  "errorNotAdmin": "Solo quien administra la casa puede hacer esto.",
   "@errorNotAdmin": {
     "description": "Shown when a non-admin tries an admin-only action"
   },
-  "errorMemberNotFound": "Esa persona ya no está en el grupo.",
+  "errorMemberNotFound": "Esa persona ya no está en la casa.",
   "@errorMemberNotFound": {
     "description": "Shown when the member to act on has left or is in another group"
   },
-  "errorCannotExpelSelf": "No puedes expulsarte a ti del grupo.",
+  "errorCannotExpelSelf": "No puedes expulsarte a ti de la casa.",
   "@errorCannotExpelSelf": {
     "description": "Shown when the admin tries to expel themselves"
   },
-  "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta del grupo.",
+  "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta de la casa.",
   "@errorCannotTransferAdmin": {
     "description": "Shown when the admin tries to hand the role to themselves or to a child"
   },
@@ -469,7 +469,7 @@
   "@errorNotEnoughCoins": {
     "description": "Buying a reward that costs more than the balance"
   },
-  "errorInvalidProvider": "Elige a otra persona del grupo para cumplirla.",
+  "errorInvalidProvider": "Elige a otra persona de la casa para cumplirla.",
   "@errorInvalidProvider": {
     "description": "The provider chosen for a purchase is the buyer or not in the group"
   },
@@ -485,11 +485,11 @@
   "@errorNotProvider": {
     "description": "Someone other than the provider answered or delivered a purchase"
   },
-  "errorNoGroup": "Ya no estás en este grupo.",
+  "errorNoGroup": "Ya no estás en esta casa.",
   "@errorNoGroup": {
     "description": "A call was refused because the member has left or been expelled"
   },
-  "leftGroupNotice": "Ya no estás en el grupo. Puedes crear otro o unirte con un código.",
+  "leftGroupNotice": "Ya no estás en la casa. Puedes crear otra o unirte con un código.",
   "@leftGroupNotice": {
     "description": "Shown on the create-or-join screen after being expelled from the group"
   },
@@ -597,7 +597,7 @@
   "@voteAgainst": {
     "description": "A no vote in the voters list"
   },
-  "ownProposalNotice": "La has propuesto tú: vota el resto del grupo.",
+  "ownProposalNotice": "La has propuesto tú: vota el resto de la casa.",
   "@ownProposalNotice": {
     "description": "Shown instead of the vote buttons on the member's own proposal"
   },
@@ -683,7 +683,7 @@
   "@displayNameLabel": {
     "description": "Settings screen: label of the name field"
   },
-  "displayNameHint": "Como te verá el grupo",
+  "displayNameHint": "Como te verá la casa",
   "@displayNameHint": {
     "description": "Settings screen: hint inside the empty name field"
   },
@@ -759,7 +759,7 @@
       "name": { "type": "String" }
     }
   },
-  "transferAdminBody": "{name} podrá expulsar, cambiar el código y configurar el grupo. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.",
+  "transferAdminBody": "{name} podrá expulsar, cambiar el código y configurar la casa. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.",
   "@transferAdminBody": {
     "description": "Explains what handing the admin role over means",
     "placeholders": {
@@ -770,11 +770,51 @@
   "@transferAdminConfirm": {
     "description": "Confirm button of the dialog that hands the admin role over"
   },
-  "transferAdminDone": "{name} es ahora admin del grupo.",
+  "transferAdminDone": "{name} es ahora admin de la casa.",
   "@transferAdminDone": {
     "description": "Message after the admin role was handed over",
     "placeholders": {
       "name": { "type": "String" }
     }
-  }
+  },
+  "rankingTitle": "Ranking de la semana",
+  "@rankingTitle": {"description":"Casa tab: heading of the weekly ranking"},
+  "rankingResets": "Vuelve a empezar el lunes a las 00:00.",
+  "@rankingResets": {"description":"Under the ranking heading: when the week starts again (Madrid time)"},
+  "rankingEmpty": "Nadie ha sumado karma esta semana todavía.",
+  "@rankingEmpty": {"description":"Ranking with nobody above zero yet"},
+  "leaveHomeAction": "Salir de la casa",
+  "@leaveHomeAction": {"description":"Casa tab: button to leave the home"},
+  "leaveHomeTitle": "¿Salir de {name}?",
+  "@leaveHomeTitle": {"description":"Confirmation title; name is the home","placeholders":{"name":{"type":"String"}}},
+  "leaveHomeBody": "Perderás tu karma, y lo que hiciste seguirá en el historial de todos. Si administras la casa, el cargo pasa a quien lleve más tiempo en ella.",
+  "@leaveHomeBody": {"description":"Confirmation body for leaving the home"},
+  "leaveHomeConfirm": "Salir",
+  "@leaveHomeConfirm": {"description":"Confirmation button for leaving the home"},
+  "leftHomeNotice": "Has salido de la casa. Puedes crear otra o unirte con un código.",
+  "@leftHomeNotice": {"description":"Shown on the create-or-join screen after leaving on your own"},
+  "activityMemberLeft": "{name} se ha ido de la casa",
+  "@activityMemberLeft": {"description":"Activity: another member left the home","placeholders":{"name":{"type":"String"}}},
+  "typicalTasksLabel": "Ideas rápidas",
+  "@typicalTasksLabel": {"description":"Propose task: label over the chips of typical chores"},
+  "typicalTaskTrash": "Sacar la basura",
+  "@typicalTaskTrash": {"description":"Typical chore"},
+  "typicalTaskPlants": "Regar las plantas",
+  "@typicalTaskPlants": {"description":"Typical chore"},
+  "typicalTaskDishes": "Fregar los platos",
+  "@typicalTaskDishes": {"description":"Typical chore"},
+  "typicalTaskLaundry": "Poner una lavadora",
+  "@typicalTaskLaundry": {"description":"Typical chore"},
+  "typicalTaskSheets": "Cambiar las sábanas",
+  "@typicalTaskSheets": {"description":"Typical chore"},
+  "typicalTaskShopping": "Hacer la compra",
+  "@typicalTaskShopping": {"description":"Typical chore"},
+  "typicalTaskHoover": "Pasar la aspiradora",
+  "@typicalTaskHoover": {"description":"Typical chore"},
+  "typicalTaskDinner": "Hacer la cena",
+  "@typicalTaskDinner": {"description":"Typical chore"},
+  "typicalTaskFridge": "Limpiar la nevera",
+  "@typicalTaskFridge": {"description":"Typical chore"},
+  "typicalTaskBathroom": "Limpiar el baño",
+  "@typicalTaskBathroom": {"description":"Typical chore"}
 }

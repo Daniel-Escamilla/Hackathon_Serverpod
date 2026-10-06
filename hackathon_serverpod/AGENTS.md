@@ -214,7 +214,7 @@ What runs today, all against the server, is listed version by version in the roo
 [`CHANGELOG.md`](../CHANGELOG.md). In short: accounts, groups and their admin, the whole task cycle
 with its fines, the shop from proposal to delivery, the wallet, and live updates for all of it.
 `docs/PLAN.md` says what is left and when. Endpoints the app does not call yet, all out of the MVP:
-`transferAdmin`, `getWeeklyRanking`, and family mode's `requestWish` and `approveChildPurchase`.
+family mode's `requestWish` and `approveChildPurchase`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`
 prompts take `s`/`si` as yes. Commit messages follow Conventional Commits

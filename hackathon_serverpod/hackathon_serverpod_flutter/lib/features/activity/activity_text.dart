@@ -22,6 +22,7 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.purchaseDelivered => l10n.activityPurchaseDelivered(name),
     GroupEventKind.memberExpelled => l10n.activityMemberExpelled(name),
     GroupEventKind.memberUpdated => l10n.activityMemberUpdated(name),
+    GroupEventKind.memberLeft => l10n.activityMemberLeft(name),
   };
 
   IconData get icon => switch (kind) {
@@ -37,6 +38,7 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.purchaseDelivered => Icons.redeem_rounded,
     GroupEventKind.memberExpelled => Icons.person_remove_rounded,
     GroupEventKind.memberUpdated => Icons.face_rounded,
+    GroupEventKind.memberLeft => Icons.logout_rounded,
   };
 
   Color get color => switch (kind) {
@@ -51,7 +53,8 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.purchaseResponded ||
     GroupEventKind.purchaseDelivered => AppColors.coral,
     GroupEventKind.memberExpelled ||
-    GroupEventKind.memberUpdated => AppColors.muted,
+    GroupEventKind.memberUpdated ||
+    GroupEventKind.memberLeft => AppColors.muted,
   };
 
   /// The tab where what the notice is about lives.
@@ -67,7 +70,8 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.purchaseResponded ||
     GroupEventKind.purchaseDelivered => HomeTabController.shop,
     GroupEventKind.memberExpelled ||
-    GroupEventKind.memberUpdated => HomeTabController.group,
+    GroupEventKind.memberUpdated ||
+    GroupEventKind.memberLeft => HomeTabController.group,
   };
 }
 

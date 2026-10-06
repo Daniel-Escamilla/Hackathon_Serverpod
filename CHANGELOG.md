@@ -17,7 +17,14 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **The app is KarmaHome.** Its name in the app, the Android launcher, the web page and the
   server's emails; a new logo, a home in two halves that fit together, on every icon and in the
   link preview; and a voice to go with it: «Lo que haces en casa, vuelve». Coins are now
-  **karmas**, the Wallet tab is **Karma**, and the welcome screen and empty lists speak it.
+  **karmas**, the Wallet tab is **Karma**, a group is a **home** («casa»), and the welcome screen
+  and empty lists speak it.
+- **This week's ranking** on the Casa tab: karma earned minus fines, best first, with each
+  member's character. The week starts again on Monday at 00:00 in Madrid.
+- **Typical chores** when proposing: a tap fills «Limpiar el baño · 25» and nine others, and the home
+  still votes on the deal.
+- **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has
+  been there longest.
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
