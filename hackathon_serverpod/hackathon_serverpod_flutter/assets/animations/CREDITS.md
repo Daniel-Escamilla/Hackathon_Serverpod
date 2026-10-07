@@ -24,3 +24,4 @@ Picked by the team from two galleries of candidates, on 2026-10-01 and 2026-10-0
 | `timer.json` | T2 | [waiting](https://lottiefiles.com/animations/waiting-Sho1sl3ra2) | Robson Totti | Time left on a vote |
 | `heart.json` | C3 | [like](https://lottiefiles.com/animations/like-Vijp6qJVb8) | Faisal Iqbal | Accepting to fulfil a purchase |
 | `offline.json` | E3 | [No Internet](https://lottiefiles.com/animations/no-internet-YtSwRIKPzz) | Subho Mondal | A page that could not load |
+| `rank.json` | P2 | [Trophy](https://lottiefiles.com/animations/trophy-OJxKdZoIJh) | Lucas Nemo | The weekly ranking on the Casa tab |

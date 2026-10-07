@@ -167,7 +167,7 @@ abstract class AppLocalizations {
   /// No description provided for @navGroup.
   ///
   /// In es, this message translates to:
-  /// **'Grupo'**
+  /// **'Casa'**
   String get navGroup;
 
   /// No description provided for @proposeTask.
@@ -287,7 +287,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupCheckError.
   ///
   /// In es, this message translates to:
-  /// **'No se pudo comprobar tu grupo.'**
+  /// **'No se pudo comprobar tu casa.'**
   String get groupCheckError;
 
   /// No description provided for @welcomeHeadline.
@@ -545,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @createGroupTitle.
   ///
   /// In es, this message translates to:
-  /// **'Crear un grupo'**
+  /// **'Crear una casa'**
   String get createGroupTitle;
 
   /// No description provided for @createGroupSubtitle.
@@ -563,13 +563,13 @@ abstract class AppLocalizations {
   /// No description provided for @joinGroupCardSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Entra en un grupo existente'**
+  /// **'Entra en una casa que ya existe'**
   String get joinGroupCardSubtitle;
 
   /// No description provided for @createGroupHeadline.
   ///
   /// In es, this message translates to:
-  /// **'Crea vuestro grupo'**
+  /// **'Cread vuestra casa'**
   String get createGroupHeadline;
 
   /// No description provided for @createGroupHint.
@@ -599,7 +599,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupNameLabel.
   ///
   /// In es, this message translates to:
-  /// **'Nombre del grupo'**
+  /// **'Nombre de la casa'**
   String get groupNameLabel;
 
   /// No description provided for @groupNameHint.
@@ -611,19 +611,19 @@ abstract class AppLocalizations {
   /// No description provided for @createGroupSubmit.
   ///
   /// In es, this message translates to:
-  /// **'Crear grupo'**
+  /// **'Crear casa'**
   String get createGroupSubmit;
 
   /// No description provided for @createGroupErrorEmpty.
   ///
   /// In es, this message translates to:
-  /// **'Ponle un nombre al grupo.'**
+  /// **'Ponle un nombre a la casa.'**
   String get createGroupErrorEmpty;
 
   /// No description provided for @createGroupErrorGeneric.
   ///
   /// In es, this message translates to:
-  /// **'No se pudo crear el grupo.'**
+  /// **'No se pudo crear la casa.'**
   String get createGroupErrorGeneric;
 
   /// No description provided for @joinGroupHeadline.
@@ -653,13 +653,13 @@ abstract class AppLocalizations {
   /// No description provided for @joinGroupSubmit.
   ///
   /// In es, this message translates to:
-  /// **'Entrar al grupo'**
+  /// **'Entrar en la casa'**
   String get joinGroupSubmit;
 
   /// No description provided for @joinGroupError.
   ///
   /// In es, this message translates to:
-  /// **'No se encontró ningún grupo con ese código.'**
+  /// **'No hay ninguna casa con ese código.'**
   String get joinGroupError;
 
   /// No description provided for @groupSuccessTitle.
@@ -671,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupCodeLabel.
   ///
   /// In es, this message translates to:
-  /// **'Código del grupo'**
+  /// **'Código de la casa'**
   String get groupCodeLabel;
 
   /// No description provided for @shareCode.
@@ -689,7 +689,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupPendingNotice.
   ///
   /// In es, this message translates to:
-  /// **'Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.'**
+  /// **'Datos de ejemplo: falta un endpoint para pedir tu casa y sus miembros al servidor.'**
   String get groupPendingNotice;
 
   /// No description provided for @membersTitle.
@@ -701,7 +701,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupSettings.
   ///
   /// In es, this message translates to:
-  /// **'Configuración del grupo'**
+  /// **'Configuración de la casa'**
   String get groupSettings;
 
   /// Label above the fine percentage slider in the group settings screen
@@ -935,7 +935,7 @@ abstract class AppLocalizations {
   /// No description provided for @claimedMessage.
   ///
   /// In es, this message translates to:
-  /// **'Ahora el grupo debe confirmar que está hecha.'**
+  /// **'Ahora la casa debe confirmar que está hecha.'**
   String get claimedMessage;
 
   /// No description provided for @inValidationValue.
@@ -971,7 +971,7 @@ abstract class AppLocalizations {
   /// Shown instead of the vote buttons to whoever claimed the task
   ///
   /// In es, this message translates to:
-  /// **'La has reclamado tú: ahora el grupo decide si está hecha.'**
+  /// **'La has reclamado tú: ahora la casa decide si está hecha.'**
   String get validationYourOwn;
 
   /// Button that votes a claimed task as done
@@ -1073,7 +1073,7 @@ abstract class AppLocalizations {
   /// No description provided for @voteWindowNotice.
   ///
   /// In es, this message translates to:
-  /// **'El grupo tendrá 24 horas para votar'**
+  /// **'La casa tendrá 24 horas para votar'**
   String get voteWindowNotice;
 
   /// No description provided for @rejectFineNotice.
@@ -1097,7 +1097,7 @@ abstract class AppLocalizations {
   /// No description provided for @sentToVoteMessage.
   ///
   /// In es, this message translates to:
-  /// **'Avisaremos al grupo para que decida el trato.'**
+  /// **'Avisaremos a la casa para que decida el trato.'**
   String get sentToVoteMessage;
 
   /// No description provided for @rewardAmount.
@@ -1187,7 +1187,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardVotingNotice.
   ///
   /// In es, this message translates to:
-  /// **'El grupo votará antes de publicarla'**
+  /// **'La casa votará antes de publicarla'**
   String get rewardVotingNotice;
 
   /// No description provided for @rewardTitleEmptyError.
@@ -1223,7 +1223,7 @@ abstract class AppLocalizations {
   /// No description provided for @noOtherMembers.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay nadie más en el grupo para cumplirla.'**
+  /// **'Todavía no hay nadie más en la casa para cumplirla.'**
   String get noOtherMembers;
 
   /// Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows
@@ -1355,13 +1355,13 @@ abstract class AppLocalizations {
   /// Explains the consequences of expelling a member
   ///
   /// In es, this message translates to:
-  /// **'Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.'**
+  /// **'Saldrá de la casa y perderá su karma. Lo que hizo seguirá en el historial de todos.'**
   String get expelBody;
 
   /// Confirmation after a member is expelled
   ///
   /// In es, this message translates to:
-  /// **'{name} ya no está en el grupo.'**
+  /// **'{name} ya no está en la casa.'**
   String expelDone(String name);
 
   /// Admin button that replaces the invite code
@@ -1379,7 +1379,7 @@ abstract class AppLocalizations {
   /// Explains what replacing the invite code does and does not affect
   ///
   /// In es, this message translates to:
-  /// **'El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.'**
+  /// **'El código de ahora dejará de valer. Quien ya está en la casa sigue dentro.'**
   String get groupInviteRegenerateBody;
 
   /// Confirmation after the invite code is replaced
@@ -1397,31 +1397,31 @@ abstract class AppLocalizations {
   /// Shown when the user already has an active membership
   ///
   /// In es, this message translates to:
-  /// **'Ya estás en un grupo. Sal de él antes de entrar en otro.'**
+  /// **'Ya estás en una casa. Sal de ella antes de entrar en otra.'**
   String get errorAlreadyInGroup;
 
   /// Shown when a non-admin tries an admin-only action
   ///
   /// In es, this message translates to:
-  /// **'Solo quien administra el grupo puede hacer esto.'**
+  /// **'Solo quien administra la casa puede hacer esto.'**
   String get errorNotAdmin;
 
   /// Shown when the member to act on has left or is in another group
   ///
   /// In es, this message translates to:
-  /// **'Esa persona ya no está en el grupo.'**
+  /// **'Esa persona ya no está en la casa.'**
   String get errorMemberNotFound;
 
   /// Shown when the admin tries to expel themselves
   ///
   /// In es, this message translates to:
-  /// **'No puedes expulsarte a ti del grupo.'**
+  /// **'No puedes expulsarte a ti de la casa.'**
   String get errorCannotExpelSelf;
 
   /// Shown when the admin tries to hand the role to themselves or to a child
   ///
   /// In es, this message translates to:
-  /// **'El cargo de admin solo se puede ceder a otra persona adulta del grupo.'**
+  /// **'El cargo de admin solo se puede ceder a otra persona adulta de la casa.'**
   String get errorCannotTransferAdmin;
 
   /// A task call named a task that is not in the group
@@ -1493,7 +1493,7 @@ abstract class AppLocalizations {
   /// The provider chosen for a purchase is the buyer or not in the group
   ///
   /// In es, this message translates to:
-  /// **'Elige a otra persona del grupo para cumplirla.'**
+  /// **'Elige a otra persona de la casa para cumplirla.'**
   String get errorInvalidProvider;
 
   /// A shop call named a purchase that is not in the group
@@ -1517,13 +1517,13 @@ abstract class AppLocalizations {
   /// A call was refused because the member has left or been expelled
   ///
   /// In es, this message translates to:
-  /// **'Ya no estás en este grupo.'**
+  /// **'Ya no estás en esta casa.'**
   String get errorNoGroup;
 
   /// Shown on the create-or-join screen after being expelled from the group
   ///
   /// In es, this message translates to:
-  /// **'Ya no estás en el grupo. Puedes crear otro o unirte con un código.'**
+  /// **'Ya no estás en la casa. Puedes crear otra o unirte con un código.'**
   String get leftGroupNotice;
 
   /// No description provided for @errorGeneric.
@@ -1685,7 +1685,7 @@ abstract class AppLocalizations {
   /// Shown instead of the vote buttons on the member's own proposal
   ///
   /// In es, this message translates to:
-  /// **'La has propuesto tú: vota el resto del grupo.'**
+  /// **'La has propuesto tú: vota el resto de la casa.'**
   String get ownProposalNotice;
 
   /// Shown instead of the vote buttons once the member has voted
@@ -1835,7 +1835,7 @@ abstract class AppLocalizations {
   /// Settings screen: hint inside the empty name field
   ///
   /// In es, this message translates to:
-  /// **'Como te verá el grupo'**
+  /// **'Como te verá la casa'**
   String get displayNameHint;
 
   /// Settings screen: shown when saving with a blank name
@@ -1943,7 +1943,7 @@ abstract class AppLocalizations {
   /// Explains what handing the admin role over means
   ///
   /// In es, this message translates to:
-  /// **'{name} podrá expulsar, cambiar el código y configurar el grupo. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.'**
+  /// **'{name} podrá expulsar, cambiar el código y configurar la casa. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.'**
   String transferAdminBody(String name);
 
   /// Confirm button of the dialog that hands the admin role over
@@ -1955,8 +1955,128 @@ abstract class AppLocalizations {
   /// Message after the admin role was handed over
   ///
   /// In es, this message translates to:
-  /// **'{name} es ahora admin del grupo.'**
+  /// **'{name} es ahora admin de la casa.'**
   String transferAdminDone(String name);
+
+  /// Casa tab: heading of the weekly ranking
+  ///
+  /// In es, this message translates to:
+  /// **'Ranking de la semana'**
+  String get rankingTitle;
+
+  /// Under the ranking heading: when the week starts again (Madrid time)
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a empezar el lunes a las 00:00.'**
+  String get rankingResets;
+
+  /// Ranking with nobody above zero yet
+  ///
+  /// In es, this message translates to:
+  /// **'Nadie ha sumado karma esta semana todavía.'**
+  String get rankingEmpty;
+
+  /// Casa tab: button to leave the home
+  ///
+  /// In es, this message translates to:
+  /// **'Salir de la casa'**
+  String get leaveHomeAction;
+
+  /// Confirmation title; name is the home
+  ///
+  /// In es, this message translates to:
+  /// **'¿Salir de {name}?'**
+  String leaveHomeTitle(String name);
+
+  /// Confirmation body for leaving the home
+  ///
+  /// In es, this message translates to:
+  /// **'Perderás tu karma, y lo que hiciste seguirá en el historial de todos. Si administras la casa, el cargo pasa a quien lleve más tiempo en ella.'**
+  String get leaveHomeBody;
+
+  /// Confirmation button for leaving the home
+  ///
+  /// In es, this message translates to:
+  /// **'Salir'**
+  String get leaveHomeConfirm;
+
+  /// Shown on the create-or-join screen after leaving on your own
+  ///
+  /// In es, this message translates to:
+  /// **'Has salido de la casa. Puedes crear otra o unirte con un código.'**
+  String get leftHomeNotice;
+
+  /// Activity: another member left the home
+  ///
+  /// In es, this message translates to:
+  /// **'{name} se ha ido de la casa'**
+  String activityMemberLeft(String name);
+
+  /// Propose task: label over the chips of typical chores
+  ///
+  /// In es, this message translates to:
+  /// **'Ideas rápidas'**
+  String get typicalTasksLabel;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Sacar la basura'**
+  String get typicalTaskTrash;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Regar las plantas'**
+  String get typicalTaskPlants;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Fregar los platos'**
+  String get typicalTaskDishes;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Poner una lavadora'**
+  String get typicalTaskLaundry;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar las sábanas'**
+  String get typicalTaskSheets;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer la compra'**
+  String get typicalTaskShopping;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Pasar la aspiradora'**
+  String get typicalTaskHoover;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer la cena'**
+  String get typicalTaskDinner;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar la nevera'**
+  String get typicalTaskFridge;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar el baño'**
+  String get typicalTaskBathroom;
 }
 
 class _AppLocalizationsDelegate

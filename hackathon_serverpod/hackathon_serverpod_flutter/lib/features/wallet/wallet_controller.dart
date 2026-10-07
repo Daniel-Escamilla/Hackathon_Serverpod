@@ -12,6 +12,10 @@ class WalletController extends ChangeNotifier {
 
   int balance = 0;
   List<CoinMovement> history = [];
+
+  /// This week's ranking in the home, shown on the Casa tab. It changes with
+  /// the same movements as the balance, so it loads with them.
+  List<RankingEntry> ranking = [];
   bool loading = false;
   bool hasLoaded = false;
   Object? error;
@@ -30,11 +34,13 @@ class WalletController extends ChangeNotifier {
       final results = await Future.wait<Object>([
         repository.getBalance(),
         repository.getHistory(),
+        repository.getWeeklyRanking(),
       ]);
       final loadedBalance = results[0] as int;
       final loadedHistory = results[1] as List<CoinMovement>;
       balance = loadedBalance;
       history = loadedHistory;
+      ranking = results[2] as List<RankingEntry>;
       _playNewMovementSounds();
     } catch (e) {
       error = e;

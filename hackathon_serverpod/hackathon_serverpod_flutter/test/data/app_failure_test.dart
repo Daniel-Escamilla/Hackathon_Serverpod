@@ -56,7 +56,7 @@ void main() {
           GroupException(reason: GroupErrorReason.noMembership),
           l10n,
         ),
-        'Ya no estás en este grupo.',
+        'Ya no estás en esta casa.',
       );
     });
 

@@ -26,6 +26,7 @@ group:
   - regenerateInviteCode:
   - transferAdmin:
   - updateGroup:
+  - leaveGroup:
   - updateMyProfile:
 shop:
   - listRewards:

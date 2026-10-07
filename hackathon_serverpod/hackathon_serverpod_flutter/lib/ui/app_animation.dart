@@ -51,7 +51,10 @@ enum AppAnimation {
   heart,
 
   /// A page that could not reach the server.
-  offline;
+  offline,
+
+  /// The weekly ranking.
+  rank;
 
   String get asset => 'assets/animations/$name.json';
 }

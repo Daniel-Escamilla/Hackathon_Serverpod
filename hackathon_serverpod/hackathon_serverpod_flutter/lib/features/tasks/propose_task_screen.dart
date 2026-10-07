@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'typical_tasks.dart';
+import '../../ui/pressable.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -49,6 +51,28 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
     return FormScaffold(
       title: l10n.newTaskTitle,
       fields: [
+        FieldLabel(l10n.typicalTasksLabel),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final typical in typicalTasks(l10n))
+              Pressable(
+                borderRadius: BorderRadius.circular(20),
+                onTap: () => setState(() {
+                  _titleController.text = typical.title;
+                  _reward = typical.reward;
+                }),
+                child: StatusPill(
+                  label: '${typical.title} · ${typical.reward}',
+                  color: _titleController.text == typical.title
+                      ? AppColors.lime
+                      : AppColors.cream,
+                ),
+              ),
+          ],
+        ),
+        const SizedBox(height: 18),
         FieldLabel(l10n.titleFieldLabel),
         TextField(
           controller: _titleController,

@@ -14,12 +14,23 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Added
 
+- **The app is on Serverpod Cloud**, as the project `karmahome`: the web app at
+  <https://karmahome.serverpod.space/>, the API at <https://karmahome.api.serverpod.space/>.
+  There, email sign-up sends its verification codes through Cloud's mail service, and the
+  server has the Google sign-in secret. `scloud.yaml` and `.scloudignore` are in the repo, and the README
+  says how to deploy.
+
 - **The app is KarmaHome.** Its name in the app, the Android launcher, the web page and the
   server's emails; a new logo, a home in two halves that fit together, on every icon and in the
   link preview; and a voice to go with it: «Lo que haces en casa, vuelve». Coins are now
-  **karmas**, the Wallet tab is **Karma**, and the welcome screen and empty lists speak it.
-- **A download page for the Android app**, `descargar.html`, to share instead of a bare APK link: it
-  carries the logo and link preview that WhatsApp and the like cannot show for a bare APK.
+  **karmas**, the Wallet tab is **Karma**, a group is a **home** («casa»), and the welcome screen
+  and empty lists speak it.
+- **This week's ranking** on the Casa tab: karma earned minus fines, best first, with each
+  member's character. The week starts again on Monday at 00:00 in Madrid.
+- **Typical chores** when proposing: a tap fills «Limpiar el baño · 25» and nine others, and the home
+  still votes on the deal.
+- **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has
+  been there longest.
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
@@ -44,6 +55,13 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **The shop no longer sells what the balance cannot pay.** The server refuses a purchase whose
   price is above the buyer's balance, checked on the locked row so two purchases at once cannot
   spend the same coins; only fines take a balance below zero (#137).
+
+- **The animations play.** `assets/animations/` was never declared in the app's `pubspec.yaml`,
+  so none of the 17 Lottie animations was bundled and every one failed to load.
+
+### Removed
+
+- The scripts that published the app on a VPS (`deploy/ovh/`): it lives on Serverpod Cloud now.
 
 ## [0.1.0] - 2026-09-28
 

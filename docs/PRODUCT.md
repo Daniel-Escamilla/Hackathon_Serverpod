@@ -146,7 +146,8 @@ precios sugeridos:
 - Quien sale o es expulsado del grupo **pierde su saldo**; su rastro en el historial se mantiene, para
   que las tareas que hizo no desaparezcan.
 - **Ranking semanal:** monedas ganadas menos multas (lo gastado en la tienda no resta). Se reinicia
-  cada lunes para que quien va por detrás pueda remontar, y se guarda quién ganó cada semana.
+  cada lunes **a las 00:00 en Madrid** (decidido el 5 de octubre) para que quien va por detrás pueda
+  remontar. Sale en la pestaña Casa. Guardar quién ganó cada semana queda para después.
 
 ## 5. Tareas y misiones
 
@@ -288,10 +289,11 @@ sitio para `family`, pero al crear un grupo solo se ofrecen piso y pareja.
 **Si da tiempo, por este orden:**
 
 - Misiones periódicas
-- Ranking semanal
-- Ceder el cargo y salir del grupo
+- ~~Ranking semanal~~: hecho el 6 de octubre
+- ~~Ceder el cargo y salir del grupo~~: hecho; al salir, si era admin, el cargo pasa a quien lleve más
+  tiempo
 - Unidades de stock en la tienda
-- Catálogo de tareas típicas para añadirlas de un toque
+- ~~Catálogo de tareas típicas para añadirlas de un toque~~: hecho el 6 de octubre
 - Traducción al inglés (los textos salen en ARB desde el primer día, así que es traducir, no rehacer)
 
 **Descartado:** ruleta de asignación aleatoria · registro con Google · invitación por QR ·
@@ -433,7 +435,6 @@ Las que se cerraron el 18 de septiembre están en
 |---|---|
 | **Listas de las plantillas** | Borrador escrito en [§6](#plantillas-borrador-a-revisar-por-mayte); falta que Mayte lo revise |
 | **Misiones periódicas** | Si llegan a entrar, falta decir si cada repetición se vuelve a validar |
-| **Ranking semanal** | Si llega a entrar, falta decir en qué zona horaria se cierra la semana |
 | **Entrada de los hijos con código** | Aparcada: el modo familia queda fuera del MVP ([§9](#9-alcance-por-prioridad)) |
 | **Ruleta** | Descartada ([§9](#9-alcance-por-prioridad)) |
 
