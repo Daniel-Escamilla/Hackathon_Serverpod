@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!--
+    The link to share for the Android app. A bare APK link gets no preview
+    in WhatsApp and the like, because they only read Open Graph tags from
+    HTML, so this page carries the same tags as index.html and links to the
+    APK attached to the latest GitHub release: Serverpod Cloud rebuilds
+    web/app on every deploy, so the APK cannot live beside this page.
+
+    It is a file in the root rather than descargar/index.html because
+    Serverpod's static route does not serve a folder's index.html: that path
+    would fall through to the Flutter app.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Descarga KarmaHome para Android: lo que haces en casa, vuelve.">
+  <meta name="theme-color" content="#6558F5">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="KarmaHome">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:url" content="https://karmahome.serverpod.space/descargar.html">
+  <meta property="og:title" content="Descarga KarmaHome para Android">
+  <meta property="og:description" content="Lo que haces en casa, vuelve. Proponed tareas, fijad su valor entre todos y ganad karma.">
+  <meta property="og:image" content="https://karmahome.serverpod.space/og.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="El logo de KarmaHome, una casa partida en dos mitades que encajan, y el lema: lo que haces en casa, vuelve.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Descarga KarmaHome para Android">
+  <meta name="twitter:description" content="Lo que haces en casa, vuelve.">
+  <meta name="twitter:image" content="https://karmahome.serverpod.space/og.png">
+
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/svg+xml" href="logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&family=Nunito+Sans:wght@400;700&display=swap" rel="stylesheet">
+
+  <title>Descargar KarmaHome</title>
+  <style>
+    :root {
+      --ink: #12152A;
+      --violet: #6558F5;
+      --cream: #F7F4EC;
+      --lime: #DDFB69;
+      --muted: #687086;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: "Nunito Sans", system-ui, sans-serif;
+      text-align: center;
+    }
+    main { max-width: 420px; isolation: isolate; }
+    img { width: 128px; height: 128px; }
+    h1 {
+      font-family: "Fredoka", system-ui, sans-serif;
+      font-weight: 600;
+      font-size: 2.25rem;
+      margin: 16px 0 4px;
+    }
+    .tagline { font-size: 1.15rem; margin: 0 0 28px; }
+    .download {
+      position: relative;
+      top: 0;
+      display: inline-block;
+      padding: 16px 32px;
+      border: 3px solid var(--ink);
+      border-radius: 999px;
+      background: var(--violet);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: top 80ms;
+    }
+    /*
+      The ledge under the button. A box-shadow would leave a hairline along
+      the curve, because the browser clips it to the border's anti-aliased
+      edge; a solid copy of the button underneath has no seam. It sits
+      behind the button only while the button opens no stacking context of
+      its own (no z-index, no transform), hence `top` for the press and the
+      isolation on <main>.
+    */
+    .download::after {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      z-index: -1;
+      border-radius: inherit;
+      background: var(--ink);
+      transform: translateY(5px);
+      transition: transform 80ms;
+    }
+    .download:active { top: 4px; }
+    .download:active::after { transform: translateY(1px); }
+    .help { color: var(--muted); font-size: 0.95rem; line-height: 1.5; margin: 28px 0 0; }
+    .help a { color: var(--violet); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <main>
+    <img src="logo.svg" alt="">
+    <h1>KarmaHome</h1>
+    <p class="tagline">Lo que haces en casa, vuelve.</p>
+    <a class="download" href="https://github.com/Daniel-Escamilla/Hackathon_Serverpod/releases/latest/download/KarmaHome.apk">Descargar para Android</a>
+    <p class="help">
+      Al abrir el archivo, Android pedirá permiso para instalar apps de origen
+      desconocido. ¿Sin Android? Úsala en el navegador:
+      <a href="/">karmahome.serverpod.space</a>
+    </p>
+  </main>
+</body>
+</html>
