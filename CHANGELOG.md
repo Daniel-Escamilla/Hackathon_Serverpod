@@ -14,6 +14,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Added
 
+- **The app is on Serverpod Cloud**, as the project `karmahome`: the web app at
+  <https://karmahome.serverpod.space/>, the API at <https://karmahome.api.serverpod.space/>.
+  There, email sign-up sends its verification codes through Cloud's mail service, and the
+  server has the Google sign-in secret. `scloud.yaml` and `.scloudignore` are in the repo, and the README
+  says how to deploy.
+
 - **The app is KarmaHome.** Its name in the app, the Android launcher, the web page and the
   server's emails; a new logo, a home in two halves that fit together, on every icon and in the
   link preview; and a voice to go with it: «Lo que haces en casa, vuelve». Coins are now
