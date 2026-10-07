@@ -5,7 +5,7 @@
 # so it can be run again whenever someone leaves the demo in a mess.
 #
 #   ./sembrar_demo.sh                                    # local server
-#   ./sembrar_demo.sh https://api.serverpod.youxinlab.com/
+#   ./sembrar_demo.sh https://karmahome.api.serverpod.space/
 #
 # The server only answers if its passwords.yaml has `demoSeedSecret` and
 # `demoAccountPassword`. The secret is read from DEMO_SEED_SECRET or asked
