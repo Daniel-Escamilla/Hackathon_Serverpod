@@ -231,6 +231,29 @@ dart analyze --fatal-infos
 dart format --set-exit-if-changed .
 ```
 
+## Deploying to Serverpod Cloud
+
+The app runs on Serverpod Cloud as the project `karmahome`: the web app at
+<https://karmahome.serverpod.space/> and the API at <https://karmahome.api.serverpod.space/>.
+`scloud.yaml` links the server package to that project, and `.scloudignore` decides what is
+uploaded. Deploying changes a live service, so it is the team's call, not a side effect of
+another task. With access to the project:
+
+```sh
+cd hackathon_serverpod/hackathon_serverpod_server
+serverpod cloud auth login       # once
+serverpod cloud deploy
+```
+
+Before uploading, `deploy` runs `serverpod generate` and `serverpod run flutter_build`, which
+builds the web app with whatever `flutter` comes first on the `PATH`: put the pinned 3.44.4 there
+first (with fvm, `PATH="$HOME/fvm/versions/3.44.4/bin:$PATH"`). It uploads the working tree as it
+is, uncommitted changes included, so deploy from a clean checkout of `develop`.
+
+Secrets live in Cloud, not in the repo: the auth keys are managed by the platform, and the rest
+are set with `serverpod cloud password set <name> --from-file <file>` (`googleClientSecret` is).
+A new secret takes effect on the next deploy.
+
 ## After changing a model or an endpoint
 
 The client and the generated server code are produced from the `.spy.yaml` models and the endpoint
