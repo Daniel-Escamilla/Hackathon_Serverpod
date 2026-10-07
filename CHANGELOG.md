@@ -53,6 +53,10 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **The animations play.** `assets/animations/` was never declared in the app's `pubspec.yaml`,
   so none of the 17 Lottie animations was bundled and every one failed to load.
 
+### Removed
+
+- The scripts that published the app on a VPS (`deploy/ovh/`): it lives on Serverpod Cloud now.
+
 ## [0.1.0] - 2026-09-28
 
 The first version with the whole task cycle, the shop and the wallet working against the real
