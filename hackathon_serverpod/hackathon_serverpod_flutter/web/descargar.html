@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
   <!--
-    The link to share for the Android app. app.apk on its own gets no preview
+    The link to share for the Android app. A bare APK link gets no preview
     in WhatsApp and the like, because they only read Open Graph tags from
     HTML, so this page carries the same tags as index.html and links to the
-    APK. deploy/ovh/deploy.sh --apk puts app.apk beside it.
+    APK attached to the latest GitHub release: Serverpod Cloud rebuilds
+    web/app on every deploy, so the APK cannot live beside this page.
 
     It is a file in the root rather than descargar/index.html because
     Serverpod's static route does not serve a folder's index.html: that path
@@ -19,10 +20,10 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="KarmaHome">
   <meta property="og:locale" content="es_ES">
-  <meta property="og:url" content="https://serverpod.youxinlab.com/descargar.html">
+  <meta property="og:url" content="https://karmahome.serverpod.space/descargar.html">
   <meta property="og:title" content="Descarga KarmaHome para Android">
   <meta property="og:description" content="Lo que haces en casa, vuelve. Proponed tareas, fijad su valor entre todos y ganad karma.">
-  <meta property="og:image" content="https://serverpod.youxinlab.com/og.png">
+  <meta property="og:image" content="https://karmahome.serverpod.space/og.png">
   <meta property="og:image:type" content="image/png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -30,7 +31,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Descarga KarmaHome para Android">
   <meta name="twitter:description" content="Lo que haces en casa, vuelve.">
-  <meta name="twitter:image" content="https://serverpod.youxinlab.com/og.png">
+  <meta name="twitter:image" content="https://karmahome.serverpod.space/og.png">
 
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="icon" type="image/svg+xml" href="logo.svg">
@@ -112,11 +113,11 @@
     <img src="logo.svg" alt="">
     <h1>KarmaHome</h1>
     <p class="tagline">Lo que haces en casa, vuelve.</p>
-    <a class="download" href="app.apk" download="KarmaHome.apk">Descargar para Android</a>
+    <a class="download" href="https://github.com/Daniel-Escamilla/Hackathon_Serverpod/releases/latest/download/KarmaHome.apk">Descargar para Android</a>
     <p class="help">
       Al abrir el archivo, Android pedirá permiso para instalar apps de origen
       desconocido. ¿Sin Android? Úsala en el navegador:
-      <a href="/">serverpod.youxinlab.com</a>
+      <a href="/">karmahome.serverpod.space</a>
     </p>
   </main>
 </body>

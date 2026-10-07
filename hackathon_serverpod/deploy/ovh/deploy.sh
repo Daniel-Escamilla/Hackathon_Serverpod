@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 # Builds the backend with the web app inside and publishes it on the OVH VPS,
 # at https://serverpod.youxinlab.com. With --apk it also builds the Android
-# app against that server and serves it at https://serverpod.youxinlab.com/app.apk,
-# with a page to share for it at https://serverpod.youxinlab.com/descargar.html.
+# app against that server and serves it at https://serverpod.youxinlab.com/app.apk.
 #
 #   ./deploy.sh                         # what is on origin/develop
 #   ./deploy.sh --apk                   # the same, plus the APK
@@ -78,7 +77,7 @@ for _ in $(seq 1 30); do
   if [ "$(curl -s "${pin[@]}" -o /dev/null -w '%{http_code}' "$web_url/")" = 200 ] &&
      [ "$(curl -s "${pin[@]}" -o /dev/null -w '%{http_code}' "$api_url")" = 200 ]; then
     echo "Publicado: $web_url"
-    $apk && echo "APK: $web_url/app.apk (para compartir: $web_url/descargar.html)"
+    $apk && echo "APK: $web_url/app.apk"
     exit 0
   fi
   sleep 2

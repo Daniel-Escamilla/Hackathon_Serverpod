@@ -18,7 +18,7 @@ is promoted, that section gets the new number and the date, the app's `version` 
   server's emails; a new logo, a home in two halves that fit together, on every icon and in the
   link preview; and a voice to go with it: «Lo que haces en casa, vuelve». Coins are now
   **karmas**, the Wallet tab is **Karma**, and the welcome screen and empty lists speak it.
-- **A download page for the Android app**, `descargar.html`, to share instead of `app.apk`: it
+- **A download page for the Android app**, `descargar.html`, to share instead of a bare APK link: it
   carries the logo and link preview that WhatsApp and the like cannot show for a bare APK.
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
