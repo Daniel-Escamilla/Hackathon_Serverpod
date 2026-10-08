@@ -14,6 +14,10 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Added
 
+- **A download page for the Android app**, `descargar.html`, to share instead of a bare APK link:
+  it carries the logo and link preview that WhatsApp and the like cannot show for an APK. The APK
+  goes up with the Cloud deploy and is served at `/web/apk/KarmaHome.apk`.
+
 - **The app is on Serverpod Cloud**, as the project `karmahome`: the web app at
   <https://karmahome.serverpod.space/>, the API at <https://karmahome.api.serverpod.space/>.
   There, email sign-up sends its verification codes through Cloud's mail service, and the

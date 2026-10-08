@@ -5,8 +5,9 @@
     The link to share for the Android app. A bare APK link gets no preview
     in WhatsApp and the like, because they only read Open Graph tags from
     HTML, so this page carries the same tags as index.html and links to the
-    APK attached to the latest GitHub release: Serverpod Cloud rebuilds
-    web/app on every deploy, so the APK cannot live beside this page.
+    APK, which the server serves from web/static/apk/ at /web/apk/: Serverpod
+    Cloud rebuilds web/app on every deploy, so it cannot live beside this
+    page. The README says how to build and upload it.
 
     It is a file in the root rather than descargar/index.html because
     Serverpod's static route does not serve a folder's index.html: that path
@@ -113,7 +114,7 @@
     <img src="logo.svg" alt="">
     <h1>KarmaHome</h1>
     <p class="tagline">Lo que haces en casa, vuelve.</p>
-    <a class="download" href="https://github.com/Daniel-Escamilla/Hackathon_Serverpod/releases/latest/download/KarmaHome.apk">Descargar para Android</a>
+    <a class="download" href="/web/apk/KarmaHome.apk" download="KarmaHome.apk">Descargar para Android</a>
     <p class="help">
       Al abrir el archivo, Android pedirá permiso para instalar apps de origen
       desconocido. ¿Sin Android? Úsala en el navegador:

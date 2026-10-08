@@ -71,3 +71,9 @@ Thumbs.db
 desktop.ini
 
 *.log
+
+# The Android APK the server serves at /web/apk/KarmaHome.apk: too big for
+# git. Ignored here, at the repo root, because the Serverpod Cloud CLI skips
+# whatever a .gitignore inside hackathon_serverpod/ ignores, and the APK has
+# to be uploaded with the deploy.
+hackathon_serverpod/hackathon_serverpod_server/web/static/apk/

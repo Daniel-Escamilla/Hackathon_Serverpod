@@ -254,6 +254,17 @@ Secrets live in Cloud, not in the repo: the auth keys are managed by the platfor
 are set with `serverpod cloud password set <name> --from-file <file>` (`googleClientSecret` is).
 A new secret takes effect on the next deploy.
 
+The Android APK is uploaded with the deploy and served at `/web/apk/KarmaHome.apk`, which the
+page to share, <https://karmahome.serverpod.space/descargar.html>, links to. It stays out of git,
+so build it into place before deploying, or the deploy goes out without it:
+
+```sh
+cd hackathon_serverpod/hackathon_serverpod_flutter
+flutter build apk --release --dart-define=SERVER_URL=https://karmahome.api.serverpod.space/
+mkdir -p ../hackathon_serverpod_server/web/static/apk
+cp build/app/outputs/flutter-apk/app-release.apk ../hackathon_serverpod_server/web/static/apk/KarmaHome.apk
+```
+
 ## After changing a model or an endpoint
 
 The client and the generated server code are produced from the `.spy.yaml` models and the endpoint
