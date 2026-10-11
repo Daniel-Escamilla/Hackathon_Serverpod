@@ -13,12 +13,19 @@ class AppColors {
   static const sky = Color(0xFFA8D7FF);
   static const cream = Color(0xFFF7F4EC);
   static const muted = Color(0xFF687086);
+
+  /// Sky washed out, as it looks laid over a light page. Opaque on purpose: a
+  /// translucent sky over the dark grey turns into a mid blue that neither
+  /// dark nor light text reads on.
+  static const skyTint = Color(0xFFD6EAF8);
 }
 
 /// The colours that change with light and dark mode: page, cards, text,
-/// secondary text and borders. Brand colours stay in [AppColors]; ink stays
-/// there too for text on the pastel pills, which keep a light background in
-/// both modes. Read it with `context.palette`.
+/// secondary text, borders, and the brand colours when they are the text or
+/// the icon itself (violet, coral and green read too dark on the grey, so
+/// dark mode uses a light tint of each). Brand colours used as a fill stay in
+/// [AppColors]; ink stays there too for text on the pastel pills, which keep
+/// a light background in both modes. Read it with `context.palette`.
 @immutable
 class AppPalette extends ThemeExtension<AppPalette> {
   const AppPalette({
@@ -27,6 +34,9 @@ class AppPalette extends ThemeExtension<AppPalette> {
     required this.ink,
     required this.muted,
     required this.border,
+    required this.accent,
+    required this.danger,
+    required this.positive,
   });
 
   static const light = AppPalette(
@@ -35,15 +45,22 @@ class AppPalette extends ThemeExtension<AppPalette> {
     ink: AppColors.ink,
     muted: AppColors.muted,
     border: Color(0xFFE4E1EA),
+    accent: AppColors.violet,
+    danger: AppColors.coral,
+    positive: Color(0xFF16853C),
   );
 
-  /// Dark, but a soft grey rather than black.
+  /// Dark, but a soft grey rather than black. Every text colour here keeps a
+  /// contrast of at least 4.5:1 against [card], the lighter of the two greys.
   static const dark = AppPalette(
     background: Color(0xFF3B3E47),
     card: Color(0xFF4A4E59),
     ink: Color(0xFFF4F1EA),
     muted: Color(0xFFBEC2CE),
     border: Color(0xFF5C6170),
+    accent: Color(0xFFC4BEFF),
+    danger: Color(0xFFFFB0AA),
+    positive: Color(0xFF86E3A0),
   );
 
   final Color background;
@@ -52,6 +69,15 @@ class AppPalette extends ThemeExtension<AppPalette> {
   final Color muted;
   final Color border;
 
+  /// Violet as text or icon: links, quiet buttons, selected labels.
+  final Color accent;
+
+  /// Coral as text or icon: errors, negative amounts, destructive buttons.
+  final Color danger;
+
+  /// Green as text: coins coming in.
+  final Color positive;
+
   @override
   AppPalette copyWith({
     Color? background,
@@ -59,12 +85,18 @@ class AppPalette extends ThemeExtension<AppPalette> {
     Color? ink,
     Color? muted,
     Color? border,
+    Color? accent,
+    Color? danger,
+    Color? positive,
   }) => AppPalette(
     background: background ?? this.background,
     card: card ?? this.card,
     ink: ink ?? this.ink,
     muted: muted ?? this.muted,
     border: border ?? this.border,
+    accent: accent ?? this.accent,
+    danger: danger ?? this.danger,
+    positive: positive ?? this.positive,
   );
 
   @override
@@ -76,6 +108,9 @@ class AppPalette extends ThemeExtension<AppPalette> {
       ink: Color.lerp(ink, other.ink, t)!,
       muted: Color.lerp(muted, other.muted, t)!,
       border: Color.lerp(border, other.border, t)!,
+      accent: Color.lerp(accent, other.accent, t)!,
+      danger: Color.lerp(danger, other.danger, t)!,
+      positive: Color.lerp(positive, other.positive, t)!,
     );
   }
 }
@@ -103,9 +138,9 @@ class AppFonts {
 class AppTheme {
   const AppTheme._();
 
-  static ThemeData get light => _build(AppPalette.light, Brightness.light);
+  static final light = _build(AppPalette.light, Brightness.light);
 
-  static ThemeData get dark => _build(AppPalette.dark, Brightness.dark);
+  static final dark = _build(AppPalette.dark, Brightness.dark);
 
   static ThemeData _build(AppPalette p, Brightness brightness) {
     final typography = Typography.material2021();
@@ -175,7 +210,7 @@ class AppTheme {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
-          borderSide: const BorderSide(color: AppColors.violet, width: 2),
+          borderSide: BorderSide(color: p.accent, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 18,
@@ -200,8 +235,8 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           minimumSize: const Size.fromHeight(56),
-          foregroundColor: AppColors.violet,
-          side: const BorderSide(color: AppColors.violet, width: 1.5),
+          foregroundColor: p.accent,
+          side: BorderSide(color: p.accent, width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -211,6 +246,9 @@ class AppTheme {
             fontWeight: FontWeight.w900,
           ),
         ),
+      ),
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(foregroundColor: p.accent),
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: p.background,

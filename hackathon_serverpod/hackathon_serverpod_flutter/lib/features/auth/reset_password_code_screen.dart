@@ -105,7 +105,7 @@ class _ResetPasswordCodeScreenState extends State<ResetPasswordCodeScreen> {
           Text(
             _error!,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.coral),
+            style: TextStyle(color: context.palette.danger),
           ),
         ],
         const SizedBox(height: 18),

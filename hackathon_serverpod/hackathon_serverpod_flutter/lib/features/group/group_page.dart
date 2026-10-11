@@ -86,70 +86,77 @@ class _Body extends StatelessWidget {
         children: [
           SoftCard(
             color: AppColors.lime,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    SvgPicture.asset(
-                      'assets/brand/logo.svg',
-                      width: 52,
-                      height: 52,
-                      excludeFromSemantics: true,
+            // A Builder so the texts below read the theme SoftCard sets for
+            // the lime, not the page's.
+            child: Builder(
+              builder: (context) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/brand/logo.svg',
+                        width: 52,
+                        height: 52,
+                        excludeFromSemantics: true,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          group.name,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      StatusPill(
+                        label: _typeLabel(l10n, group.type),
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 28),
+                  Text(
+                    l10n.groupCodeLabel,
+                    style: TextStyle(color: context.palette.muted),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          group.inviteCode,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => _copyCode(context, group.inviteCode),
+                        tooltip: l10n.copyCode,
+                        icon: const Icon(Icons.copy_rounded),
+                      ),
+                    ],
+                  ),
+                  if (isAdmin) ...[
+                    const SizedBox(height: 10),
+                    AppButton(
+                      label: l10n.groupInviteRegenerate,
+                      kind: AppButtonKind.quiet,
+                      compact: true,
+                      onPressed: () => _regenerateCode(context),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        group.name,
-                        style: Theme.of(context).textTheme.titleLarge,
+                    const SizedBox(height: 6),
+                    AppButton(
+                      label: l10n.groupSettings,
+                      kind: AppButtonKind.quiet,
+                      compact: true,
+                      onPressed: () => pushPage(
+                        context,
+                        GroupSettingsScreen(
+                          group: group,
+                          controller: controller,
+                        ),
                       ),
                     ),
-                    StatusPill(
-                      label: _typeLabel(l10n, group.type),
-                      color: Colors.white,
-                    ),
                   ],
-                ),
-                const Divider(height: 28),
-                Text(
-                  l10n.groupCodeLabel,
-                  style: TextStyle(color: context.palette.muted),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        group.inviteCode,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => _copyCode(context, group.inviteCode),
-                      tooltip: l10n.copyCode,
-                      icon: const Icon(Icons.copy_rounded),
-                    ),
-                  ],
-                ),
-                if (isAdmin) ...[
-                  const SizedBox(height: 10),
-                  AppButton(
-                    label: l10n.groupInviteRegenerate,
-                    kind: AppButtonKind.quiet,
-                    compact: true,
-                    onPressed: () => _regenerateCode(context),
-                  ),
-                  const SizedBox(height: 6),
-                  AppButton(
-                    label: l10n.groupSettings,
-                    kind: AppButtonKind.quiet,
-                    compact: true,
-                    onPressed: () => pushPage(
-                      context,
-                      GroupSettingsScreen(group: group, controller: controller),
-                    ),
-                  ),
                 ],
-              ],
+              ),
             ),
           ),
           const SizedBox(height: 26),
@@ -367,13 +374,13 @@ class _MemberRow extends StatelessWidget {
               _RowAction(
                 tooltip: l10n.transferAdminAction,
                 icon: Icons.admin_panel_settings_rounded,
-                color: AppColors.violet,
+                color: context.palette.accent,
                 onTap: onMakeAdmin,
               ),
               _RowAction(
                 tooltip: l10n.expelAction,
                 icon: Icons.person_remove_rounded,
-                color: AppColors.coral,
+                color: context.palette.danger,
                 onTap: onExpel,
               ),
             ],

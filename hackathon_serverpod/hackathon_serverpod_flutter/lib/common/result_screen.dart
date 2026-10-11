@@ -4,6 +4,7 @@ import '../app_theme.dart';
 import '../home_shell.dart';
 import '../ui/app_animation.dart';
 import '../ui/app_button.dart';
+import '../ui/fill_theme.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({
@@ -55,10 +56,15 @@ class ResultScreen extends StatelessWidget {
                   color: AppColors.lime,
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Text(
-                  value,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge,
+                child: FillTheme(
+                  color: AppColors.lime,
+                  child: Builder(
+                    builder: (context) => Text(
+                      value,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
                 ),
               ),
               const Spacer(),

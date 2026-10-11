@@ -294,9 +294,7 @@ class _Choice extends StatelessWidget {
           color: color ?? context.palette.card,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected
-                ? AppColors.violet
-                : AppColors.muted.withValues(alpha: .25),
+            color: selected ? context.palette.accent : context.palette.border,
             width: selected ? 3 : 1.5,
           ),
         ),
@@ -395,7 +393,9 @@ class _LanguageRow extends StatelessWidget {
                   selected
                       ? Icons.radio_button_checked_rounded
                       : Icons.radio_button_off_rounded,
-                  color: selected ? AppColors.violet : context.palette.muted,
+                  color: selected
+                      ? context.palette.accent
+                      : context.palette.muted,
                 ),
               ],
             ),

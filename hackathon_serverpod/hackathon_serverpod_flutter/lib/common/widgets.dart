@@ -7,6 +7,7 @@ import '../features/wallet/wallet_controller.dart';
 import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../ui/app_button.dart';
+import '../ui/fill_theme.dart';
 import '../ui/pressable.dart';
 import 'activity_screen.dart';
 import 'navigation.dart';
@@ -138,15 +139,19 @@ class SoftCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: color ?? context.palette.card,
-      borderRadius: BorderRadius.circular(24),
-      child: InkWell(
-        onTap: onTap,
+    final fill = color ?? context.palette.card;
+    return FillTheme(
+      color: fill,
+      child: Material(
+        color: fill,
         borderRadius: BorderRadius.circular(24),
-        child: Padding(
-          padding: padding ?? const EdgeInsets.all(16),
-          child: child,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: padding ?? const EdgeInsets.all(16),
+            child: child,
+          ),
         ),
       ),
     );
@@ -169,7 +174,13 @@ class StatusPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13),
+        style: TextStyle(
+          color: FillTheme.wantsDarkInk(context, color)
+              ? AppColors.ink
+              : Colors.white,
+          fontWeight: FontWeight.w900,
+          fontSize: 13,
+        ),
       ),
     );
   }
@@ -204,7 +215,7 @@ class InfoRow extends StatelessWidget {
     return SoftCard(
       child: Row(
         children: [
-          leading ?? Icon(icon, color: AppColors.violet),
+          leading ?? Icon(icon, color: context.palette.accent),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -240,25 +251,28 @@ class BigValueCard extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(28),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(icon, style: const TextStyle(fontSize: 45)),
-          const SizedBox(width: 14),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 52,
-              fontWeight: FontWeight.w900,
-              fontFeatures: AppFonts.tabularFigures,
+      child: FillTheme(
+        color: color,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(icon, style: const TextStyle(fontSize: 45)),
+            const SizedBox(width: 14),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 52,
+                fontWeight: FontWeight.w900,
+                fontFeatures: AppFonts.tabularFigures,
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+            ),
+          ],
+        ),
       ),
     );
   }

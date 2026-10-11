@@ -41,7 +41,9 @@ class TaskVoters extends StatelessWidget {
                         ? Icons.thumb_up_alt_rounded
                         : Icons.thumb_down_alt_rounded,
                     size: 18,
-                    color: vote.approve ? AppColors.violet : AppColors.coral,
+                    color: vote.approve
+                        ? context.palette.accent
+                        : context.palette.danger,
                   ),
                   const SizedBox(width: 8),
                   Expanded(

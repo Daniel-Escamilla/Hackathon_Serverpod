@@ -38,7 +38,7 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
             width: 44,
             height: 5,
             decoration: BoxDecoration(
-              color: const Color(0xFFD3CFD8),
+              color: context.palette.border,
               borderRadius: BorderRadius.circular(4),
             ),
           ),

@@ -78,8 +78,10 @@ class _Notice extends StatelessWidget {
         child: Row(
           children: [
             CircleAvatar(
-              backgroundColor: event.color.withValues(alpha: .15),
-              child: Icon(event.icon, color: event.color),
+              backgroundColor: event
+                  .colorIn(context.palette)
+                  .withValues(alpha: .15),
+              child: Icon(event.icon, color: event.colorIn(context.palette)),
             ),
             const SizedBox(width: 12),
             Expanded(

@@ -79,7 +79,7 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
           Text(
             _error!,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.coral),
+            style: TextStyle(color: context.palette.danger),
           ),
         ],
         const SizedBox(height: 20),

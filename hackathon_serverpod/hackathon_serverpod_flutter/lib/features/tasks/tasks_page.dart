@@ -214,7 +214,7 @@ class _TaskCard extends StatelessWidget {
               width: 68,
               height: 68,
               decoration: BoxDecoration(
-                color: AppColors.sky.withValues(alpha: .36),
+                color: AppColors.skyTint,
                 borderRadius: BorderRadius.circular(20),
               ),
               alignment: Alignment.center,

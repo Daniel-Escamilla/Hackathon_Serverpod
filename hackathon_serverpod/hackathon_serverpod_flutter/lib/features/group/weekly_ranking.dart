@@ -45,7 +45,7 @@ class WeeklyRanking extends StatelessWidget {
                     ),
                     Text(
                       l10n.rankingResets,
-                      style: const TextStyle(color: AppColors.muted),
+                      style: TextStyle(color: context.palette.muted),
                     ),
                   ],
                 ),
@@ -56,7 +56,7 @@ class WeeklyRanking extends StatelessWidget {
           if (nobodyYet)
             Text(
               l10n.rankingEmpty,
-              style: const TextStyle(color: AppColors.muted),
+              style: TextStyle(color: context.palette.muted),
             )
           else
             for (final (index, entry) in entries.indexed)
