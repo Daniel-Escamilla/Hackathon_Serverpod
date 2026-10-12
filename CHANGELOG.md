@@ -67,6 +67,8 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Fixed
 
+- **The download page hands out the latest APK**: the link carries a version, because the CDN in
+  front of Cloud kept the first APK for a year.
 - **Placeholders without teammates' names**: the email field suggests `tu@example.com` and a new
   home «Nuestro piso».
 - **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;

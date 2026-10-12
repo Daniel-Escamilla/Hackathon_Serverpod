@@ -265,6 +265,10 @@ mkdir -p ../hackathon_serverpod_server/web/static/apk
 cp build/app/outputs/flutter-apk/app-release.apk ../hackathon_serverpod_server/web/static/apk/KarmaHome.apk
 ```
 
+Then bump the `?v=` on the APK link in `hackathon_serverpod_flutter/web/descargar.html`: Serverpod
+serves `/web/` as immutable for a year, and the CDN in front of Cloud keeps handing out the APK it
+first saw for that exact URL.
+
 ## After changing a model or an endpoint
 
 The client and the generated server code are produced from the `.spy.yaml` models and the endpoint
