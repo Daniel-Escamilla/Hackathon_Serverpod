@@ -31,10 +31,13 @@ late final Client client;
 const googleWebClientId =
     '266308220325-jvpioj5f1pldrqqj7ika3ujqrfmb22n5.apps.googleusercontent.com';
 
-/// Where Google sends the web app back. It only works when the app is served
-/// by Serverpod itself, whose `/auth/callback` route answers it, and the
-/// origin is registered in Google Cloud Console.
-String get googleWebRedirectUri => '${Uri.base.origin}/auth/callback';
+/// Where Google sends the web app back: Serverpod's `/auth/callback` route
+/// when Serverpod serves the app, or under `flutter run` (debug), where
+/// Flutter's dev server serves it, the static copy in `web/auth/`. Either
+/// URI has to be registered in Google Cloud Console.
+String get googleWebRedirectUri => kDebugMode
+    ? '${Uri.base.origin}/auth/callback.html'
+    : '${Uri.base.origin}/auth/callback';
 
 Future<void> initializeClient() async {
   client = Client(await serverUrl)
