@@ -541,6 +541,7 @@ class EndpointShop extends _isc.EndpointRef {
     String description,
     int price, {
     int? stock,
+    String? icon,
   }) => caller.callServerEndpoint<_ibcsn808.RewardItem>(
     'shop',
     'proposeReward',
@@ -549,6 +550,7 @@ class EndpointShop extends _isc.EndpointRef {
       'description': description,
       'price': price,
       'stock': stock,
+      'icon': icon,
     },
   );
 
@@ -661,14 +663,16 @@ class EndpointTask extends _isc.EndpointRef {
   _ida.Future<_i7vt05yn.Task> proposeTask(
     String title,
     String description,
-    int reward,
-  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    int reward, {
+    String? icon,
+  }) => caller.callServerEndpoint<_i7vt05yn.Task>(
     'task',
     'proposeTask',
     {
       'title': title,
       'description': description,
       'reward': reward,
+      'icon': icon,
     },
   );
 

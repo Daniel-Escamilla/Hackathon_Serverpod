@@ -24,6 +24,7 @@ abstract class Task
     required this.title,
     required this.description,
     required this.reward,
+    this.icon,
     _ijul8zzi.TaskKind? kind,
     this.recurrence,
     _i18yar27.TaskStatus? status,
@@ -39,6 +40,7 @@ abstract class Task
     required String title,
     required String description,
     required int reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
     _i18yar27.TaskStatus? status,
@@ -54,6 +56,7 @@ abstract class Task
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String,
       reward: jsonSerialization['reward'] as int,
+      icon: jsonSerialization['icon'] as String?,
       kind: jsonSerialization['kind'] == null
           ? null
           : _ijul8zzi.TaskKind.fromJson((jsonSerialization['kind'] as String)),
@@ -92,6 +95,9 @@ abstract class Task
   /// are a percentage of.
   int reward;
 
+  /// An emoji picked when proposing, shown on the task's card. Null shows the app's default.
+  String? icon;
+
   _ijul8zzi.TaskKind kind;
 
   /// Only set for `mission`-kind tasks (PRODUCT.md §5).
@@ -118,6 +124,7 @@ abstract class Task
     String? title,
     String? description,
     int? reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
     _i18yar27.TaskStatus? status,
@@ -134,6 +141,7 @@ abstract class Task
       'title': title,
       'description': description,
       'reward': reward,
+      if (icon != null) 'icon': icon,
       'kind': kind.toJson(),
       if (recurrence != null) 'recurrence': recurrence?.toJson(),
       'status': status.toJson(),
@@ -152,6 +160,7 @@ abstract class Task
       'title': title,
       'description': description,
       'reward': reward,
+      if (icon != null) 'icon': icon,
       'kind': kind.toJson(),
       if (recurrence != null) 'recurrence': recurrence?.toJson(),
       'status': status.toJson(),
@@ -176,6 +185,7 @@ class _TaskImpl extends Task {
     required String title,
     required String description,
     required int reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
     _i18yar27.TaskStatus? status,
@@ -188,6 +198,7 @@ class _TaskImpl extends Task {
          title: title,
          description: description,
          reward: reward,
+         icon: icon,
          kind: kind,
          recurrence: recurrence,
          status: status,
@@ -206,6 +217,7 @@ class _TaskImpl extends Task {
     String? title,
     String? description,
     int? reward,
+    Object? icon = _Undefined,
     _ijul8zzi.TaskKind? kind,
     Object? recurrence = _Undefined,
     _i18yar27.TaskStatus? status,
@@ -219,6 +231,7 @@ class _TaskImpl extends Task {
       title: title ?? this.title,
       description: description ?? this.description,
       reward: reward ?? this.reward,
+      icon: icon is String? ? icon : this.icon,
       kind: kind ?? this.kind,
       recurrence: recurrence is _irx5q63y.TaskRecurrence?
           ? recurrence

@@ -9,6 +9,10 @@
     Cloud rebuilds web/app on every deploy, so it cannot live beside this
     page. The README says how to build and upload it.
 
+    Serverpod serves /web/ as immutable for a year, so the CDN in front of
+    Cloud keeps the first APK it saw for a URL: bump ?v= on the link every
+    time a new APK goes up, or the button keeps handing out the old one.
+
     It is a file in the root rather than descargar/index.html because
     Serverpod's static route does not serve a folder's index.html: that path
     would fall through to the Flutter app.
@@ -114,7 +118,7 @@
     <img src="logo.svg" alt="">
     <h1>KarmaHome</h1>
     <p class="tagline">Lo que haces en casa, vuelve.</p>
-    <a class="download" href="/web/apk/KarmaHome.apk" download="KarmaHome.apk">Descargar para Android</a>
+    <a class="download" href="/web/apk/KarmaHome.apk?v=2" download="KarmaHome.apk">Descargar para Android</a>
     <p class="help">
       Al abrir el archivo, Android pedirá permiso para instalar apps de origen
       desconocido. ¿Sin Android? Úsala en el navegador:

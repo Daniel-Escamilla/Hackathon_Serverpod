@@ -3,6 +3,7 @@ import 'package:serverpod/serverpod.dart';
 import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
+import '../tasks/task_service.dart';
 import 'reward_templates.dart';
 
 /// Voting, buying and fulfilling rewards (PRODUCT.md §4.1, §4.4, §6).
@@ -33,6 +34,7 @@ class ShopService {
           title: template.title,
           description: '',
           price: template.price,
+          icon: template.icon,
           status: RewardItemStatus.active,
           createdById: createdBy.id!,
         ),
@@ -50,9 +52,19 @@ class ShopService {
   /// recount: otherwise on a double tap both calls find no vote yet, both
   /// insert, and the second fails on the unique (itemId, memberId) index
   /// with a server error instead of just updating the vote (#101).
-  /// Adds [item] to the group's shop as a proposal, open to a vote.
-  Future<RewardItem> propose(Session session, RewardItem item) async {
-    final proposed = await RewardItem.db.insertRow(session, item);
+  /// Adds [item] to the group's shop as a proposal, open to a vote — or
+  /// straight as `active` when [proposer] is alone in the home, with nobody
+  /// to vote on it (PRODUCT.md §4.1).
+  Future<RewardItem> propose(
+    Session session,
+    RewardItem item, {
+    required GroupMember proposer,
+  }) async {
+    final alone = await isAloneInGroup(session, proposer);
+    final proposed = await RewardItem.db.insertRow(
+      session,
+      alone ? item.copyWith(status: RewardItemStatus.active) : item,
+    );
     await eventService.publish(
       session,
       groupId: proposed.groupId,

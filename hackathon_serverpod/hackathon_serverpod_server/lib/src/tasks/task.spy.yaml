@@ -8,6 +8,8 @@ fields:
   ### Coins paid on validation, never on claiming (PRODUCT.md §3). Also the base the fines in §4.4
   ### are a percentage of.
   reward: int
+  ### An emoji picked when proposing, shown on the task's card. Null shows the app's default.
+  icon: String?
   kind: TaskKind, default=oneOff
   ### Only set for `mission`-kind tasks (PRODUCT.md §5).
   recurrence: TaskRecurrence?

@@ -18,9 +18,10 @@ class ShopRepository {
   Future<RewardItem> proposeReward(
     String title,
     String description,
-    int price,
-  ) => guardServerCall(
-    () => client.shop.proposeReward(title, description, price),
+    int price, {
+    String? icon,
+  }) => guardServerCall(
+    () => client.shop.proposeReward(title, description, price, icon: icon),
   );
 
   Future<void> voteReward(int itemId, bool approve) =>

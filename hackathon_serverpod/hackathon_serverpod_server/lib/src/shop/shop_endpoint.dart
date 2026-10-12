@@ -41,6 +41,7 @@ class ShopEndpoint extends Endpoint {
     String description,
     int price, {
     int? stock,
+    String? icon,
   }) async {
     final member = await currentGroupMember(session);
     return _shopService.propose(
@@ -50,9 +51,11 @@ class ShopEndpoint extends Endpoint {
         title: title,
         description: description,
         price: price,
+        icon: icon,
         createdById: member.id!,
         stock: stock,
       ),
+      proposer: member,
     );
   }
 

@@ -654,6 +654,11 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<int?>(),
               nullable: true,
             ),
+            'icon': _is.ParameterDescription(
+              name: 'icon',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -666,6 +671,7 @@ class Endpoints extends _is.EndpointDispatch {
                     params['description'],
                     params['price'],
                     stock: params['stock'],
+                    icon: params['icon'],
                   ),
         ),
         'voteReward': _is.MethodConnector(
@@ -856,6 +862,11 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<int>(),
               nullable: false,
             ),
+            'icon': _is.ParameterDescription(
+              name: 'icon',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -867,6 +878,7 @@ class Endpoints extends _is.EndpointDispatch {
                     params['title'],
                     params['description'],
                     params['reward'],
+                    icon: params['icon'],
                   ),
         ),
         'voteTaskProposal': _is.MethodConnector(

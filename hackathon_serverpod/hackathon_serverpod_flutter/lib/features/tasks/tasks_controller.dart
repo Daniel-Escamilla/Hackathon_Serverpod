@@ -56,9 +56,15 @@ class TasksController extends ChangeNotifier {
   Future<Task> proposeTask(
     String title,
     String description,
-    int reward,
-  ) async {
-    final task = await repository.proposeTask(title, description, reward);
+    int reward, {
+    String? icon,
+  }) async {
+    final task = await repository.proposeTask(
+      title,
+      description,
+      reward,
+      icon: icon,
+    );
     await load();
     return task;
   }

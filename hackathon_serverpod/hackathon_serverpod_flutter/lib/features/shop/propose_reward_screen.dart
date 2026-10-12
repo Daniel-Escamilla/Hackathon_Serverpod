@@ -4,7 +4,9 @@ import 'package:provider/provider.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/feedback.dart';
+import '../../ui/icon_picker.dart';
 import '../../ui/sounds.dart';
+import 'reward_icons.dart';
 import 'shop_controller.dart';
 
 class ProposeRewardScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   int _price = 40;
+  String _icon = rewardIcons.first;
   bool _loading = false;
 
   @override
@@ -42,6 +45,7 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
         title,
         _descriptionController.text.trim(),
         _price,
+        icon: _icon,
       );
       if (mounted) {
         showMessage(context, l10n.rewardSentToVote, sound: AppSound.success);
@@ -64,6 +68,13 @@ class _ProposeRewardScreenState extends State<ProposeRewardScreen> {
         TextField(
           controller: _titleController,
           decoration: InputDecoration(hintText: l10n.rewardTitleHint),
+        ),
+        const SizedBox(height: 18),
+        FieldLabel(l10n.iconLabel),
+        IconPicker(
+          icons: rewardIcons,
+          selected: _icon,
+          onPicked: (icon) => setState(() => _icon = icon),
         ),
         const SizedBox(height: 18),
         FieldLabel(l10n.descriptionLabel),

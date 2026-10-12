@@ -1165,6 +1165,7 @@ class _ShopEndpoint {
     String description,
     int price, {
     int? stock,
+    String? icon,
   }) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1182,6 +1183,7 @@ class _ShopEndpoint {
             'description': description,
             'price': price,
             'stock': stock,
+            'icon': icon,
           }),
           serializationManager: _serializationManager,
         );
@@ -1479,8 +1481,9 @@ class _TaskEndpoint {
     _ist.TestSessionBuilder sessionBuilder,
     String title,
     String description,
-    int reward,
-  ) async {
+    int reward, {
+    String? icon,
+  }) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
@@ -1496,6 +1499,7 @@ class _TaskEndpoint {
             'title': title,
             'description': description,
             'reward': reward,
+            'icon': icon,
           }),
           serializationManager: _serializationManager,
         );

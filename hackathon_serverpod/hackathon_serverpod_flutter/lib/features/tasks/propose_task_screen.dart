@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'task_icons.dart';
 import 'typical_tasks.dart';
-import '../../ui/coin_amount.dart';
+import '../../ui/icon_picker.dart';
 import '../../ui/pressable.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
@@ -21,6 +22,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   int _reward = 10;
+  String? _icon;
 
   @override
   void dispose() {
@@ -42,6 +44,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
         title: title,
         description: _descriptionController.text.trim(),
         reward: _reward,
+        icon: _icon,
       ),
     );
   }
@@ -51,31 +54,35 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
     final l10n = AppLocalizations.of(context);
     return FormScaffold(
       title: l10n.newTaskTitle,
+      subtitle: l10n.newTaskSubtitle,
       fields: [
         FieldLabel(l10n.typicalTasksLabel),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final typical in typicalTasks(l10n))
-              _TypicalTaskChip(
-                task: typical,
-                selected: _titleController.text == typical.title,
-                onTap: () => setState(() {
-                  _titleController.text = typical.title;
-                  _reward = typical.reward;
-                }),
-              ),
-          ],
+        _TypicalTaskGrid(
+          tasks: typicalTasks(l10n),
+          selectedTitle: _titleController.text,
+          onPick: (typical) => setState(() {
+            _titleController.text = typical.title;
+            _reward = typical.reward;
+            _icon = typical.emoji;
+          }),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(height: 10),
+        _OrDivider(l10n.typicalTasksOr),
+        const SizedBox(height: 10),
         FieldLabel(l10n.titleFieldLabel),
         TextField(
           controller: _titleController,
           decoration: InputDecoration(hintText: l10n.taskTitleHint),
         ),
         const SizedBox(height: 18),
-        FieldLabel(l10n.descriptionLabel),
+        FieldLabel(l10n.iconLabel),
+        IconPicker(
+          icons: taskIcons,
+          selected: _icon,
+          onPicked: (icon) => setState(() => _icon = icon),
+        ),
+        const SizedBox(height: 18),
+        FieldLabel(l10n.taskDescriptionOptionalLabel),
         TextField(
           controller: _descriptionController,
           maxLines: 3,
@@ -100,8 +107,80 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
   }
 }
 
-/// A typical chore as a card-like chip: its emoji, its name and its price.
-/// The one that filled the form is drawn in violet.
+/// A hairline with [label] in the middle, between the ideas and the form.
+class _OrDivider extends StatelessWidget {
+  const _OrDivider(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    return Row(
+      children: [
+        Expanded(child: Divider(color: palette.border)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            label,
+            style: TextStyle(color: palette.muted, fontWeight: FontWeight.w700),
+          ),
+        ),
+        Expanded(child: Divider(color: palette.border)),
+      ],
+    );
+  }
+}
+
+/// The typical chores two to a row, so every card is the same width
+/// whatever the screen.
+class _TypicalTaskGrid extends StatelessWidget {
+  const _TypicalTaskGrid({
+    required this.tasks,
+    required this.selectedTitle,
+    required this.onPick,
+  });
+
+  final List<TypicalTask> tasks;
+  final String selectedTitle;
+  final ValueChanged<TypicalTask> onPick;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (var i = 0; i < tasks.length; i += 2)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  for (final task in tasks.skip(i).take(2)) ...[
+                    if (task != tasks[i]) const SizedBox(width: 8),
+                    Expanded(
+                      child: _TypicalTaskChip(
+                        task: task,
+                        selected: selectedTitle == task.title,
+                        onTap: () => onPick(task),
+                      ),
+                    ),
+                  ],
+                  if (i + 1 >= tasks.length) ...[
+                    const SizedBox(width: 8),
+                    const Expanded(child: SizedBox()),
+                  ],
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// A typical chore as a card: its emoji and its name. The one that filled
+/// the form is drawn in violet.
 class _TypicalTaskChip extends StatelessWidget {
   const _TypicalTaskChip({
     required this.task,
@@ -116,13 +195,12 @@ class _TypicalTaskChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final palette = context.palette;
-    final ink = selected ? Colors.white : palette.ink;
     return Pressable(
       borderRadius: BorderRadius.circular(16),
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.fromLTRB(10, 8, 12, 8),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
         decoration: BoxDecoration(
           color: selected ? AppColors.violet : palette.card,
           borderRadius: BorderRadius.circular(16),
@@ -132,26 +210,17 @@ class _TypicalTaskChip extends StatelessWidget {
           ),
         ),
         child: Row(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(task.emoji, style: const TextStyle(fontSize: 18)),
-            const SizedBox(width: 8),
-            Text(
-              task.title,
-              style: TextStyle(
-                color: ink,
-                fontWeight: FontWeight.w800,
-                fontSize: 14,
-              ),
-            ),
+            Text(task.emoji, style: const TextStyle(fontSize: 20)),
             const SizedBox(width: 10),
-            CoinAmount(
-              coins: task.reward,
-              size: 16,
-              style: TextStyle(
-                color: ink,
-                fontWeight: FontWeight.w900,
-                fontSize: 14,
+            Expanded(
+              child: Text(
+                task.title,
+                style: TextStyle(
+                  color: selected ? Colors.white : palette.ink,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14,
+                ),
               ),
             ),
           ],

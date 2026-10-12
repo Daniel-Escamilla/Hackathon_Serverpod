@@ -38,8 +38,15 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **This week's ranking** on the Casa tab: karma earned minus fines, best first, with each
   member's character. The week starts again on Monday at 00:00 in Madrid.
 - **Typical chores** when proposing: a tap fills «Limpiar el baño · 25» and nine others, and the home
-  still votes on the deal. Each one is a card with its emoji and its price in karma, violet once
-  picked.
+  still votes on the deal. They sit two to a row, each a card with its emoji and its name.
+- **Icons on tasks and rewards**: pick an emoji when proposing (a typical chore brings its own), and
+  it shows on the card. A new home's starting rewards come with theirs. Adds a nullable `icon` to
+  `Task` and `RewardItem`, with a migration.
+- **A home of one works on its own**: with nobody else to vote, a proposed task opens at once, a
+  task marked done is paid at once and a proposed reward goes straight to the shop. Once someone
+  joins, everything is voted again (PRODUCT.md §4.1).
+- **A clearer new task screen** (#189): a line saying what to do, «o escribe la tuya» between the
+  ideas and the form, and the description marked optional.
 - **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has
   been there longest.
 - **Sign in with Google** from the welcome screen. The server enables it only when
@@ -60,6 +67,8 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Fixed
 
+- **The download page hands out the latest APK**: the link carries a version, because the CDN in
+  front of Cloud kept the first APK for a year.
 - **Placeholders without teammates' names**: the email field suggests `tu@example.com` and a new
   home «Nuestro piso».
 - **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;

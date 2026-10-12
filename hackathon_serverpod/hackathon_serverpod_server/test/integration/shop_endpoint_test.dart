@@ -122,6 +122,19 @@ void main() {
         expect(proposed.createdById, bob.id);
         expect(proposed.groupId, householdGroup.id);
       });
+
+      test('then a reward proposed with an icon keeps it', () async {
+        final proposed = await endpoints.shop.proposeReward(
+          sessionOf(_bobAuthUserId),
+          'Un masaje',
+          '',
+          50,
+          icon: '💆',
+        );
+
+        final stored = await RewardItem.db.findById(session, proposed.id!);
+        expect(stored!.icon, '💆');
+      });
     });
 
     group('family mode stubs, out of MVP scope (PLAN.md §1)', () {

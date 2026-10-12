@@ -74,6 +74,7 @@ redondeando hacia arriba. Quien propone o reclama **no vota** su propia tarea.
 
 | Tamaño del grupo | Votos a favor necesarios |
 |---|---|
+| 1 | 0: se aprueba sola |
 | 2 | 1 |
 | 3 | 1 |
 | 4 | 2 |
@@ -81,6 +82,10 @@ redondeando hacia arriba. Quien propone o reclama **no vota** su propia tarea.
 | 6 | 3 |
 
 Fórmula: `techo((miembros − 1) / 2)`.
+
+**Si estás solo en la casa**, no hay nadie que vote: lo que propones (tarea o recompensa) sale
+adelante al instante, y una tarea que marcas como hecha se cobra al momento. En cuanto entra otra
+persona, todo vuelve a votarse. Decidido el 12 de octubre.
 
 ### 4.2 Ventana de 24 horas
 

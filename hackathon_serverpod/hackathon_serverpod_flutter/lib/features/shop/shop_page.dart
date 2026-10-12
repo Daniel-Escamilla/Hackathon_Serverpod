@@ -233,10 +233,12 @@ class _RewardCard extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
-              child: const Icon(
-                Icons.card_giftcard_rounded,
-                color: AppColors.violet,
-              ),
+              child: reward.icon == null
+                  ? const Icon(
+                      Icons.card_giftcard_rounded,
+                      color: AppColors.violet,
+                    )
+                  : Text(reward.icon!, style: const TextStyle(fontSize: 28)),
             ),
             const SizedBox(width: 17),
             Expanded(
