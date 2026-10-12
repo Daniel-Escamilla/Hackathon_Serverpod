@@ -42,6 +42,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **Icons on tasks and rewards**: pick an emoji when proposing (a typical chore brings its own), and
   it shows on the card. A new home's starting rewards come with theirs. Adds a nullable `icon` to
   `Task` and `RewardItem`, with a migration.
+- **A home of one works on its own**: with nobody else to vote, a proposed task opens at once, a
+  task marked done is paid at once and a proposed reward goes straight to the shop. Once someone
+  joins, everything is voted again (PRODUCT.md §4.1).
 - **A clearer new task screen** (#189): a line saying what to do, «o escribe la tuya» between the
   ideas and the form, and the description marked optional.
 - **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has

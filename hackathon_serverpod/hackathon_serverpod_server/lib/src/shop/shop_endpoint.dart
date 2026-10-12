@@ -55,6 +55,7 @@ class ShopEndpoint extends Endpoint {
         createdById: member.id!,
         stock: stock,
       ),
+      proposer: member,
     );
   }
 

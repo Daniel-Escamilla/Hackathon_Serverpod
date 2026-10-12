@@ -32,7 +32,9 @@ class TaskService {
   final WalletService walletService;
   final EventService eventService;
 
-  /// Starts a new task as `proposed`, open to a proposal vote.
+  /// Starts a new task as `proposed`, open to a proposal vote — or straight
+  /// as `open` when [proposer] is alone in the home: nobody else can vote, and
+  /// the majority of zero others is zero (PRODUCT.md §4.1).
   Future<Task> proposeTask(
     Session session, {
     required GroupMember proposer,
@@ -41,6 +43,7 @@ class TaskService {
     required int reward,
     String? icon,
   }) async {
+    final alone = await isAloneInGroup(session, proposer);
     final task = await Task.db.insertRow(
       session,
       Task(
@@ -50,10 +53,13 @@ class TaskService {
         reward: reward,
         icon: icon,
         proposedById: proposer.id!,
-        voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
+        status: alone ? TaskStatus.open : TaskStatus.proposed,
+        voteClosesAt: alone
+            ? null
+            : DateTime.now().toUtc().add(_voteWindow(session)),
       ),
     );
-    await _scheduleVoteExpiry(session, task);
+    if (!alone) await _scheduleVoteExpiry(session, task);
     await eventService.publish(
       session,
       groupId: task.groupId,
@@ -337,7 +343,8 @@ class TaskService {
   /// a task beforehand (PRODUCT.md §3), so two members can press "done" on the
   /// same task at once; the row lock inside this transaction means only the
   /// first commit sees `open` and wins, the other gets `TaskErrorReason.notOpen`
-  /// (PRODUCT.md §10.2).
+  /// (PRODUCT.md §10.2). A [claimant] alone in the home has nobody to validate
+  /// it, so it is paid at once, as a vote needing zero approvals would be.
   Future<Task> markDone(
     Session session, {
     required Task task,
@@ -357,17 +364,28 @@ class TaskService {
         throw TaskException(reason: TaskErrorReason.notOpen);
       }
 
-      return Task.db.updateRow(
+      final alone = await isAloneInGroup(
+        session,
+        claimant,
+        transaction: transaction,
+      );
+      final inValidation = await Task.db.updateRow(
         session,
         locked.copyWith(
           status: TaskStatus.inValidation,
           doneById: claimant.id,
-          voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
+          voteClosesAt: alone
+              ? null
+              : DateTime.now().toUtc().add(_voteWindow(session)),
         ),
         transaction: transaction,
       );
+      if (!alone) return inValidation;
+      return _payClaimant(session, inValidation, transaction: transaction);
     });
-    await _scheduleVoteExpiry(session, claimed);
+    if (claimed.status == TaskStatus.inValidation) {
+      await _scheduleVoteExpiry(session, claimed);
+    }
     await eventService.publish(
       session,
       groupId: claimed.groupId,
@@ -701,4 +719,22 @@ class TaskService {
       );
     });
   }
+}
+
+/// Whether [member] is the only one left in their home, so no vote they open
+/// has anybody to cast it (PRODUCT.md §4.1).
+Future<bool> isAloneInGroup(
+  Session session,
+  GroupMember member, {
+  Transaction? transaction,
+}) async {
+  final others = await GroupMember.db.count(
+    session,
+    where: (t) =>
+        t.groupId.equals(member.groupId) &
+        t.leftAt.equals(null) &
+        t.id.notEquals(member.id!),
+    transaction: transaction,
+  );
+  return others == 0;
 }
