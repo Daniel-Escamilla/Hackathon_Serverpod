@@ -38,8 +38,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **This week's ranking** on the Casa tab: karma earned minus fines, best first, with each
   member's character. The week starts again on Monday at 00:00 in Madrid.
 - **Typical chores** when proposing: a tap fills «Limpiar el baño · 25» and nine others, and the home
-  still votes on the deal. Each one is a card with its emoji and its price in karma, violet once
-  picked.
+  still votes on the deal. They sit two to a row, each a card with its emoji and its name.
+- **Icons on tasks and rewards**: pick an emoji when proposing (a typical chore brings its own), and
+  it shows on the card. A new home's starting rewards come with theirs. Adds a nullable `icon` to
+  `Task` and `RewardItem`, with a migration.
+- **A clearer new task screen** (#189): a line saying what to do, «o escribe la tuya» between the
+  ideas and the form, and the description marked optional.
 - **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has
   been there longest.
 - **Sign in with Google** from the welcome screen. The server enables it only when

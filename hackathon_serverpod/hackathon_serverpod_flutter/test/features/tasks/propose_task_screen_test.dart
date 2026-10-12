@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/propose_task_screen.dart';
+import 'package:hackathon_serverpod_flutter/features/tasks/task_review_screen.dart';
 
 import '../../helpers/harness.dart';
 
@@ -32,5 +33,21 @@ void main() {
 
     expect(find.text('Sacar la basura'), findsOneWidget);
     expect(find.text('Hacer la cena'), findsOneWidget);
+  });
+
+  testWidgets('a typical chore also picks its icon for the review', (
+    tester,
+  ) async {
+    await openScreen(tester, const ProposeTaskScreen());
+
+    await tester.tap(find.text('Sacar la basura'));
+    await tester.pumpAndSettle();
+    await tapLabel(tester, 'Revisar propuesta');
+
+    final review = tester.widget<TaskReviewScreen>(
+      find.byType(TaskReviewScreen),
+    );
+    expect(review.title, 'Sacar la basura');
+    expect(review.icon, '🗑️');
   });
 }

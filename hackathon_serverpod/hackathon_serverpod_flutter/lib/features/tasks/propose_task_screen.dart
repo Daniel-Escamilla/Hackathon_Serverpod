@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'task_icons.dart';
 import 'typical_tasks.dart';
+import '../../ui/icon_picker.dart';
 import '../../ui/pressable.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
@@ -20,6 +22,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
   final _titleController = TextEditingController();
   final _descriptionController = TextEditingController();
   int _reward = 10;
+  String? _icon;
 
   @override
   void dispose() {
@@ -41,6 +44,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
         title: title,
         description: _descriptionController.text.trim(),
         reward: _reward,
+        icon: _icon,
       ),
     );
   }
@@ -59,6 +63,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
           onPick: (typical) => setState(() {
             _titleController.text = typical.title;
             _reward = typical.reward;
+            _icon = typical.emoji;
           }),
         ),
         const SizedBox(height: 10),
@@ -68,6 +73,13 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
         TextField(
           controller: _titleController,
           decoration: InputDecoration(hintText: l10n.taskTitleHint),
+        ),
+        const SizedBox(height: 18),
+        FieldLabel(l10n.iconLabel),
+        IconPicker(
+          icons: taskIcons,
+          selected: _icon,
+          onPicked: (icon) => setState(() => _icon = icon),
         ),
         const SizedBox(height: 18),
         FieldLabel(l10n.taskDescriptionOptionalLabel),

@@ -1099,6 +1099,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get taskDescriptionOptionalLabel => 'Description (optional)';
 
   @override
+  String get iconLabel => 'Icon';
+
+  @override
   String get typicalTaskTrash => 'Take the rubbish out';
 
   @override

@@ -16,12 +16,14 @@ class TaskReviewScreen extends StatelessWidget {
     required this.title,
     required this.description,
     required this.reward,
+    this.icon,
     super.key,
   });
 
   final String title;
   final String description;
   final int reward;
+  final String? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +53,7 @@ class TaskReviewScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final controller = context.read<TasksController>();
     try {
-      await controller.proposeTask(title, description, reward);
+      await controller.proposeTask(title, description, reward, icon: icon);
       if (context.mounted) {
         pushPage(
           context,

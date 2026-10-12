@@ -218,10 +218,9 @@ class _TaskCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
               ),
               alignment: Alignment.center,
-              child: const Icon(
-                Icons.task_alt_rounded,
-                color: AppColors.violet,
-              ),
+              child: task.icon == null
+                  ? const Icon(Icons.task_alt_rounded, color: AppColors.violet)
+                  : Text(task.icon!, style: const TextStyle(fontSize: 30)),
             ),
             const SizedBox(width: 14),
             Expanded(

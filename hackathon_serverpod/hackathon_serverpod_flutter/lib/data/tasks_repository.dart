@@ -14,10 +14,14 @@ class TasksRepository {
   Future<List<TaskVote>> listTaskVotes() =>
       guardServerCall(client.task.listTaskVotes);
 
-  Future<Task> proposeTask(String title, String description, int reward) =>
-      guardServerCall(
-        () => client.task.proposeTask(title, description, reward),
-      );
+  Future<Task> proposeTask(
+    String title,
+    String description,
+    int reward, {
+    String? icon,
+  }) => guardServerCall(
+    () => client.task.proposeTask(title, description, reward, icon: icon),
+  );
 
   Future<Task> voteTaskProposal(int taskId, bool approve) =>
       guardServerCall(() => client.task.voteTaskProposal(taskId, approve));

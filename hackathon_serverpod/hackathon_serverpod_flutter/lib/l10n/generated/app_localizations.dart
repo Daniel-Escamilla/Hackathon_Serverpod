@@ -2048,6 +2048,12 @@ abstract class AppLocalizations {
   /// **'Descripción (opcional)'**
   String get taskDescriptionOptionalLabel;
 
+  /// Propose task / reward: label over the row of emoji to pick from
+  ///
+  /// In es, this message translates to:
+  /// **'Icono'**
+  String get iconLabel;
+
   /// Typical chore
   ///
   /// In es, this message translates to:

@@ -810,6 +810,8 @@
   "typicalTasksOr": "o escribe la tuya",
   "@typicalTasksOr": {"description":"Propose task: divider between the typical chores and the form"},
   "taskDescriptionOptionalLabel": "Descripción (opcional)",
+  "iconLabel": "Icono",
+  "@iconLabel": {"description":"Propose task / reward: label over the row of emoji to pick from"},
   "@taskDescriptionOptionalLabel": {"description":"Propose task: label over the optional description field"},
   "typicalTaskTrash": "Sacar la basura",
   "@typicalTaskTrash": {"description":"Typical chore"},
