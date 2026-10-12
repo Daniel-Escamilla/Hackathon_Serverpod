@@ -68,7 +68,7 @@
 
   "signInTitle": "Entra en tu cuenta",
   "emailFieldLabel": "Email",
-  "emailHint": "mayte@email.com",
+  "emailHint": "tu@example.com",
   "passwordFieldLabel": "Contraseña",
   "passwordHint": "••••••••",
   "signInSubmit": "Entrar",
@@ -143,7 +143,7 @@
   "profileCouple": "Pareja",
   "profileFamily": "Familia",
   "groupNameLabel": "Nombre de la casa",
-  "groupNameHint": "Casa de Mayte y Juan",
+  "groupNameHint": "Nuestro piso",
   "createGroupSubmit": "Crear casa",
   "createGroupErrorEmpty": "Ponle un nombre a la casa.",
   "createGroupErrorGeneric": "No se pudo crear la casa.",

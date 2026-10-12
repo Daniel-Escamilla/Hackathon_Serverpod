@@ -48,7 +48,7 @@
 
   "signInTitle": "Sign in to your account",
   "emailFieldLabel": "Email",
-  "emailHint": "mayte@email.com",
+  "emailHint": "you@example.com",
   "passwordFieldLabel": "Password",
   "passwordHint": "••••••••",
   "signInSubmit": "Sign in",
@@ -97,7 +97,7 @@
   "profileCouple": "Couple",
   "profileFamily": "Family",
   "groupNameLabel": "Home name",
-  "groupNameHint": "Mayte and Juan's place",
+  "groupNameHint": "Our flat",
   "createGroupSubmit": "Create home",
   "createGroupErrorEmpty": "Give the home a name.",
   "createGroupErrorGeneric": "Couldn't create the home.",

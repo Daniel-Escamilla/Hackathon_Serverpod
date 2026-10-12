@@ -8,7 +8,8 @@ void main() {
   testWidgets('a typical chore fills the title and its price', (tester) async {
     await openScreen(tester, const ProposeTaskScreen());
 
-    await tester.tap(find.text('Limpiar el baño · 25'));
+    // The title field's hint says it too; the chip comes first.
+    await tester.tap(find.text('Limpiar el baño').first);
     await tester.pumpAndSettle();
 
     final title = tester.widget<TextField>(find.byType(TextField).first);
@@ -25,7 +26,7 @@ void main() {
   testWidgets('every typical chore is offered', (tester) async {
     await openScreen(tester, const ProposeTaskScreen());
 
-    expect(find.text('Sacar la basura · 5'), findsOneWidget);
-    expect(find.text('Hacer la cena · 20'), findsOneWidget);
+    expect(find.text('Sacar la basura'), findsOneWidget);
+    expect(find.text('Hacer la cena'), findsOneWidget);
   });
 }

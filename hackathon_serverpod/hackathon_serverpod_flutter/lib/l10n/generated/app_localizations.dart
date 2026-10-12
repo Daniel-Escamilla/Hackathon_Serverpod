@@ -347,7 +347,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailHint.
   ///
   /// In es, this message translates to:
-  /// **'mayte@email.com'**
+  /// **'tu@example.com'**
   String get emailHint;
 
   /// No description provided for @passwordFieldLabel.
@@ -605,7 +605,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupNameHint.
   ///
   /// In es, this message translates to:
-  /// **'Casa de Mayte y Juan'**
+  /// **'Nuestro piso'**
   String get groupNameHint;
 
   /// No description provided for @createGroupSubmit.

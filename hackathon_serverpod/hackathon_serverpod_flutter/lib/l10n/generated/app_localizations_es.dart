@@ -163,7 +163,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emailFieldLabel => 'Email';
 
   @override
-  String get emailHint => 'mayte@email.com';
+  String get emailHint => 'tu@example.com';
 
   @override
   String get passwordFieldLabel => 'Contraseña';
@@ -299,7 +299,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get groupNameLabel => 'Nombre de la casa';
 
   @override
-  String get groupNameHint => 'Casa de Mayte y Juan';
+  String get groupNameHint => 'Nuestro piso';
 
   @override
   String get createGroupSubmit => 'Crear casa';

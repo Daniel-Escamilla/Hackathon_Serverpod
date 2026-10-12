@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'typical_tasks.dart';
+import '../../ui/coin_amount.dart';
 import '../../ui/pressable.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
@@ -57,18 +58,13 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
           runSpacing: 8,
           children: [
             for (final typical in typicalTasks(l10n))
-              Pressable(
-                borderRadius: BorderRadius.circular(20),
+              _TypicalTaskChip(
+                task: typical,
+                selected: _titleController.text == typical.title,
                 onTap: () => setState(() {
                   _titleController.text = typical.title;
                   _reward = typical.reward;
                 }),
-                child: StatusPill(
-                  label: '${typical.title} · ${typical.reward}',
-                  color: _titleController.text == typical.title
-                      ? AppColors.lime
-                      : AppColors.cream,
-                ),
               ),
           ],
         ),
@@ -100,6 +96,67 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
       ],
       button: l10n.reviewProposal,
       onSubmit: _submit,
+    );
+  }
+}
+
+/// A typical chore as a card-like chip: its emoji, its name and its price.
+/// The one that filled the form is drawn in violet.
+class _TypicalTaskChip extends StatelessWidget {
+  const _TypicalTaskChip({
+    required this.task,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final TypicalTask task;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    final ink = selected ? Colors.white : palette.ink;
+    return Pressable(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.fromLTRB(10, 8, 12, 8),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.violet : palette.card,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: selected ? AppColors.violet : palette.border,
+            width: 1.5,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(task.emoji, style: const TextStyle(fontSize: 18)),
+            const SizedBox(width: 8),
+            Text(
+              task.title,
+              style: TextStyle(
+                color: ink,
+                fontWeight: FontWeight.w800,
+                fontSize: 14,
+              ),
+            ),
+            const SizedBox(width: 10),
+            CoinAmount(
+              coins: task.reward,
+              size: 16,
+              style: TextStyle(
+                color: ink,
+                fontWeight: FontWeight.w900,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
