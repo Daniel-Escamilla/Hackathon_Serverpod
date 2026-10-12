@@ -16,6 +16,7 @@ import '../../ui/pressable.dart';
 import '../group/group_controller.dart';
 import '../wallet/wallet_controller.dart';
 import 'shop_controller.dart';
+import 'reward_titles.dart';
 
 class BuyRewardScreen extends StatefulWidget {
   const BuyRewardScreen({required this.reward, super.key});
@@ -66,7 +67,10 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                   // for its lavender, not the page's.
                   child: Builder(
                     builder: (context) => Text(
-                      widget.reward.title,
+                      rewardTitle(
+                        AppLocalizations.of(context),
+                        widget.reward.title,
+                      ),
                       style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),

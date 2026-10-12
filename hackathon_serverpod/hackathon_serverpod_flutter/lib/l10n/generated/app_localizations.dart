@@ -2054,6 +2054,114 @@ abstract class AppLocalizations {
   /// **'Icono'**
   String get iconLabel;
 
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Ducha larga sin que nadie llame'**
+  String get rewardTemplateShower;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir la peli de la noche'**
+  String get rewardTemplateMovie;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'El sofá y el mando toda la tarde'**
+  String get rewardTemplateSofa;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Elijo yo la cena'**
+  String get rewardTemplateDinner;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te libras de fregar hoy'**
+  String get rewardTemplateSkipDishes;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Traigo el desayuno el domingo'**
+  String get rewardTemplateBreakfast;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Unas cervezas y pago yo'**
+  String get rewardTemplateBeers;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te hago la compra esta semana'**
+  String get rewardTemplateShopping;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te cambio el turno de limpieza'**
+  String get rewardTemplateCleaningTurn;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Cena pagada fuera'**
+  String get rewardTemplateDinnerOutFlat;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Elijo yo la serie esta noche'**
+  String get rewardTemplateSeries;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Desayuno en la cama'**
+  String get rewardTemplateBreakfastInBed;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Un masaje'**
+  String get rewardTemplateMassage;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'El plan del sábado lo elijo yo'**
+  String get rewardTemplateSaturday;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te libras de una tarea'**
+  String get rewardTemplateSkipChore;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Hago tus tareas un día entero'**
+  String get rewardTemplateMyChoresForADay;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Cena fuera, pago yo'**
+  String get rewardTemplateDinnerOutCouple;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Escapada de fin de semana'**
+  String get rewardTemplateWeekend;
+
   /// Typical chore
   ///
   /// In es, this message translates to:

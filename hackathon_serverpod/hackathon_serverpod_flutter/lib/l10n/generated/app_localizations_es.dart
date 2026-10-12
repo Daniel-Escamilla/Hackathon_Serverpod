@@ -1102,6 +1102,60 @@ class AppLocalizationsEs extends AppLocalizations {
   String get iconLabel => 'Icono';
 
   @override
+  String get rewardTemplateShower => 'Ducha larga sin que nadie llame';
+
+  @override
+  String get rewardTemplateMovie => 'Elegir la peli de la noche';
+
+  @override
+  String get rewardTemplateSofa => 'El sofá y el mando toda la tarde';
+
+  @override
+  String get rewardTemplateDinner => 'Elijo yo la cena';
+
+  @override
+  String get rewardTemplateSkipDishes => 'Te libras de fregar hoy';
+
+  @override
+  String get rewardTemplateBreakfast => 'Traigo el desayuno el domingo';
+
+  @override
+  String get rewardTemplateBeers => 'Unas cervezas y pago yo';
+
+  @override
+  String get rewardTemplateShopping => 'Te hago la compra esta semana';
+
+  @override
+  String get rewardTemplateCleaningTurn => 'Te cambio el turno de limpieza';
+
+  @override
+  String get rewardTemplateDinnerOutFlat => 'Cena pagada fuera';
+
+  @override
+  String get rewardTemplateSeries => 'Elijo yo la serie esta noche';
+
+  @override
+  String get rewardTemplateBreakfastInBed => 'Desayuno en la cama';
+
+  @override
+  String get rewardTemplateMassage => 'Un masaje';
+
+  @override
+  String get rewardTemplateSaturday => 'El plan del sábado lo elijo yo';
+
+  @override
+  String get rewardTemplateSkipChore => 'Te libras de una tarea';
+
+  @override
+  String get rewardTemplateMyChoresForADay => 'Hago tus tareas un día entero';
+
+  @override
+  String get rewardTemplateDinnerOutCouple => 'Cena fuera, pago yo';
+
+  @override
+  String get rewardTemplateWeekend => 'Escapada de fin de semana';
+
+  @override
   String get typicalTaskTrash => 'Sacar la basura';
 
   @override

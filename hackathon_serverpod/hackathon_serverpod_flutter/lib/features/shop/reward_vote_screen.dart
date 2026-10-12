@@ -11,6 +11,7 @@ import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
 import 'shop_controller.dart';
+import 'reward_titles.dart';
 
 class RewardVoteScreen extends StatelessWidget {
   const RewardVoteScreen({required this.reward, super.key});
@@ -25,7 +26,7 @@ class RewardVoteScreen extends StatelessWidget {
         label: l10n.awaitingYourVote,
         color: const Color(0xFFE2DCFF),
       ),
-      title: reward.title,
+      title: rewardTitle(AppLocalizations.of(context), reward.title),
       content: [
         const Center(child: AppLottie(AppAnimation.vote, size: 76)),
         BigValueCard(

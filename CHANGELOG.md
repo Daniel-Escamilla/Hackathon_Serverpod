@@ -69,6 +69,8 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 - **The download page hands out the latest APK**: the link carries a version, because the CDN in
   front of Cloud kept the first APK for a year.
+- **Starting rewards in the app's language**: the server stores them in Spanish; the app now shows
+  them in English too.
 - **Placeholders without teammates' names**: the email field suggests `tu@example.com` and a new
   home «Nuestro piso».
 - **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;
