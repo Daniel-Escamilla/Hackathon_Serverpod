@@ -154,23 +154,39 @@ class _MovementRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final positive = movement.amount >= 0;
+    final l10n = AppLocalizations.of(context);
+    final badge = _badgeColor;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SoftCard(
         child: Row(
           children: [
-            Icon(_icon, color: context.palette.accent),
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(color: badge, shape: BoxShape.circle),
+              alignment: Alignment.center,
+              child: Icon(
+                _icon,
+                size: 22,
+                color: badge == AppColors.coral ? Colors.white : AppColors.ink,
+              ),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movement.title ?? _label(AppLocalizations.of(context)),
+                    movement.title ?? _label(l10n),
                     style: const TextStyle(fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    _formatDate(movement.createdAt),
+                    // The reason is the title already when there is no task
+                    // or reward to name.
+                    movement.title == null
+                        ? _formatDate(movement.createdAt)
+                        : '${_label(l10n)} · ${_formatDate(movement.createdAt)}',
                     style: TextStyle(
                       color: context.palette.muted,
                       fontSize: 13,
@@ -195,6 +211,18 @@ class _MovementRow extends StatelessWidget {
       ),
     );
   }
+
+  /// Lime for karma coming in, sky for karma spent in the shop, coral for
+  /// every kind of fine.
+  Color get _badgeColor => switch (movement.reason) {
+    CoinTransactionReason.earned ||
+    CoinTransactionReason.refunded => AppColors.lime,
+    CoinTransactionReason.spent => AppColors.skyTint,
+    CoinTransactionReason.fined ||
+    CoinTransactionReason.proposalDenied ||
+    CoinTransactionReason.validationDenied ||
+    CoinTransactionReason.voteExpired => AppColors.coral,
+  };
 
   IconData get _icon => switch (movement.reason) {
     CoinTransactionReason.earned => Icons.task_alt_rounded,
