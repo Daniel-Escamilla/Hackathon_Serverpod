@@ -8,6 +8,28 @@ ALTER TABLE "reward_item" ADD COLUMN "icon" text;
 -- ACTION ALTER TABLE
 --
 ALTER TABLE "task" ADD COLUMN "icon" text;
+--
+-- Data: the starting rewards of homes created before this migration get the
+-- icon their template now carries.
+--
+UPDATE "reward_item" SET "icon" = '🛁' WHERE "icon" IS NULL AND "title" = 'Ducha larga sin que nadie llame';
+UPDATE "reward_item" SET "icon" = '🎬' WHERE "icon" IS NULL AND "title" = 'Elegir la peli de la noche';
+UPDATE "reward_item" SET "icon" = '🛋️' WHERE "icon" IS NULL AND "title" = 'El sofá y el mando toda la tarde';
+UPDATE "reward_item" SET "icon" = '🍕' WHERE "icon" IS NULL AND "title" = 'Elijo yo la cena';
+UPDATE "reward_item" SET "icon" = '🧽' WHERE "icon" IS NULL AND "title" = 'Te libras de fregar hoy';
+UPDATE "reward_item" SET "icon" = '🥐' WHERE "icon" IS NULL AND "title" = 'Traigo el desayuno el domingo';
+UPDATE "reward_item" SET "icon" = '🍻' WHERE "icon" IS NULL AND "title" = 'Unas cervezas y pago yo';
+UPDATE "reward_item" SET "icon" = '🛒' WHERE "icon" IS NULL AND "title" = 'Te hago la compra esta semana';
+UPDATE "reward_item" SET "icon" = '🔁' WHERE "icon" IS NULL AND "title" = 'Te cambio el turno de limpieza';
+UPDATE "reward_item" SET "icon" = '🍽️' WHERE "icon" IS NULL AND "title" = 'Cena pagada fuera';
+UPDATE "reward_item" SET "icon" = '📺' WHERE "icon" IS NULL AND "title" = 'Elijo yo la serie esta noche';
+UPDATE "reward_item" SET "icon" = '☕' WHERE "icon" IS NULL AND "title" = 'Desayuno en la cama';
+UPDATE "reward_item" SET "icon" = '💆' WHERE "icon" IS NULL AND "title" = 'Un masaje';
+UPDATE "reward_item" SET "icon" = '🎉' WHERE "icon" IS NULL AND "title" = 'El plan del sábado lo elijo yo';
+UPDATE "reward_item" SET "icon" = '🧽' WHERE "icon" IS NULL AND "title" = 'Te libras de una tarea';
+UPDATE "reward_item" SET "icon" = '💪' WHERE "icon" IS NULL AND "title" = 'Hago tus tareas un día entero';
+UPDATE "reward_item" SET "icon" = '🍽️' WHERE "icon" IS NULL AND "title" = 'Cena fuera, pago yo';
+UPDATE "reward_item" SET "icon" = '🧳' WHERE "icon" IS NULL AND "title" = 'Escapada de fin de semana';
 
 --
 -- MIGRATION VERSION FOR hackathon_serverpod
