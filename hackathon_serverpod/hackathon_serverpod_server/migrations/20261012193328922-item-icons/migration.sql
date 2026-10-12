@@ -27,7 +27,7 @@ UPDATE "reward_item" SET "icon" = '☕' WHERE "icon" IS NULL AND "title" = 'Desa
 UPDATE "reward_item" SET "icon" = '💆' WHERE "icon" IS NULL AND "title" = 'Un masaje';
 UPDATE "reward_item" SET "icon" = '🎉' WHERE "icon" IS NULL AND "title" = 'El plan del sábado lo elijo yo';
 UPDATE "reward_item" SET "icon" = '🧽' WHERE "icon" IS NULL AND "title" = 'Te libras de una tarea';
-UPDATE "reward_item" SET "icon" = '💪' WHERE "icon" IS NULL AND "title" = 'Hago tus tareas un día entero';
+UPDATE "reward_item" SET "icon" = '🦸' WHERE "icon" IS NULL AND "title" = 'Hago tus tareas un día entero';
 UPDATE "reward_item" SET "icon" = '🍽️' WHERE "icon" IS NULL AND "title" = 'Cena fuera, pago yo';
 UPDATE "reward_item" SET "icon" = '🧳' WHERE "icon" IS NULL AND "title" = 'Escapada de fin de semana';
 

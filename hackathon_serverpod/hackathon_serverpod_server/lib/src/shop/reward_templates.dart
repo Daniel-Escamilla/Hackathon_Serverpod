@@ -32,7 +32,7 @@ const Map<GroupType, List<RewardTemplate>> rewardTemplatesByGroupType = {
     RewardTemplate('Un masaje', 50, '💆'),
     RewardTemplate('El plan del sábado lo elijo yo', 60, '🎉'),
     RewardTemplate('Te libras de una tarea', 80, '🧽'),
-    RewardTemplate('Hago tus tareas un día entero', 120, '💪'),
+    RewardTemplate('Hago tus tareas un día entero', 120, '🦸'),
     RewardTemplate('Cena fuera, pago yo', 150, '🍽️'),
     RewardTemplate('Escapada de fin de semana', 1000, '🧳'),
   ],
