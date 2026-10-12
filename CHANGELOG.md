@@ -38,7 +38,8 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **This week's ranking** on the Casa tab: karma earned minus fines, best first, with each
   member's character. The week starts again on Monday at 00:00 in Madrid.
 - **Typical chores** when proposing: a tap fills «Limpiar el baño · 25» and nine others, and the home
-  still votes on the deal.
+  still votes on the deal. Each one is a card with its emoji and its price in karma, violet once
+  picked.
 - **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has
   been there longest.
 - **Sign in with Google** from the welcome screen. The server enables it only when
@@ -59,6 +60,8 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Fixed
 
+- **Placeholders without teammates' names**: the email field suggests `tu@example.com` and a new
+  home «Nuestro piso».
 - **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;
   a denied proposal, a denied validation and an expired vote are fines too.
 
