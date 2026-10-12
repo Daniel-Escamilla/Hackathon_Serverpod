@@ -126,7 +126,7 @@ class _Body extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 14),
               child: _RewardCard(
-                color: AppColors.sky.withValues(alpha: .45),
+                color: AppColors.skyTint,
                 reward: reward,
                 onTap: () => pushPage(context, BuyRewardScreen(reward: reward)),
               ),
@@ -220,43 +220,47 @@ class _RewardCard extends StatelessWidget {
       color: color,
       onTap: onTap,
       padding: const EdgeInsets.all(20),
-      child: Row(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
+      // A Builder so the circle and the title read the theme SoftCard sets
+      // for the pastel, not the page's.
+      child: Builder(
+        builder: (context) => Row(
+          children: [
+            Container(
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                color: context.palette.card,
+                shape: BoxShape.circle,
+              ),
+              alignment: Alignment.center,
+              child: const Icon(
+                Icons.card_giftcard_rounded,
+                color: AppColors.violet,
+              ),
             ),
-            alignment: Alignment.center,
-            child: const Icon(
-              Icons.card_giftcard_rounded,
-              color: AppColors.violet,
-            ),
-          ),
-          const SizedBox(width: 17),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  reward.title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  '🪙 ${AppLocalizations.of(context).rewardAmount(reward.price)}',
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w900,
-                    fontFeatures: AppFonts.tabularFigures,
+            const SizedBox(width: 17),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    reward.title,
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
-                ),
-              ],
+                  const SizedBox(height: 8),
+                  Text(
+                    '🪙 ${AppLocalizations.of(context).rewardAmount(reward.price)}',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontFeatures: AppFonts.tabularFigures,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const Icon(Icons.chevron_right_rounded),
-        ],
+            const Icon(Icons.chevron_right_rounded),
+          ],
+        ),
       ),
     );
   }

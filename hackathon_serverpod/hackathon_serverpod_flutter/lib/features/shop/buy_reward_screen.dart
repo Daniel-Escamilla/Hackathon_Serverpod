@@ -62,9 +62,13 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                 ),
                 const SizedBox(width: 14),
                 Expanded(
-                  child: Text(
-                    widget.reward.title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  // Builder: the title reads the light theme SoftCard sets
+                  // for its lavender, not the page's.
+                  child: Builder(
+                    builder: (context) => Text(
+                      widget.reward.title,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
                 ),
                 Text(
@@ -103,13 +107,13 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                   sound: null,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.palette.card,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: _selectedMemberId == member.id
-                            ? AppColors.violet
+                            ? context.palette.accent
                             : Colors.transparent,
                         width: 2,
                       ),
@@ -133,8 +137,8 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                               ? Icons.check_circle_rounded
                               : Icons.circle_outlined,
                           color: _selectedMemberId == member.id
-                              ? AppColors.violet
-                              : AppColors.muted,
+                              ? context.palette.accent
+                              : context.palette.muted,
                         ),
                       ],
                     ),

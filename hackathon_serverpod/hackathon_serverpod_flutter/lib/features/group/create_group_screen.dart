@@ -78,7 +78,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           const SizedBox(height: 8),
           Text(
             l10n.createGroupHint,
-            style: const TextStyle(color: AppColors.muted),
+            style: TextStyle(color: context.palette.muted),
           ),
           const SizedBox(height: 28),
           Row(
@@ -110,7 +110,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
-            Text(_error!, style: const TextStyle(color: AppColors.coral)),
+            Text(_error!, style: TextStyle(color: context.palette.danger)),
           ],
           const SizedBox(height: 24),
           AppButton(
@@ -144,13 +144,13 @@ class _ProfileCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(24),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 180),
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(16),
         height: 178,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.palette.card,
           borderRadius: BorderRadius.circular(24),
           border: Border.all(
-            color: selected ? AppColors.violet : const Color(0xFFE1DEE8),
+            color: selected ? context.palette.accent : context.palette.border,
             width: 2,
           ),
         ),
@@ -160,7 +160,9 @@ class _ProfileCard extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: Icon(
                 selected ? Icons.check_circle_rounded : Icons.circle_outlined,
-                color: selected ? AppColors.violet : AppColors.muted,
+                color: selected
+                    ? context.palette.accent
+                    : context.palette.muted,
               ),
             ),
             Text(emoji, style: const TextStyle(fontSize: 52)),

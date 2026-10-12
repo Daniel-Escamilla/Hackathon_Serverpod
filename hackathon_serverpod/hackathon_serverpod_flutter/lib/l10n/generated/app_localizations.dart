@@ -1928,6 +1928,18 @@ abstract class AppLocalizations {
   /// **'Los pops de los botones, el karma, las multas y los avisos.'**
   String get soundsToggleHint;
 
+  /// Settings screen: label of the switch between the light and the dark theme
+  ///
+  /// In es, this message translates to:
+  /// **'Modo oscuro'**
+  String get darkModeToggle;
+
+  /// Settings screen: what the dark mode switch does, under its label
+  ///
+  /// In es, this message translates to:
+  /// **'Un gris suave para la noche, en este dispositivo.'**
+  String get darkModeToggleHint;
+
   /// Tooltip of the admin's icon on a member's row that hands them the admin role
   ///
   /// In es, this message translates to:

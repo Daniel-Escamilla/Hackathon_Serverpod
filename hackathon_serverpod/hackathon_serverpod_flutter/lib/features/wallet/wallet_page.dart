@@ -159,7 +159,7 @@ class _MovementRow extends StatelessWidget {
       child: SoftCard(
         child: Row(
           children: [
-            Icon(_icon, color: AppColors.violet),
+            Icon(_icon, color: context.palette.accent),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
@@ -171,8 +171,8 @@ class _MovementRow extends StatelessWidget {
                   ),
                   Text(
                     _formatDate(movement.createdAt),
-                    style: const TextStyle(
-                      color: AppColors.muted,
+                    style: TextStyle(
+                      color: context.palette.muted,
                       fontSize: 13,
                     ),
                   ),
@@ -182,7 +182,9 @@ class _MovementRow extends StatelessWidget {
             Text(
               '${positive ? '+' : ''}${movement.amount}',
               style: TextStyle(
-                color: positive ? const Color(0xFF16853C) : AppColors.coral,
+                color: positive
+                    ? context.palette.positive
+                    : context.palette.danger,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
                 fontFeatures: AppFonts.tabularFigures,

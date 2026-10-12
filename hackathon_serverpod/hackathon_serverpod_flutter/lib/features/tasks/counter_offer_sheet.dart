@@ -27,8 +27,8 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
         24,
         24 + MediaQuery.viewInsetsOf(context).bottom,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.cream,
+      decoration: BoxDecoration(
+        color: context.palette.background,
         borderRadius: BorderRadius.vertical(top: Radius.circular(32)),
       ),
       child: Column(
@@ -38,7 +38,7 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
             width: 44,
             height: 5,
             decoration: BoxDecoration(
-              color: const Color(0xFFD3CFD8),
+              color: context.palette.border,
               borderRadius: BorderRadius.circular(4),
             ),
           ),
@@ -50,7 +50,7 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
           const SizedBox(height: 8),
           Text(
             l10n.counterOfferSheetSubtitle,
-            style: const TextStyle(color: AppColors.muted),
+            style: TextStyle(color: context.palette.muted),
           ),
           const SizedBox(height: 26),
           Row(

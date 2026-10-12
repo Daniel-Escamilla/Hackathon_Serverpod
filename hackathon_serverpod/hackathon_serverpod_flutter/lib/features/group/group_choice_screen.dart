@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../ui/app_animation.dart';
+import '../../ui/fill_theme.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -74,41 +75,51 @@ class _ChoiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    // The lime and sky stay pastel in dark mode: FillTheme gives the card the
+    // light theme, and the Builder lets the texts below read it.
+    return FillTheme(
       color: color,
-      borderRadius: BorderRadius.circular(28),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(28),
-        child: Padding(
-          padding: const EdgeInsets.all(22),
-          child: Row(
-            children: [
-              Container(
-                width: 76,
-                height: 76,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(icon, color: AppColors.violet, size: 42),
-              ),
-              const SizedBox(width: 18),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(title, style: Theme.of(context).textTheme.titleLarge),
-                    const SizedBox(height: 4),
-                    Text(
-                      subtitle,
-                      style: const TextStyle(color: AppColors.muted),
+      child: Builder(
+        builder: (context) => Material(
+          color: color,
+          borderRadius: BorderRadius.circular(28),
+          child: InkWell(
+            onTap: onTap,
+            borderRadius: BorderRadius.circular(28),
+            child: Padding(
+              padding: const EdgeInsets.all(22),
+              child: Row(
+                children: [
+                  Container(
+                    width: 76,
+                    height: 76,
+                    decoration: BoxDecoration(
+                      color: context.palette.card,
+                      shape: BoxShape.circle,
                     ),
-                  ],
-                ),
+                    child: Icon(icon, color: AppColors.violet, size: 42),
+                  ),
+                  const SizedBox(width: 18),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          subtitle,
+                          style: TextStyle(color: context.palette.muted),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.arrow_forward_rounded),
+                ],
               ),
-              const Icon(Icons.arrow_forward_rounded),
-            ],
+            ),
           ),
         ),
       ),

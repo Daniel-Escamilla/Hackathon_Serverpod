@@ -748,6 +748,14 @@
   "@soundsToggleHint": {
     "description": "Settings screen: what the sound switch covers, under its label"
   },
+  "darkModeToggle": "Modo oscuro",
+  "@darkModeToggle": {
+    "description": "Settings screen: label of the switch between the light and the dark theme"
+  },
+  "darkModeToggleHint": "Un gris suave para la noche, en este dispositivo.",
+  "@darkModeToggleHint": {
+    "description": "Settings screen: what the dark mode switch does, under its label"
+  },
   "transferAdminAction": "Hacer admin",
   "@transferAdminAction": {
     "description": "Tooltip of the admin's icon on a member's row that hands them the admin role"

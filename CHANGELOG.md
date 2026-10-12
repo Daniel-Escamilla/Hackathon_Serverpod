@@ -14,6 +14,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ### Added
 
+- **Dark mode**, a soft grey rather than black, switched from Mis ajustes and kept on the device.
+  It was built on 30 September but merged into a branch that had already landed, so it never
+  reached `develop`; it is back, carried over to every screen added since. Every text colour
+  in it reads at 4.5:1 or better: violet, coral and green get light tints when they are the text
+  or the icon, and anything drawn on a pastel (pills, the lime and sky cards) keeps dark ink.
+
 - **A download page for the Android app**, `descargar.html`, to share instead of a bare APK link:
   it carries the logo and link preview that WhatsApp and the like cannot show for an APK. The APK
   goes up with the Cloud deploy and is served at `/web/apk/KarmaHome.apk`.

@@ -7,6 +7,7 @@ import '../features/wallet/wallet_controller.dart';
 import '../home_shell.dart';
 import '../l10n/generated/app_localizations.dart';
 import '../ui/app_button.dart';
+import '../ui/fill_theme.dart';
 import '../ui/pressable.dart';
 import 'activity_screen.dart';
 import 'navigation.dart';
@@ -39,7 +40,7 @@ class PageHeader extends StatelessWidget {
                   const SizedBox(height: 5),
                   Text(
                     subtitle!,
-                    style: const TextStyle(color: AppColors.muted),
+                    style: TextStyle(color: context.palette.muted),
                   ),
                 ],
               ],
@@ -125,28 +126,32 @@ class CoinPill extends StatelessWidget {
 class SoftCard extends StatelessWidget {
   const SoftCard({
     required this.child,
-    this.color = Colors.white,
+    this.color,
     this.onTap,
     this.padding,
     super.key,
   });
 
   final Widget child;
-  final Color color;
+  final Color? color;
   final VoidCallback? onTap;
   final EdgeInsets? padding;
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: color,
-      borderRadius: BorderRadius.circular(24),
-      child: InkWell(
-        onTap: onTap,
+    final fill = color ?? context.palette.card;
+    return FillTheme(
+      color: fill,
+      child: Material(
+        color: fill,
         borderRadius: BorderRadius.circular(24),
-        child: Padding(
-          padding: padding ?? const EdgeInsets.all(16),
-          child: child,
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(24),
+          child: Padding(
+            padding: padding ?? const EdgeInsets.all(16),
+            child: child,
+          ),
         ),
       ),
     );
@@ -169,7 +174,13 @@ class StatusPill extends StatelessWidget {
       ),
       child: Text(
         label,
-        style: const TextStyle(fontWeight: FontWeight.w900, fontSize: 13),
+        style: TextStyle(
+          color: FillTheme.wantsDarkInk(context, color)
+              ? AppColors.ink
+              : Colors.white,
+          fontWeight: FontWeight.w900,
+          fontSize: 13,
+        ),
       ),
     );
   }
@@ -204,7 +215,7 @@ class InfoRow extends StatelessWidget {
     return SoftCard(
       child: Row(
         children: [
-          leading ?? Icon(icon, color: AppColors.violet),
+          leading ?? Icon(icon, color: context.palette.accent),
           const SizedBox(width: 12),
           Expanded(
             child: Text(
@@ -240,25 +251,28 @@ class BigValueCard extends StatelessWidget {
         color: color,
         borderRadius: BorderRadius.circular(28),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(icon, style: const TextStyle(fontSize: 45)),
-          const SizedBox(width: 14),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 52,
-              fontWeight: FontWeight.w900,
-              fontFeatures: AppFonts.tabularFigures,
+      child: FillTheme(
+        color: color,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(icon, style: const TextStyle(fontSize: 45)),
+            const SizedBox(width: 14),
+            Text(
+              value,
+              style: const TextStyle(
+                fontSize: 52,
+                fontWeight: FontWeight.w900,
+                fontFeatures: AppFonts.tabularFigures,
+              ),
             ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
-          ),
-        ],
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -328,7 +342,7 @@ class DetailScaffold extends StatelessWidget {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(24, 12, 24, 22),
-              color: AppColors.cream,
+              color: context.palette.background,
               child: Column(mainAxisSize: MainAxisSize.min, children: actions),
             ),
           ],
@@ -468,13 +482,13 @@ class FilterPill extends StatelessWidget {
       margin: const EdgeInsets.only(right: 8),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: selected ? AppColors.violet : Colors.white,
+        color: selected ? AppColors.violet : context.palette.card,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Text(
         label,
         style: TextStyle(
-          color: selected ? Colors.white : AppColors.ink,
+          color: selected ? Colors.white : context.palette.ink,
           fontWeight: FontWeight.w800,
         ),
       ),
@@ -511,7 +525,7 @@ class SimpleFormPage extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 subtitle!,
-                style: const TextStyle(color: AppColors.muted, fontSize: 16),
+                style: TextStyle(color: context.palette.muted, fontSize: 16),
               ),
             ],
             const SizedBox(height: 42),

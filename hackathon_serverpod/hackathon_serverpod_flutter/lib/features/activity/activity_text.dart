@@ -41,20 +41,20 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.memberLeft => Icons.logout_rounded,
   };
 
-  Color get color => switch (kind) {
+  Color colorIn(AppPalette palette) => switch (kind) {
     GroupEventKind.taskProposed ||
     GroupEventKind.taskVoteCast ||
     GroupEventKind.taskCounterOffered ||
     GroupEventKind.taskClaimed ||
-    GroupEventKind.taskValidated => AppColors.violet,
+    GroupEventKind.taskValidated => palette.accent,
     GroupEventKind.rewardProposed ||
     GroupEventKind.rewardVoteCast ||
     GroupEventKind.purchased ||
     GroupEventKind.purchaseResponded ||
-    GroupEventKind.purchaseDelivered => AppColors.coral,
+    GroupEventKind.purchaseDelivered => palette.danger,
     GroupEventKind.memberExpelled ||
     GroupEventKind.memberUpdated ||
-    GroupEventKind.memberLeft => AppColors.muted,
+    GroupEventKind.memberLeft => palette.muted,
   };
 
   /// The tab where what the notice is about lives.

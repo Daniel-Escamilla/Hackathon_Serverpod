@@ -214,7 +214,7 @@ class _TaskCard extends StatelessWidget {
               width: 68,
               height: 68,
               decoration: BoxDecoration(
-                color: AppColors.sky.withValues(alpha: .36),
+                color: AppColors.skyTint,
                 borderRadius: BorderRadius.circular(20),
               ),
               alignment: Alignment.center,
@@ -253,8 +253,8 @@ class _TaskCard extends StatelessWidget {
                             AppLocalizations.of(context),
                             task.voteClosesAt!,
                           ),
-                          style: const TextStyle(
-                            color: AppColors.muted,
+                          style: TextStyle(
+                            color: context.palette.muted,
                             fontSize: 12,
                             fontFeatures: AppFonts.tabularFigures,
                           ),
@@ -264,7 +264,7 @@ class _TaskCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
+            Icon(Icons.chevron_right_rounded, color: context.palette.muted),
           ],
         ),
       ),
