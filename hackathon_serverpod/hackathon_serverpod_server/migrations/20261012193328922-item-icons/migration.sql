@@ -20,7 +20,7 @@ UPDATE "reward_item" SET "icon" = '🧽' WHERE "icon" IS NULL AND "title" = 'Te 
 UPDATE "reward_item" SET "icon" = '🥐' WHERE "icon" IS NULL AND "title" = 'Traigo el desayuno el domingo';
 UPDATE "reward_item" SET "icon" = '🍻' WHERE "icon" IS NULL AND "title" = 'Unas cervezas y pago yo';
 UPDATE "reward_item" SET "icon" = '🛒' WHERE "icon" IS NULL AND "title" = 'Te hago la compra esta semana';
-UPDATE "reward_item" SET "icon" = '🔁' WHERE "icon" IS NULL AND "title" = 'Te cambio el turno de limpieza';
+UPDATE "reward_item" SET "icon" = '🧹' WHERE "icon" IS NULL AND "title" = 'Te cambio el turno de limpieza';
 UPDATE "reward_item" SET "icon" = '🍽️' WHERE "icon" IS NULL AND "title" = 'Cena pagada fuera';
 UPDATE "reward_item" SET "icon" = '📺' WHERE "icon" IS NULL AND "title" = 'Elijo yo la serie esta noche';
 UPDATE "reward_item" SET "icon" = '☕' WHERE "icon" IS NULL AND "title" = 'Desayuno en la cama';

@@ -23,7 +23,7 @@ const Map<GroupType, List<RewardTemplate>> rewardTemplatesByGroupType = {
     RewardTemplate('Traigo el desayuno el domingo', 40, '🥐'),
     RewardTemplate('Unas cervezas y pago yo', 60, '🍻'),
     RewardTemplate('Te hago la compra esta semana', 80, '🛒'),
-    RewardTemplate('Te cambio el turno de limpieza', 100, '🔁'),
+    RewardTemplate('Te cambio el turno de limpieza', 100, '🧹'),
     RewardTemplate('Cena pagada fuera', 150, '🍽️'),
   ],
   GroupType.couple: [
