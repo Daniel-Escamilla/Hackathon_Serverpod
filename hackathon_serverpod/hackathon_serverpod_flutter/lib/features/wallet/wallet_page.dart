@@ -9,6 +9,7 @@ import '../../ui/app_animation.dart';
 import '../../ui/app_button.dart';
 import '../../ui/coin_amount.dart';
 import 'wallet_controller.dart';
+import '../shop/reward_titles.dart';
 
 class WalletPage extends StatelessWidget {
   const WalletPage({super.key});
@@ -178,7 +179,10 @@ class _MovementRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movement.title ?? _label(l10n),
+                    switch (movement.title) {
+                      final title? => rewardTitle(l10n, title),
+                      null => _label(l10n),
+                    },
                     style: const TextStyle(fontWeight: FontWeight.w900),
                   ),
                   Text(

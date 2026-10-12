@@ -1102,6 +1102,61 @@ class AppLocalizationsEn extends AppLocalizations {
   String get iconLabel => 'Icon';
 
   @override
+  String get rewardTemplateShower => 'A long shower with nobody knocking';
+
+  @override
+  String get rewardTemplateMovie => 'I pick tonight\'s film';
+
+  @override
+  String get rewardTemplateSofa => 'The sofa and the remote all afternoon';
+
+  @override
+  String get rewardTemplateDinner => 'I choose dinner';
+
+  @override
+  String get rewardTemplateSkipDishes => 'No washing-up for you today';
+
+  @override
+  String get rewardTemplateBreakfast => 'I bring breakfast on Sunday';
+
+  @override
+  String get rewardTemplateBeers => 'A few beers, on me';
+
+  @override
+  String get rewardTemplateShopping => 'I do your shopping this week';
+
+  @override
+  String get rewardTemplateCleaningTurn => 'I swap cleaning turns with you';
+
+  @override
+  String get rewardTemplateDinnerOutFlat => 'Dinner out, paid for';
+
+  @override
+  String get rewardTemplateSeries => 'I pick tonight\'s series';
+
+  @override
+  String get rewardTemplateBreakfastInBed => 'Breakfast in bed';
+
+  @override
+  String get rewardTemplateMassage => 'A massage';
+
+  @override
+  String get rewardTemplateSaturday => 'I choose Saturday\'s plan';
+
+  @override
+  String get rewardTemplateSkipChore => 'You skip one chore';
+
+  @override
+  String get rewardTemplateMyChoresForADay =>
+      'I do your chores for a whole day';
+
+  @override
+  String get rewardTemplateDinnerOutCouple => 'Dinner out, I pay';
+
+  @override
+  String get rewardTemplateWeekend => 'A weekend getaway';
+
+  @override
   String get typicalTaskTrash => 'Take the rubbish out';
 
   @override

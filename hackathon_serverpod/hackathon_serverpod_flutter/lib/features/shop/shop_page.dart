@@ -15,6 +15,7 @@ import 'propose_reward_screen.dart';
 import 'purchase_screen.dart';
 import 'reward_vote_screen.dart';
 import 'shop_controller.dart';
+import 'reward_titles.dart';
 
 class ShopPage extends StatelessWidget {
   const ShopPage({super.key});
@@ -84,8 +85,10 @@ class _Body extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: _PurchaseTile(
         purchase: purchase,
-        title:
-            controller.rewardFor(purchase)?.title ?? l10n.purchaseUnknownReward,
+        title: switch (controller.rewardFor(purchase)) {
+          final reward? => rewardTitle(l10n, reward.title),
+          null => l10n.purchaseUnknownReward,
+        },
         onTap: () => pushPage(
           context,
           PurchaseScreen(purchase: purchase, myMemberId: myMemberId),
@@ -246,7 +249,7 @@ class _RewardCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    reward.title,
+                    rewardTitle(AppLocalizations.of(context), reward.title),
                     style: Theme.of(context).textTheme.titleLarge,
                   ),
                   const SizedBox(height: 8),
