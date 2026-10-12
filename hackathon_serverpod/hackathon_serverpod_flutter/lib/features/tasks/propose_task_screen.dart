@@ -50,6 +50,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
     final l10n = AppLocalizations.of(context);
     return FormScaffold(
       title: l10n.newTaskTitle,
+      subtitle: l10n.newTaskSubtitle,
       fields: [
         FieldLabel(l10n.typicalTasksLabel),
         _TypicalTaskGrid(
@@ -60,14 +61,16 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
             _reward = typical.reward;
           }),
         ),
-        const SizedBox(height: 18),
+        const SizedBox(height: 10),
+        _OrDivider(l10n.typicalTasksOr),
+        const SizedBox(height: 10),
         FieldLabel(l10n.titleFieldLabel),
         TextField(
           controller: _titleController,
           decoration: InputDecoration(hintText: l10n.taskTitleHint),
         ),
         const SizedBox(height: 18),
-        FieldLabel(l10n.descriptionLabel),
+        FieldLabel(l10n.taskDescriptionOptionalLabel),
         TextField(
           controller: _descriptionController,
           maxLines: 3,
@@ -88,6 +91,31 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
       ],
       button: l10n.reviewProposal,
       onSubmit: _submit,
+    );
+  }
+}
+
+/// A hairline with [label] in the middle, between the ideas and the form.
+class _OrDivider extends StatelessWidget {
+  const _OrDivider(this.label);
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final palette = context.palette;
+    return Row(
+      children: [
+        Expanded(child: Divider(color: palette.border)),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 12),
+          child: Text(
+            label,
+            style: TextStyle(color: palette.muted, fontWeight: FontWeight.w700),
+          ),
+        ),
+        Expanded(child: Divider(color: palette.border)),
+      ],
     );
   }
 }

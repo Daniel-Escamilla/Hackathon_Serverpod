@@ -1025,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @taskTitleHint.
   ///
   /// In es, this message translates to:
-  /// **'Limpiar el baño'**
+  /// **'Ordenar el trastero'**
   String get taskTitleHint;
 
   /// No description provided for @descriptionLabel.
@@ -1037,7 +1037,7 @@ abstract class AppLocalizations {
   /// No description provided for @taskDescriptionHint.
   ///
   /// In es, this message translates to:
-  /// **'Ducha, lavabo, espejo y suelo'**
+  /// **'Cajas a las baldas y barrer el suelo'**
   String get taskDescriptionHint;
 
   /// No description provided for @rewardLabel.
@@ -2029,6 +2029,24 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Ideas rápidas'**
   String get typicalTasksLabel;
+
+  /// Propose task: line under the screen title
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una idea o escribe la tuya. La casa vota el precio.'**
+  String get newTaskSubtitle;
+
+  /// Propose task: divider between the typical chores and the form
+  ///
+  /// In es, this message translates to:
+  /// **'o escribe la tuya'**
+  String get typicalTasksOr;
+
+  /// Propose task: label over the optional description field
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get taskDescriptionOptionalLabel;
 
   /// Typical chore
   ///

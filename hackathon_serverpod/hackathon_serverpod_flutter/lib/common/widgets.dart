@@ -355,6 +355,7 @@ class DetailScaffold extends StatelessWidget {
 class FormScaffold extends StatelessWidget {
   const FormScaffold({
     required this.title,
+    this.subtitle,
     required this.fields,
     required this.button,
     required this.onSubmit,
@@ -363,6 +364,9 @@ class FormScaffold extends StatelessWidget {
   });
 
   final String title;
+
+  /// A muted line under [title] that says what the screen is for.
+  final String? subtitle;
   final List<Widget> fields;
   final String button;
   final VoidCallback onSubmit;
@@ -384,6 +388,13 @@ class FormScaffold extends StatelessWidget {
                     title,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
+                  if (subtitle != null) ...[
+                    const SizedBox(height: 6),
+                    Text(
+                      subtitle!,
+                      style: TextStyle(color: context.palette.muted),
+                    ),
+                  ],
                   const SizedBox(height: 28),
                   ...fields,
                 ],

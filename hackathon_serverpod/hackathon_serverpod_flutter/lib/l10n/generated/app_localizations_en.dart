@@ -526,13 +526,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleFieldLabel => 'Title';
 
   @override
-  String get taskTitleHint => 'Clean the bathroom';
+  String get taskTitleHint => 'Tidy the storage room';
 
   @override
   String get descriptionLabel => 'Description';
 
   @override
-  String get taskDescriptionHint => 'Shower, sink, mirror and floor';
+  String get taskDescriptionHint => 'Boxes on the shelves, sweep the floor';
 
   @override
   String get rewardLabel => 'Reward';
@@ -1087,6 +1087,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get typicalTasksLabel => 'Quick ideas';
+
+  @override
+  String get newTaskSubtitle =>
+      'Pick an idea or write your own. The home votes on the price.';
+
+  @override
+  String get typicalTasksOr => 'or write your own';
+
+  @override
+  String get taskDescriptionOptionalLabel => 'Description (optional)';
 
   @override
   String get typicalTaskTrash => 'Take the rubbish out';

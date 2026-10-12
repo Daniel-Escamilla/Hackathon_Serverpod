@@ -8,13 +8,12 @@ void main() {
   testWidgets('a typical chore fills the title and its price', (tester) async {
     await openScreen(tester, const ProposeTaskScreen());
 
-    // The title field's hint says it too; the chip comes first.
     await tester.scrollUntilVisible(
-      find.text('Limpiar el baño').first,
+      find.text('Limpiar el baño'),
       200,
       scrollable: find.byType(Scrollable).first,
     );
-    await tester.tap(find.text('Limpiar el baño').first);
+    await tester.tap(find.text('Limpiar el baño'));
     await tester.pumpAndSettle();
 
     final title = tester.widget<TextField>(find.byType(TextField).first);
