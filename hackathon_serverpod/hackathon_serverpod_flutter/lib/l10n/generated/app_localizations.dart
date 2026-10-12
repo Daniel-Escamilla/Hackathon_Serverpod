@@ -347,7 +347,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailHint.
   ///
   /// In es, this message translates to:
-  /// **'tu@email.com'**
+  /// **'tu@example.com'**
   String get emailHint;
 
   /// No description provided for @passwordFieldLabel.

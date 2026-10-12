@@ -68,7 +68,7 @@
 
   "signInTitle": "Entra en tu cuenta",
   "emailFieldLabel": "Email",
-  "emailHint": "tu@email.com",
+  "emailHint": "tu@example.com",
   "passwordFieldLabel": "Contraseña",
   "passwordHint": "••••••••",
   "signInSubmit": "Entrar",

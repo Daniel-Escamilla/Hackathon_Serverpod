@@ -48,7 +48,7 @@
 
   "signInTitle": "Sign in to your account",
   "emailFieldLabel": "Email",
-  "emailHint": "you@email.com",
+  "emailHint": "you@example.com",
   "passwordFieldLabel": "Password",
   "passwordHint": "••••••••",
   "signInSubmit": "Sign in",

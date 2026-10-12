@@ -163,7 +163,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emailFieldLabel => 'Email';
 
   @override
-  String get emailHint => 'tu@email.com';
+  String get emailHint => 'tu@example.com';
 
   @override
   String get passwordFieldLabel => 'Contraseña';
