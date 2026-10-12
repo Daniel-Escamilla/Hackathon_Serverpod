@@ -39,6 +39,7 @@ class TaskService {
     required String title,
     required String description,
     required int reward,
+    String? icon,
   }) async {
     final task = await Task.db.insertRow(
       session,
@@ -47,6 +48,7 @@ class TaskService {
         title: title,
         description: description,
         reward: reward,
+        icon: icon,
         proposedById: proposer.id!,
         voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
       ),

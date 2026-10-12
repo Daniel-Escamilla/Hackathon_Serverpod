@@ -23,6 +23,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
     required this.title,
     required this.description,
     required this.reward,
+    this.icon,
     _ijul8zzi.TaskKind? kind,
     this.recurrence,
     _i18yar27.TaskStatus? status,
@@ -38,6 +39,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
     required String title,
     required String description,
     required int reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
     _i18yar27.TaskStatus? status,
@@ -53,6 +55,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String,
       reward: jsonSerialization['reward'] as int,
+      icon: jsonSerialization['icon'] as String?,
       kind: jsonSerialization['kind'] == null
           ? null
           : _ijul8zzi.TaskKind.fromJson((jsonSerialization['kind'] as String)),
@@ -93,6 +96,9 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
   /// are a percentage of.
   int reward;
 
+  /// An emoji picked when proposing, shown on the task's card. Null shows the app's default.
+  String? icon;
+
   _ijul8zzi.TaskKind kind;
 
   /// Only set for `mission`-kind tasks (PRODUCT.md §5).
@@ -122,6 +128,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
     String? title,
     String? description,
     int? reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
     _i18yar27.TaskStatus? status,
@@ -138,6 +145,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
       'title': title,
       'description': description,
       'reward': reward,
+      if (icon != null) 'icon': icon,
       'kind': kind.toJson(),
       if (recurrence != null) 'recurrence': recurrence?.toJson(),
       'status': status.toJson(),
@@ -156,6 +164,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
       'title': title,
       'description': description,
       'reward': reward,
+      if (icon != null) 'icon': icon,
       'kind': kind.toJson(),
       if (recurrence != null) 'recurrence': recurrence?.toJson(),
       'status': status.toJson(),
@@ -202,6 +211,7 @@ class _TaskImpl extends Task {
     required String title,
     required String description,
     required int reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
     _i18yar27.TaskStatus? status,
@@ -214,6 +224,7 @@ class _TaskImpl extends Task {
          title: title,
          description: description,
          reward: reward,
+         icon: icon,
          kind: kind,
          recurrence: recurrence,
          status: status,
@@ -232,6 +243,7 @@ class _TaskImpl extends Task {
     String? title,
     String? description,
     int? reward,
+    Object? icon = _Undefined,
     _ijul8zzi.TaskKind? kind,
     Object? recurrence = _Undefined,
     _i18yar27.TaskStatus? status,
@@ -245,6 +257,7 @@ class _TaskImpl extends Task {
       title: title ?? this.title,
       description: description ?? this.description,
       reward: reward ?? this.reward,
+      icon: icon is String? ? icon : this.icon,
       kind: kind ?? this.kind,
       recurrence: recurrence is _irx5q63y.TaskRecurrence?
           ? recurrence
@@ -279,6 +292,11 @@ class TaskUpdateTable extends _is.UpdateTable<TaskTable> {
 
   _is.ColumnValue<int, int> reward(int value) => _is.ColumnValue(
     table.reward,
+    value,
+  );
+
+  _is.ColumnValue<String, String> icon(String? value) => _is.ColumnValue(
+    table.icon,
     value,
   );
 
@@ -338,6 +356,10 @@ class TaskTable extends _is.Table<int?> {
       'reward',
       this,
     );
+    icon = _is.ColumnString(
+      'icon',
+      this,
+    );
     kind = _is.ColumnEnum(
       'kind',
       this,
@@ -381,6 +403,9 @@ class TaskTable extends _is.Table<int?> {
   /// are a percentage of.
   late final _is.ColumnInt reward;
 
+  /// An emoji picked when proposing, shown on the task's card. Null shows the app's default.
+  late final _is.ColumnString icon;
+
   late final _is.ColumnEnum<_ijul8zzi.TaskKind> kind;
 
   /// Only set for `mission`-kind tasks (PRODUCT.md §5).
@@ -405,6 +430,7 @@ class TaskTable extends _is.Table<int?> {
     title,
     description,
     reward,
+    icon,
     kind,
     recurrence,
     status,

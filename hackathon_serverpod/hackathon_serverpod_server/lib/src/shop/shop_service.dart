@@ -33,6 +33,7 @@ class ShopService {
           title: template.title,
           description: '',
           price: template.price,
+          icon: template.icon,
           status: RewardItemStatus.active,
           createdById: createdBy.id!,
         ),

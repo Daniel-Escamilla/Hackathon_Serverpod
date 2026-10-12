@@ -59,8 +59,9 @@ class TaskEndpoint extends Endpoint {
     Session session,
     String title,
     String description,
-    int reward,
-  ) async {
+    int reward, {
+    String? icon,
+  }) async {
     final member = await currentGroupMember(session);
     return _taskService.proposeTask(
       session,
@@ -68,6 +69,7 @@ class TaskEndpoint extends Endpoint {
       title: title,
       description: description,
       reward: reward,
+      icon: icon,
     );
   }
 
