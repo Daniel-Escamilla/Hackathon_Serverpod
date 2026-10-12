@@ -9,6 +9,11 @@ void main() {
     await openScreen(tester, const ProposeTaskScreen());
 
     // The title field's hint says it too; the chip comes first.
+    await tester.scrollUntilVisible(
+      find.text('Limpiar el baño').first,
+      200,
+      scrollable: find.byType(Scrollable).first,
+    );
     await tester.tap(find.text('Limpiar el baño').first);
     await tester.pumpAndSettle();
 
