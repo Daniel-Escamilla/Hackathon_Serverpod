@@ -267,7 +267,8 @@ cp build/app/outputs/flutter-apk/app-release.apk ../hackathon_serverpod_server/w
 
 Then bump the `?v=` on the APK link in `hackathon_serverpod_flutter/web/descargar.html`: Serverpod
 serves `/web/` as immutable for a year, and the CDN in front of Cloud keeps handing out the APK it
-first saw for that exact URL.
+first saw for that exact URL. Do not open the new link before the deploy's rollout has finished:
+the CDN would cache the old APK under it.
 
 ## After changing a model or an endpoint
 
