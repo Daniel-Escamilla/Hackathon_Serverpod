@@ -227,6 +227,9 @@ The server has to have two entries in its `config/passwords.yaml`, under the run
   demoAccountPassword: '<the password the judges get>'
 ```
 
+On Serverpod Cloud they are set with `serverpod cloud password set` and take effect on the next
+deploy; the demo there uses the password given in [`docs/SUBMISSION.md`](docs/SUBMISSION.md#try-it).
+
 No vote is left open in the demo: it would close by itself after the vote window and fine
 whoever had not voted. The judges start every vote themselves.
 
