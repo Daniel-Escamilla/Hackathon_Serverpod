@@ -25,6 +25,16 @@ Duration _voteWindow(Session session) {
 /// Where an approved proposal goes: a one-off task opens for anyone to claim,
 /// a mission goes on the schedule and puts a task on the board on each of its
 /// weekdays (PRODUCT.md §5).
+/// The most a task can be worth, proposed or counter-offered (PRODUCT.md
+/// §4.5): a typical chore is 5 to 25, so 150 leaves room for the biggest.
+const maxTaskReward = 150;
+
+void _checkReward(int reward) {
+  if (reward < 1 || reward > maxTaskReward) {
+    throw TaskException(reason: TaskErrorReason.invalidReward);
+  }
+}
+
 TaskStatus approvedStatus(Task task) =>
     task.kind == TaskKind.mission ? TaskStatus.scheduled : TaskStatus.open;
 
@@ -50,6 +60,7 @@ class TaskService {
     String? icon,
     List<int>? weekdays,
   }) async {
+    _checkReward(reward);
     final days = weekdays == null ? null : (weekdays.toSet().toList()..sort());
     if (days != null && (days.isEmpty || days.any((d) => d < 1 || d > 7))) {
       throw TaskException(reason: TaskErrorReason.invalidSchedule);
@@ -217,6 +228,7 @@ class TaskService {
     required GroupMember voter,
     required int counterReward,
   }) async {
+    _checkReward(counterReward);
     final countered = await session.db.transaction((transaction) async {
       final locked = await Task.db.findById(
         session,

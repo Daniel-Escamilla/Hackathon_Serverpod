@@ -283,7 +283,7 @@
   "descriptionLabel": "Descripción",
   "taskDescriptionHint": "Cajas a las baldas y barrer el suelo",
   "rewardLabel": "Recompensa",
-  "rewardHintNote": "Una tarea normal suele valer 10",
+  "rewardHintNote": "Una tarea normal suele valer 10; como mucho, 150",
   "reviewProposal": "Revisar propuesta",
   "taskTitleEmptyError": "Ponle un título a la tarea.",
 
@@ -920,5 +920,7 @@
   "errorInvalidSchedule": "Elige al menos un día de la semana.",
   "@errorInvalidSchedule": {"description":"A scheduled task with no valid weekdays"},
   "activityMissionDue": "Hoy toca una tarea de la agenda",
-  "@activityMissionDue": {"description":"Activity: a scheduled task appeared on the board today. Nobody did it, so no name"}
+  "@activityMissionDue": {"description":"Activity: a scheduled task appeared on the board today. Nobody did it, so no name"},
+  "errorInvalidReward": "Una tarea vale entre 1 y 150 karmas.",
+  "@errorInvalidReward": {"description":"A task price or counter-offer outside 1 to 150"}
 }

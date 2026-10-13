@@ -31,7 +31,10 @@ enum TaskErrorReason implements _is.SerializableModel {
   notProposer,
 
   /// A mission's weekdays are empty or outside 1 (Monday) to 7 (Sunday).
-  invalidSchedule;
+  invalidSchedule,
+
+  /// A task's price, or a counter-offer, is below 1 or above the cap of 150 (PRODUCT.md §4.5).
+  invalidReward;
 
   static TaskErrorReason fromJson(String name) {
     switch (name) {
@@ -45,6 +48,8 @@ enum TaskErrorReason implements _is.SerializableModel {
         return TaskErrorReason.notProposer;
       case 'invalidSchedule':
         return TaskErrorReason.invalidSchedule;
+      case 'invalidReward':
+        return TaskErrorReason.invalidReward;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "TaskErrorReason"',
