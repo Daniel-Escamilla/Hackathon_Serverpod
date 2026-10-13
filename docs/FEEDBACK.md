@@ -160,3 +160,73 @@ directly with `transaction: null`, which checks the password without going throu
 opening a new one, so the endpoint works under rollback like the rest.
 
 **Environment.** Serverpod 4.0.0, `serverpod_test` 4.0.0, `serverpod_auth_idp_server` 4.0.0.
+
+## 6. `StaticRoute.withCacheBusting` marks every file under `/web` immutable for a year, hashed or not
+
+**Date:** 2026-10-12 · **Area:** `serverpod` web server, `StaticRoute.withCacheBusting`, Serverpod Cloud CDN
+
+**What happened.** The scaffold's `server.dart` serves `web/static` at `/web` through
+`StaticRoute.withCacheBusting(cacheBustingConfig)`. We put the Android APK there, at
+`/web/apk/KarmaHome.apk`, linked from a download page. Every response carries:
+
+```
+cache-control: immutable, public, max-age=31536000
+```
+
+That header is right for a URL with a content hash in it, which is what cache busting produces when
+a page asks for the asset through the config. It is wrong for a plain path that a person or another
+page links to directly: after a new deploy, the CDN in front of Serverpod Cloud kept serving the
+first APK it had seen for that URL, and so did browsers. Opening the new link a few seconds before
+the rollout finished was enough to cache the *old* APK under the *new* URL for a year.
+
+**Workaround.** A `?v=N` on the link, bumped by hand for every new APK, and a note in the README not
+to open it before the rollout has finished.
+
+**Suggested fix.** Send the immutable header only when the request path carries the cache-busting
+hash, and a short `max-age` (or `no-cache` with an `ETag`) otherwise. Failing that, say in the
+scaffold's comment above the route that anything under `web/static` is cached for a year, and how
+to serve a file that changes.
+
+**Environment.** Serverpod 4.0.0, Serverpod Cloud, Firefox on Linux, Chrome on Android.
+
+## 7. Google sign-in on the web cannot be tested under `flutter run`
+
+**Date:** 2026-10-12 · **Area:** `serverpod_auth_idp_flutter`, `FlutterWebAuth2CallbackRoute`, docs
+
+**What happened.** The redirect page Google returns to on the web is
+`FlutterWebAuth2CallbackRoute`, a route on Serverpod's web server (`/auth/callback`, port 8082).
+That only works for a web build served by Serverpod. The everyday web loop, `flutter run -d chrome`
+or `-d web-server`, serves the app from Flutter's own dev server on another port, which has no
+such route. Google refuses the dev server's origin until its callback URI is registered
+(`redirect_uri_mismatch`), and once it is, it redirects to a page that does not exist; pointing at
+the 8082 URI instead lands on another origin, where the `postMessage` never reaches the app. The
+result: to try a change to the sign-in screen you rebuild
+the web app into `web/app` every time.
+
+**Workaround.** A copy of the callback page in the Flutter app's own `web/auth/callback.html` (the
+dev server serves `web/` as is), the redirect URI chosen with `kDebugMode`, and that URI registered
+in Google Cloud Console next to the production one.
+
+**Suggested fix.** Ship that static `callback.html` in the Flutter template's `web/` folder, or
+document it in the Google sign-in guide for the web, together with the URI to register for
+`flutter run`.
+
+**Environment.** Serverpod 4.0.0, `serverpod_auth_idp_flutter` 4.0.0, `flutter_web_auth_2` 5.1.0,
+Flutter 3.44.4, Firefox on Linux.
+
+## 8. A Cloud deploy takes about four minutes, even for a change to one static file
+
+**Date:** 2026-10-13 · **Area:** Serverpod Cloud, `serverpod cloud deploy`
+
+**What happened.** Our last ten deploys took between 3 min 3 s and 4 min 45 s from start to
+"Rollout successful", according to `serverpod cloud status deployment list`, on top of the local
+`serverpod generate` and Flutter web build that `deploy` runs first. That is the same for a new
+endpoint as for a one-word change to a download page. In the last days of a hackathon it is the
+main reason we stopped checking changes on Cloud and moved to a local loop.
+
+**Suggested fix.** A faster path for deploys that only touch `web/` (the Flutter web build and
+static files): upload them without rebuilding and restarting the server image. Showing which
+stage is running, and how long each took, would also help tell a slow build from a stuck one.
+
+**Environment.** Serverpod CLI 4.0.0, Serverpod Cloud, project of one server with a Flutter web app
+and a 60 MB APK under `web/static`.
