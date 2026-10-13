@@ -21,7 +21,7 @@ is designed ([`docs/PRODUCT.md`](PRODUCT.md) §8) but out of scope for this subm
 ## Try it
 
 - **Web:** <https://karmahome.serverpod.space/>, the Flutter web app served by Serverpod Cloud.
-- **Android:** <https://karmahome.serverpod.space/descargar.html>, a download page for the APK.
+- **Android:** <https://karmahome.serverpod.space/download.html>, a download page for the APK.
 - **Demo accounts**, a couple already living in a home with some history, two tasks to claim and a
   purchase on its way: `ana.demo@example.com` and `leo.demo@example.com`, password
   `KarmaHome2026` for both. Sign in as each in two browsers (or a browser and a phone) to see the live
