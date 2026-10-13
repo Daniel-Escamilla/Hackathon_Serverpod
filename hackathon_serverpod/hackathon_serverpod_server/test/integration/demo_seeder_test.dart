@@ -100,6 +100,7 @@ void main() {
           tasks.firstWhere((t) => t.title == 'Poner una lavadora').reward,
           8,
         );
+        expect(tasks.map((t) => t.icon), everyElement(isNotNull));
         // No vote left open: it would expire and fine somebody.
         expect(
           tasks.where(

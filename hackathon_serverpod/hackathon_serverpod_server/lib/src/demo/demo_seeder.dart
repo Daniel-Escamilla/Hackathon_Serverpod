@@ -91,13 +91,35 @@ class DemoSeeder {
     );
 
     // Paid, each validated by whoever proposed it.
-    await _paidTask(session, 'Limpiar el baño', 25, proposer: ana, doer: leo);
-    await _paidTask(session, 'Hacer la compra', 15, proposer: leo, doer: ana);
-    await _paidTask(session, 'Fregar los platos', 20, proposer: ana, doer: leo);
+    await _paidTask(
+      session,
+      '🛁',
+      'Limpiar el baño',
+      25,
+      proposer: ana,
+      doer: leo,
+    );
+    await _paidTask(
+      session,
+      '🛒',
+      'Hacer la compra',
+      15,
+      proposer: leo,
+      doer: ana,
+    );
+    await _paidTask(
+      session,
+      '🍽️',
+      'Fregar los platos',
+      20,
+      proposer: ana,
+      doer: leo,
+    );
 
     // Fined: Leo says he took the rubbish out, Ana says he did not.
     final rubbish = await _openTask(
       session,
+      '🗑️',
       'Sacar la basura',
       5,
       proposer: leo,
@@ -123,6 +145,7 @@ class DemoSeeder {
       title: 'Poner una lavadora',
       description: '',
       reward: 10,
+      icon: '🧺',
     );
     final countered = await taskService.counterOfferTask(
       session,
@@ -144,6 +167,7 @@ class DemoSeeder {
     );
     await _openTask(
       session,
+      '🪴',
       'Regar las plantas',
       10,
       proposer: leo,
@@ -335,6 +359,7 @@ class DemoSeeder {
   /// the majority (PRODUCT.md §4.1).
   Future<Task> _openTask(
     Session session,
+    String icon,
     String title,
     int reward, {
     required GroupMember proposer,
@@ -346,6 +371,7 @@ class DemoSeeder {
       title: title,
       description: '',
       reward: reward,
+      icon: icon,
     );
     return taskService.castProposalVote(
       session,
@@ -359,6 +385,7 @@ class DemoSeeder {
   /// which pays it.
   Future<void> _paidTask(
     Session session,
+    String icon,
     String title,
     int reward, {
     required GroupMember proposer,
@@ -366,6 +393,7 @@ class DemoSeeder {
   }) async {
     final open = await _openTask(
       session,
+      icon,
       title,
       reward,
       proposer: proposer,
