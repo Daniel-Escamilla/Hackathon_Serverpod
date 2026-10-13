@@ -3,10 +3,13 @@
 A household app where everyone at home agrees on every chore and what it is worth. Full-stack, built with [Serverpod](https://serverpod.dev) (Dart backend) and Flutter, for the
 **Build Something Real** hackathon, 2026-09-15 to 2026-10-14.
 
-A household-chores app where the group agrees on every task and pays for it in coins: someone
-proposes a task and its price, the group votes on it, anyone does it, the group confirms it was
-done, and the coins go to a wallet spent in a shop the group sets up. What it does and how it was
-built, including the use of AI tooling: [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+Someone proposes a task and its price, the home votes on it, anyone does it, the home confirms it
+was done, and the karmas (the app's coins) go to a wallet spent in a shop the home sets up. What it
+does and how it was built, including the use of AI tooling: [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+
+**Try it:** the web app at <https://karmahome.serverpod.space/>, the Android APK from
+<https://karmahome.serverpod.space/descargar.html>, and the judges' demo accounts in
+[`docs/SUBMISSION.md`](docs/SUBMISSION.md#try-it).
 
 The Dart workspace lives in [`hackathon_serverpod/`](hackathon_serverpod) and holds three packages:
 
@@ -175,16 +178,24 @@ everything else works; only "Entrar con Google" fails.
 
    For the Docker backend, which runs in staging mode, the same JSON goes in `.env` as
    `SERVERPOD_PASSWORD_googleClientSecret`.
-3. **On the web, open the app from the server, not from `flutter run`.** Google only accepts the
-   origin registered in Google Cloud Console, `http://localhost:8082`:
+3. **On the web, use one of the two origins registered in Google Cloud Console.**
+   - `http://localhost:8082`, the app built into the server and served by `serverpod start`.
+     Google returns to Serverpod's `/auth/callback`:
 
-   ```sh
-   cd hackathon_serverpod/hackathon_serverpod_flutter
-   flutter build web --base-href / --output ../hackathon_serverpod_server/web/app
-   ```
+     ```sh
+     cd hackathon_serverpod/hackathon_serverpod_flutter
+     flutter build web --base-href / --output ../hackathon_serverpod_server/web/app
+     ```
 
-   Then (re)start `serverpod start` and open <http://localhost:8082>. Rebuild after changing the
-   app.
+     Then (re)start `serverpod start` and open <http://localhost:8082>. Rebuild after changing the
+     app.
+   - `http://localhost:8095`, for the everyday loop with `flutter run`. A debug build returns to
+     the static copy of that page in `web/auth/callback.html`, because Flutter's dev server has no
+     `/auth/callback`:
+
+     ```sh
+     flutter run -d web-server --web-port 8095 --dart-define=SERVER_URL=http://localhost:8080/
+     ```
 4. **On Android**, send Daniel your debug SHA-1 so it is registered in Google Cloud Console for
    the package `com.example.hackathon_serverpod_flutter`:
 
@@ -229,7 +240,14 @@ dart test                                                 # everything
 dart test test/integration/wallet_endpoint_test.dart      # one file
 dart analyze --fatal-infos
 dart format --set-exit-if-changed .
+
+cd ../hackathon_serverpod_flutter                         # the app: widget and unit tests
+flutter test
+flutter analyze --fatal-infos
+dart format --set-exit-if-changed .
 ```
+
+CI runs all of them on every pull request.
 
 ## Deploying to Serverpod Cloud
 
@@ -311,9 +329,11 @@ serverpod create-migration     # only when a model with a `table` changed
 
 ## Status
 
-Working end to end against the real backend: accounts (sign-up with a verification code, sign-in,
-password reset), groups (create, join by code, admin settings, expelling), the whole task cycle
-(propose, vote, counter-offer, claim, validate, fines, votes that expire), the shop (templates,
-proposals and their vote, buying, the provider's answer, delivery), the wallet and its history, and
-live updates between phones. Family mode, recurring tasks and the weekly ranking screen are out of
-scope for now; see [`docs/PLAN.md`](docs/PLAN.md).
+Deployed on Serverpod Cloud and working end to end against the real backend: accounts (email with
+a verification code, or Google; password reset), homes (create, join by code, admin settings,
+expelling, leaving), the whole task cycle (propose with an icon or a typical chore, vote,
+counter-offer, withdraw, claim, validate, fines, votes that expire), a home of one, the shop
+(templates, proposals and their vote, buying, the provider's answer, delivery), the wallet and its
+history, this week's ranking, and live updates between phones with an Activity screen. Spanish and
+English, light and dark. Family mode and recurring tasks are out of scope; push notifications and
+rooms are open issues for after the hackathon. What changed when: [`CHANGELOG.md`](CHANGELOG.md).
