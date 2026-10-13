@@ -70,6 +70,9 @@ enum AppFailure {
   /// A scheduled task with no valid weekdays.
   invalidSchedule,
 
+  /// A task's price below 1 or above the cap of 50.
+  invalidReward,
+
   /// No reward with that id in the caller's group.
   rewardNotFound,
 
@@ -171,6 +174,7 @@ AppException mapServerError(Object error) => switch (error) {
     TaskErrorReason.ownTask => AppFailure.ownTask,
     TaskErrorReason.notProposer => AppFailure.notProposer,
     TaskErrorReason.invalidSchedule => AppFailure.invalidSchedule,
+    TaskErrorReason.invalidReward => AppFailure.invalidReward,
   }),
   ShopException(:final reason) => AppException(switch (reason) {
     ShopErrorReason.rewardNotFound => AppFailure.rewardNotFound,

@@ -181,7 +181,7 @@
   "descriptionLabel": "Description",
   "taskDescriptionHint": "Boxes on the shelves, sweep the floor",
   "rewardLabel": "Reward",
-  "rewardHintNote": "A normal task is usually worth 10",
+  "rewardHintNote": "A normal task is usually worth 10; 50 at most",
   "reviewProposal": "Review proposal",
   "taskTitleEmptyError": "Give the task a title.",
 
@@ -414,5 +414,6 @@
   "stopScheduleAction": "Remove",
   "scheduleStopped": "Removed from the schedule",
   "errorInvalidSchedule": "Pick at least one day of the week.",
-  "activityMissionDue": "A task from the schedule is due today"
+  "activityMissionDue": "A task from the schedule is due today",
+  "errorInvalidReward": "A task is worth 1 to 50 karmas."
 }

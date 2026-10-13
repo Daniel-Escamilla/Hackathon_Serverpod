@@ -538,7 +538,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get rewardLabel => 'Reward';
 
   @override
-  String get rewardHintNote => 'A normal task is usually worth 10';
+  String get rewardHintNote => 'A normal task is usually worth 10; 50 at most';
 
   @override
   String get reviewProposal => 'Review proposal';
@@ -1282,4 +1282,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityMissionDue => 'A task from the schedule is due today';
+
+  @override
+  String get errorInvalidReward => 'A task is worth 1 to 50 karmas.';
 }

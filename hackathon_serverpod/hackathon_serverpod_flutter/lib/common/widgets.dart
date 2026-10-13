@@ -420,12 +420,16 @@ class StepperValue extends StatelessWidget {
     required this.value,
     this.onChanged,
     this.step = 5,
+    this.max,
     super.key,
   });
 
   final int value;
   final ValueChanged<int>? onChanged;
   final int step;
+
+  /// The highest value; the plus button stops there. Null for no cap.
+  final int? max;
 
   @override
   Widget build(BuildContext context) {
@@ -450,9 +454,11 @@ class StepperValue extends StatelessWidget {
             ),
           ),
           IconButton.filled(
-            onPressed: onChanged == null
+            onPressed: onChanged == null || (max != null && value >= max!)
                 ? null
-                : () => onChanged!(value + step),
+                : () => onChanged!(
+                    max == null ? value + step : (value + step).clamp(0, max!),
+                  ),
             tooltip: l10n.increaseAmount,
             icon: const Icon(Icons.add_rounded),
           ),

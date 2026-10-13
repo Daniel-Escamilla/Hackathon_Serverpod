@@ -16,6 +16,7 @@ void main() {
         AppFailure.ownTask,
         AppFailure.notProposer,
         AppFailure.invalidSchedule,
+        AppFailure.invalidReward,
       ],
     );
   });

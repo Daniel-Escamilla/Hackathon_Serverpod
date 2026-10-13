@@ -4,6 +4,7 @@ import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import 'task_reward.dart';
 
 class CounterOfferSheet extends StatefulWidget {
   const CounterOfferSheet({required this.initialValue, super.key});
@@ -73,7 +74,9 @@ class _CounterOfferSheetState extends State<CounterOfferSheet> {
                 ),
               ),
               IconButton.filled(
-                onPressed: () => setState(() => _value++),
+                onPressed: _value < maxTaskReward
+                    ? () => setState(() => _value++)
+                    : null,
                 tooltip: l10n.increaseAmount,
                 icon: const Icon(Icons.add_rounded),
               ),

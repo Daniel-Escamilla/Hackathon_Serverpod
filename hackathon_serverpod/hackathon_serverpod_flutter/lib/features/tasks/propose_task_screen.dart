@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'task_icons.dart';
+import 'task_reward.dart';
 import 'typical_tasks.dart';
 import '../../ui/icon_picker.dart';
 import '../../ui/pressable.dart';
@@ -111,6 +112,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
         if (!widget.repeats) ..._repeatFields(l10n),
         FieldLabel(l10n.rewardLabel),
         StepperValue(
+          max: maxTaskReward,
           value: _reward,
           onChanged: (v) => setState(() => _reward = v),
         ),

@@ -175,5 +175,47 @@ void main() {
       expect(stopped.status, TaskStatus.withdrawn);
       expect(await spawned(), isEmpty);
     });
+
+    test('then a task above 50 karmas is refused', () async {
+      await expectLater(
+        endpoints.task.proposeTask(
+          sessionOf(_anaAuthUserId),
+          'Mudanza',
+          '',
+          51,
+        ),
+        throwsA(
+          isA<TaskException>().having(
+            (e) => e.reason,
+            'reason',
+            TaskErrorReason.invalidReward,
+          ),
+        ),
+      );
+    });
+
+    test('then a counter-offer above 50 karmas is refused', () async {
+      final task = await endpoints.task.proposeTask(
+        sessionOf(_anaAuthUserId),
+        'Mudanza',
+        '',
+        50,
+      );
+
+      await expectLater(
+        endpoints.task.counterOfferTask(
+          sessionOf(_leoAuthUserId),
+          task.id!,
+          60,
+        ),
+        throwsA(
+          isA<TaskException>().having(
+            (e) => e.reason,
+            'reason',
+            TaskErrorReason.invalidReward,
+          ),
+        ),
+      );
+    });
   });
 }
