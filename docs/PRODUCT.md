@@ -417,7 +417,7 @@ La **entrada de los hijos con código** no encaja de serie en el proveedor de em
   cabía en el calendario ([§9](#9-alcance-por-prioridad)).
 - Los jueces entran por la **web servida por el propio Serverpod** en Serverpod Cloud
   (<https://karmahome.serverpod.space/>): un enlace, gratis y sin instalar nada. Es el acceso de
-  prueba que exigen las reglas. El APK se descarga desde `descargar.html` en el mismo sitio.
+  prueba que exigen las reglas. El APK se descarga desde `download.html` en el mismo sitio.
 - Desplegar es decisión del equipo, no un efecto secundario: `serverpod cloud launch` crea un servicio
   vivo y facturable. El **mes gratis de Serverpod Cloud** empieza a contar cuando se activa, y el
   despliegue tiene que seguir en pie hasta que termine el jurado el **20 de octubre**: activarlo antes

@@ -20,7 +20,7 @@ is promoted, that section gets the new number and the date, the app's `version` 
   in it reads at 4.5:1 or better: violet, coral and green get light tints when they are the text
   or the icon, and anything drawn on a pastel (pills, the lime and sky cards) keeps dark ink.
 
-- **A download page for the Android app**, `descargar.html`, to share instead of a bare APK link:
+- **A download page for the Android app**, `download.html` (first `descargar.html`, which now forwards to it), to share instead of a bare APK link:
   it carries the logo and link preview that WhatsApp and the like cannot show for an APK. The APK
   goes up with the Cloud deploy and is served at `/web/apk/KarmaHome.apk`.
 
@@ -47,6 +47,7 @@ is promoted, that section gets the new number and the date, the app's `version` 
   joins, everything is voted again (PRODUCT.md §4.1).
 - **A task is worth 150 karmas at most**, proposed or counter-offered: the server refuses more, and
   the app's steppers stop there. Shop rewards keep no cap (PRODUCT.md §4.5).
+- **The shop shows its rewards as tiles, two to a row**, so more of it fits on the screen.
 - **The home's schedule**: a task can repeat on set weekdays («Sacar la basura» on Tuesdays and
   Thursdays). It is voted once; on each of its days it appears on the board by itself, in Madrid
   time, and is claimed and validated like any other task. Repetitions do not pile up. A panel

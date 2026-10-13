@@ -131,15 +131,17 @@ class _Body extends StatelessWidget {
               padding: const EdgeInsets.only(top: 20),
               child: Center(child: EmptyState(l10n.shopEmpty)),
             ),
-          for (final reward in active)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 14),
-              child: _RewardCard(
-                color: AppColors.skyTint,
-                reward: reward,
-                onTap: () => pushPage(context, BuyRewardScreen(reward: reward)),
-              ),
-            ),
+          _RewardGrid(
+            children: [
+              for (final reward in active)
+                _RewardCard(
+                  color: AppColors.skyTint,
+                  reward: reward,
+                  onTap: () =>
+                      pushPage(context, BuyRewardScreen(reward: reward)),
+                ),
+            ],
+          ),
           if (proposed.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.only(bottom: 10, top: 6),
@@ -148,20 +150,21 @@ class _Body extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
             ),
-            for (final reward in proposed)
-              Padding(
-                padding: const EdgeInsets.only(bottom: 14),
-                child: _RewardCard(
-                  color: const Color(0xFFE9E3FF),
-                  reward: reward,
-                  onTap: () =>
-                      pushPage(context, RewardVoteScreen(reward: reward)),
-                  // Whoever proposed it, or the admin, can take it back.
-                  onWithdraw: reward.createdById == myMemberId || isAdmin
-                      ? () => _withdraw(context, reward)
-                      : null,
-                ),
-              ),
+            _RewardGrid(
+              children: [
+                for (final reward in proposed)
+                  _RewardCard(
+                    color: const Color(0xFFE9E3FF),
+                    reward: reward,
+                    onTap: () =>
+                        pushPage(context, RewardVoteScreen(reward: reward)),
+                    // Whoever proposed it, or the admin, can take it back.
+                    onWithdraw: reward.createdById == myMemberId || isAdmin
+                        ? () => _withdraw(context, reward)
+                        : null,
+                  ),
+              ],
+            ),
           ],
         ],
       ),
@@ -242,6 +245,42 @@ class _PurchaseTile extends StatelessWidget {
   }
 }
 
+/// Rewards two to a row, each the same width whatever the screen and the
+/// same height as its neighbour, so more of the shop fits at once.
+class _RewardGrid extends StatelessWidget {
+  const _RewardGrid({required this.children});
+
+  final List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        for (var i = 0; i < children.length; i += 2)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: IntrinsicHeight(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Expanded(child: children[i]),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: i + 1 < children.length
+                        ? children[i + 1]
+                        : const SizedBox(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+/// A reward as a square-ish tile: its icon, its name and its price. The bin
+/// sits in the corner for whoever may withdraw a proposal.
 class _RewardCard extends StatelessWidget {
   const _RewardCard({
     required this.color,
@@ -259,58 +298,66 @@ class _RewardCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SoftCard(
-      color: color,
-      onTap: onTap,
-      padding: const EdgeInsets.all(20),
-      // A Builder so the circle and the title read the theme SoftCard sets
-      // for the pastel, not the page's.
-      child: Builder(
-        builder: (context) => Row(
-          children: [
-            Container(
-              width: 60,
-              height: 60,
-              decoration: BoxDecoration(
-                color: context.palette.card,
-                shape: BoxShape.circle,
-              ),
-              alignment: Alignment.center,
-              child: reward.icon == null
-                  ? const Icon(
-                      Icons.card_giftcard_rounded,
-                      color: AppColors.violet,
-                    )
-                  : Text(reward.icon!, style: const TextStyle(fontSize: 28)),
-            ),
-            const SizedBox(width: 17),
-            Expanded(
-              child: Column(
+    final l10n = AppLocalizations.of(context);
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minHeight: 168),
+      child: SoftCard(
+        color: color,
+        onTap: onTap,
+        padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
+        // A Builder so the circle and the title read the theme SoftCard sets
+        // for the pastel, not the page's.
+        child: Builder(
+          builder: (context) => Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    rewardTitle(AppLocalizations.of(context), reward.title),
-                    style: Theme.of(context).textTheme.titleLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '🪙 ${AppLocalizations.of(context).rewardAmount(reward.price)}',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontFeatures: AppFonts.tabularFigures,
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: BoxDecoration(
+                      color: context.palette.card,
+                      shape: BoxShape.circle,
                     ),
+                    alignment: Alignment.center,
+                    child: reward.icon == null
+                        ? const Icon(
+                            Icons.card_giftcard_rounded,
+                            color: AppColors.violet,
+                          )
+                        : Text(
+                            reward.icon!,
+                            style: const TextStyle(fontSize: 26),
+                          ),
                   ),
+                  const Spacer(),
+                  if (onWithdraw case final withdraw?)
+                    TrashButton(
+                      tooltip: l10n.withdrawProposalTooltip,
+                      onTap: withdraw,
+                    ),
                 ],
               ),
-            ),
-            if (onWithdraw case final withdraw?)
-              TrashButton(
-                tooltip: AppLocalizations.of(context).withdrawProposalTooltip,
-                onTap: withdraw,
-              )
-            else
-              const Icon(Icons.chevron_right_rounded),
-          ],
+              const SizedBox(height: 12),
+              Text(
+                rewardTitle(l10n, reward.title),
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              const Spacer(),
+              const SizedBox(height: 8),
+              Text(
+                '🪙 ${l10n.rewardAmount(reward.price)}',
+                style: const TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontFeatures: AppFonts.tabularFigures,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

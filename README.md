@@ -8,7 +8,7 @@ was done, and the karmas (the app's coins) go to a wallet spent in a shop the ho
 does and how it was built, including the use of AI tooling: [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
 
 **Try it:** the web app at <https://karmahome.serverpod.space/>, the Android APK from
-<https://karmahome.serverpod.space/descargar.html>, and the judges' demo accounts in
+<https://karmahome.serverpod.space/download.html>, and the judges' demo accounts in
 [`docs/SUBMISSION.md`](docs/SUBMISSION.md#try-it).
 
 The Dart workspace lives in [`hackathon_serverpod/`](hackathon_serverpod) and holds three packages:
@@ -276,7 +276,7 @@ are set with `serverpod cloud password set <name> --from-file <file>` (`googleCl
 A new secret takes effect on the next deploy.
 
 The Android APK is uploaded with the deploy and served at `/web/apk/KarmaHome.apk`, which the
-page to share, <https://karmahome.serverpod.space/descargar.html>, links to. It stays out of git,
+page to share, <https://karmahome.serverpod.space/download.html>, links to. It stays out of git,
 so build it into place before deploying, or the deploy goes out without it:
 
 ```sh
@@ -286,7 +286,7 @@ mkdir -p ../hackathon_serverpod_server/web/static/apk
 cp build/app/outputs/flutter-apk/app-release.apk ../hackathon_serverpod_server/web/static/apk/KarmaHome.apk
 ```
 
-Then bump the `?v=` on the APK link in `hackathon_serverpod_flutter/web/descargar.html`: Serverpod
+Then bump the `?v=` on the APK link in `hackathon_serverpod_flutter/web/download.html`: Serverpod
 serves `/web/` as immutable for a year, and the CDN in front of Cloud keeps handing out the APK it
 first saw for that exact URL. Do not open the new link before the deploy's rollout has finished:
 the CDN would cache the old APK under it.

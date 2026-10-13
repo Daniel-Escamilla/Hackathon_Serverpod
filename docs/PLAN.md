@@ -206,7 +206,7 @@ Se acumulan con el principal y cuestan poco mientras se construye:
 ## 10. Cómo acabó (13 de octubre)
 
 **El MVP de §1 está entero** y desplegado en Serverpod Cloud: la web en
-<https://karmahome.serverpod.space/> y el APK en `descargar.html`. El ranking semanal cierra la semana
+<https://karmahome.serverpod.space/> y el APK en `download.html`. El ranking semanal cierra la semana
 el lunes a las 00:00 en Madrid (decidido el 5 de octubre).
 
 **Entró además**, de lo que §1 dejaba para "si sobra" o fuera del todo: ranking semanal, salir de la
