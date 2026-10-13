@@ -45,6 +45,19 @@ class TasksController extends ChangeNotifier {
     }
   }
 
+  /// Missions on the home's schedule, and those still being voted on
+  /// (PRODUCT.md §5).
+  List<Task> get scheduled =>
+      tasks.where((t) => t.status == TaskStatus.scheduled).toList();
+  List<Task> get schedulePending => tasks
+      .where(
+        (t) =>
+            t.kind == TaskKind.mission &&
+            (t.status == TaskStatus.proposed ||
+                t.status == TaskStatus.counterOffered),
+      )
+      .toList();
+
   List<TaskVote> votesFor(int taskId) =>
       votes.where((v) => v.taskId == taskId).toList();
 
@@ -58,12 +71,14 @@ class TasksController extends ChangeNotifier {
     String description,
     int reward, {
     String? icon,
+    List<int>? weekdays,
   }) async {
     final task = await repository.proposeTask(
       title,
       description,
       reward,
       icon: icon,
+      weekdays: weekdays,
     );
     await load();
     return task;

@@ -24,6 +24,7 @@ extension AppFailureMessage on AppFailure {
     AppFailure.taskNotOpen => l10n.errorTaskNotOpen,
     AppFailure.ownTask => l10n.errorOwnTask,
     AppFailure.notProposer => l10n.errorNotProposer,
+    AppFailure.invalidSchedule => l10n.errorInvalidSchedule,
     AppFailure.rewardNotFound => l10n.errorRewardNotFound,
     AppFailure.rewardNotOpen => l10n.errorRewardNotOpen,
     AppFailure.ownReward => l10n.errorOwnReward,

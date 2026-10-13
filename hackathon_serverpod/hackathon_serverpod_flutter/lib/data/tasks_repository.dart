@@ -19,8 +19,15 @@ class TasksRepository {
     String description,
     int reward, {
     String? icon,
+    List<int>? weekdays,
   }) => guardServerCall(
-    () => client.task.proposeTask(title, description, reward, icon: icon),
+    () => client.task.proposeTask(
+      title,
+      description,
+      reward,
+      icon: icon,
+      weekdays: weekdays,
+    ),
   );
 
   Future<Task> voteTaskProposal(int taskId, bool approve) =>

@@ -29,6 +29,7 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 /// have moved with it, so the others reload the member list.
 /// `taskWithdrawn` and `rewardWithdrawn` are a proposal taken back before the
 /// vote ended, by whoever made it or by the admin (PRODUCT.md §4.3, §9).
+/// `missionDue` is a scheduled mission putting today's task on the board; nobody triggers it.
 enum GroupEventKind implements _isc.SerializableModel {
   taskProposed,
   taskVoteCast,
@@ -44,7 +45,8 @@ enum GroupEventKind implements _isc.SerializableModel {
   memberUpdated,
   memberLeft,
   taskWithdrawn,
-  rewardWithdrawn;
+  rewardWithdrawn,
+  missionDue;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -78,6 +80,8 @@ enum GroupEventKind implements _isc.SerializableModel {
         return GroupEventKind.taskWithdrawn;
       case 'rewardWithdrawn':
         return GroupEventKind.rewardWithdrawn;
+      case 'missionDue':
+        return GroupEventKind.missionDue;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

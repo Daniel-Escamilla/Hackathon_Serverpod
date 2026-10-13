@@ -15,6 +15,7 @@
 ### have moved with it, so the others reload the member list.
 ### `taskWithdrawn` and `rewardWithdrawn` are a proposal taken back before the
 ### vote ended, by whoever made it or by the admin (PRODUCT.md §4.3, §9).
+### `missionDue` is a scheduled mission putting today's task on the board; nobody triggers it.
 enum: GroupEventKind
 values:
   - taskProposed
@@ -32,3 +33,4 @@ values:
   - memberLeft
   - taskWithdrawn
   - rewardWithdrawn
+  - missionDue

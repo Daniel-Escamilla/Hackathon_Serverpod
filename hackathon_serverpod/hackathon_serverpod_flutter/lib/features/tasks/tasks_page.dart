@@ -13,9 +13,11 @@ import '../../ui/feedback.dart';
 import '../../ui/failure_messages.dart';
 import '../../ui/sounds.dart';
 import '../../ui/trash_button.dart';
+import '../../ui/weekday_picker.dart';
 import '../group/group_controller.dart';
 import 'available_task_screen.dart';
 import 'counter_offer_decision_screen.dart';
+import 'schedule_screen.dart';
 import 'task_vote_screen.dart';
 import 'tasks_controller.dart';
 import 'validation_screen.dart';
@@ -114,8 +116,10 @@ class _Body extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: controller.load,
         child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
           children: [
-            const SizedBox(height: 80),
+            _ScheduleEntry(count: controller.scheduled.length),
+            const SizedBox(height: 60),
             Center(child: EmptyState(l10n.tasksEmpty)),
           ],
         ),
@@ -142,6 +146,8 @@ class _Body extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
         children: [
+          _ScheduleEntry(count: controller.scheduled.length),
+          const SizedBox(height: 12),
           if (yourTurn.isNotEmpty) ...[
             _SectionTitle(l10n.sectionAwaitingVote),
             for (final task in yourTurn) card(task),
@@ -215,6 +221,43 @@ class _Body extends StatelessWidget {
   };
 }
 
+/// Opens the home's schedule: the tasks that come back on set weekdays.
+class _ScheduleEntry extends StatelessWidget {
+  const _ScheduleEntry({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return SoftCard(
+      onTap: () => pushPage(context, const ScheduleScreen()),
+      child: Row(
+        children: [
+          Icon(Icons.calendar_month_rounded, color: context.palette.accent),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.scheduleEntry,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  l10n.scheduleEntryCount(count),
+                  style: TextStyle(color: context.palette.muted),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.chevron_right_rounded, color: context.palette.muted),
+        ],
+      ),
+    );
+  }
+}
+
 class _SectionTitle extends StatelessWidget {
   const _SectionTitle(this.label);
 
@@ -283,6 +326,18 @@ class _TaskCard extends StatelessWidget {
                       fontFeatures: AppFonts.tabularFigures,
                     ),
                   ),
+                  if (task.weekdays case final days?) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      ).repeatsOn(weekdayList(context, days)),
+                      style: TextStyle(
+                        color: context.palette.muted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 9),
                   Wrap(
                     spacing: 8,

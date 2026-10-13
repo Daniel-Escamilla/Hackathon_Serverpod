@@ -58,7 +58,8 @@ Set<HomeData> staleAfter(GroupEventKind kind) => switch (kind) {
   GroupEventKind.taskVoteCast ||
   GroupEventKind.taskCounterOffered ||
   GroupEventKind.taskClaimed ||
-  GroupEventKind.taskWithdrawn => {HomeData.tasks},
+  GroupEventKind.taskWithdrawn ||
+  GroupEventKind.missionDue => {HomeData.tasks},
   GroupEventKind.taskValidated => {HomeData.tasks, HomeData.wallet},
   GroupEventKind.rewardProposed ||
   GroupEventKind.rewardVoteCast ||

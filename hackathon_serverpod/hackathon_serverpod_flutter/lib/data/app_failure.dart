@@ -67,6 +67,9 @@ enum AppFailure {
   /// admin withdraws a proposal.
   notProposer,
 
+  /// A scheduled task with no valid weekdays.
+  invalidSchedule,
+
   /// No reward with that id in the caller's group.
   rewardNotFound,
 
@@ -167,6 +170,7 @@ AppException mapServerError(Object error) => switch (error) {
     TaskErrorReason.notOpen => AppFailure.taskNotOpen,
     TaskErrorReason.ownTask => AppFailure.ownTask,
     TaskErrorReason.notProposer => AppFailure.notProposer,
+    TaskErrorReason.invalidSchedule => AppFailure.invalidSchedule,
   }),
   ShopException(:final reason) => AppException(switch (reason) {
     ShopErrorReason.rewardNotFound => AppFailure.rewardNotFound,

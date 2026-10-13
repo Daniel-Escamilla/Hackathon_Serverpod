@@ -22,6 +22,12 @@ Duration _voteWindow(Session session) {
       : const Duration(minutes: 2);
 }
 
+/// Where an approved proposal goes: a one-off task opens for anyone to claim,
+/// a mission goes on the schedule and puts a task on the board on each of its
+/// weekdays (PRODUCT.md §5).
+TaskStatus approvedStatus(Task task) =>
+    task.kind == TaskKind.mission ? TaskStatus.scheduled : TaskStatus.open;
+
 /// Proposing and voting on tasks (PRODUCT.md §3, §4.1, §4.4).
 class TaskService {
   const TaskService({
@@ -42,18 +48,28 @@ class TaskService {
     required String description,
     required int reward,
     String? icon,
+    List<int>? weekdays,
   }) async {
+    final days = weekdays == null ? null : (weekdays.toSet().toList()..sort());
+    if (days != null && (days.isEmpty || days.any((d) => d < 1 || d > 7))) {
+      throw TaskException(reason: TaskErrorReason.invalidSchedule);
+    }
     final alone = await isAloneInGroup(session, proposer);
+    final draft = Task(
+      groupId: proposer.groupId,
+      title: title,
+      description: description,
+      reward: reward,
+      icon: icon,
+      kind: days == null ? TaskKind.oneOff : TaskKind.mission,
+      recurrence: days == null ? null : TaskRecurrence.weekly,
+      weekdays: days,
+      proposedById: proposer.id!,
+    );
     final task = await Task.db.insertRow(
       session,
-      Task(
-        groupId: proposer.groupId,
-        title: title,
-        description: description,
-        reward: reward,
-        icon: icon,
-        proposedById: proposer.id!,
-        status: alone ? TaskStatus.open : TaskStatus.proposed,
+      draft.copyWith(
+        status: alone ? approvedStatus(draft) : TaskStatus.proposed,
         voteClosesAt: alone
             ? null
             : DateTime.now().toUtc().add(_voteWindow(session)),
@@ -167,7 +183,7 @@ class TaskService {
       if (approveCount >= needed) {
         return Task.db.updateRow(
           session,
-          locked.copyWith(status: TaskStatus.open, voteClosesAt: null),
+          locked.copyWith(status: approvedStatus(locked), voteClosesAt: null),
           transaction: transaction,
         );
       }
@@ -283,8 +299,10 @@ class TaskService {
       if (locked == null) {
         throw TaskException(reason: TaskErrorReason.taskNotFound);
       }
+      // A scheduled mission is stopped the same way: no more repetitions.
       if (locked.status != TaskStatus.proposed &&
-          locked.status != TaskStatus.counterOffered) {
+          locked.status != TaskStatus.counterOffered &&
+          locked.status != TaskStatus.scheduled) {
         throw TaskException(reason: TaskErrorReason.notOpen);
       }
       if (member.id != locked.proposedById &&

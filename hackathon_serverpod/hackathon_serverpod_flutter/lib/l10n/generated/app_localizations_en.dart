@@ -1217,4 +1217,69 @@ class AppLocalizationsEn extends AppLocalizations {
   String activityRewardWithdrawn(String name) {
     return '$name withdrew a reward';
   }
+
+  @override
+  String get weekdayInitials => 'M,T,W,T,F,S,S';
+
+  @override
+  String get repeatLabel => 'Repeat every week (optional)';
+
+  @override
+  String get repeatHint =>
+      'With no days it is done once. With days, the home votes once and the task appears by itself on those days.';
+
+  @override
+  String repeatsOn(String days) {
+    return 'Repeats: $days';
+  }
+
+  @override
+  String get scheduleTitle => 'Home schedule';
+
+  @override
+  String get scheduleSubtitle =>
+      'Set tasks that appear by themselves on their day. Voted once; validated every time they are done.';
+
+  @override
+  String get scheduleEntry => 'Home schedule';
+
+  @override
+  String scheduleEntryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count set tasks',
+      one: '1 set task',
+      zero: 'No set tasks yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scheduleNothing => 'Nothing';
+
+  @override
+  String get schedulePending => 'Waiting for the vote';
+
+  @override
+  String get scheduleAdd => 'New set task';
+
+  @override
+  String get stopScheduleTitle => 'Remove from the schedule?';
+
+  @override
+  String get stopScheduleBody =>
+      'It stops appearing on its days. The one already on the board stays.';
+
+  @override
+  String get stopScheduleAction => 'Remove';
+
+  @override
+  String get scheduleStopped => 'Removed from the schedule';
+
+  @override
+  String get errorInvalidSchedule => 'Pick at least one day of the week.';
+
+  @override
+  String get activityMissionDue => 'A task from the schedule is due today';
 }

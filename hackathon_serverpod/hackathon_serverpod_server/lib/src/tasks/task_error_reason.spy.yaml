@@ -13,3 +13,5 @@ values:
   ### Only the proposer answers a counter-offer; only the proposer or the admin
   ### withdraws a proposal.
   - notProposer
+  ### A mission's weekdays are empty or outside 1 (Monday) to 7 (Sunday).
+  - invalidSchedule

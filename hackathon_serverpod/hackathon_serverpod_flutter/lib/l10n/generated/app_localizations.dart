@@ -2275,6 +2275,108 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'{name} ha retirado una recompensa'**
   String activityRewardWithdrawn(String name);
+
+  /// Initials of the days of the week, Monday first, comma-separated, seven of them
+  ///
+  /// In es, this message translates to:
+  /// **'L,M,X,J,V,S,D'**
+  String get weekdayInitials;
+
+  /// Propose task: label over the weekday picker
+  ///
+  /// In es, this message translates to:
+  /// **'Repetir cada semana (opcional)'**
+  String get repeatLabel;
+
+  /// Propose task: note under the weekday picker
+  ///
+  /// In es, this message translates to:
+  /// **'Sin días, se hace una vez. Con días, la casa vota una vez y la tarea aparece sola esos días.'**
+  String get repeatHint;
+
+  /// Task card / review: the days a scheduled task comes back on
+  ///
+  /// In es, this message translates to:
+  /// **'Se repite: {days}'**
+  String repeatsOn(String days);
+
+  /// Title of the panel with the tasks that repeat on set weekdays
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda de la casa'**
+  String get scheduleTitle;
+
+  /// Line under the schedule panel title
+  ///
+  /// In es, this message translates to:
+  /// **'Tareas fijas que aparecen solas en su día. Se votan una vez; cada vez que se hacen, se validan.'**
+  String get scheduleSubtitle;
+
+  /// Tasks tab: the card that opens the schedule panel
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda de la casa'**
+  String get scheduleEntry;
+
+  /// Tasks tab: how many scheduled tasks the home has
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =0{Sin tareas fijas todavía} =1{1 tarea fija} other{{count} tareas fijas}}'**
+  String scheduleEntryCount(int count);
+
+  /// Schedule panel: a weekday with no tasks
+  ///
+  /// In es, this message translates to:
+  /// **'Nada'**
+  String get scheduleNothing;
+
+  /// Schedule panel: section of scheduled tasks still being voted on
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando la votación'**
+  String get schedulePending;
+
+  /// Schedule panel: button to propose a task that repeats
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva tarea fija'**
+  String get scheduleAdd;
+
+  /// Confirmation title before stopping a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'¿Quitar de la agenda?'**
+  String get stopScheduleTitle;
+
+  /// Confirmation body before stopping a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'Deja de aparecer en sus días. La que ya está en el tablero sigue ahí.'**
+  String get stopScheduleBody;
+
+  /// Confirm button that stops a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'Quitar'**
+  String get stopScheduleAction;
+
+  /// Message after stopping a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'Quitada de la agenda'**
+  String get scheduleStopped;
+
+  /// A scheduled task with no valid weekdays
+  ///
+  /// In es, this message translates to:
+  /// **'Elige al menos un día de la semana.'**
+  String get errorInvalidSchedule;
+
+  /// Activity: a scheduled task appeared on the board today. Nobody did it, so no name
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy toca una tarea de la agenda'**
+  String get activityMissionDue;
 }
 
 class _AppLocalizationsDelegate

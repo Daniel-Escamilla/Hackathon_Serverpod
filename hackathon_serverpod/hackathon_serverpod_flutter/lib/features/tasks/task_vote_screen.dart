@@ -11,6 +11,7 @@ import '../../ui/app_button.dart';
 import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
+import '../../ui/weekday_picker.dart';
 import 'counter_offer_decision_screen.dart';
 import 'counter_offer_sheet.dart';
 import 'task_voters.dart';
@@ -48,6 +49,13 @@ class TaskVoteScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         InfoRow(icon: Icons.description_rounded, text: task.description),
+        if (task.weekdays case final days?) ...[
+          const SizedBox(height: 12),
+          InfoRow(
+            icon: Icons.event_repeat_rounded,
+            text: l10n.repeatsOn(weekdayList(context, days)),
+          ),
+        ],
         if (task.voteClosesAt != null) ...[
           const SizedBox(height: 12),
           InfoRow(

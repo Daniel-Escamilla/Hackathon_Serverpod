@@ -168,6 +168,15 @@ Dos formas de la misma cosa, y se elige al proponerla:
   propone y se vota una vez; sus repeticiones ya no se vuelven a votar. **No se acumulan:** si la del
   periodo anterior sigue sin hacer, no aparece otra.
 
+**Cómo quedó (13 de octubre): la agenda de la casa.** Al proponer una tarea se eligen los días de
+la semana en que se repite (martes y jueves, por ejemplo). Se vota una vez como cualquier propuesta;
+aprobada, entra en la agenda y **cada uno de sus días aparece sola en el tablero** como una tarea
+normal, que se reclama y **se valida antes de pagar**, igual que las demás (decidido el 13 de
+octubre). El día cuenta en hora de Madrid, y la tarea aparece la primera vez que alguien de la casa
+abre la app ese día; a los demás les llega en vivo. La agenda se ve en un panel desde la pestaña de
+tareas, día por día, y quien la propuso o el admin la quita con la papelera; la que ya está en el
+tablero sigue ahí. De momento solo semanal: diaria es marcar los siete días, y mensual no hay.
+
 Una tarea lleva **título, descripción y monedas**, y nada más: sin fecha límite, sin habitación y sin
 foto de prueba. Es a propósito — la prueba de que está hecha es el voto del grupo, no una foto.
 
@@ -298,7 +307,7 @@ sitio para `family`, pero al crear un grupo solo se ofrecen piso y pareja.
 
 **Si da tiempo, por este orden:**
 
-- Misiones periódicas
+- ~~Misiones periódicas~~: hechas el 13 de octubre, como agenda semanal ([§5](#5-tareas-y-misiones))
 - ~~Ranking semanal~~: hecho el 6 de octubre
 - ~~Ceder el cargo y salir del grupo~~: hecho; al salir, si era admin, el cargo pasa a quien lleve más
   tiempo
@@ -383,7 +392,9 @@ Con `FutureCall` de Serverpod, sin depender de que nadie tenga la app abierta:
 
 - **Cierre de votaciones.** Se programa al abrir cada votación. Al vencer las 24 horas, si sigue
   abierta, la da por expirada, multa a quien no votó y publica el suceso en el stream.
-- **Misiones periódicas.** Al empezar cada periodo, publica la misión si la anterior está hecha.
+- **Misiones periódicas.** Al final no van con `FutureCall`: la tarea del día se crea al listar las
+  tareas de la casa, con la misión bloqueada en una transacción para que salga una sola vez
+  ([§5](#5-tareas-y-misiones)).
 - **Ranking.** Cada lunes cierra la semana y guarda quién ganó.
 
 ### 10.6 Autenticación
@@ -450,7 +461,7 @@ Las que se cerraron el 18 de septiembre están en
 | Qué | Estado |
 |---|---|
 | **Listas de las plantillas** | Borrador escrito en [§6](#plantillas-borrador-a-revisar-por-mayte); falta que Mayte lo revise |
-| **Misiones periódicas** | Si llegan a entrar, falta decir si cada repetición se vuelve a validar |
+| ~~**Misiones periódicas**~~ | Decidido el 13 de octubre: cada repetición se valida ([§5](#5-tareas-y-misiones)) |
 | **Entrada de los hijos con código** | Aparcada: el modo familia queda fuera del MVP ([§9](#9-alcance-por-prioridad)) |
 | **Ruleta** | Descartada ([§9](#9-alcance-por-prioridad)) |
 

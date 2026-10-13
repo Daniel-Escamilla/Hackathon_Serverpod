@@ -13,6 +13,14 @@ fields:
   kind: TaskKind, default=oneOff
   ### Only set for `mission`-kind tasks (PRODUCT.md §5).
   recurrence: TaskRecurrence?
+  ### The days of the week a `mission` comes back on, 1 (Monday) to 7 (Sunday), in Madrid.
+  ### Null for a one-off task.
+  weekdays: List<int>?
+  ### The Madrid day (as UTC midnight) a scheduled mission last put a task on the board, so it
+  ### does it once a day at most. Null until its first day comes.
+  lastSpawnedOn: DateTime?
+  ### For a task a mission put on the board, that mission. Null otherwise.
+  missionId: int?
   status: TaskStatus, default=proposed
   proposedById: int, relation(parent=group_member)
   ### Who claimed the task by pressing "done". Null until then; whoever gets there first wins the

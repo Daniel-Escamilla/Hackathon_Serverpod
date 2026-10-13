@@ -4,6 +4,7 @@ import 'task_icons.dart';
 import 'typical_tasks.dart';
 import '../../ui/icon_picker.dart';
 import '../../ui/pressable.dart';
+import '../../ui/weekday_picker.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -12,7 +13,11 @@ import '../../ui/feedback.dart';
 import 'task_review_screen.dart';
 
 class ProposeTaskScreen extends StatefulWidget {
-  const ProposeTaskScreen({super.key});
+  const ProposeTaskScreen({super.key, this.repeats = false});
+
+  /// Opened from the schedule panel: the weekday picker comes first, so it is
+  /// clear the task is meant to repeat.
+  final bool repeats;
 
   @override
   State<ProposeTaskScreen> createState() => _ProposeTaskScreenState();
@@ -23,6 +28,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
   final _descriptionController = TextEditingController();
   int _reward = 10;
   String? _icon;
+  Set<int> _weekdays = {};
 
   @override
   void dispose() {
@@ -45,9 +51,21 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
         description: _descriptionController.text.trim(),
         reward: _reward,
         icon: _icon,
+        weekdays: _weekdays.isEmpty ? null : (_weekdays.toList()..sort()),
       ),
     );
   }
+
+  List<Widget> _repeatFields(AppLocalizations l10n) => [
+    FieldLabel(l10n.repeatLabel),
+    WeekdayPicker(
+      selected: _weekdays,
+      onChanged: (days) => setState(() => _weekdays = days),
+    ),
+    const SizedBox(height: 8),
+    Text(l10n.repeatHint, style: TextStyle(color: context.palette.muted)),
+    const SizedBox(height: 18),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +74,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
       title: l10n.newTaskTitle,
       subtitle: l10n.newTaskSubtitle,
       fields: [
+        if (widget.repeats) ..._repeatFields(l10n),
         FieldLabel(l10n.typicalTasksLabel),
         _TypicalTaskGrid(
           tasks: typicalTasks(l10n),
@@ -89,6 +108,7 @@ class _ProposeTaskScreenState extends State<ProposeTaskScreen> {
           decoration: InputDecoration(hintText: l10n.taskDescriptionHint),
         ),
         const SizedBox(height: 18),
+        if (!widget.repeats) ..._repeatFields(l10n),
         FieldLabel(l10n.rewardLabel),
         StepperValue(
           value: _reward,

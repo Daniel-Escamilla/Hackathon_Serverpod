@@ -397,5 +397,22 @@
   "withdrawAction": "Withdraw",
   "withdrawError": "Could not withdraw the proposal",
   "activityTaskWithdrawn": "{name} withdrew a task",
-  "activityRewardWithdrawn": "{name} withdrew a reward"
+  "activityRewardWithdrawn": "{name} withdrew a reward",
+  "weekdayInitials": "M,T,W,T,F,S,S",
+  "repeatLabel": "Repeat every week (optional)",
+  "repeatHint": "With no days it is done once. With days, the home votes once and the task appears by itself on those days.",
+  "repeatsOn": "Repeats: {days}",
+  "scheduleTitle": "Home schedule",
+  "scheduleSubtitle": "Set tasks that appear by themselves on their day. Voted once; validated every time they are done.",
+  "scheduleEntry": "Home schedule",
+  "scheduleEntryCount": "{count, plural, =0{No set tasks yet} =1{1 set task} other{{count} set tasks}}",
+  "scheduleNothing": "Nothing",
+  "schedulePending": "Waiting for the vote",
+  "scheduleAdd": "New set task",
+  "stopScheduleTitle": "Remove from the schedule?",
+  "stopScheduleBody": "It stops appearing on its days. The one already on the board stays.",
+  "stopScheduleAction": "Remove",
+  "scheduleStopped": "Removed from the schedule",
+  "errorInvalidSchedule": "Pick at least one day of the week.",
+  "activityMissionDue": "A task from the schedule is due today"
 }
