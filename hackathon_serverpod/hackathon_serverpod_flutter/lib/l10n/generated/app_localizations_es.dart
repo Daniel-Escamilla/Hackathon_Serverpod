@@ -539,7 +539,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get rewardHintNote =>
-      'Una tarea normal suele valer 10; como mucho, 50';
+      'Una tarea normal suele valer 10; como mucho, 150';
 
   @override
   String get reviewProposal => 'Revisar propuesta';
@@ -1285,5 +1285,5 @@ class AppLocalizationsEs extends AppLocalizations {
   String get activityMissionDue => 'Hoy toca una tarea de la agenda';
 
   @override
-  String get errorInvalidReward => 'Una tarea vale entre 1 y 50 karmas.';
+  String get errorInvalidReward => 'Una tarea vale entre 1 y 150 karmas.';
 }

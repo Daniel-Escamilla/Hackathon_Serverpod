@@ -176,13 +176,13 @@ void main() {
       expect(await spawned(), isEmpty);
     });
 
-    test('then a task above 50 karmas is refused', () async {
+    test('then a task above 150 karmas is refused', () async {
       await expectLater(
         endpoints.task.proposeTask(
           sessionOf(_anaAuthUserId),
           'Mudanza',
           '',
-          51,
+          151,
         ),
         throwsA(
           isA<TaskException>().having(
@@ -194,19 +194,19 @@ void main() {
       );
     });
 
-    test('then a counter-offer above 50 karmas is refused', () async {
+    test('then a counter-offer above 150 karmas is refused', () async {
       final task = await endpoints.task.proposeTask(
         sessionOf(_anaAuthUserId),
         'Mudanza',
         '',
-        50,
+        150,
       );
 
       await expectLater(
         endpoints.task.counterOfferTask(
           sessionOf(_leoAuthUserId),
           task.id!,
-          60,
+          160,
         ),
         throwsA(
           isA<TaskException>().having(

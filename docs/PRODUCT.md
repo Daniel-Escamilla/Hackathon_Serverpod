@@ -146,8 +146,8 @@ precios sugeridos:
 | Limpieza general | 50 | Parque de atracciones | 1.500 |
 | | | PS5 | 5.000 |
 
-**Una tarea vale como mucho 50**, propuesta o contraofertada: lo que la escala llama una limpieza
-general. Lo comprueba el servidor; las recompensas de la tienda no tienen tope. Decidido el 13 de
+**Una tarea vale como mucho 150**, propuesta o contraofertada: tres veces una limpieza general, para
+dejar sitio a las grandes. Lo comprueba el servidor; las recompensas de la tienda no tienen tope. Decidido el 13 de
 octubre.
 
 ### 4.6 Cartera y ranking

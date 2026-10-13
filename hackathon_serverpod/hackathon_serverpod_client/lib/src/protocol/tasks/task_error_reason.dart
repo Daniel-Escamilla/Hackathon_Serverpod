@@ -33,7 +33,7 @@ enum TaskErrorReason implements _isc.SerializableModel {
   /// A mission's weekdays are empty or outside 1 (Monday) to 7 (Sunday).
   invalidSchedule,
 
-  /// A task's price, or a counter-offer, is below 1 or above the cap of 50 (PRODUCT.md §4.5).
+  /// A task's price, or a counter-offer, is below 1 or above the cap of 150 (PRODUCT.md §4.5).
   invalidReward;
 
   static TaskErrorReason fromJson(String name) {

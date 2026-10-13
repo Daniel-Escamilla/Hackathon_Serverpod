@@ -1049,7 +1049,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardHintNote.
   ///
   /// In es, this message translates to:
-  /// **'Una tarea normal suele valer 10; como mucho, 50'**
+  /// **'Una tarea normal suele valer 10; como mucho, 150'**
   String get rewardHintNote;
 
   /// No description provided for @reviewProposal.
@@ -2378,10 +2378,10 @@ abstract class AppLocalizations {
   /// **'Hoy toca una tarea de la agenda'**
   String get activityMissionDue;
 
-  /// A task price or counter-offer outside 1 to 50
+  /// A task price or counter-offer outside 1 to 150
   ///
   /// In es, this message translates to:
-  /// **'Una tarea vale entre 1 y 50 karmas.'**
+  /// **'Una tarea vale entre 1 y 150 karmas.'**
   String get errorInvalidReward;
 }
 

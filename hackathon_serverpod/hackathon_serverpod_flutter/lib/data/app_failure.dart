@@ -70,7 +70,7 @@ enum AppFailure {
   /// A scheduled task with no valid weekdays.
   invalidSchedule,
 
-  /// A task's price below 1 or above the cap of 50.
+  /// A task's price below 1 or above the cap of 150.
   invalidReward,
 
   /// No reward with that id in the caller's group.

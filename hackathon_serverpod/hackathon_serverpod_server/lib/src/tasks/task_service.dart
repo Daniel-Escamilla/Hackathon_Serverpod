@@ -26,8 +26,8 @@ Duration _voteWindow(Session session) {
 /// a mission goes on the schedule and puts a task on the board on each of its
 /// weekdays (PRODUCT.md §5).
 /// The most a task can be worth, proposed or counter-offered (PRODUCT.md
-/// §4.5): a typical chore is 5 to 25, so 50 is a big one.
-const maxTaskReward = 50;
+/// §4.5): a typical chore is 5 to 25, so 150 leaves room for the biggest.
+const maxTaskReward = 150;
 
 void _checkReward(int reward) {
   if (reward < 1 || reward > maxTaskReward) {
