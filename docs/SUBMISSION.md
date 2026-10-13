@@ -24,7 +24,7 @@ is designed ([`docs/PRODUCT.md`](PRODUCT.md) §8) but out of scope for this subm
 - **Android:** <https://karmahome.serverpod.space/descargar.html>, a download page for the APK.
 - **Demo accounts**, a couple already living in a home with some history, two tasks to claim and a
   purchase on its way: `ana.demo@example.com` and `leo.demo@example.com`, password
-  **TO FILL IN**. Sign in as each in two browsers (or a browser and a phone) to see the live
+  `KarmaHome2026` for both. Sign in as each in two browsers (or a browser and a phone) to see the live
   updates. Anyone can also sign up with their own email and start a home.
 
 The interface is in Spanish by default; English can be picked in *Mis ajustes → Idioma*.

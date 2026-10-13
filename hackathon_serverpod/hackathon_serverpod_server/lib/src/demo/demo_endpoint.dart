@@ -15,7 +15,9 @@ class DemoEndpoint extends Endpoint {
   /// `demoSeedSecret`, and returns its invite code. Null when refused, with
   /// no hint of why.
   Future<String?> reseed(Session session, String secret) async {
-    final expected = session.passwords['demoSeedSecret'];
+    // Trimmed: `serverpod cloud password set --from-file` keeps the file's
+    // final newline, which the script's secret never has.
+    final expected = session.passwords['demoSeedSecret']?.trim();
     final password = session.passwords['demoAccountPassword'];
     if (expected == null || expected.isEmpty || password == null) return null;
     if (!_sameSecret(secret, expected)) {
