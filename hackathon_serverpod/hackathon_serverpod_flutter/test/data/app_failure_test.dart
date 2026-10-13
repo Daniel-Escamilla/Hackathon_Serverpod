@@ -36,6 +36,7 @@ void main() {
         AppFailure.purchaseNotFound,
         AppFailure.purchaseNotOpen,
         AppFailure.notProvider,
+        AppFailure.notProposer,
       ],
     );
   });

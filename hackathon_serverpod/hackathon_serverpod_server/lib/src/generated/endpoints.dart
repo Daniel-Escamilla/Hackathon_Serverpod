@@ -674,6 +674,25 @@ class Endpoints extends _is.EndpointDispatch {
                     icon: params['icon'],
                   ),
         ),
+        'withdrawReward': _is.MethodConnector(
+          name: 'withdrawReward',
+          params: {
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).withdrawReward(
+                    session,
+                    params['itemId'],
+                  ),
+        ),
         'voteReward': _is.MethodConnector(
           name: 'voteReward',
           params: {
@@ -929,6 +948,25 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     params['taskId'],
                     params['counterReward'],
+                  ),
+        ),
+        'withdrawTask': _is.MethodConnector(
+          name: 'withdrawTask',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['task'] as _i3nmwja6.TaskEndpoint).withdrawTask(
+                    session,
+                    params['taskId'],
                   ),
         ),
         'respondToCounterOffer': _is.MethodConnector(

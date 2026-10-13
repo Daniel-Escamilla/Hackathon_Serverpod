@@ -48,7 +48,10 @@ enum ShopErrorReason implements _is.SerializableModel {
   purchaseNotOpen,
 
   /// Only the member chosen to fulfil a purchase answers it or delivers it.
-  notProvider;
+  notProvider,
+
+  /// Only whoever proposed a reward, or the admin, withdraws the proposal.
+  notProposer;
 
   static ShopErrorReason fromJson(String name) {
     switch (name) {
@@ -74,6 +77,8 @@ enum ShopErrorReason implements _is.SerializableModel {
         return ShopErrorReason.purchaseNotOpen;
       case 'notProvider':
         return ShopErrorReason.notProvider;
+      case 'notProposer':
+        return ShopErrorReason.notProposer;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "ShopErrorReason"',

@@ -395,4 +395,56 @@ void main() {
     expect(y('En votación'), lessThan(y('Ya votada')));
     expect(find.text('Terminada'), findsNothing);
   });
+
+  group('withdrawing a proposal', () {
+    Future<void> pumpTab(WidgetTester tester, {required int me}) async {
+      tasks
+        ..hasLoaded = true
+        ..tasks = [
+          task(id: 1, title: 'Propuesta de Ana'),
+          task(id: 2, title: 'Abierta', status: TaskStatus.open),
+        ];
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TasksController>.value(value: tasks),
+            ChangeNotifierProvider<GroupController>.value(
+              value: FakeGroupController(
+                me: me,
+                members: [member(1, 'Ana'), member(2, 'Bea')],
+              ),
+            ),
+            ChangeNotifierProvider(create: (_) => WalletController()),
+          ],
+          child: MaterialApp(
+            locale: const Locale('es'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(body: TasksPage()),
+          ),
+        ),
+      );
+      await tester.pump();
+    }
+
+    testWidgets('the proposer bins it after confirming', (tester) async {
+      await pumpTab(tester, me: 1);
+
+      // Only on the proposal, not on the open task.
+      expect(find.byTooltip('Retirar la propuesta'), findsOneWidget);
+      await tester.tap(find.byTooltip('Retirar la propuesta'));
+      await tester.pump();
+      expect(find.text('¿Retirar esta tarea?'), findsOneWidget);
+
+      await tester.tap(find.text('Retirar'));
+      await tester.pump();
+      expect(tasks.calls, ['withdraw 1']);
+    });
+
+    testWidgets('someone else sees no bin', (tester) async {
+      await pumpTab(tester, me: 2);
+
+      expect(find.byTooltip('Retirar la propuesta'), findsNothing);
+    });
+  });
 }

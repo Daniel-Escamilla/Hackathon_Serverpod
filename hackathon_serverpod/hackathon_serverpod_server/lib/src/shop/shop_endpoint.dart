@@ -59,6 +59,14 @@ class ShopEndpoint extends Endpoint {
     );
   }
 
+  /// Takes back a reward still being voted on. Only whoever proposed it or
+  /// the admin.
+  Future<void> withdrawReward(Session session, int itemId) async {
+    final member = await currentGroupMember(session);
+    final item = await _findGroupReward(session, member, itemId);
+    await _shopService.withdrawProposal(session, item: item, member: member);
+  }
+
   /// Vote on a proposed reward.
   Future<void> voteReward(Session session, int itemId, bool approve) async {
     final member = await currentGroupMember(session);

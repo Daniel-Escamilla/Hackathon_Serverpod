@@ -36,6 +36,9 @@ class FakeTasksController extends TasksController {
       _record('counter $taskId $accept', taskId);
 
   @override
+  Future<Task> withdrawTask(int taskId) => _record('withdraw $taskId', taskId);
+
+  @override
   Future<Task> markTaskDone(int taskId) => _record('done $taskId', taskId);
 
   @override
@@ -55,6 +58,9 @@ class FakeShopController extends ShopController {
   @override
   Future<void> voteReward(int itemId, bool approve) =>
       _record('vote $itemId $approve');
+
+  @override
+  Future<void> withdrawReward(int itemId) => _record('withdraw $itemId');
 
   @override
   Future<void> respondToPurchase(int purchaseId, bool accept) =>

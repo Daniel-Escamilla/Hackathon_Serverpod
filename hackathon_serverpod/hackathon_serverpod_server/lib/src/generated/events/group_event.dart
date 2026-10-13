@@ -68,7 +68,8 @@ abstract class GroupEvent
   /// null otherwise.
   int? purchaseId;
 
-  /// The reward, for `rewardProposed` and `rewardVoteCast`; null otherwise.
+  /// The reward, for `rewardProposed`, `rewardVoteCast` and `rewardWithdrawn`;
+  /// null otherwise.
   int? rewardId;
 
   /// The member who left, when [kind] is `memberExpelled`, or who changed

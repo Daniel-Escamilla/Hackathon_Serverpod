@@ -34,6 +34,9 @@ class TasksRepository {
   Future<Task> respondToCounterOffer(int taskId, bool accept) =>
       guardServerCall(() => client.task.respondToCounterOffer(taskId, accept));
 
+  Future<Task> withdrawTask(int taskId) =>
+      guardServerCall(() => client.task.withdrawTask(taskId));
+
   Future<Task> markTaskDone(int taskId) =>
       guardServerCall(() => client.task.markTaskDone(taskId));
 

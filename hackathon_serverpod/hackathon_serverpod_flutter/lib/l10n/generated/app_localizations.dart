@@ -1445,7 +1445,7 @@ abstract class AppLocalizations {
   /// Someone other than the proposer answered a counter-offer
   ///
   /// In es, this message translates to:
-  /// **'Solo quien propuso la tarea puede responder a la contraoferta.'**
+  /// **'Eso solo puede hacerlo quien hizo la propuesta.'**
   String get errorNotProposer;
 
   /// A shop call named a reward that is not in the group
@@ -2221,6 +2221,60 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Limpiar el baño'**
   String get typicalTaskBathroom;
+
+  /// Trash button on a proposal still being voted on
+  ///
+  /// In es, this message translates to:
+  /// **'Retirar la propuesta'**
+  String get withdrawProposalTooltip;
+
+  /// Confirmation title before withdrawing a task proposal
+  ///
+  /// In es, this message translates to:
+  /// **'¿Retirar esta tarea?'**
+  String get withdrawTaskTitle;
+
+  /// Confirmation body before withdrawing a task proposal
+  ///
+  /// In es, this message translates to:
+  /// **'Sale de la votación y no cuesta multa. Los votos que ya tenga se pierden.'**
+  String get withdrawTaskBody;
+
+  /// Confirmation title before withdrawing a reward proposal
+  ///
+  /// In es, this message translates to:
+  /// **'¿Retirar esta recompensa?'**
+  String get withdrawRewardTitle;
+
+  /// Confirmation body before withdrawing a reward proposal
+  ///
+  /// In es, this message translates to:
+  /// **'Sale de la tienda antes de que se vote y no cuesta multa.'**
+  String get withdrawRewardBody;
+
+  /// Confirm button that withdraws a proposal
+  ///
+  /// In es, this message translates to:
+  /// **'Retirar'**
+  String get withdrawAction;
+
+  /// Withdrawing a proposal failed
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo retirar la propuesta'**
+  String get withdrawError;
+
+  /// Activity: another member withdrew a task proposal
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha retirado una tarea'**
+  String activityTaskWithdrawn(String name);
+
+  /// Activity: another member withdrew a reward proposal
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha retirado una recompensa'**
+  String activityRewardWithdrawn(String name);
 }
 
 class _AppLocalizationsDelegate

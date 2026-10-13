@@ -23,6 +23,8 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.memberExpelled => l10n.activityMemberExpelled(name),
     GroupEventKind.memberUpdated => l10n.activityMemberUpdated(name),
     GroupEventKind.memberLeft => l10n.activityMemberLeft(name),
+    GroupEventKind.taskWithdrawn => l10n.activityTaskWithdrawn(name),
+    GroupEventKind.rewardWithdrawn => l10n.activityRewardWithdrawn(name),
   };
 
   IconData get icon => switch (kind) {
@@ -39,6 +41,8 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.memberExpelled => Icons.person_remove_rounded,
     GroupEventKind.memberUpdated => Icons.face_rounded,
     GroupEventKind.memberLeft => Icons.logout_rounded,
+    GroupEventKind.taskWithdrawn ||
+    GroupEventKind.rewardWithdrawn => Icons.delete_outline_rounded,
   };
 
   Color colorIn(AppPalette palette) => switch (kind) {
@@ -46,12 +50,14 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.taskVoteCast ||
     GroupEventKind.taskCounterOffered ||
     GroupEventKind.taskClaimed ||
-    GroupEventKind.taskValidated => palette.accent,
+    GroupEventKind.taskValidated ||
+    GroupEventKind.taskWithdrawn => palette.accent,
     GroupEventKind.rewardProposed ||
     GroupEventKind.rewardVoteCast ||
     GroupEventKind.purchased ||
     GroupEventKind.purchaseResponded ||
-    GroupEventKind.purchaseDelivered => palette.danger,
+    GroupEventKind.purchaseDelivered ||
+    GroupEventKind.rewardWithdrawn => palette.danger,
     GroupEventKind.memberExpelled ||
     GroupEventKind.memberUpdated ||
     GroupEventKind.memberLeft => palette.muted,
@@ -63,12 +69,14 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.taskVoteCast ||
     GroupEventKind.taskCounterOffered ||
     GroupEventKind.taskClaimed ||
-    GroupEventKind.taskValidated => HomeTabController.tasks,
+    GroupEventKind.taskValidated ||
+    GroupEventKind.taskWithdrawn => HomeTabController.tasks,
     GroupEventKind.rewardProposed ||
     GroupEventKind.rewardVoteCast ||
     GroupEventKind.purchased ||
     GroupEventKind.purchaseResponded ||
-    GroupEventKind.purchaseDelivered => HomeTabController.shop,
+    GroupEventKind.purchaseDelivered ||
+    GroupEventKind.rewardWithdrawn => HomeTabController.shop,
     GroupEventKind.memberExpelled ||
     GroupEventKind.memberUpdated ||
     GroupEventKind.memberLeft => HomeTabController.group,

@@ -26,7 +26,8 @@ enum TaskErrorReason implements _isc.SerializableModel {
   /// completion of a task they claimed.
   ownTask,
 
-  /// Only the proposer answers a counter-offer.
+  /// Only the proposer answers a counter-offer; only the proposer or the admin
+  /// withdraws a proposal.
   notProposer;
 
   static TaskErrorReason fromJson(String name) {

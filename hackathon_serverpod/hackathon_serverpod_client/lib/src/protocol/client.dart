@@ -554,6 +554,15 @@ class EndpointShop extends _isc.EndpointRef {
     },
   );
 
+  /// Takes back a reward still being voted on. Only whoever proposed it or
+  /// the admin.
+  _ida.Future<void> withdrawReward(int itemId) =>
+      caller.callServerEndpoint<void>(
+        'shop',
+        'withdrawReward',
+        {'itemId': itemId},
+      );
+
   /// Vote on a proposed reward.
   _ida.Future<void> voteReward(
     int itemId,
@@ -702,6 +711,15 @@ class EndpointTask extends _isc.EndpointRef {
       'counterReward': counterReward,
     },
   );
+
+  /// Takes back a proposal still being voted on. Only the proposer or the
+  /// admin; no fine.
+  _ida.Future<_i7vt05yn.Task> withdrawTask(int taskId) =>
+      caller.callServerEndpoint<_i7vt05yn.Task>(
+        'task',
+        'withdrawTask',
+        {'taskId': taskId},
+      );
 
   /// The proposer accepts or withdraws the pending counter-offer.
   _ida.Future<_i7vt05yn.Task> respondToCounterOffer(

@@ -9,6 +9,10 @@ import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/failure_messages.dart';
+import '../../ui/sounds.dart';
+import '../../ui/trash_button.dart';
 import '../group/group_controller.dart';
 import 'buy_reward_screen.dart';
 import 'propose_reward_screen.dart';
@@ -72,7 +76,9 @@ class _Body extends StatelessWidget {
         .where((r) => r.status == RewardItemStatus.proposed)
         .toList();
 
-    final myMemberId = context.watch<GroupController>().myMemberId;
+    final group = context.watch<GroupController>();
+    final myMemberId = group.myMemberId;
+    final isAdmin = group.myMember?.role == GroupMemberRole.admin;
     final live = controller.purchases.where(
       (p) =>
           p.status == PurchaseStatus.pendingApproval ||
@@ -150,12 +156,42 @@ class _Body extends StatelessWidget {
                   reward: reward,
                   onTap: () =>
                       pushPage(context, RewardVoteScreen(reward: reward)),
+                  // Whoever proposed it, or the admin, can take it back.
+                  onWithdraw: reward.createdById == myMemberId || isAdmin
+                      ? () => _withdraw(context, reward)
+                      : null,
                 ),
               ),
           ],
         ],
       ),
     );
+  }
+
+  Future<void> _withdraw(BuildContext context, RewardItem reward) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.withdrawRewardTitle,
+      body: l10n.withdrawRewardBody,
+      action: l10n.withdrawAction,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      await controller.withdrawReward(reward.id!);
+      if (context.mounted) {
+        showMessage(context, l10n.proposalWithdrawn, sound: AppSound.success);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showMessage(
+          context,
+          failureMessage(e, l10n, fallback: l10n.withdrawError),
+          isError: true,
+        );
+      }
+    }
   }
 }
 
@@ -211,11 +247,15 @@ class _RewardCard extends StatelessWidget {
     required this.color,
     required this.reward,
     required this.onTap,
+    this.onWithdraw,
   });
 
   final Color color;
   final RewardItem reward;
   final VoidCallback onTap;
+
+  /// Null when this member cannot withdraw the proposal.
+  final VoidCallback? onWithdraw;
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +303,13 @@ class _RewardCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded),
+            if (onWithdraw case final withdraw?)
+              TrashButton(
+                tooltip: AppLocalizations.of(context).withdrawProposalTooltip,
+                onTap: withdraw,
+              )
+            else
+              const Icon(Icons.chevron_right_rounded),
           ],
         ),
       ),

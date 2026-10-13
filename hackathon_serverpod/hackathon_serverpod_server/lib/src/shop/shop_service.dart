@@ -75,6 +75,44 @@ class ShopService {
     return proposed;
   }
 
+  /// Takes back a reward still being voted on, deleting it with its votes:
+  /// nothing can have been bought yet. Only [member] who proposed it or the
+  /// admin can (PRODUCT.md §7).
+  Future<void> withdrawProposal(
+    Session session, {
+    required RewardItem item,
+    required GroupMember member,
+  }) async {
+    await session.db.transaction((transaction) async {
+      final locked = await RewardItem.db.findById(
+        session,
+        item.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null || locked.status != RewardItemStatus.proposed) {
+        throw ShopException(reason: ShopErrorReason.rewardNotOpen);
+      }
+      if (member.id != locked.createdById &&
+          member.role != GroupMemberRole.admin) {
+        throw ShopException(reason: ShopErrorReason.notProposer);
+      }
+      await RewardVote.db.deleteWhere(
+        session,
+        where: (t) => t.itemId.equals(locked.id!),
+        transaction: transaction,
+      );
+      await RewardItem.db.deleteRow(session, locked, transaction: transaction);
+    });
+    await eventService.publish(
+      session,
+      groupId: item.groupId,
+      kind: GroupEventKind.rewardWithdrawn,
+      actorMemberId: member.id,
+      rewardId: item.id,
+    );
+  }
+
   Future<RewardItem> castVote(
     Session session, {
     required RewardItem item,

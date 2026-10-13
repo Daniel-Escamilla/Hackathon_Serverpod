@@ -27,6 +27,8 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 /// phones redraw the member list without a reload (#140).
 /// `memberLeft` is a member leaving on their own (#141); the admin role may
 /// have moved with it, so the others reload the member list.
+/// `taskWithdrawn` and `rewardWithdrawn` are a proposal taken back before the
+/// vote ended, by whoever made it or by the admin (PRODUCT.md §4.3, §9).
 enum GroupEventKind implements _isc.SerializableModel {
   taskProposed,
   taskVoteCast,
@@ -40,7 +42,9 @@ enum GroupEventKind implements _isc.SerializableModel {
   purchaseResponded,
   purchaseDelivered,
   memberUpdated,
-  memberLeft;
+  memberLeft,
+  taskWithdrawn,
+  rewardWithdrawn;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -70,6 +74,10 @@ enum GroupEventKind implements _isc.SerializableModel {
         return GroupEventKind.memberUpdated;
       case 'memberLeft':
         return GroupEventKind.memberLeft;
+      case 'taskWithdrawn':
+        return GroupEventKind.taskWithdrawn;
+      case 'rewardWithdrawn':
+        return GroupEventKind.rewardWithdrawn;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

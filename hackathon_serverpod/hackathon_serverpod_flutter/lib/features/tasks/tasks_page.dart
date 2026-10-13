@@ -9,6 +9,10 @@ import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/failure_messages.dart';
+import '../../ui/sounds.dart';
+import '../../ui/trash_button.dart';
 import '../group/group_controller.dart';
 import 'available_task_screen.dart';
 import 'counter_offer_decision_screen.dart';
@@ -63,7 +67,9 @@ class _Body extends StatelessWidget {
       );
     }
 
-    final me = context.watch<GroupController>().myMemberId;
+    final group = context.watch<GroupController>();
+    final me = group.myMemberId;
+    final isAdmin = group.myMember?.role == GroupMemberRole.admin;
     bool voted(Task t) => controller.hasVoted(t, me);
     bool mine(Task t) => me != null && t.proposedById == me;
     bool claimedByMe(Task t) => me != null && t.doneById == me;
@@ -116,11 +122,19 @@ class _Body extends StatelessWidget {
       );
     }
 
+    // A proposal still being voted on can be taken back by whoever made it,
+    // or by the admin (PRODUCT.md §4.4, §7).
+    bool canWithdraw(Task t) =>
+        (t.status == TaskStatus.proposed ||
+            t.status == TaskStatus.counterOffered) &&
+        (mine(t) || isAdmin);
+
     Widget card(Task task) => _TaskCard(
       task: task,
       statusLabel: _statusLabel(l10n, task.status),
       statusColor: _statusColor(task.status),
       onTap: () => pushPage(context, _detailFor(task, me)),
+      onWithdraw: canWithdraw(task) ? () => _withdraw(context, task) : null,
     );
 
     return RefreshIndicator(
@@ -147,6 +161,32 @@ class _Body extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _withdraw(BuildContext context, Task task) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.withdrawTaskTitle,
+      body: l10n.withdrawTaskBody,
+      action: l10n.withdrawAction,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      await controller.withdrawTask(task.id!);
+      if (context.mounted) {
+        showMessage(context, l10n.proposalWithdrawn, sound: AppSound.success);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showMessage(
+          context,
+          failureMessage(e, l10n, fallback: l10n.withdrawError),
+          isError: true,
+        );
+      }
+    }
   }
 
   Widget _detailFor(Task task, int? me) => switch (task.status) {
@@ -195,12 +235,16 @@ class _TaskCard extends StatelessWidget {
     required this.statusLabel,
     required this.statusColor,
     required this.onTap,
+    this.onWithdraw,
   });
 
   final Task task;
   final String statusLabel;
   final Color statusColor;
   final VoidCallback onTap;
+
+  /// Null when this member cannot withdraw the task.
+  final VoidCallback? onWithdraw;
 
   @override
   Widget build(BuildContext context) {
@@ -263,7 +307,13 @@ class _TaskCard extends StatelessWidget {
                 ],
               ),
             ),
-            Icon(Icons.chevron_right_rounded, color: context.palette.muted),
+            if (onWithdraw case final withdraw?)
+              TrashButton(
+                tooltip: AppLocalizations.of(context).withdrawProposalTooltip,
+                onTap: withdraw,
+              )
+            else
+              Icon(Icons.chevron_right_rounded, color: context.palette.muted),
           ],
         ),
       ),

@@ -87,6 +87,12 @@ class TasksController extends ChangeNotifier {
     return task;
   }
 
+  Future<Task> withdrawTask(int taskId) async {
+    final task = await repository.withdrawTask(taskId);
+    await load();
+    return task;
+  }
+
   Future<Task> markTaskDone(int taskId) async {
     final task = await repository.markTaskDone(taskId);
     await load();

@@ -63,7 +63,8 @@ enum AppFailure {
   /// Nobody votes on their own proposal or their own completion.
   ownTask,
 
-  /// Only the proposer answers a counter-offer.
+  /// Only the proposer answers a counter-offer; only the proposer or the
+  /// admin withdraws a proposal.
   notProposer,
 
   /// No reward with that id in the caller's group.
@@ -178,6 +179,7 @@ AppException mapServerError(Object error) => switch (error) {
     ShopErrorReason.invalidProvider => AppFailure.invalidProvider,
     ShopErrorReason.purchaseNotFound => AppFailure.purchaseNotFound,
     ShopErrorReason.purchaseNotOpen => AppFailure.purchaseNotOpen,
+    ShopErrorReason.notProposer => AppFailure.notProposer,
     ShopErrorReason.notProvider => AppFailure.notProvider,
   }),
   RegistrationException(:final reason) => AppException(switch (reason) {

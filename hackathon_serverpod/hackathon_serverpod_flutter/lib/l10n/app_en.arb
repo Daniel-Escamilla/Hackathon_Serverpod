@@ -256,7 +256,7 @@
   "errorTaskNotFound": "That task no longer exists.",
   "errorTaskNotOpen": "This task has changed. Go back to the list to see it up to date.",
   "errorOwnTask": "You can't vote on your own task.",
-  "errorNotProposer": "Only whoever proposed the task can answer the counter-offer.",
+  "errorNotProposer": "Only whoever made the proposal can do that.",
   "errorRewardNotFound": "That reward no longer exists.",
   "errorRewardNotOpen": "The vote on this reward has already closed.",
   "errorOwnReward": "You can't vote on your own reward.",
@@ -388,5 +388,14 @@
   "typicalTaskHoover": "Hoover",
   "typicalTaskDinner": "Make dinner",
   "typicalTaskFridge": "Clean the fridge",
-  "typicalTaskBathroom": "Clean the bathroom"
+  "typicalTaskBathroom": "Clean the bathroom",
+  "withdrawProposalTooltip": "Withdraw the proposal",
+  "withdrawTaskTitle": "Withdraw this task?",
+  "withdrawTaskBody": "It leaves the vote and costs no fine. Any votes it already has are lost.",
+  "withdrawRewardTitle": "Withdraw this reward?",
+  "withdrawRewardBody": "It leaves the shop before the vote ends and costs no fine.",
+  "withdrawAction": "Withdraw",
+  "withdrawError": "Could not withdraw the proposal",
+  "activityTaskWithdrawn": "{name} withdrew a task",
+  "activityRewardWithdrawn": "{name} withdrew a reward"
 }
