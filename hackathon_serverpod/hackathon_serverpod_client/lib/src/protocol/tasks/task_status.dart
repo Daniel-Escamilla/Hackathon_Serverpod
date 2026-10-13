@@ -15,7 +15,8 @@ import 'package:serverpod_client/serverpod_client.dart' as _isc;
 /// A Task's place in the cycle (PRODUCT.md §3, §10.2). `counterOffered` freezes the proposal
 /// vote while the author decides (§4.3); `rejected` covers both a denied proposal and an expired
 /// proposal vote (§4.2). A denied completion vote does not reject the task: it goes back to
-/// `open` for someone else to claim.
+/// `open` for someone else to claim. `scheduled` is an approved mission: it is never claimed
+/// itself, it puts an `open` task on the board on each of its weekdays (PRODUCT.md §5).
 enum TaskStatus implements _isc.SerializableModel {
   proposed,
   counterOffered,
@@ -23,7 +24,8 @@ enum TaskStatus implements _isc.SerializableModel {
   inValidation,
   done,
   rejected,
-  withdrawn;
+  withdrawn,
+  scheduled;
 
   static TaskStatus fromJson(String name) {
     switch (name) {
@@ -41,6 +43,8 @@ enum TaskStatus implements _isc.SerializableModel {
         return TaskStatus.rejected;
       case 'withdrawn':
         return TaskStatus.withdrawn;
+      case 'scheduled':
+        return TaskStatus.scheduled;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "TaskStatus"',

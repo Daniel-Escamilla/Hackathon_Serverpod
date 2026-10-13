@@ -25,6 +25,7 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.memberLeft => l10n.activityMemberLeft(name),
     GroupEventKind.taskWithdrawn => l10n.activityTaskWithdrawn(name),
     GroupEventKind.rewardWithdrawn => l10n.activityRewardWithdrawn(name),
+    GroupEventKind.missionDue => l10n.activityMissionDue,
   };
 
   IconData get icon => switch (kind) {
@@ -43,6 +44,7 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.memberLeft => Icons.logout_rounded,
     GroupEventKind.taskWithdrawn ||
     GroupEventKind.rewardWithdrawn => Icons.delete_outline_rounded,
+    GroupEventKind.missionDue => Icons.event_repeat_rounded,
   };
 
   Color colorIn(AppPalette palette) => switch (kind) {
@@ -51,7 +53,8 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.taskCounterOffered ||
     GroupEventKind.taskClaimed ||
     GroupEventKind.taskValidated ||
-    GroupEventKind.taskWithdrawn => palette.accent,
+    GroupEventKind.taskWithdrawn ||
+    GroupEventKind.missionDue => palette.accent,
     GroupEventKind.rewardProposed ||
     GroupEventKind.rewardVoteCast ||
     GroupEventKind.purchased ||
@@ -70,7 +73,8 @@ extension GroupEventText on GroupEvent {
     GroupEventKind.taskCounterOffered ||
     GroupEventKind.taskClaimed ||
     GroupEventKind.taskValidated ||
-    GroupEventKind.taskWithdrawn => HomeTabController.tasks,
+    GroupEventKind.taskWithdrawn ||
+    GroupEventKind.missionDue => HomeTabController.tasks,
     GroupEventKind.rewardProposed ||
     GroupEventKind.rewardVoteCast ||
     GroupEventKind.purchased ||

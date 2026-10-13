@@ -648,7 +648,8 @@ class EndpointTask extends _isc.EndpointRef {
   @override
   String get name => 'task';
 
-  /// All tasks in the signed-in member's group.
+  /// All tasks in the signed-in member's group, scheduled missions included.
+  /// Puts today's mission tasks on the board first (PRODUCT.md §5).
   _ida.Future<List<_i7vt05yn.Task>> listTasks() =>
       caller.callServerEndpoint<List<_i7vt05yn.Task>>(
         'task',
@@ -668,12 +669,15 @@ class EndpointTask extends _isc.EndpointRef {
         {},
       );
 
-  /// Propose a new task. Starts `proposed` and opens a proposal vote.
+  /// Propose a new task. Starts `proposed` and opens a proposal vote. With
+  /// [weekdays] (1 = Monday … 7 = Sunday) it is a mission: once approved it
+  /// puts a task on the board on each of those days (PRODUCT.md §5).
   _ida.Future<_i7vt05yn.Task> proposeTask(
     String title,
     String description,
     int reward, {
     String? icon,
+    List<int>? weekdays,
   }) => caller.callServerEndpoint<_i7vt05yn.Task>(
     'task',
     'proposeTask',
@@ -682,6 +686,7 @@ class EndpointTask extends _isc.EndpointRef {
       'description': description,
       'reward': reward,
       'icon': icon,
+      'weekdays': weekdays,
     },
   );
 

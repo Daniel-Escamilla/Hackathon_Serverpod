@@ -45,6 +45,12 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **A home of one works on its own**: with nobody else to vote, a proposed task opens at once, a
   task marked done is paid at once and a proposed reward goes straight to the shop. Once someone
   joins, everything is voted again (PRODUCT.md §4.1).
+- **The home's schedule**: a task can repeat on set weekdays («Sacar la basura» on Tuesdays and
+  Thursdays). It is voted once; on each of its days it appears on the board by itself, in Madrid
+  time, and is claimed and validated like any other task. Repetitions do not pile up. A panel
+  from the tasks tab shows the week day by day, and whoever proposed a set task, or the admin,
+  takes it off. Adds `weekdays`, `lastSpawnedOn` and `missionId` to `Task`, a `scheduled` status
+  and a `missionDue` event, with a migration.
 - **Withdrawing a proposal**: a bin on a task or reward still being voted on, for whoever proposed
   it and for the admin. It asks first and costs no fine; a withdrawn reward is deleted with its
   votes. The rest of the home sees it live and in Activity.

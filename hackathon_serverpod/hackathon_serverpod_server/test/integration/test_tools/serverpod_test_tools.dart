@@ -1514,6 +1514,7 @@ class _TaskEndpoint {
     String description,
     int reward, {
     String? icon,
+    List<int>? weekdays,
   }) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1531,6 +1532,7 @@ class _TaskEndpoint {
             'description': description,
             'reward': reward,
             'icon': icon,
+            'weekdays': weekdays,
           }),
           serializationManager: _serializationManager,
         );

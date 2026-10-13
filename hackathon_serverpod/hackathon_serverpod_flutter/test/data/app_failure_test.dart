@@ -15,6 +15,7 @@ void main() {
         AppFailure.taskNotOpen,
         AppFailure.ownTask,
         AppFailure.notProposer,
+        AppFailure.invalidSchedule,
       ],
     );
   });

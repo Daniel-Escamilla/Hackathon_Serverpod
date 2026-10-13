@@ -200,7 +200,6 @@ Se acumulan con el principal y cuestan poco mientras se construye:
 
 | Qué | Para cuándo |
 |---|---|
-| **Misiones periódicas** | Cómo se comporta cada repetición, si llegan a entrar |
 | **Plantillas de recompensas** | Mayte revisa el borrador de [`PRODUCT.md` §6](PRODUCT.md#6-tienda-y-recompensas) |
 | **Entrada de los hijos sin email** | Solo si el modo familia vuelve a entrar en alcance |
 
@@ -213,10 +212,10 @@ el lunes a las 00:00 en Madrid (decidido el 5 de octubre).
 **Entró además**, de lo que §1 dejaba para "si sobra" o fuera del todo: ranking semanal, salir de la
 casa (y ceder el cargo al más antiguo), catálogo de tareas típicas, registro con Google, traducción
 al inglés, modo oscuro, iconos en tareas y recompensas, una casa de una sola persona, retirar una
-propuesta y la pantalla de Actividad con los avisos de la sesión. Versión a versión, en
+propuesta, la agenda de tareas fijas por día de la semana y la pantalla de Actividad con los avisos de la sesión. Versión a versión, en
 [`CHANGELOG.md`](../CHANGELOG.md).
 
-**Sigue fuera:** el modo familia, las misiones periódicas, las unidades de stock, iOS y la ruleta.
+**Sigue fuera:** el modo familia, las unidades de stock, iOS y la ruleta.
 Quedan como issues abiertas para después del hackathon las notificaciones push (#161–164), las
 estancias de la casa (#167–171), guardar los avisos al cerrar la app (#159–160), compartir el código
 por redes (#148) y las pestañas deslizables (#46).

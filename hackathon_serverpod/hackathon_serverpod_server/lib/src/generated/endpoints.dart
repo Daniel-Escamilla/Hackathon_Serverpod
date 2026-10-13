@@ -886,6 +886,11 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<String?>(),
               nullable: true,
             ),
+            'weekdays': _is.ParameterDescription(
+              name: 'weekdays',
+              type: _is.getType<List<int>?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -898,6 +903,7 @@ class Endpoints extends _is.EndpointDispatch {
                     params['description'],
                     params['reward'],
                     icon: params['icon'],
+                    weekdays: params['weekdays'],
                   ),
         ),
         'voteTaskProposal': _is.MethodConnector(

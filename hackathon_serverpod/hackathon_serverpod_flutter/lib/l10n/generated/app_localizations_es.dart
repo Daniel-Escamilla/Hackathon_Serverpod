@@ -1217,4 +1217,69 @@ class AppLocalizationsEs extends AppLocalizations {
   String activityRewardWithdrawn(String name) {
     return '$name ha retirado una recompensa';
   }
+
+  @override
+  String get weekdayInitials => 'L,M,X,J,V,S,D';
+
+  @override
+  String get repeatLabel => 'Repetir cada semana (opcional)';
+
+  @override
+  String get repeatHint =>
+      'Sin días, se hace una vez. Con días, la casa vota una vez y la tarea aparece sola esos días.';
+
+  @override
+  String repeatsOn(String days) {
+    return 'Se repite: $days';
+  }
+
+  @override
+  String get scheduleTitle => 'Agenda de la casa';
+
+  @override
+  String get scheduleSubtitle =>
+      'Tareas fijas que aparecen solas en su día. Se votan una vez; cada vez que se hacen, se validan.';
+
+  @override
+  String get scheduleEntry => 'Agenda de la casa';
+
+  @override
+  String scheduleEntryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count tareas fijas',
+      one: '1 tarea fija',
+      zero: 'Sin tareas fijas todavía',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scheduleNothing => 'Nada';
+
+  @override
+  String get schedulePending => 'Esperando la votación';
+
+  @override
+  String get scheduleAdd => 'Nueva tarea fija';
+
+  @override
+  String get stopScheduleTitle => '¿Quitar de la agenda?';
+
+  @override
+  String get stopScheduleBody =>
+      'Deja de aparecer en sus días. La que ya está en el tablero sigue ahí.';
+
+  @override
+  String get stopScheduleAction => 'Quitar';
+
+  @override
+  String get scheduleStopped => 'Quitada de la agenda';
+
+  @override
+  String get errorInvalidSchedule => 'Elige al menos un día de la semana.';
+
+  @override
+  String get activityMissionDue => 'Hoy toca una tarea de la agenda';
 }

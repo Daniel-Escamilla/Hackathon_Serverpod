@@ -47,11 +47,16 @@ The interface is in Spanish by default; English can be picked in *Mis ajustes �
 
 - **Propose** a task with a title, an optional description, a price in karmas and an icon — or
   tap one of ten typical chores («Limpiar el baño · 25») to fill it in.
+- **Schedule** a task on set weekdays («take the rubbish out» on Tuesdays and Thursdays): the home
+  votes on it once, and on each of its days it appears on the board by itself, to be claimed and
+  validated like any other. A panel shows the home's week day by day.
 - **Vote** on it. A proposal passes with half of the other members; each vote stays open for
   24 hours and closes early as soon as the result cannot change. A vote that expires counts as
   rejected.
 - **Counter-offer** a different price. The first counter-offer freezes the vote until the proposer
   accepts the new price or withdraws the task.
+- **Withdraw** a proposal made by mistake while it is being voted on, with no fine: whoever made it,
+  or the admin, bins it from its card.
 - **Claim** an open task by marking it done: whoever presses first gets it, and the other phone is
   told someone got there first.
 - **Validate**: the rest of the group confirms the task was really done. Only then are the coins
