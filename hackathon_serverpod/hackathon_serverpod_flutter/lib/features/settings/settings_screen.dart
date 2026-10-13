@@ -17,6 +17,7 @@ import '../../ui/sounds.dart';
 import '../auth/reset_password_email_screen.dart';
 import '../group/group_controller.dart';
 import 'locale_controller.dart';
+import 'theme_controller.dart';
 import 'sound_preference.dart';
 
 /// The member's own settings: how the group sees them, their password, the
@@ -39,7 +40,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late final _nameController = TextEditingController(
     text: _group.myMember?.displayName ?? '',
   );
-  late String? _emoji = _group.myMember?.avatarEmoji;
+  late String? _avatar = _group.myMember?.avatarEmoji;
   late String _color =
       _group.myMember?.avatarColor ?? MemberAvatar.defaultColor;
   bool _saving = false;
@@ -69,7 +70,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     try {
       await _group.updateMyProfile(
         displayName: name,
-        avatarEmoji: _emoji,
+        avatarEmoji: _avatar,
         avatarColor: _color,
       );
       if (mounted) {
@@ -99,6 +100,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
       'violet': l10n.avatarColorViolet,
       'cream': l10n.avatarColorCream,
     };
+    final avatarNames = {
+      'taza': l10n.avatarTaza,
+      'planta': l10n.avatarPlanta,
+      'calcetin': l10n.avatarCalcetin,
+      'esponja': l10n.avatarEsponja,
+      'tetera': l10n.avatarTetera,
+      'tostada': l10n.avatarTostada,
+      'cubo': l10n.avatarCubo,
+      'bombilla': l10n.avatarBombilla,
+    };
 
     return Scaffold(
       appBar: AppBar(),
@@ -120,25 +131,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     valueListenable: _nameController,
                     builder: (context, name, _) => MemberAvatar(
                       name: name.text,
-                      emoji: _emoji,
+                      avatar: _avatar,
                       color: _color,
                       radius: 40,
                     ),
                   ),
                 ),
                 const SizedBox(height: 18),
-                FieldLabel(l10n.avatarEmojiLabel),
+                FieldLabel(l10n.avatarLabel),
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    for (final emoji in MemberAvatar.emojis)
-                      _Choice(
-                        selected: _emoji == emoji,
-                        onTap: () => setState(() => _emoji = emoji),
-                        child: Text(
-                          emoji,
-                          style: const TextStyle(fontSize: 24),
+                    for (final avatar in MemberAvatar.avatars)
+                      Semantics(
+                        label: avatarNames[avatar],
+                        selected: _avatar == avatar,
+                        button: true,
+                        child: _Choice(
+                          selected: _avatar == avatar,
+                          onTap: () => setState(() => _avatar = avatar),
+                          child: MemberAvatar(
+                            name: '',
+                            avatar: avatar,
+                            color: _color,
+                            radius: 19,
+                          ),
                         ),
                       ),
                   ],
@@ -205,6 +223,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           const SizedBox(height: 26),
           _SectionTitle(l10n.soundSection),
           _SoundRow(on: _soundsOn, onChanged: _setSounds),
+          // Null only in tests that build this screen without the app root.
+          if (context.watch<ThemeController?>() case final theme?) ...[
+            const SizedBox(height: 12),
+            _SoundRow(
+              title: l10n.darkModeToggle,
+              hint: l10n.darkModeToggleHint,
+              on: theme.dark,
+              onChanged: theme.setDark,
+            ),
+          ],
           const SizedBox(height: 26),
           _SectionTitle(l10n.languageSection),
           for (final (option, label) in [
@@ -237,20 +265,20 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-/// One square of the emoji grid or one dot of the colour row: a ring shows
+/// One square of the character grid or one dot of the colour row: a ring shows
 /// the one picked.
 class _Choice extends StatelessWidget {
   const _Choice({
     required this.selected,
     required this.onTap,
     required this.child,
-    this.color = Colors.white,
+    this.color,
   });
 
   final bool selected;
   final VoidCallback onTap;
   final Widget child;
-  final Color color;
+  final Color? color;
 
   @override
   Widget build(BuildContext context) {
@@ -263,12 +291,10 @@ class _Choice extends StatelessWidget {
         height: 46,
         alignment: Alignment.center,
         decoration: BoxDecoration(
-          color: color,
+          color: color ?? context.palette.card,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
-            color: selected
-                ? AppColors.violet
-                : AppColors.muted.withValues(alpha: .25),
+            color: selected ? context.palette.accent : context.palette.border,
             width: selected ? 3 : 1.5,
           ),
         ),
@@ -281,9 +307,19 @@ class _Choice extends StatelessWidget {
 /// The switch for every UI sound at once. The whole card toggles it, not only
 /// the switch itself.
 class _SoundRow extends StatelessWidget {
-  const _SoundRow({required this.on, required this.onChanged});
+  const _SoundRow({
+    required this.on,
+    required this.onChanged,
+    this.title,
+    this.hint,
+  });
 
   final bool on;
+
+  /// Defaults to the sound switch's own wording; the dark mode switch
+  /// reuses this row with its own.
+  final String? title;
+  final String? hint;
   final ValueChanged<bool> onChanged;
 
   @override
@@ -302,13 +338,13 @@ class _SoundRow extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.soundsToggle,
+                      title ?? l10n.soundsToggle,
                       style: const TextStyle(fontWeight: FontWeight.w900),
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      l10n.soundsToggleHint,
-                      style: const TextStyle(color: AppColors.muted),
+                      hint ?? l10n.soundsToggleHint,
+                      style: TextStyle(color: context.palette.muted),
                     ),
                   ],
                 ),
@@ -357,7 +393,9 @@ class _LanguageRow extends StatelessWidget {
                   selected
                       ? Icons.radio_button_checked_rounded
                       : Icons.radio_button_off_rounded,
-                  color: selected ? AppColors.violet : AppColors.muted,
+                  color: selected
+                      ? context.palette.accent
+                      : context.palette.muted,
                 ),
               ],
             ),

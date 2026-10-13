@@ -15,6 +15,8 @@ void main() {
         AppFailure.taskNotOpen,
         AppFailure.ownTask,
         AppFailure.notProposer,
+        AppFailure.invalidSchedule,
+        AppFailure.invalidReward,
       ],
     );
   });
@@ -31,10 +33,12 @@ void main() {
         AppFailure.rewardNotAvailable,
         AppFailure.outOfStock,
         AppFailure.negativeBalance,
+        AppFailure.notEnoughCoins,
         AppFailure.invalidProvider,
         AppFailure.purchaseNotFound,
         AppFailure.purchaseNotOpen,
         AppFailure.notProvider,
+        AppFailure.notProposer,
       ],
     );
   });
@@ -55,7 +59,7 @@ void main() {
           GroupException(reason: GroupErrorReason.noMembership),
           l10n,
         ),
-        'Ya no estás en este grupo.',
+        'Ya no estás en esta casa.',
       );
     });
 

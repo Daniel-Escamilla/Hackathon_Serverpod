@@ -10,5 +10,10 @@ values:
   ### Nobody votes on or counter-offers their own proposal, nor votes on the
   ### completion of a task they claimed.
   - ownTask
-  ### Only the proposer answers a counter-offer.
+  ### Only the proposer answers a counter-offer; only the proposer or the admin
+  ### withdraws a proposal.
   - notProposer
+  ### A mission's weekdays are empty or outside 1 (Monday) to 7 (Sunday).
+  - invalidSchedule
+  ### A task's price, or a counter-offer, is below 1 or above the cap of 150 (PRODUCT.md §4.5).
+  - invalidReward

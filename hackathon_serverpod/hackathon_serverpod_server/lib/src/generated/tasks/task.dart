@@ -10,6 +10,8 @@
 // ignore_for_file: invalid_use_of_internal_member
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'package:hackathon_serverpod_server/src/generated/protocol.dart'
+    as _ipvu8d51;
 import 'package:serverpod/serverpod.dart' as _is;
 import '../tasks/task_kind.dart' as _ijul8zzi;
 import '../tasks/task_recurrence.dart' as _irx5q63y;
@@ -23,8 +25,12 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
     required this.title,
     required this.description,
     required this.reward,
+    this.icon,
     _ijul8zzi.TaskKind? kind,
     this.recurrence,
+    this.weekdays,
+    this.lastSpawnedOn,
+    this.missionId,
     _i18yar27.TaskStatus? status,
     required this.proposedById,
     this.doneById,
@@ -38,8 +44,12 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
     required String title,
     required String description,
     required int reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
+    List<int>? weekdays,
+    DateTime? lastSpawnedOn,
+    int? missionId,
     _i18yar27.TaskStatus? status,
     required int proposedById,
     int? doneById,
@@ -53,6 +63,7 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String,
       reward: jsonSerialization['reward'] as int,
+      icon: jsonSerialization['icon'] as String?,
       kind: jsonSerialization['kind'] == null
           ? null
           : _ijul8zzi.TaskKind.fromJson((jsonSerialization['kind'] as String)),
@@ -61,6 +72,17 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
           : _irx5q63y.TaskRecurrence.fromJson(
               (jsonSerialization['recurrence'] as String),
             ),
+      weekdays: jsonSerialization['weekdays'] == null
+          ? null
+          : _ipvu8d51.Protocol().deserialize<List<int>>(
+              jsonSerialization['weekdays'],
+            ),
+      lastSpawnedOn: jsonSerialization['lastSpawnedOn'] == null
+          ? null
+          : _is.DateTimeJsonExtension.fromJson(
+              jsonSerialization['lastSpawnedOn'],
+            ),
+      missionId: jsonSerialization['missionId'] as int?,
       status: jsonSerialization['status'] == null
           ? null
           : _i18yar27.TaskStatus.fromJson(
@@ -93,10 +115,24 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
   /// are a percentage of.
   int reward;
 
+  /// An emoji picked when proposing, shown on the task's card. Null shows the app's default.
+  String? icon;
+
   _ijul8zzi.TaskKind kind;
 
   /// Only set for `mission`-kind tasks (PRODUCT.md §5).
   _irx5q63y.TaskRecurrence? recurrence;
+
+  /// The days of the week a `mission` comes back on, 1 (Monday) to 7 (Sunday), in Madrid.
+  /// Null for a one-off task.
+  List<int>? weekdays;
+
+  /// The Madrid day (as UTC midnight) a scheduled mission last put a task on the board, so it
+  /// does it once a day at most. Null until its first day comes.
+  DateTime? lastSpawnedOn;
+
+  /// For a task a mission put on the board, that mission. Null otherwise.
+  int? missionId;
 
   _i18yar27.TaskStatus status;
 
@@ -122,8 +158,12 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
     String? title,
     String? description,
     int? reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
+    List<int>? weekdays,
+    DateTime? lastSpawnedOn,
+    int? missionId,
     _i18yar27.TaskStatus? status,
     int? proposedById,
     int? doneById,
@@ -138,8 +178,12 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
       'title': title,
       'description': description,
       'reward': reward,
+      if (icon != null) 'icon': icon,
       'kind': kind.toJson(),
       if (recurrence != null) 'recurrence': recurrence?.toJson(),
+      if (weekdays != null) 'weekdays': weekdays?.toJson(),
+      if (lastSpawnedOn != null) 'lastSpawnedOn': lastSpawnedOn?.toJson(),
+      if (missionId != null) 'missionId': missionId,
       'status': status.toJson(),
       'proposedById': proposedById,
       if (doneById != null) 'doneById': doneById,
@@ -156,8 +200,12 @@ abstract class Task implements _is.TableRow<int?>, _is.ProtocolSerialization {
       'title': title,
       'description': description,
       'reward': reward,
+      if (icon != null) 'icon': icon,
       'kind': kind.toJson(),
       if (recurrence != null) 'recurrence': recurrence?.toJson(),
+      if (weekdays != null) 'weekdays': weekdays?.toJson(),
+      if (lastSpawnedOn != null) 'lastSpawnedOn': lastSpawnedOn?.toJson(),
+      if (missionId != null) 'missionId': missionId,
       'status': status.toJson(),
       'proposedById': proposedById,
       if (doneById != null) 'doneById': doneById,
@@ -202,8 +250,12 @@ class _TaskImpl extends Task {
     required String title,
     required String description,
     required int reward,
+    String? icon,
     _ijul8zzi.TaskKind? kind,
     _irx5q63y.TaskRecurrence? recurrence,
+    List<int>? weekdays,
+    DateTime? lastSpawnedOn,
+    int? missionId,
     _i18yar27.TaskStatus? status,
     required int proposedById,
     int? doneById,
@@ -214,8 +266,12 @@ class _TaskImpl extends Task {
          title: title,
          description: description,
          reward: reward,
+         icon: icon,
          kind: kind,
          recurrence: recurrence,
+         weekdays: weekdays,
+         lastSpawnedOn: lastSpawnedOn,
+         missionId: missionId,
          status: status,
          proposedById: proposedById,
          doneById: doneById,
@@ -232,8 +288,12 @@ class _TaskImpl extends Task {
     String? title,
     String? description,
     int? reward,
+    Object? icon = _Undefined,
     _ijul8zzi.TaskKind? kind,
     Object? recurrence = _Undefined,
+    Object? weekdays = _Undefined,
+    Object? lastSpawnedOn = _Undefined,
+    Object? missionId = _Undefined,
     _i18yar27.TaskStatus? status,
     int? proposedById,
     Object? doneById = _Undefined,
@@ -245,10 +305,18 @@ class _TaskImpl extends Task {
       title: title ?? this.title,
       description: description ?? this.description,
       reward: reward ?? this.reward,
+      icon: icon is String? ? icon : this.icon,
       kind: kind ?? this.kind,
       recurrence: recurrence is _irx5q63y.TaskRecurrence?
           ? recurrence
           : this.recurrence,
+      weekdays: weekdays is List<int>?
+          ? weekdays
+          : this.weekdays?.map((e0) => e0).toList(),
+      lastSpawnedOn: lastSpawnedOn is DateTime?
+          ? lastSpawnedOn
+          : this.lastSpawnedOn,
+      missionId: missionId is int? ? missionId : this.missionId,
       status: status ?? this.status,
       proposedById: proposedById ?? this.proposedById,
       doneById: doneById is int? ? doneById : this.doneById,
@@ -282,6 +350,11 @@ class TaskUpdateTable extends _is.UpdateTable<TaskTable> {
     value,
   );
 
+  _is.ColumnValue<String, String> icon(String? value) => _is.ColumnValue(
+    table.icon,
+    value,
+  );
+
   _is.ColumnValue<_ijul8zzi.TaskKind, _ijul8zzi.TaskKind> kind(
     _ijul8zzi.TaskKind value,
   ) => _is.ColumnValue(
@@ -292,6 +365,23 @@ class TaskUpdateTable extends _is.UpdateTable<TaskTable> {
   _is.ColumnValue<_irx5q63y.TaskRecurrence, _irx5q63y.TaskRecurrence>
   recurrence(_irx5q63y.TaskRecurrence? value) => _is.ColumnValue(
     table.recurrence,
+    value,
+  );
+
+  _is.ColumnValue<List<int>, List<int>> weekdays(List<int>? value) =>
+      _is.ColumnValue(
+        table.weekdays,
+        value,
+      );
+
+  _is.ColumnValue<DateTime, DateTime> lastSpawnedOn(DateTime? value) =>
+      _is.ColumnValue(
+        table.lastSpawnedOn,
+        value,
+      );
+
+  _is.ColumnValue<int, int> missionId(int? value) => _is.ColumnValue(
+    table.missionId,
     value,
   );
 
@@ -338,6 +428,10 @@ class TaskTable extends _is.Table<int?> {
       'reward',
       this,
     );
+    icon = _is.ColumnString(
+      'icon',
+      this,
+    );
     kind = _is.ColumnEnum(
       'kind',
       this,
@@ -348,6 +442,18 @@ class TaskTable extends _is.Table<int?> {
       'recurrence',
       this,
       _is.EnumSerialization.byName,
+    );
+    weekdays = _is.ColumnSerializable<List<int>>(
+      'weekdays',
+      this,
+    );
+    lastSpawnedOn = _is.ColumnDateTime(
+      'lastSpawnedOn',
+      this,
+    );
+    missionId = _is.ColumnInt(
+      'missionId',
+      this,
     );
     status = _is.ColumnEnum(
       'status',
@@ -381,10 +487,24 @@ class TaskTable extends _is.Table<int?> {
   /// are a percentage of.
   late final _is.ColumnInt reward;
 
+  /// An emoji picked when proposing, shown on the task's card. Null shows the app's default.
+  late final _is.ColumnString icon;
+
   late final _is.ColumnEnum<_ijul8zzi.TaskKind> kind;
 
   /// Only set for `mission`-kind tasks (PRODUCT.md §5).
   late final _is.ColumnEnum<_irx5q63y.TaskRecurrence> recurrence;
+
+  /// The days of the week a `mission` comes back on, 1 (Monday) to 7 (Sunday), in Madrid.
+  /// Null for a one-off task.
+  late final _is.ColumnSerializable<List<int>> weekdays;
+
+  /// The Madrid day (as UTC midnight) a scheduled mission last put a task on the board, so it
+  /// does it once a day at most. Null until its first day comes.
+  late final _is.ColumnDateTime lastSpawnedOn;
+
+  /// For a task a mission put on the board, that mission. Null otherwise.
+  late final _is.ColumnInt missionId;
 
   late final _is.ColumnEnum<_i18yar27.TaskStatus> status;
 
@@ -405,8 +525,12 @@ class TaskTable extends _is.Table<int?> {
     title,
     description,
     reward,
+    icon,
     kind,
     recurrence,
+    weekdays,
+    lastSpawnedOn,
+    missionId,
     status,
     proposedById,
     doneById,

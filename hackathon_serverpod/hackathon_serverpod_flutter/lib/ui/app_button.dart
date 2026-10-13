@@ -99,7 +99,7 @@ class AppButton extends StatelessWidget {
               strokeWidth: 2.5,
               color: kind == AppButtonKind.primary && !onBrand
                   ? Colors.white
-                  : AppColors.violet,
+                  : context.palette.accent,
             ),
           )
         : Text(label);
@@ -139,7 +139,7 @@ class AppButton extends StatelessWidget {
           onPressed: onTap,
           style: TextButton.styleFrom(
             minimumSize: minimumSize,
-            foregroundColor: AppColors.coral,
+            foregroundColor: context.palette.danger,
           ),
           child: child,
         ),

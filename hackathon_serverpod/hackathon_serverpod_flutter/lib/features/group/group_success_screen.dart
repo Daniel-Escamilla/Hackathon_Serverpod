@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -26,7 +27,7 @@ class GroupSuccessScreen extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(),
-              const RoundIcon(icon: Icons.home_rounded, color: AppColors.lime),
+              const AppLottie(AppAnimation.welcome, size: 150),
               const SizedBox(height: 30),
               Text(
                 l10n.groupSuccessTitle,
@@ -40,7 +41,7 @@ class GroupSuccessScreen extends StatelessWidget {
                   children: [
                     Text(
                       l10n.groupCodeLabel,
-                      style: const TextStyle(color: AppColors.muted),
+                      style: TextStyle(color: context.palette.muted),
                     ),
                     const SizedBox(height: 4),
                     Text(

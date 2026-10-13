@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:hackathon_serverpod_flutter/ui/app_animation.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/buy_reward_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/purchase_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/shop/reward_vote_screen.dart';
@@ -73,10 +74,15 @@ void main() {
       );
 
       await tapLabel(tester, 'Carla');
-      await tapLabel(tester, '15 monedas');
+      await tapLabel(tester, '15 karmas');
 
       expect(shop.calls, ['buy 4 from 3']);
-      expect(find.text('🎁'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is AppLottie && w.animation == AppAnimation.reward,
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets(
@@ -92,14 +98,14 @@ void main() {
 
         expect(
           find.text(
-            'Te faltan 5 monedas: tienes 10 y este premio cuesta 15. '
-            'Haz tareas para conseguirlas.',
+            'Te faltan 5 karmas: tienes 10 y este premio cuesta 15. '
+            'Haz algo por la casa para conseguirlos.',
           ),
           findsOneWidget,
         );
         expect(find.text('Carla'), findsNothing);
 
-        await tapLabel(tester, '15 monedas');
+        await tapLabel(tester, '15 karmas');
         expect(shop.calls, isEmpty);
       },
     );
@@ -123,7 +129,7 @@ void main() {
         findsOneWidget,
       );
 
-      await tapLabel(tester, '15 monedas');
+      await tapLabel(tester, '15 karmas');
       expect(shop.calls, isEmpty);
     });
 
@@ -137,7 +143,7 @@ void main() {
       );
 
       await tapLabel(tester, 'Carla');
-      await tapLabel(tester, '15 monedas');
+      await tapLabel(tester, '15 karmas');
 
       expect(
         find.text('Con saldo negativo no se puede comprar.'),

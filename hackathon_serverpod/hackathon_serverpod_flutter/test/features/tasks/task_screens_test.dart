@@ -1,5 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
+import 'package:hackathon_serverpod_flutter/ui/app_animation.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/available_task_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/counter_offer_decision_screen.dart';
 import 'package:hackathon_serverpod_flutter/features/tasks/task_vote_screen.dart';
@@ -124,7 +125,12 @@ void main() {
       await tapLabel(tester, 'Ya está hecha');
 
       expect(tasks.calls, ['done 7']);
-      expect(find.text('✅'), findsOneWidget);
+      expect(
+        find.byWidgetPredicate(
+          (w) => w is AppLottie && w.animation == AppAnimation.approved,
+        ),
+        findsOneWidget,
+      );
     });
 
     testWidgets('losing the race says someone else took it', (tester) async {
@@ -218,7 +224,7 @@ void main() {
       );
 
       expect(
-        find.text('La has reclamado tú: ahora el grupo decide si está hecha.'),
+        find.text('La has reclamado tú: ahora la casa decide si está hecha.'),
         findsOneWidget,
       );
       expect(find.text('Sí, está hecha'), findsNothing);
@@ -254,7 +260,7 @@ void main() {
       );
 
       expect(
-        find.text('La has propuesto tú: vota el resto del grupo.'),
+        find.text('La has propuesto tú: vota el resto de la casa.'),
         findsOneWidget,
       );
       expect(find.text('Aprobar'), findsNothing);
@@ -297,6 +303,13 @@ void main() {
         group: members,
       );
 
+      // Below the fold, under the vote animation: scroll to it as a person
+      // would.
+      await tester.scrollUntilVisible(
+        find.text('Todavía no ha votado nadie.'),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(find.text('Todavía no ha votado nadie.'), findsOneWidget);
     });
 
@@ -381,5 +394,57 @@ void main() {
     expect(y('Tuyas en validación'), lessThan(y('Mía en validación')));
     expect(y('En votación'), lessThan(y('Ya votada')));
     expect(find.text('Terminada'), findsNothing);
+  });
+
+  group('withdrawing a proposal', () {
+    Future<void> pumpTab(WidgetTester tester, {required int me}) async {
+      tasks
+        ..hasLoaded = true
+        ..tasks = [
+          task(id: 1, title: 'Propuesta de Ana'),
+          task(id: 2, title: 'Abierta', status: TaskStatus.open),
+        ];
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TasksController>.value(value: tasks),
+            ChangeNotifierProvider<GroupController>.value(
+              value: FakeGroupController(
+                me: me,
+                members: [member(1, 'Ana'), member(2, 'Bea')],
+              ),
+            ),
+            ChangeNotifierProvider(create: (_) => WalletController()),
+          ],
+          child: MaterialApp(
+            locale: const Locale('es'),
+            localizationsDelegates: AppLocalizations.localizationsDelegates,
+            supportedLocales: AppLocalizations.supportedLocales,
+            home: const Scaffold(body: TasksPage()),
+          ),
+        ),
+      );
+      await tester.pump();
+    }
+
+    testWidgets('the proposer bins it after confirming', (tester) async {
+      await pumpTab(tester, me: 1);
+
+      // Only on the proposal, not on the open task.
+      expect(find.byTooltip('Retirar la propuesta'), findsOneWidget);
+      await tester.tap(find.byTooltip('Retirar la propuesta'));
+      await tester.pump();
+      expect(find.text('¿Retirar esta tarea?'), findsOneWidget);
+
+      await tester.tap(find.text('Retirar'));
+      await tester.pump();
+      expect(tasks.calls, ['withdraw 1']);
+    });
+
+    testWidgets('someone else sees no bin', (tester) async {
+      await pumpTab(tester, me: 2);
+
+      expect(find.byTooltip('Retirar la propuesta'), findsNothing);
+    });
   });
 }

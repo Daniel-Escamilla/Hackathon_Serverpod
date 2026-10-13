@@ -317,6 +317,28 @@ class EndpointJwtRefresh extends _iacc.EndpointRefreshJwtTokens {
       );
 }
 
+/// Rebuilds the judges' demo couple (PRODUCT.md §14), called by
+/// `scripts/sembrar_demo.sh`. Public, because the script signs in as nobody,
+/// but dead unless the server's `passwords.yaml` has both `demoSeedSecret`
+/// and `demoAccountPassword`: a server without them refuses every call.
+/// {@category Endpoint}
+class EndpointDemo extends _isc.EndpointRef {
+  EndpointDemo(_isc.EndpointCaller caller) : super(caller);
+
+  @override
+  String get name => 'demo';
+
+  /// Wipes and re-creates the demo group when [secret] is the server's
+  /// `demoSeedSecret`, and returns its invite code. Null when refused, with
+  /// no hint of why.
+  _ida.Future<String?> reseed(String secret) =>
+      caller.callServerEndpoint<String?>(
+        'demo',
+        'reseed',
+        {'secret': secret},
+      );
+}
+
 /// Live updates for the signed-in member's group (PRODUCT.md §10.4, issue #65).
 /// {@category Endpoint}
 class EndpointEvent extends _isc.EndpointRef {
@@ -454,9 +476,24 @@ class EndpointGroup extends _isc.EndpointRef {
     },
   );
 
+  /// The signed-in member leaves their home (#141). Like an expelled member,
+  /// they lose their balance and their row stays for everyone's history.
+  /// When the admin leaves, the role goes to whoever has been there longest
+  /// (never a child, §8), so the home is never left without one. Leaving an
+  /// empty home just leaves it empty.
+  ///
+  /// The leaving member's row is read locked, in the same transaction as the
+  /// hand-over: two taps, or the admin leaving while handing the role over by
+  /// hand, would otherwise leave two admins or none.
+  _ida.Future<void> leaveGroup() => caller.callServerEndpoint<void>(
+    'group',
+    'leaveGroup',
+    {},
+  );
+
   /// The signed-in member changes how the group sees them: their name and
   /// their avatar. Any member may, about themselves only. A field left null
-  /// keeps its current value.
+  /// keeps its current value. The rest of the group sees it live (#140).
   _ida.Future<_ir4oz66a.GroupMember> updateMyProfile({
     String? displayName,
     String? avatarEmoji,
@@ -504,6 +541,7 @@ class EndpointShop extends _isc.EndpointRef {
     String description,
     int price, {
     int? stock,
+    String? icon,
   }) => caller.callServerEndpoint<_ibcsn808.RewardItem>(
     'shop',
     'proposeReward',
@@ -512,8 +550,18 @@ class EndpointShop extends _isc.EndpointRef {
       'description': description,
       'price': price,
       'stock': stock,
+      'icon': icon,
     },
   );
+
+  /// Takes back a reward still being voted on. Only whoever proposed it or
+  /// the admin.
+  _ida.Future<void> withdrawReward(int itemId) =>
+      caller.callServerEndpoint<void>(
+        'shop',
+        'withdrawReward',
+        {'itemId': itemId},
+      );
 
   /// Vote on a proposed reward.
   _ida.Future<void> voteReward(
@@ -600,7 +648,8 @@ class EndpointTask extends _isc.EndpointRef {
   @override
   String get name => 'task';
 
-  /// All tasks in the signed-in member's group.
+  /// All tasks in the signed-in member's group, scheduled missions included.
+  /// Puts today's mission tasks on the board first (PRODUCT.md §5).
   _ida.Future<List<_i7vt05yn.Task>> listTasks() =>
       caller.callServerEndpoint<List<_i7vt05yn.Task>>(
         'task',
@@ -620,18 +669,24 @@ class EndpointTask extends _isc.EndpointRef {
         {},
       );
 
-  /// Propose a new task. Starts `proposed` and opens a proposal vote.
+  /// Propose a new task. Starts `proposed` and opens a proposal vote. With
+  /// [weekdays] (1 = Monday … 7 = Sunday) it is a mission: once approved it
+  /// puts a task on the board on each of those days (PRODUCT.md §5).
   _ida.Future<_i7vt05yn.Task> proposeTask(
     String title,
     String description,
-    int reward,
-  ) => caller.callServerEndpoint<_i7vt05yn.Task>(
+    int reward, {
+    String? icon,
+    List<int>? weekdays,
+  }) => caller.callServerEndpoint<_i7vt05yn.Task>(
     'task',
     'proposeTask',
     {
       'title': title,
       'description': description,
       'reward': reward,
+      'icon': icon,
+      'weekdays': weekdays,
     },
   );
 
@@ -661,6 +716,15 @@ class EndpointTask extends _isc.EndpointRef {
       'counterReward': counterReward,
     },
   );
+
+  /// Takes back a proposal still being voted on. Only the proposer or the
+  /// admin; no fine.
+  _ida.Future<_i7vt05yn.Task> withdrawTask(int taskId) =>
+      caller.callServerEndpoint<_i7vt05yn.Task>(
+        'task',
+        'withdrawTask',
+        {'taskId': taskId},
+      );
 
   /// The proposer accepts or withdraws the pending counter-offer.
   _ida.Future<_i7vt05yn.Task> respondToCounterOffer(
@@ -733,7 +797,7 @@ class EndpointWallet extends _isc.EndpointRef {
   );
 
   /// This week's ranking: coins earned minus fines, spending excluded. Resets every
-  /// Monday (PRODUCT.md §4.6).
+  /// Monday at 00:00 in Madrid (PRODUCT.md §4.6, see week.dart).
   _ida.Future<List<_ixil0pu8.RankingEntry>> getWeeklyRanking() =>
       caller.callServerEndpoint<List<_ixil0pu8.RankingEntry>>(
         'wallet',
@@ -783,6 +847,7 @@ class Client extends _isc.ServerpodClientShared {
     emailIdp = EndpointEmailIdp(this);
     googleIdp = EndpointGoogleIdp(this);
     jwtRefresh = EndpointJwtRefresh(this);
+    demo = EndpointDemo(this);
     event = EndpointEvent(this);
     group = EndpointGroup(this);
     shop = EndpointShop(this);
@@ -796,6 +861,8 @@ class Client extends _isc.ServerpodClientShared {
   late final EndpointGoogleIdp googleIdp;
 
   late final EndpointJwtRefresh jwtRefresh;
+
+  late final EndpointDemo demo;
 
   late final EndpointEvent event;
 
@@ -814,6 +881,7 @@ class Client extends _isc.ServerpodClientShared {
     'emailIdp': emailIdp,
     'googleIdp': googleIdp,
     'jwtRefresh': jwtRefresh,
+    'demo': demo,
     'event': event,
     'group': group,
     'shop': shop,

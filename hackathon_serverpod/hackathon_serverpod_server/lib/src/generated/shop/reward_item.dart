@@ -23,6 +23,7 @@ abstract class RewardItem
     required this.title,
     required this.description,
     required this.price,
+    this.icon,
     _iezbc0vz.RewardItemStatus? status,
     required this.createdById,
     this.stock,
@@ -34,6 +35,7 @@ abstract class RewardItem
     required String title,
     required String description,
     required int price,
+    String? icon,
     _iezbc0vz.RewardItemStatus? status,
     required int createdById,
     int? stock,
@@ -46,6 +48,7 @@ abstract class RewardItem
       title: jsonSerialization['title'] as String,
       description: jsonSerialization['description'] as String,
       price: jsonSerialization['price'] as int,
+      icon: jsonSerialization['icon'] as String?,
       status: jsonSerialization['status'] == null
           ? null
           : _iezbc0vz.RewardItemStatus.fromJson(
@@ -71,6 +74,9 @@ abstract class RewardItem
 
   int price;
 
+  /// An emoji picked when proposing, shown on the reward's card. Null shows the app's default.
+  String? icon;
+
   _iezbc0vz.RewardItemStatus status;
 
   int createdById;
@@ -91,6 +97,7 @@ abstract class RewardItem
     String? title,
     String? description,
     int? price,
+    String? icon,
     _iezbc0vz.RewardItemStatus? status,
     int? createdById,
     int? stock,
@@ -104,6 +111,7 @@ abstract class RewardItem
       'title': title,
       'description': description,
       'price': price,
+      if (icon != null) 'icon': icon,
       'status': status.toJson(),
       'createdById': createdById,
       if (stock != null) 'stock': stock,
@@ -119,6 +127,7 @@ abstract class RewardItem
       'title': title,
       'description': description,
       'price': price,
+      if (icon != null) 'icon': icon,
       'status': status.toJson(),
       'createdById': createdById,
       if (stock != null) 'stock': stock,
@@ -162,6 +171,7 @@ class _RewardItemImpl extends RewardItem {
     required String title,
     required String description,
     required int price,
+    String? icon,
     _iezbc0vz.RewardItemStatus? status,
     required int createdById,
     int? stock,
@@ -171,6 +181,7 @@ class _RewardItemImpl extends RewardItem {
          title: title,
          description: description,
          price: price,
+         icon: icon,
          status: status,
          createdById: createdById,
          stock: stock,
@@ -186,6 +197,7 @@ class _RewardItemImpl extends RewardItem {
     String? title,
     String? description,
     int? price,
+    Object? icon = _Undefined,
     _iezbc0vz.RewardItemStatus? status,
     int? createdById,
     Object? stock = _Undefined,
@@ -196,6 +208,7 @@ class _RewardItemImpl extends RewardItem {
       title: title ?? this.title,
       description: description ?? this.description,
       price: price ?? this.price,
+      icon: icon is String? ? icon : this.icon,
       status: status ?? this.status,
       createdById: createdById ?? this.createdById,
       stock: stock is int? ? stock : this.stock,
@@ -223,6 +236,11 @@ class RewardItemUpdateTable extends _is.UpdateTable<RewardItemTable> {
 
   _is.ColumnValue<int, int> price(int value) => _is.ColumnValue(
     table.price,
+    value,
+  );
+
+  _is.ColumnValue<String, String> icon(String? value) => _is.ColumnValue(
+    table.icon,
     value,
   );
 
@@ -262,6 +280,10 @@ class RewardItemTable extends _is.Table<int?> {
       'price',
       this,
     );
+    icon = _is.ColumnString(
+      'icon',
+      this,
+    );
     status = _is.ColumnEnum(
       'status',
       this,
@@ -288,6 +310,9 @@ class RewardItemTable extends _is.Table<int?> {
 
   late final _is.ColumnInt price;
 
+  /// An emoji picked when proposing, shown on the reward's card. Null shows the app's default.
+  late final _is.ColumnString icon;
+
   late final _is.ColumnEnum<_iezbc0vz.RewardItemStatus> status;
 
   late final _is.ColumnInt createdById;
@@ -303,6 +328,7 @@ class RewardItemTable extends _is.Table<int?> {
     title,
     description,
     price,
+    icon,
     status,
     createdById,
     stock,

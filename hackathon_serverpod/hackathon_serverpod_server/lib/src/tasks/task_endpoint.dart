@@ -2,18 +2,22 @@ import '../generated/protocol.dart';
 import '../groups/current_member.dart';
 import 'package:serverpod/serverpod.dart';
 
+import 'mission_service.dart';
 import 'task_service.dart';
 
 /// Propose and vote on tasks (PRODUCT.md §3, §10.3).
 class TaskEndpoint extends Endpoint {
   final TaskService _taskService = const TaskService();
+  final MissionService _missionService = const MissionService();
 
   @override
   bool get requireLogin => true;
 
-  /// All tasks in the signed-in member's group.
+  /// All tasks in the signed-in member's group, scheduled missions included.
+  /// Puts today's mission tasks on the board first (PRODUCT.md §5).
   Future<List<Task>> listTasks(Session session) async {
     final member = await currentGroupMember(session);
+    await _missionService.spawnDue(session, groupId: member.groupId);
     return Task.db.find(
       session,
       where: (t) => t.groupId.equals(member.groupId),
@@ -54,13 +58,17 @@ class TaskEndpoint extends Endpoint {
     ];
   }
 
-  /// Propose a new task. Starts `proposed` and opens a proposal vote.
+  /// Propose a new task. Starts `proposed` and opens a proposal vote. With
+  /// [weekdays] (1 = Monday … 7 = Sunday) it is a mission: once approved it
+  /// puts a task on the board on each of those days (PRODUCT.md §5).
   Future<Task> proposeTask(
     Session session,
     String title,
     String description,
-    int reward,
-  ) async {
+    int reward, {
+    String? icon,
+    List<int>? weekdays,
+  }) async {
     final member = await currentGroupMember(session);
     return _taskService.proposeTask(
       session,
@@ -68,6 +76,8 @@ class TaskEndpoint extends Endpoint {
       title: title,
       description: description,
       reward: reward,
+      icon: icon,
+      weekdays: weekdays,
     );
   }
 
@@ -101,6 +111,18 @@ class TaskEndpoint extends Endpoint {
       task: task,
       voter: member,
       counterReward: counterReward,
+    );
+  }
+
+  /// Takes back a proposal still being voted on. Only the proposer or the
+  /// admin; no fine.
+  Future<Task> withdrawTask(Session session, int taskId) async {
+    final member = await currentGroupMember(session);
+    final task = await _findGroupTask(session, member, taskId);
+    return _taskService.withdrawProposal(
+      session,
+      task: task,
+      member: member,
     );
   }
 

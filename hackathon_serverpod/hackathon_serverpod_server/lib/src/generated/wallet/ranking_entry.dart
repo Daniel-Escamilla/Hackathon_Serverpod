@@ -19,12 +19,16 @@ abstract class RankingEntry
   RankingEntry._({
     required this.memberId,
     required this.displayName,
+    this.avatarEmoji,
+    this.avatarColor,
     required this.netCoins,
   });
 
   factory RankingEntry({
     required int memberId,
     required String displayName,
+    String? avatarEmoji,
+    String? avatarColor,
     required int netCoins,
   }) = _RankingEntryImpl;
 
@@ -32,6 +36,8 @@ abstract class RankingEntry
     return RankingEntry(
       memberId: jsonSerialization['memberId'] as int,
       displayName: jsonSerialization['displayName'] as String,
+      avatarEmoji: jsonSerialization['avatarEmoji'] as String?,
+      avatarColor: jsonSerialization['avatarColor'] as String?,
       netCoins: jsonSerialization['netCoins'] as int,
     );
   }
@@ -39,6 +45,11 @@ abstract class RankingEntry
   int memberId;
 
   String displayName;
+
+  /// The member's picture, as GroupMember keeps it, so the ranking draws them.
+  String? avatarEmoji;
+
+  String? avatarColor;
 
   int netCoins;
 
@@ -48,6 +59,8 @@ abstract class RankingEntry
   RankingEntry copyWith({
     int? memberId,
     String? displayName,
+    String? avatarEmoji,
+    String? avatarColor,
     int? netCoins,
   });
   @override
@@ -56,6 +69,8 @@ abstract class RankingEntry
       '__className__': 'RankingEntry',
       'memberId': memberId,
       'displayName': displayName,
+      if (avatarEmoji != null) 'avatarEmoji': avatarEmoji,
+      if (avatarColor != null) 'avatarColor': avatarColor,
       'netCoins': netCoins,
     };
   }
@@ -66,6 +81,8 @@ abstract class RankingEntry
       '__className__': 'RankingEntry',
       'memberId': memberId,
       'displayName': displayName,
+      if (avatarEmoji != null) 'avatarEmoji': avatarEmoji,
+      if (avatarColor != null) 'avatarColor': avatarColor,
       'netCoins': netCoins,
     };
   }
@@ -76,14 +93,20 @@ abstract class RankingEntry
   }
 }
 
+class _Undefined {}
+
 class _RankingEntryImpl extends RankingEntry {
   _RankingEntryImpl({
     required int memberId,
     required String displayName,
+    String? avatarEmoji,
+    String? avatarColor,
     required int netCoins,
   }) : super._(
          memberId: memberId,
          displayName: displayName,
+         avatarEmoji: avatarEmoji,
+         avatarColor: avatarColor,
          netCoins: netCoins,
        );
 
@@ -94,11 +117,15 @@ class _RankingEntryImpl extends RankingEntry {
   RankingEntry copyWith({
     int? memberId,
     String? displayName,
+    Object? avatarEmoji = _Undefined,
+    Object? avatarColor = _Undefined,
     int? netCoins,
   }) {
     return RankingEntry(
       memberId: memberId ?? this.memberId,
       displayName: displayName ?? this.displayName,
+      avatarEmoji: avatarEmoji is String? ? avatarEmoji : this.avatarEmoji,
+      avatarColor: avatarColor is String? ? avatarColor : this.avatarColor,
       netCoins: netCoins ?? this.netCoins,
     );
   }

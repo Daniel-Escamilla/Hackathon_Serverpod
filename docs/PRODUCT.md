@@ -4,7 +4,7 @@ App de tareas del hogar con recompensas, para el hackathon **Build Something Rea
 Este documento recoge lo que el equipo decidió el **17 de septiembre de 2026** y manda sobre
 cualquier idea anterior. Lo que sigue sin decidir está en [Decisiones pendientes](#13-decisiones-pendientes).
 
-El nombre de la app **está sin decidir**; en el documento aparece como "la app".
+La app se llama **KarmaHome** (decidido el 5 de octubre).
 
 ---
 
@@ -74,6 +74,7 @@ redondeando hacia arriba. Quien propone o reclama **no vota** su propia tarea.
 
 | Tamaño del grupo | Votos a favor necesarios |
 |---|---|
+| 1 | 0: se aprueba sola |
 | 2 | 1 |
 | 3 | 1 |
 | 4 | 2 |
@@ -81,6 +82,10 @@ redondeando hacia arriba. Quien propone o reclama **no vota** su propia tarea.
 | 6 | 3 |
 
 Fórmula: `techo((miembros − 1) / 2)`.
+
+**Si estás solo en la casa**, no hay nadie que vote: lo que propones (tarea o recompensa) sale
+adelante al instante, y una tarea que marcas como hecha se cobra al momento. En cuanto entra otra
+persona, todo vuelve a votarse. Decidido el 12 de octubre.
 
 ### 4.2 Ventana de 24 horas
 
@@ -105,6 +110,11 @@ en lugar de rechazarla. El autor elige:
 
 **La primera contraoferta congela la votación:** mientras el autor no decide, nadie más vota ni
 contraoferta. Así hay siempre una sola oferta sobre la mesa, también en un piso de seis.
+
+**Retirar una propuesta en cualquier momento de la votación**, haya contraoferta o no: quien la hizo
+o el admin, con la papelera de su tarjeta, sin multa. Sirve para lo que se propuso por error. Vale
+igual para las recompensas que se están votando, que se borran con sus votos. Una vez aprobada ya no
+se retira. Decidido el 13 de octubre.
 
 ### 4.4 Multas
 
@@ -136,6 +146,10 @@ precios sugeridos:
 | Limpieza general | 50 | Parque de atracciones | 1.500 |
 | | | PS5 | 5.000 |
 
+**Una tarea vale como mucho 150**, propuesta o contraofertada: tres veces una limpieza general, para
+dejar sitio a las grandes. Lo comprueba el servidor; las recompensas de la tienda no tienen tope. Decidido el 13 de
+octubre.
+
 ### 4.6 Cartera y ranking
 
 - Cada persona tiene una cartera con su saldo en monedas.
@@ -146,7 +160,8 @@ precios sugeridos:
 - Quien sale o es expulsado del grupo **pierde su saldo**; su rastro en el historial se mantiene, para
   que las tareas que hizo no desaparezcan.
 - **Ranking semanal:** monedas ganadas menos multas (lo gastado en la tienda no resta). Se reinicia
-  cada lunes para que quien va por detrás pueda remontar, y se guarda quién ganó cada semana.
+  cada lunes **a las 00:00 en Madrid** (decidido el 5 de octubre) para que quien va por detrás pueda
+  remontar. Sale en la pestaña Casa. Guardar quién ganó cada semana queda para después.
 
 ## 5. Tareas y misiones
 
@@ -156,6 +171,15 @@ Dos formas de la misma cosa, y se elige al proponerla:
 - **Misión periódica:** vuelve a aparecer cada día, semana o mes ("sacar la basura cada lunes"). Se
   propone y se vota una vez; sus repeticiones ya no se vuelven a votar. **No se acumulan:** si la del
   periodo anterior sigue sin hacer, no aparece otra.
+
+**Cómo quedó (13 de octubre): la agenda de la casa.** Al proponer una tarea se eligen los días de
+la semana en que se repite (martes y jueves, por ejemplo). Se vota una vez como cualquier propuesta;
+aprobada, entra en la agenda y **cada uno de sus días aparece sola en el tablero** como una tarea
+normal, que se reclama y **se valida antes de pagar**, igual que las demás (decidido el 13 de
+octubre). El día cuenta en hora de Madrid, y la tarea aparece la primera vez que alguien de la casa
+abre la app ese día; a los demás les llega en vivo. La agenda se ve en un panel desde la pestaña de
+tareas, día por día, y quien la propuso o el admin la quita con la papelera; la que ya está en el
+tablero sigue ahí. De momento solo semanal: diaria es marcar los siete días, y mensual no hay.
 
 Una tarea lleva **título, descripción y monedas**, y nada más: sin fecha límite, sin habitación y sin
 foto de prueba. Es a propósito — la prueba de que está hecha es el voto del grupo, no una foto.
@@ -287,16 +311,20 @@ sitio para `family`, pero al crear un grupo solo se ofrecen piso y pareja.
 
 **Si da tiempo, por este orden:**
 
-- Misiones periódicas
-- Ranking semanal
-- Ceder el cargo y salir del grupo
+- ~~Misiones periódicas~~: hechas el 13 de octubre, como agenda semanal ([§5](#5-tareas-y-misiones))
+- ~~Ranking semanal~~: hecho el 6 de octubre
+- ~~Ceder el cargo y salir del grupo~~: hecho; al salir, si era admin, el cargo pasa a quien lleve más
+  tiempo
 - Unidades de stock en la tienda
-- Catálogo de tareas típicas para añadirlas de un toque
-- Traducción al inglés (los textos salen en ARB desde el primer día, así que es traducir, no rehacer)
+- ~~Catálogo de tareas típicas para añadirlas de un toque~~: hecho el 6 de octubre
+- ~~Traducción al inglés~~: hecha; se elige en Mis ajustes y por defecto sigue al teléfono
 
-**Descartado:** ruleta de asignación aleatoria · registro con Google · invitación por QR ·
-notificaciones push · **iOS**, porque la revisión de TestFlight no cabe en el calendario · dibujar la
-casa.
+**Entraron después, fuera de esta lista:** ~~registro con Google~~ (hecho el 30 de septiembre), ~~modo oscuro~~, ~~iconos en tareas y recompensas~~ y ~~una casa de una sola
+persona~~ ([§4.1](#41-mayoría-la-mitad-de-los-demás)).
+
+**Descartado:** ruleta de asignación aleatoria · invitación por QR · notificaciones push (quedan
+como issues para después del hackathon) · **iOS**, porque la revisión de TestFlight no cabe en el
+calendario · dibujar la casa.
 
 ## 10. Arquitectura
 
@@ -368,25 +396,28 @@ Con `FutureCall` de Serverpod, sin depender de que nadie tenga la app abierta:
 
 - **Cierre de votaciones.** Se programa al abrir cada votación. Al vencer las 24 horas, si sigue
   abierta, la da por expirada, multa a quien no votó y publica el suceso en el stream.
-- **Misiones periódicas.** Al empezar cada periodo, publica la misión si la anterior está hecha.
+- **Misiones periódicas.** Al final no van con `FutureCall`: la tarea del día se crea al listar las
+  tareas de la casa, con la misión bloqueada en una transacción para que salga una sola vez
+  ([§5](#5-tareas-y-misiones)).
 - **Ranking.** Cada lunes cierra la semana y guarda quién ganó.
 
 ### 10.6 Autenticación
 
-Ya está montada en `lib/server.dart`: identidad por email con JWT (`serverpod_auth_idp`). En
-desarrollo, los códigos de verificación salen por la consola del servidor, así que se puede probar sin
-correo. En Serverpod Cloud los correos se envían de verdad.
+Ya está montada en `lib/server.dart`: identidad por email y por **Google**, con JWT
+(`serverpod_auth_idp`). En desarrollo, los códigos de verificación salen por la consola del servidor,
+así que se puede probar sin correo. En Serverpod Cloud los correos se envían de verdad. Google se
+activa solo si el servidor tiene `googleClientSecret`; cómo se configura está en el README.
 
 La **entrada de los hijos con código** no encaja de serie en el proveedor de email y hay que resolverla
 (ver [Decisiones pendientes](#13-decisiones-pendientes)); está en "si da tiempo".
 
 ### 10.7 Despliegue y plataformas
 
-- **Android** (APK) y **web**, y también **iOS**, que es viable porque el equipo tiene Mac y cuenta de
-  desarrollador de Apple. Ojo con el calendario: la revisión de TestFlight tarda, así que iOS no puede
-  quedarse para los últimos días.
-- Los jueces entran por la **web servida por el propio Serverpod** en Serverpod Cloud: un enlace,
-  gratis y sin instalar nada. Es el acceso de prueba que exigen las reglas.
+- **Android** (APK) y **web**. iOS quedó fuera el 18 de septiembre: la revisión de TestFlight no
+  cabía en el calendario ([§9](#9-alcance-por-prioridad)).
+- Los jueces entran por la **web servida por el propio Serverpod** en Serverpod Cloud
+  (<https://karmahome.serverpod.space/>): un enlace, gratis y sin instalar nada. Es el acceso de
+  prueba que exigen las reglas. El APK se descarga desde `download.html` en el mismo sitio.
 - Desplegar es decisión del equipo, no un efecto secundario: `serverpod cloud launch` crea un servicio
   vivo y facturable. El **mes gratis de Serverpod Cloud** empieza a contar cuando se activa, y el
   despliegue tiene que seguir en pie hasta que termine el jurado el **20 de octubre**: activarlo antes
@@ -403,7 +434,9 @@ Entrada
   └─ "Soy un hijo: tengo un código" ─► Inicio
 ```
 
-**Inicio**, con la cartera siempre visible arriba (ya está en la app) y tres pestañas deslizables:
+**Inicio**, con el saldo siempre visible arriba y cuatro pestañas: Tareas, Tienda, Karma (la
+cartera y su historial) y Casa. Pasar de una a otra deslizando el dedo es la issue #46, aún abierta.
+Así se pensó en septiembre:
 
 | Pestaña | Qué hay |
 |---|---|
@@ -415,13 +448,13 @@ Pantallas de detalle: **tarea** (votar, contraofertar, pulsar "hecha", ver quié
 **recompensa** (comprar y elegir a quién le toca) y **proponer tarea** (título, descripción, monedas,
 puntual o misión).
 
-Diseño: Mayte lo está preparando. Mientras tanto vale lo que hay — tema claro, tipografía Archivo,
-pestañas deslizables y las monedas en la barra superior.
+Diseño: el estándar Playful UI de Mayte, en [`DESIGN.md`](DESIGN.md) — Fredoka y Nunito Sans,
+violeta sobre crema, con tema claro y oscuro.
 
 ## 12. Idioma
 
-La interfaz va en **español e inglés**: se desarrolla en español y se traduce (está en "si da tiempo",
-pero conviene no dejarlo para el último día, porque el jurado es internacional). Los **materiales de la
+La interfaz va en **español e inglés**: se desarrolla en español y se traduce. Las dos están completas;
+cada persona elige en Mis ajustes, y por defecto la app sigue el idioma del teléfono. Los **materiales de la
 entrega van en inglés obligatoriamente**: descripción, instrucciones y vídeo.
 
 ## 13. Decisiones pendientes
@@ -431,10 +464,8 @@ Las que se cerraron el 18 de septiembre están en
 
 | Qué | Estado |
 |---|---|
-| **Nombre de la app** | Sin decidir. Fecha tope: **23 de septiembre**; hace falta para el vídeo, el post y el nombre del servicio en Cloud |
 | **Listas de las plantillas** | Borrador escrito en [§6](#plantillas-borrador-a-revisar-por-mayte); falta que Mayte lo revise |
-| **Misiones periódicas** | Si llegan a entrar, falta decir si cada repetición se vuelve a validar |
-| **Ranking semanal** | Si llega a entrar, falta decir en qué zona horaria se cierra la semana |
+| ~~**Misiones periódicas**~~ | Decidido el 13 de octubre: cada repetición se valida ([§5](#5-tareas-y-misiones)) |
 | **Entrada de los hijos con código** | Aparcada: el modo familia queda fuera del MVP ([§9](#9-alcance-por-prioridad)) |
 | **Ruleta** | Descartada ([§9](#9-alcance-por-prioridad)) |
 
@@ -460,12 +491,12 @@ Entregables que no son código, y que puntúan:
   llegar a abrir la app, así que el vídeo tiene que enseñar el ciclo completándose de verdad.
 - **Descripción del proyecto** en inglés, que **debe declarar el uso de IA y de herramientas
   agénticas**. Usarlas está bien visto; no declararlo incumple las reglas.
-- **Instrucciones de compilación y ejecución** (ya casi están en el `README.md`).
+- **Instrucciones de compilación y ejecución**, en el `README.md`.
 - **Acceso de prueba gratuito** hasta que termine el jurado, y aquí hay un problema propio de esta app:
   **un ciclo necesita dos personas y el juez la abre solo**. Se resuelve entregando **las credenciales
   de dos cuentas de una pareja**, con un grupo ya montado (tareas propuestas, tienda con recompensas y
   algo de historial), para que abra las dos y vea la votación decidir al instante. Hace falta un script
   que siembre ese grupo en el servidor desplegado y volver a sembrarlo si alguien lo deja hecho un
-  desastre.
+  desastre: `scripts/sembrar_demo.sh`, con Ana y Leo.
 - Dos premios aparte, que se acumulan: el **formulario de feedback** (apuntar la fricción con Serverpod
   según aparece, no reconstruirla el 14 de octubre) y un **post público** con `#buildsomethingreal`.

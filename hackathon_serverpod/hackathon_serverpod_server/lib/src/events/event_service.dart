@@ -21,6 +21,8 @@ class EventService {
     Session session, {
     required int groupId,
     required GroupEventKind kind,
+    // Required, even as null, so no caller forgets to say who acted.
+    required int? actorMemberId,
     int? taskId,
     int? purchaseId,
     int? rewardId,
@@ -35,6 +37,7 @@ class EventService {
         purchaseId: purchaseId,
         rewardId: rewardId,
         memberId: memberId,
+        actorMemberId: actorMemberId,
         occurredAt: DateTime.now().toUtc(),
       ),
     );

@@ -54,7 +54,7 @@ void main() {
   testWidgets('a failed check can be retried', (tester) async {
     await openGate(tester, [AppFailure.unknown, false]);
 
-    expect(find.text('No se pudo comprobar tu grupo.'), findsOneWidget);
+    expect(find.text('No se pudo comprobar tu casa.'), findsOneWidget);
 
     await tester.tap(find.text('Reintentar'));
     await tester.pumpAndSettle();

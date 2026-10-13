@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In es, this message translates to:
-  /// **'Prototipo de tareas'**
+  /// **'KarmaHome'**
   String get appTitle;
 
   /// No description provided for @retry.
@@ -113,7 +113,7 @@ abstract class AppLocalizations {
   /// No description provided for @coinsLabel.
   ///
   /// In es, this message translates to:
-  /// **'monedas'**
+  /// **'karmas'**
   String get coinsLabel;
 
   /// No description provided for @reject.
@@ -161,13 +161,13 @@ abstract class AppLocalizations {
   /// No description provided for @navWallet.
   ///
   /// In es, this message translates to:
-  /// **'Cartera'**
+  /// **'Karma'**
   String get navWallet;
 
   /// No description provided for @navGroup.
   ///
   /// In es, this message translates to:
-  /// **'Grupo'**
+  /// **'Casa'**
   String get navGroup;
 
   /// No description provided for @proposeTask.
@@ -185,25 +185,121 @@ abstract class AppLocalizations {
   /// No description provided for @activityEmptyMessage.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay un listado de actividad del servidor.'**
+  /// **'Aquí verás lo que hagan los demás mientras tengas la app abierta.'**
   String get activityEmptyMessage;
+
+  /// No description provided for @activitySomeone.
+  ///
+  /// In es, this message translates to:
+  /// **'Alguien'**
+  String get activitySomeone;
+
+  /// No description provided for @activityTaskProposed.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha propuesto una tarea'**
+  String activityTaskProposed(String name);
+
+  /// No description provided for @activityTaskVoteCast.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha votado una tarea'**
+  String activityTaskVoteCast(String name);
+
+  /// No description provided for @activityTaskCounterOffered.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha hecho una contraoferta'**
+  String activityTaskCounterOffered(String name);
+
+  /// No description provided for @activityTaskClaimed.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} dice que ha hecho una tarea'**
+  String activityTaskClaimed(String name);
+
+  /// No description provided for @activityTaskValidated.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha votado si una tarea está hecha'**
+  String activityTaskValidated(String name);
+
+  /// No description provided for @activityRewardProposed.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha propuesto una recompensa'**
+  String activityRewardProposed(String name);
+
+  /// No description provided for @activityRewardVoteCast.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha votado una recompensa'**
+  String activityRewardVoteCast(String name);
+
+  /// No description provided for @activityPurchased.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha comprado una recompensa'**
+  String activityPurchased(String name);
+
+  /// No description provided for @activityPurchaseResponded.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha respondido a una compra'**
+  String activityPurchaseResponded(String name);
+
+  /// No description provided for @activityPurchaseDelivered.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha entregado una compra'**
+  String activityPurchaseDelivered(String name);
+
+  /// No description provided for @activityMemberExpelled.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha expulsado a un miembro'**
+  String activityMemberExpelled(String name);
+
+  /// No description provided for @activityMemberUpdated.
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha cambiado su nombre o su avatar'**
+  String activityMemberUpdated(String name);
+
+  /// No description provided for @activityJustNow.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora mismo'**
+  String get activityJustNow;
+
+  /// No description provided for @activityMinutesAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {minutes} min'**
+  String activityMinutesAgo(int minutes);
+
+  /// No description provided for @activityHoursAgo.
+  ///
+  /// In es, this message translates to:
+  /// **'Hace {hours} h'**
+  String activityHoursAgo(int hours);
 
   /// No description provided for @groupCheckError.
   ///
   /// In es, this message translates to:
-  /// **'No se pudo comprobar tu grupo.'**
+  /// **'No se pudo comprobar tu casa.'**
   String get groupCheckError;
 
   /// No description provided for @welcomeHeadline.
   ///
   /// In es, this message translates to:
-  /// **'Las tareas,\npor fin justas.'**
+  /// **'Lo que haces en casa,\nvuelve.'**
   String get welcomeHeadline;
 
   /// No description provided for @welcomeSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Los acuerdos de casa se deciden entre todos.'**
+  /// **'Cada tarea la valora la casa entera, y cada tarea hecha suma karma.'**
   String get welcomeSubtitle;
 
   /// No description provided for @welcomeSignIn.
@@ -230,6 +326,12 @@ abstract class AppLocalizations {
   /// **'No se pudo entrar con Google.'**
   String get googleSignInError;
 
+  /// No description provided for @googleSignInPopupBlocked.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu navegador ha bloqueado la ventana de Google. Permite las ventanas emergentes de esta web y vuelve a probar.'**
+  String get googleSignInPopupBlocked;
+
   /// No description provided for @signInTitle.
   ///
   /// In es, this message translates to:
@@ -245,7 +347,7 @@ abstract class AppLocalizations {
   /// No description provided for @emailHint.
   ///
   /// In es, this message translates to:
-  /// **'mayte@email.com'**
+  /// **'tu@example.com'**
   String get emailHint;
 
   /// No description provided for @passwordFieldLabel.
@@ -443,7 +545,7 @@ abstract class AppLocalizations {
   /// No description provided for @createGroupTitle.
   ///
   /// In es, this message translates to:
-  /// **'Crear un grupo'**
+  /// **'Crear una casa'**
   String get createGroupTitle;
 
   /// No description provided for @createGroupSubtitle.
@@ -461,13 +563,13 @@ abstract class AppLocalizations {
   /// No description provided for @joinGroupCardSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Entra en un grupo existente'**
+  /// **'Entra en una casa que ya existe'**
   String get joinGroupCardSubtitle;
 
   /// No description provided for @createGroupHeadline.
   ///
   /// In es, this message translates to:
-  /// **'Crea vuestro grupo'**
+  /// **'Cread vuestra casa'**
   String get createGroupHeadline;
 
   /// No description provided for @createGroupHint.
@@ -497,31 +599,31 @@ abstract class AppLocalizations {
   /// No description provided for @groupNameLabel.
   ///
   /// In es, this message translates to:
-  /// **'Nombre del grupo'**
+  /// **'Nombre de la casa'**
   String get groupNameLabel;
 
   /// No description provided for @groupNameHint.
   ///
   /// In es, this message translates to:
-  /// **'Casa de Mayte y Juan'**
+  /// **'Nuestro piso'**
   String get groupNameHint;
 
   /// No description provided for @createGroupSubmit.
   ///
   /// In es, this message translates to:
-  /// **'Crear grupo'**
+  /// **'Crear casa'**
   String get createGroupSubmit;
 
   /// No description provided for @createGroupErrorEmpty.
   ///
   /// In es, this message translates to:
-  /// **'Ponle un nombre al grupo.'**
+  /// **'Ponle un nombre a la casa.'**
   String get createGroupErrorEmpty;
 
   /// No description provided for @createGroupErrorGeneric.
   ///
   /// In es, this message translates to:
-  /// **'No se pudo crear el grupo.'**
+  /// **'No se pudo crear la casa.'**
   String get createGroupErrorGeneric;
 
   /// No description provided for @joinGroupHeadline.
@@ -551,13 +653,13 @@ abstract class AppLocalizations {
   /// No description provided for @joinGroupSubmit.
   ///
   /// In es, this message translates to:
-  /// **'Entrar al grupo'**
+  /// **'Entrar en la casa'**
   String get joinGroupSubmit;
 
   /// No description provided for @joinGroupError.
   ///
   /// In es, this message translates to:
-  /// **'No se encontró ningún grupo con ese código.'**
+  /// **'No hay ninguna casa con ese código.'**
   String get joinGroupError;
 
   /// No description provided for @groupSuccessTitle.
@@ -569,7 +671,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupCodeLabel.
   ///
   /// In es, this message translates to:
-  /// **'Código del grupo'**
+  /// **'Código de la casa'**
   String get groupCodeLabel;
 
   /// No description provided for @shareCode.
@@ -587,7 +689,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupPendingNotice.
   ///
   /// In es, this message translates to:
-  /// **'Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.'**
+  /// **'Datos de ejemplo: falta un endpoint para pedir tu casa y sus miembros al servidor.'**
   String get groupPendingNotice;
 
   /// No description provided for @membersTitle.
@@ -599,7 +701,7 @@ abstract class AppLocalizations {
   /// No description provided for @groupSettings.
   ///
   /// In es, this message translates to:
-  /// **'Configuración del grupo'**
+  /// **'Configuración de la casa'**
   String get groupSettings;
 
   /// Label above the fine percentage slider in the group settings screen
@@ -653,7 +755,7 @@ abstract class AppLocalizations {
   /// No description provided for @tasksEmpty.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay tareas. Propón la primera.'**
+  /// **'La casa está en calma. Propón la primera tarea y empieza a sumar karma.'**
   String get tasksEmpty;
 
   /// No description provided for @sectionAwaitingVote.
@@ -755,7 +857,7 @@ abstract class AppLocalizations {
   /// No description provided for @counterOfferSheetSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'¿Cuántas monedas te parecerían justas?'**
+  /// **'¿Cuántos karmas te parecerían justos?'**
   String get counterOfferSheetSubtitle;
 
   /// No description provided for @counterOfferPauseNotice.
@@ -833,13 +935,13 @@ abstract class AppLocalizations {
   /// No description provided for @claimedMessage.
   ///
   /// In es, this message translates to:
-  /// **'Ahora el grupo debe confirmar que está hecha.'**
+  /// **'Ahora la casa debe confirmar que está hecha.'**
   String get claimedMessage;
 
   /// No description provided for @inValidationValue.
   ///
   /// In es, this message translates to:
-  /// **'En validación · {reward} monedas'**
+  /// **'En validación · {reward} karmas'**
   String inValidationValue(int reward);
 
   /// No description provided for @backToTasks.
@@ -869,7 +971,7 @@ abstract class AppLocalizations {
   /// Shown instead of the vote buttons to whoever claimed the task
   ///
   /// In es, this message translates to:
-  /// **'La has reclamado tú: ahora el grupo decide si está hecha.'**
+  /// **'La has reclamado tú: ahora la casa decide si está hecha.'**
   String get validationYourOwn;
 
   /// Button that votes a claimed task as done
@@ -923,7 +1025,7 @@ abstract class AppLocalizations {
   /// No description provided for @taskTitleHint.
   ///
   /// In es, this message translates to:
-  /// **'Limpiar el baño'**
+  /// **'Ordenar el trastero'**
   String get taskTitleHint;
 
   /// No description provided for @descriptionLabel.
@@ -935,7 +1037,7 @@ abstract class AppLocalizations {
   /// No description provided for @taskDescriptionHint.
   ///
   /// In es, this message translates to:
-  /// **'Ducha, lavabo, espejo y suelo'**
+  /// **'Cajas a las baldas y barrer el suelo'**
   String get taskDescriptionHint;
 
   /// No description provided for @rewardLabel.
@@ -947,7 +1049,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardHintNote.
   ///
   /// In es, this message translates to:
-  /// **'Una tarea normal suele valer 10'**
+  /// **'Una tarea normal suele valer 10; como mucho, 150'**
   String get rewardHintNote;
 
   /// No description provided for @reviewProposal.
@@ -971,13 +1073,13 @@ abstract class AppLocalizations {
   /// No description provided for @voteWindowNotice.
   ///
   /// In es, this message translates to:
-  /// **'El grupo tendrá 24 horas para votar'**
+  /// **'La casa tendrá 24 horas para votar'**
   String get voteWindowNotice;
 
   /// No description provided for @rejectFineNotice.
   ///
   /// In es, this message translates to:
-  /// **'Si la rechazan, recibirás una multa sobre estas monedas'**
+  /// **'Si la rechazan, te llevas mal karma: una multa sobre lo que valía'**
   String get rejectFineNotice;
 
   /// No description provided for @submitToVote.
@@ -995,13 +1097,13 @@ abstract class AppLocalizations {
   /// No description provided for @sentToVoteMessage.
   ///
   /// In es, this message translates to:
-  /// **'Avisaremos al grupo para que decida el trato.'**
+  /// **'Avisaremos a la casa para que decida el trato.'**
   String get sentToVoteMessage;
 
   /// No description provided for @rewardAmount.
   ///
   /// In es, this message translates to:
-  /// **'{reward} monedas'**
+  /// **'{reward} karmas'**
   String rewardAmount(int reward);
 
   /// No description provided for @proposeError.
@@ -1013,7 +1115,7 @@ abstract class AppLocalizations {
   /// No description provided for @shopSubtitle.
   ///
   /// In es, this message translates to:
-  /// **'Convierte tus monedas en planes'**
+  /// **'Convierte tu karma en planes'**
   String get shopSubtitle;
 
   /// No description provided for @shopLoadError.
@@ -1025,7 +1127,7 @@ abstract class AppLocalizations {
   /// No description provided for @shopEmpty.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay recompensas. Propón la primera.'**
+  /// **'Aún no hay nada en la tienda. Propón una recompensa para gastar tu karma.'**
   String get shopEmpty;
 
   /// No description provided for @awaitingVoteSection.
@@ -1085,7 +1187,7 @@ abstract class AppLocalizations {
   /// No description provided for @rewardVotingNotice.
   ///
   /// In es, this message translates to:
-  /// **'El grupo votará antes de publicarla'**
+  /// **'La casa votará antes de publicarla'**
   String get rewardVotingNotice;
 
   /// No description provided for @rewardTitleEmptyError.
@@ -1121,13 +1223,13 @@ abstract class AppLocalizations {
   /// No description provided for @noOtherMembers.
   ///
   /// In es, this message translates to:
-  /// **'Todavía no hay nadie más en el grupo para cumplirla.'**
+  /// **'Todavía no hay nadie más en la casa para cumplirla.'**
   String get noOtherMembers;
 
   /// Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows
   ///
   /// In es, this message translates to:
-  /// **'{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.'**
+  /// **'{missing, plural, =1{Te falta 1 karma} other{Te faltan {missing} karmas}}: tienes {balance} y este premio cuesta {price}. Haz algo por la casa para conseguirlos.'**
   String notEnoughCoins(int missing, int balance, int price);
 
   /// No description provided for @purchaseSentTitle.
@@ -1157,7 +1259,7 @@ abstract class AppLocalizations {
   /// No description provided for @walletLoadError.
   ///
   /// In es, this message translates to:
-  /// **'No se pudo cargar la cartera.'**
+  /// **'No se pudo cargar tu karma.'**
   String get walletLoadError;
 
   /// No description provided for @negativeBalanceNotice.
@@ -1253,13 +1355,13 @@ abstract class AppLocalizations {
   /// Explains the consequences of expelling a member
   ///
   /// In es, this message translates to:
-  /// **'Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.'**
+  /// **'Saldrá de la casa y perderá su karma. Lo que hizo seguirá en el historial de todos.'**
   String get expelBody;
 
   /// Confirmation after a member is expelled
   ///
   /// In es, this message translates to:
-  /// **'{name} ya no está en el grupo.'**
+  /// **'{name} ya no está en la casa.'**
   String expelDone(String name);
 
   /// Admin button that replaces the invite code
@@ -1277,7 +1379,7 @@ abstract class AppLocalizations {
   /// Explains what replacing the invite code does and does not affect
   ///
   /// In es, this message translates to:
-  /// **'El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.'**
+  /// **'El código de ahora dejará de valer. Quien ya está en la casa sigue dentro.'**
   String get groupInviteRegenerateBody;
 
   /// Confirmation after the invite code is replaced
@@ -1295,31 +1397,31 @@ abstract class AppLocalizations {
   /// Shown when the user already has an active membership
   ///
   /// In es, this message translates to:
-  /// **'Ya estás en un grupo. Sal de él antes de entrar en otro.'**
+  /// **'Ya estás en una casa. Sal de ella antes de entrar en otra.'**
   String get errorAlreadyInGroup;
 
   /// Shown when a non-admin tries an admin-only action
   ///
   /// In es, this message translates to:
-  /// **'Solo quien administra el grupo puede hacer esto.'**
+  /// **'Solo quien administra la casa puede hacer esto.'**
   String get errorNotAdmin;
 
   /// Shown when the member to act on has left or is in another group
   ///
   /// In es, this message translates to:
-  /// **'Esa persona ya no está en el grupo.'**
+  /// **'Esa persona ya no está en la casa.'**
   String get errorMemberNotFound;
 
   /// Shown when the admin tries to expel themselves
   ///
   /// In es, this message translates to:
-  /// **'No puedes expulsarte a ti del grupo.'**
+  /// **'No puedes expulsarte a ti de la casa.'**
   String get errorCannotExpelSelf;
 
   /// Shown when the admin tries to hand the role to themselves or to a child
   ///
   /// In es, this message translates to:
-  /// **'El cargo de admin solo se puede ceder a otra persona adulta del grupo.'**
+  /// **'El cargo de admin solo se puede ceder a otra persona adulta de la casa.'**
   String get errorCannotTransferAdmin;
 
   /// A task call named a task that is not in the group
@@ -1343,7 +1445,7 @@ abstract class AppLocalizations {
   /// Someone other than the proposer answered a counter-offer
   ///
   /// In es, this message translates to:
-  /// **'Solo quien propuso la tarea puede responder a la contraoferta.'**
+  /// **'Eso solo puede hacerlo quien hizo la propuesta.'**
   String get errorNotProposer;
 
   /// A shop call named a reward that is not in the group
@@ -1382,10 +1484,16 @@ abstract class AppLocalizations {
   /// **'Con saldo negativo no se puede comprar.'**
   String get errorNegativeBalance;
 
+  /// Buying a reward that costs more than the balance
+  ///
+  /// In es, this message translates to:
+  /// **'No te llega el karma para esta recompensa.'**
+  String get errorNotEnoughCoins;
+
   /// The provider chosen for a purchase is the buyer or not in the group
   ///
   /// In es, this message translates to:
-  /// **'Elige a otra persona del grupo para cumplirla.'**
+  /// **'Elige a otra persona de la casa para cumplirla.'**
   String get errorInvalidProvider;
 
   /// A shop call named a purchase that is not in the group
@@ -1409,13 +1517,13 @@ abstract class AppLocalizations {
   /// A call was refused because the member has left or been expelled
   ///
   /// In es, this message translates to:
-  /// **'Ya no estás en este grupo.'**
+  /// **'Ya no estás en esta casa.'**
   String get errorNoGroup;
 
   /// Shown on the create-or-join screen after being expelled from the group
   ///
   /// In es, this message translates to:
-  /// **'Ya no estás en el grupo. Puedes crear otro o unirte con un código.'**
+  /// **'Ya no estás en la casa. Puedes crear otra o unirte con un código.'**
   String get leftGroupNotice;
 
   /// No description provided for @errorGeneric.
@@ -1469,7 +1577,7 @@ abstract class AppLocalizations {
   /// Warns the provider what refusing a purchase costs
   ///
   /// In es, this message translates to:
-  /// **'Si te niegas pagas una multa, y quien compró recupera sus monedas.'**
+  /// **'Si te niegas te llevas una multa, y quien compró recupera su karma.'**
   String get purchaseRefuseNotice;
 
   /// Button: the provider has fulfilled an accepted purchase
@@ -1577,7 +1685,7 @@ abstract class AppLocalizations {
   /// Shown instead of the vote buttons on the member's own proposal
   ///
   /// In es, this message translates to:
-  /// **'La has propuesto tú: vota el resto del grupo.'**
+  /// **'La has propuesto tú: vota el resto de la casa.'**
   String get ownProposalNotice;
 
   /// Shown instead of the vote buttons once the member has voted
@@ -1628,11 +1736,59 @@ abstract class AppLocalizations {
   /// **'Tu perfil'**
   String get profileSection;
 
-  /// Settings screen: label over the grid of emoji to pick an avatar from
+  /// Settings screen: label over the grid of house characters to pick an avatar from
   ///
   /// In es, this message translates to:
-  /// **'Tu emoji'**
-  String get avatarEmojiLabel;
+  /// **'Tu personaje'**
+  String get avatarLabel;
+
+  /// Avatar character: a mug. Read out by screen readers
+  ///
+  /// In es, this message translates to:
+  /// **'Taza'**
+  String get avatarTaza;
+
+  /// Avatar character: a potted plant
+  ///
+  /// In es, this message translates to:
+  /// **'Planta'**
+  String get avatarPlanta;
+
+  /// Avatar character: a sock
+  ///
+  /// In es, this message translates to:
+  /// **'Calcetín'**
+  String get avatarCalcetin;
+
+  /// Avatar character: a kitchen sponge
+  ///
+  /// In es, this message translates to:
+  /// **'Esponja'**
+  String get avatarEsponja;
+
+  /// Avatar character: a teapot
+  ///
+  /// In es, this message translates to:
+  /// **'Tetera'**
+  String get avatarTetera;
+
+  /// Avatar character: a slice of toast
+  ///
+  /// In es, this message translates to:
+  /// **'Tostada'**
+  String get avatarTostada;
+
+  /// Avatar character: a mop bucket
+  ///
+  /// In es, this message translates to:
+  /// **'Cubo'**
+  String get avatarCubo;
+
+  /// Avatar character: a light bulb
+  ///
+  /// In es, this message translates to:
+  /// **'Bombilla'**
+  String get avatarBombilla;
 
   /// Settings screen: label over the avatar background colours
   ///
@@ -1679,7 +1835,7 @@ abstract class AppLocalizations {
   /// Settings screen: hint inside the empty name field
   ///
   /// In es, this message translates to:
-  /// **'Como te verá el grupo'**
+  /// **'Como te verá la casa'**
   String get displayNameHint;
 
   /// Settings screen: shown when saving with a blank name
@@ -1769,8 +1925,20 @@ abstract class AppLocalizations {
   /// Settings screen: what the sound switch covers, under its label
   ///
   /// In es, this message translates to:
-  /// **'Los pops de los botones, la moneda, las multas y los avisos.'**
+  /// **'Los pops de los botones, el karma, las multas y los avisos.'**
   String get soundsToggleHint;
+
+  /// Settings screen: label of the switch between the light and the dark theme
+  ///
+  /// In es, this message translates to:
+  /// **'Modo oscuro'**
+  String get darkModeToggle;
+
+  /// Settings screen: what the dark mode switch does, under its label
+  ///
+  /// In es, this message translates to:
+  /// **'Un gris suave para la noche, en este dispositivo.'**
+  String get darkModeToggleHint;
 
   /// Tooltip of the admin's icon on a member's row that hands them the admin role
   ///
@@ -1787,7 +1955,7 @@ abstract class AppLocalizations {
   /// Explains what handing the admin role over means
   ///
   /// In es, this message translates to:
-  /// **'{name} podrá expulsar, cambiar el código y configurar el grupo. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.'**
+  /// **'{name} podrá expulsar, cambiar el código y configurar la casa. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.'**
   String transferAdminBody(String name);
 
   /// Confirm button of the dialog that hands the admin role over
@@ -1799,8 +1967,422 @@ abstract class AppLocalizations {
   /// Message after the admin role was handed over
   ///
   /// In es, this message translates to:
-  /// **'{name} es ahora admin del grupo.'**
+  /// **'{name} es ahora admin de la casa.'**
   String transferAdminDone(String name);
+
+  /// Casa tab: heading of the weekly ranking
+  ///
+  /// In es, this message translates to:
+  /// **'Ranking de la semana'**
+  String get rankingTitle;
+
+  /// Under the ranking heading: when the week starts again (Madrid time)
+  ///
+  /// In es, this message translates to:
+  /// **'Vuelve a empezar el lunes a las 00:00.'**
+  String get rankingResets;
+
+  /// Ranking with nobody above zero yet
+  ///
+  /// In es, this message translates to:
+  /// **'Nadie ha sumado karma esta semana todavía.'**
+  String get rankingEmpty;
+
+  /// Casa tab: button to leave the home
+  ///
+  /// In es, this message translates to:
+  /// **'Salir de la casa'**
+  String get leaveHomeAction;
+
+  /// Confirmation title; name is the home
+  ///
+  /// In es, this message translates to:
+  /// **'¿Salir de {name}?'**
+  String leaveHomeTitle(String name);
+
+  /// Confirmation body for leaving the home
+  ///
+  /// In es, this message translates to:
+  /// **'Perderás tu karma, y lo que hiciste seguirá en el historial de todos. Si administras la casa, el cargo pasa a quien lleve más tiempo en ella.'**
+  String get leaveHomeBody;
+
+  /// Confirmation button for leaving the home
+  ///
+  /// In es, this message translates to:
+  /// **'Salir'**
+  String get leaveHomeConfirm;
+
+  /// Shown on the create-or-join screen after leaving on your own
+  ///
+  /// In es, this message translates to:
+  /// **'Has salido de la casa. Puedes crear otra o unirte con un código.'**
+  String get leftHomeNotice;
+
+  /// Activity: another member left the home
+  ///
+  /// In es, this message translates to:
+  /// **'{name} se ha ido de la casa'**
+  String activityMemberLeft(String name);
+
+  /// Propose task: label over the chips of typical chores
+  ///
+  /// In es, this message translates to:
+  /// **'Ideas rápidas'**
+  String get typicalTasksLabel;
+
+  /// Propose task: line under the screen title
+  ///
+  /// In es, this message translates to:
+  /// **'Elige una idea o escribe la tuya. La casa vota el precio.'**
+  String get newTaskSubtitle;
+
+  /// Propose task: divider between the typical chores and the form
+  ///
+  /// In es, this message translates to:
+  /// **'o escribe la tuya'**
+  String get typicalTasksOr;
+
+  /// Propose task: label over the optional description field
+  ///
+  /// In es, this message translates to:
+  /// **'Descripción (opcional)'**
+  String get taskDescriptionOptionalLabel;
+
+  /// Propose task / reward: label over the row of emoji to pick from
+  ///
+  /// In es, this message translates to:
+  /// **'Icono'**
+  String get iconLabel;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Ducha larga sin que nadie llame'**
+  String get rewardTemplateShower;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Elegir la peli de la noche'**
+  String get rewardTemplateMovie;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'El sofá y el mando toda la tarde'**
+  String get rewardTemplateSofa;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Elijo yo la cena'**
+  String get rewardTemplateDinner;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te libras de fregar hoy'**
+  String get rewardTemplateSkipDishes;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Traigo el desayuno el domingo'**
+  String get rewardTemplateBreakfast;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Unas cervezas y pago yo'**
+  String get rewardTemplateBeers;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te hago la compra esta semana'**
+  String get rewardTemplateShopping;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te cambio el turno de limpieza'**
+  String get rewardTemplateCleaningTurn;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Cena pagada fuera'**
+  String get rewardTemplateDinnerOutFlat;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Elijo yo la serie esta noche'**
+  String get rewardTemplateSeries;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Desayuno en la cama'**
+  String get rewardTemplateBreakfastInBed;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Un masaje'**
+  String get rewardTemplateMassage;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'El plan del sábado lo elijo yo'**
+  String get rewardTemplateSaturday;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Te libras de una tarea'**
+  String get rewardTemplateSkipChore;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Hago tus tareas un día entero'**
+  String get rewardTemplateMyChoresForADay;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Cena fuera, pago yo'**
+  String get rewardTemplateDinnerOutCouple;
+
+  /// Shop: a starting reward of a new home, stored in Spanish on the server
+  ///
+  /// In es, this message translates to:
+  /// **'Escapada de fin de semana'**
+  String get rewardTemplateWeekend;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Sacar la basura'**
+  String get typicalTaskTrash;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Regar las plantas'**
+  String get typicalTaskPlants;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Fregar los platos'**
+  String get typicalTaskDishes;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Poner una lavadora'**
+  String get typicalTaskLaundry;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar las sábanas'**
+  String get typicalTaskSheets;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer la compra'**
+  String get typicalTaskShopping;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Pasar la aspiradora'**
+  String get typicalTaskHoover;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Hacer la cena'**
+  String get typicalTaskDinner;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar la nevera'**
+  String get typicalTaskFridge;
+
+  /// Typical chore
+  ///
+  /// In es, this message translates to:
+  /// **'Limpiar el baño'**
+  String get typicalTaskBathroom;
+
+  /// Trash button on a proposal still being voted on
+  ///
+  /// In es, this message translates to:
+  /// **'Retirar la propuesta'**
+  String get withdrawProposalTooltip;
+
+  /// Confirmation title before withdrawing a task proposal
+  ///
+  /// In es, this message translates to:
+  /// **'¿Retirar esta tarea?'**
+  String get withdrawTaskTitle;
+
+  /// Confirmation body before withdrawing a task proposal
+  ///
+  /// In es, this message translates to:
+  /// **'Sale de la votación y no cuesta multa. Los votos que ya tenga se pierden.'**
+  String get withdrawTaskBody;
+
+  /// Confirmation title before withdrawing a reward proposal
+  ///
+  /// In es, this message translates to:
+  /// **'¿Retirar esta recompensa?'**
+  String get withdrawRewardTitle;
+
+  /// Confirmation body before withdrawing a reward proposal
+  ///
+  /// In es, this message translates to:
+  /// **'Sale de la tienda antes de que se vote y no cuesta multa.'**
+  String get withdrawRewardBody;
+
+  /// Confirm button that withdraws a proposal
+  ///
+  /// In es, this message translates to:
+  /// **'Retirar'**
+  String get withdrawAction;
+
+  /// Withdrawing a proposal failed
+  ///
+  /// In es, this message translates to:
+  /// **'No se pudo retirar la propuesta'**
+  String get withdrawError;
+
+  /// Activity: another member withdrew a task proposal
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha retirado una tarea'**
+  String activityTaskWithdrawn(String name);
+
+  /// Activity: another member withdrew a reward proposal
+  ///
+  /// In es, this message translates to:
+  /// **'{name} ha retirado una recompensa'**
+  String activityRewardWithdrawn(String name);
+
+  /// Initials of the days of the week, Monday first, comma-separated, seven of them
+  ///
+  /// In es, this message translates to:
+  /// **'L,M,X,J,V,S,D'**
+  String get weekdayInitials;
+
+  /// Propose task: label over the weekday picker
+  ///
+  /// In es, this message translates to:
+  /// **'Repetir cada semana (opcional)'**
+  String get repeatLabel;
+
+  /// Propose task: note under the weekday picker
+  ///
+  /// In es, this message translates to:
+  /// **'Sin días, se hace una vez. Con días, la casa vota una vez y la tarea aparece sola esos días.'**
+  String get repeatHint;
+
+  /// Task card / review: the days a scheduled task comes back on
+  ///
+  /// In es, this message translates to:
+  /// **'Se repite: {days}'**
+  String repeatsOn(String days);
+
+  /// Title of the panel with the tasks that repeat on set weekdays
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda de la casa'**
+  String get scheduleTitle;
+
+  /// Line under the schedule panel title
+  ///
+  /// In es, this message translates to:
+  /// **'Tareas fijas que aparecen solas en su día. Se votan una vez; cada vez que se hacen, se validan.'**
+  String get scheduleSubtitle;
+
+  /// Tasks tab: the card that opens the schedule panel
+  ///
+  /// In es, this message translates to:
+  /// **'Agenda de la casa'**
+  String get scheduleEntry;
+
+  /// Tasks tab: how many scheduled tasks the home has
+  ///
+  /// In es, this message translates to:
+  /// **'{count, plural, =0{Sin tareas fijas todavía} =1{1 tarea fija} other{{count} tareas fijas}}'**
+  String scheduleEntryCount(int count);
+
+  /// Schedule panel: a weekday with no tasks
+  ///
+  /// In es, this message translates to:
+  /// **'Nada'**
+  String get scheduleNothing;
+
+  /// Schedule panel: section of scheduled tasks still being voted on
+  ///
+  /// In es, this message translates to:
+  /// **'Esperando la votación'**
+  String get schedulePending;
+
+  /// Schedule panel: button to propose a task that repeats
+  ///
+  /// In es, this message translates to:
+  /// **'Nueva tarea fija'**
+  String get scheduleAdd;
+
+  /// Confirmation title before stopping a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'¿Quitar de la agenda?'**
+  String get stopScheduleTitle;
+
+  /// Confirmation body before stopping a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'Deja de aparecer en sus días. La que ya está en el tablero sigue ahí.'**
+  String get stopScheduleBody;
+
+  /// Confirm button that stops a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'Quitar'**
+  String get stopScheduleAction;
+
+  /// Message after stopping a scheduled task
+  ///
+  /// In es, this message translates to:
+  /// **'Quitada de la agenda'**
+  String get scheduleStopped;
+
+  /// A scheduled task with no valid weekdays
+  ///
+  /// In es, this message translates to:
+  /// **'Elige al menos un día de la semana.'**
+  String get errorInvalidSchedule;
+
+  /// Activity: a scheduled task appeared on the board today. Nobody did it, so no name
+  ///
+  /// In es, this message translates to:
+  /// **'Hoy toca una tarea de la agenda'**
+  String get activityMissionDue;
+
+  /// A task price or counter-offer outside 1 to 150
+  ///
+  /// In es, this message translates to:
+  /// **'Una tarea vale entre 1 y 150 karmas.'**
+  String get errorInvalidReward;
 }
 
 class _AppLocalizationsDelegate

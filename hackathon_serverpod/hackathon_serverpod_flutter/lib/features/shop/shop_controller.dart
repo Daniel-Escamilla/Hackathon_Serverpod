@@ -43,15 +43,26 @@ class ShopController extends ChangeNotifier {
   Future<RewardItem> proposeReward(
     String title,
     String description,
-    int price,
-  ) async {
-    final reward = await repository.proposeReward(title, description, price);
+    int price, {
+    String? icon,
+  }) async {
+    final reward = await repository.proposeReward(
+      title,
+      description,
+      price,
+      icon: icon,
+    );
     await load();
     return reward;
   }
 
   Future<void> voteReward(int itemId, bool approve) async {
     await repository.voteReward(itemId, approve);
+    await load();
+  }
+
+  Future<void> withdrawReward(int itemId) async {
+    await repository.withdrawReward(itemId);
     await load();
   }
 

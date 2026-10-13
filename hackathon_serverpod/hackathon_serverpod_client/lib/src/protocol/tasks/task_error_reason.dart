@@ -26,8 +26,15 @@ enum TaskErrorReason implements _isc.SerializableModel {
   /// completion of a task they claimed.
   ownTask,
 
-  /// Only the proposer answers a counter-offer.
-  notProposer;
+  /// Only the proposer answers a counter-offer; only the proposer or the admin
+  /// withdraws a proposal.
+  notProposer,
+
+  /// A mission's weekdays are empty or outside 1 (Monday) to 7 (Sunday).
+  invalidSchedule,
+
+  /// A task's price, or a counter-offer, is below 1 or above the cap of 150 (PRODUCT.md §4.5).
+  invalidReward;
 
   static TaskErrorReason fromJson(String name) {
     switch (name) {
@@ -39,6 +46,10 @@ enum TaskErrorReason implements _isc.SerializableModel {
         return TaskErrorReason.ownTask;
       case 'notProposer':
         return TaskErrorReason.notProposer;
+      case 'invalidSchedule':
+        return TaskErrorReason.invalidSchedule;
+      case 'invalidReward':
+        return TaskErrorReason.invalidReward;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "TaskErrorReason"',

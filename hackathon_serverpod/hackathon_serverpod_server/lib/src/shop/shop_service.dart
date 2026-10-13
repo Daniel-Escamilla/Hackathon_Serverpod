@@ -3,6 +3,7 @@ import 'package:serverpod/serverpod.dart';
 import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../wallet/wallet_service.dart';
+import '../tasks/task_service.dart';
 import 'reward_templates.dart';
 
 /// Voting, buying and fulfilling rewards (PRODUCT.md §4.1, §4.4, §6).
@@ -33,6 +34,7 @@ class ShopService {
           title: template.title,
           description: '',
           price: template.price,
+          icon: template.icon,
           status: RewardItemStatus.active,
           createdById: createdBy.id!,
         ),
@@ -50,16 +52,65 @@ class ShopService {
   /// recount: otherwise on a double tap both calls find no vote yet, both
   /// insert, and the second fails on the unique (itemId, memberId) index
   /// with a server error instead of just updating the vote (#101).
-  /// Adds [item] to the group's shop as a proposal, open to a vote.
-  Future<RewardItem> propose(Session session, RewardItem item) async {
-    final proposed = await RewardItem.db.insertRow(session, item);
+  /// Adds [item] to the group's shop as a proposal, open to a vote — or
+  /// straight as `active` when [proposer] is alone in the home, with nobody
+  /// to vote on it (PRODUCT.md §4.1).
+  Future<RewardItem> propose(
+    Session session,
+    RewardItem item, {
+    required GroupMember proposer,
+  }) async {
+    final alone = await isAloneInGroup(session, proposer);
+    final proposed = await RewardItem.db.insertRow(
+      session,
+      alone ? item.copyWith(status: RewardItemStatus.active) : item,
+    );
     await eventService.publish(
       session,
       groupId: proposed.groupId,
       kind: GroupEventKind.rewardProposed,
+      actorMemberId: proposed.createdById,
       rewardId: proposed.id,
     );
     return proposed;
+  }
+
+  /// Takes back a reward still being voted on, deleting it with its votes:
+  /// nothing can have been bought yet. Only [member] who proposed it or the
+  /// admin can (PRODUCT.md §7).
+  Future<void> withdrawProposal(
+    Session session, {
+    required RewardItem item,
+    required GroupMember member,
+  }) async {
+    await session.db.transaction((transaction) async {
+      final locked = await RewardItem.db.findById(
+        session,
+        item.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null || locked.status != RewardItemStatus.proposed) {
+        throw ShopException(reason: ShopErrorReason.rewardNotOpen);
+      }
+      if (member.id != locked.createdById &&
+          member.role != GroupMemberRole.admin) {
+        throw ShopException(reason: ShopErrorReason.notProposer);
+      }
+      await RewardVote.db.deleteWhere(
+        session,
+        where: (t) => t.itemId.equals(locked.id!),
+        transaction: transaction,
+      );
+      await RewardItem.db.deleteRow(session, locked, transaction: transaction);
+    });
+    await eventService.publish(
+      session,
+      groupId: item.groupId,
+      kind: GroupEventKind.rewardWithdrawn,
+      actorMemberId: member.id,
+      rewardId: item.id,
+    );
   }
 
   Future<RewardItem> castVote(
@@ -138,6 +189,7 @@ class ShopService {
       session,
       groupId: voted.groupId,
       kind: GroupEventKind.rewardVoteCast,
+      actorMemberId: voter.id,
       rewardId: voted.id,
     );
     return voted;
@@ -146,6 +198,10 @@ class ShopService {
   /// Buys [item] for [buyer], to be fulfilled by [provider]. Decrements stock (if
   /// limited) and charges [buyer] in the same transaction as the [Purchase] row
   /// (PRODUCT.md §6).
+  ///
+  /// The balance has to cover the price: only fines take it below zero
+  /// (PRODUCT.md §4). It is checked on the buyer's row, locked, so two
+  /// purchases at once cannot both spend the same coins (#137).
   Future<Purchase> purchase(
     Session session, {
     required RewardItem item,
@@ -158,14 +214,24 @@ class ShopService {
     if (provider.id == buyer.id) {
       throw ShopException(reason: ShopErrorReason.invalidProvider);
     }
-    if (buyer.balance < 0) {
-      throw ShopException(reason: ShopErrorReason.negativeBalance);
-    }
     if (item.stock != null && item.stock! <= 0) {
       throw ShopException(reason: ShopErrorReason.outOfStock);
     }
 
     final purchase = await session.db.transaction((transaction) async {
+      final balance = (await GroupMember.db.findById(
+        session,
+        buyer.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      ))!.balance;
+      if (balance < 0) {
+        throw ShopException(reason: ShopErrorReason.negativeBalance);
+      }
+      if (balance < item.price) {
+        throw ShopException(reason: ShopErrorReason.notEnoughCoins);
+      }
+
       if (item.stock != null) {
         await RewardItem.db.updateRow(
           session,
@@ -201,6 +267,7 @@ class ShopService {
       session,
       groupId: item.groupId,
       kind: GroupEventKind.purchased,
+      actorMemberId: buyer.id,
       purchaseId: purchase.id,
     );
     return purchase;
@@ -284,6 +351,7 @@ class ShopService {
       session,
       groupId: item.groupId,
       kind: GroupEventKind.purchaseResponded,
+      actorMemberId: purchase.providerId,
       purchaseId: purchase.id,
     );
   }
@@ -301,6 +369,7 @@ class ShopService {
       session,
       groupId: delivered.groupId,
       kind: GroupEventKind.purchaseDelivered,
+      actorMemberId: delivered.providerId,
       purchaseId: delivered.id,
     );
     return delivered;

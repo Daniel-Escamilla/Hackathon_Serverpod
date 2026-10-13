@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:serverpod_auth_idp_flutter/serverpod_auth_idp_flutter.dart';
 
 import '../../client.dart';
+import '../../data/auth_repository.dart';
+import '../../data/google_popup.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
 import '../../ui/feedback.dart';
@@ -14,10 +17,17 @@ import '../../ui/feedback.dart';
 /// Drawn as an [AppButton] rather than Serverpod's `GoogleSignInWidget`, so it
 /// follows the design standard like the rest of the screen.
 class GoogleSignInButton extends StatefulWidget {
-  const GoogleSignInButton({this.signIn, super.key});
+  const GoogleSignInButton({
+    this.signIn,
+    this.auth = const AuthRepository(),
+    super.key,
+  });
 
   /// Replaces the real Google flow, so a test can run without a server.
   final Future<void> Function()? signIn;
+
+  /// Runs the web flow.
+  final AuthRepository auth;
 
   @override
   State<GoogleSignInButton> createState() => _GoogleSignInButtonState();
@@ -33,11 +43,11 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
     super.dispose();
   }
 
-  void _showError() {
+  void _showError([String? message]) {
     if (!mounted) return;
     showMessage(
       context,
-      AppLocalizations.of(context).googleSignInError,
+      message ?? AppLocalizations.of(context).googleSignInError,
       isError: true,
     );
   }
@@ -46,7 +56,12 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
     if (_loading) return;
     setState(() => _loading = true);
     try {
-      await (widget.signIn ?? _signInWithGoogle)();
+      await (widget.signIn ??
+          (kIsWeb ? widget.auth.signInWithGoogleWeb : _signInWithGoogle))();
+    } on GooglePopupBlockedException {
+      if (mounted) {
+        _showError(AppLocalizations.of(context).googleSignInPopupBlocked);
+      }
     } catch (_) {
       _showError();
     } finally {
@@ -54,8 +69,9 @@ class _GoogleSignInButtonState extends State<GoogleSignInButton> {
     }
   }
 
-  /// Made on the first tap, not with the screen, so the welcome screen does
-  /// not touch [client] until someone asks for Google.
+  /// The phones' flow, through the Google SDK. Made on the first tap, not
+  /// with the screen, so the welcome screen does not touch [client] until
+  /// someone asks for Google.
   Future<void> _signInWithGoogle() async {
     final controller = _controller ??= GoogleAuthController(
       client: client,

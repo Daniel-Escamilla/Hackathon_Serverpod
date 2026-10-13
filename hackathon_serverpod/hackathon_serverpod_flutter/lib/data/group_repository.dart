@@ -37,6 +37,9 @@ class GroupRepository {
   /// the caller only retries, it never shows them.
   Stream<GroupEvent> watchGroup() => client.event.watchGroup();
 
+  /// Leaves the home for good (#141).
+  Future<void> leaveGroup() => guardServerCall(client.group.leaveGroup);
+
   Future<Group> regenerateInviteCode() =>
       guardServerCall(client.group.regenerateInviteCode);
 

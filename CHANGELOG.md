@@ -12,11 +12,100 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-13
+
+The submission to the Build Something Real hackathon.
+
 ### Added
 
+- **Dark mode**, a soft grey rather than black, switched from Mis ajustes and kept on the device.
+  It was built on 30 September but merged into a branch that had already landed, so it never
+  reached `develop`; it is back, carried over to every screen added since. Every text colour
+  in it reads at 4.5:1 or better: violet, coral and green get light tints when they are the text
+  or the icon, and anything drawn on a pastel (pills, the lime and sky cards) keeps dark ink.
+
+- **A download page for the Android app**, `download.html` (first `descargar.html`, which now forwards to it), to share instead of a bare APK link:
+  it carries the logo and link preview that WhatsApp and the like cannot show for an APK. The APK
+  goes up with the Cloud deploy and is served at `/web/apk/KarmaHome.apk`.
+
+- **The app is on Serverpod Cloud**, as the project `karmahome`: the web app at
+  <https://karmahome.serverpod.space/>, the API at <https://karmahome.api.serverpod.space/>.
+  There, email sign-up sends its verification codes through Cloud's mail service, and the
+  server has the Google sign-in secret. `scloud.yaml` and `.scloudignore` are in the repo, and the README
+  says how to deploy.
+
+- **The app is KarmaHome.** Its name in the app, the Android launcher, the web page and the
+  server's emails; a new logo, a home in two halves that fit together, on every icon and in the
+  link preview; and a voice to go with it: «Lo que haces en casa, vuelve». Coins are now
+  **karmas**, the Wallet tab is **Karma**, a group is a **home** («casa»), and the welcome screen
+  and empty lists speak it.
+- **This week's ranking** on the Casa tab: karma earned minus fines, best first, with each
+  member's character. The week starts again on Monday at 00:00 in Madrid.
+- **Typical chores** when proposing: a tap fills «Limpiar el baño · 25» and nine others, and the home
+  still votes on the deal. They sit two to a row, each a card with its emoji and its name.
+- **Icons on tasks and rewards**: pick an emoji when proposing (a typical chore brings its own), and
+  it shows on the card. A new home's starting rewards come with theirs. Adds a nullable `icon` to
+  `Task` and `RewardItem`, with a migration.
+- **A home of one works on its own**: with nobody else to vote, a proposed task opens at once, a
+  task marked done is paid at once and a proposed reward goes straight to the shop. Once someone
+  joins, everything is voted again (PRODUCT.md §4.1).
+- **A task is worth 150 karmas at most**, proposed or counter-offered: the server refuses more, and
+  the app's steppers stop there. Shop rewards keep no cap (PRODUCT.md §4.5).
+- **The shop shows its rewards as tiles, two to a row**, so more of it fits on the screen.
+- **The home's schedule**: a task can repeat on set weekdays («Sacar la basura» on Tuesdays and
+  Thursdays). It is voted once; on each of its days it appears on the board by itself, in Madrid
+  time, and is claimed and validated like any other task. Repetitions do not pile up. A panel
+  from the tasks tab shows the week day by day, and whoever proposed a set task, or the admin,
+  takes it off. Adds `weekdays`, `lastSpawnedOn` and `missionId` to `Task`, a `scheduled` status
+  and a `missionDue` event, with a migration.
+- **Withdrawing a proposal**: a bin on a task or reward still being voted on, for whoever proposed
+  it and for the admin. It asks first and costs no fine; a withdrawn reward is deleted with its
+  votes. The rest of the home sees it live and in Activity.
+- **A clearer new task screen** (#189): a line saying what to do, «o escribe la tuya» between the
+  ideas and the form, and the description marked optional.
+- **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has
+  been there longest.
 - **Sign in with Google** from the welcome screen. The server enables it only when
   `googleClientSecret` is in `passwords.yaml`; on the web it works with the app served by Serverpod
   on port 8082. The welcome screen now scrolls on short screens instead of overflowing.
+- **A member's new name or avatar reaches the rest of the group live.** `updateMyProfile`
+  publishes `memberUpdated` on the group's stream; the other phones reload the member list and
+  show it in Activity (#140).
+- **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
+  some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
+  with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again. Every demo task carries its icon.
+- **House characters instead of emoji avatars.** Eight characters drawn for the app (a mug, a
+  plant, a sock, a sponge, a teapot, a toast, a bucket and a light bulb) on the member's colour.
+  An emoji picked before them is still shown.
+- **Lottie animations** for coins coming in, a fine, a result, a purchase delivered (confetti),
+  the live notice, empty lists, choosing a home and loading. Nine, picked by the team from
+  LottieFiles; who made each one is in `assets/animations/CREDITS.md`.
+
+### Fixed
+
+- **The download page hands out the latest APK**: the link carries a version, because the CDN in
+  front of Cloud kept the first APK for a year.
+- **Starting rewards in the app's language**: the server stores them in Spanish; the app now shows
+  them in English too.
+- **Placeholders without teammates' names**: the email field suggests `tu@example.com` and a new
+  home «Nuestro piso».
+- **Google sign-in under `flutter run` on the web**: a debug build returns to a static copy of
+  Serverpod's callback page in `web/auth/`, so the everyday loop on `localhost:8095` signs in too.
+- **Docs brought up to date for the submission**: the README (how to try it, the app's tests,
+  status), the submission text, the feedback log, the product spec and the plan's outcome.
+- **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;
+  a denied proposal, a denied validation and an expired vote are fines too.
+
+- **The shop no longer sells what the balance cannot pay.** The server refuses a purchase whose
+  price is above the buyer's balance, checked on the locked row so two purchases at once cannot
+  spend the same coins; only fines take a balance below zero (#137).
+
+- **The animations play.** `assets/animations/` was never declared in the app's `pubspec.yaml`,
+  so none of the 17 Lottie animations was bundled and every one failed to load.
+
+### Removed
+
+- The scripts that published the app on a VPS (`deploy/ovh/`): it lives on Serverpod Cloud now.
 
 ## [0.1.0] - 2026-09-28
 
@@ -76,5 +165,6 @@ backend, between phones and in real time.
   ranking screen and handing over the admin role (their endpoints exist, the app does not call
   them).
 
-[Unreleased]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/compare/v0.1.0...develop
+[Unreleased]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/compare/v1.0.0...develop
+[1.0.0]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/releases/tag/v0.1.0

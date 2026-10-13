@@ -5,9 +5,11 @@ import 'package:provider/provider.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
+import '../../ui/app_animation.dart';
 import '../../ui/app_button.dart';
 import '../../ui/coin_amount.dart';
 import 'wallet_controller.dart';
+import '../shop/reward_titles.dart';
 
 class WalletPage extends StatelessWidget {
   const WalletPage({super.key});
@@ -21,7 +23,26 @@ class WalletPage extends StatelessWidget {
           title: AppLocalizations.of(context).navWallet,
           showBalance: false,
         ),
-        Expanded(child: _Body(wallet: wallet)),
+        Expanded(
+          child: Stack(
+            children: [
+              Positioned.fill(child: _Body(wallet: wallet)),
+              // Coins coming in, or a fine, played once over the balance.
+              if (wallet.arrival case final arrival?)
+                Align(
+                  alignment: Alignment.topCenter,
+                  child: IgnorePointer(
+                    child: AppLottie(
+                      arrival,
+                      key: ValueKey(wallet.arrivalCount),
+                      size: 180,
+                      onFinished: wallet.arrivalShown,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -36,7 +57,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!wallet.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     if (wallet.error != null && wallet.history.isEmpty) {
       return Center(
@@ -45,7 +66,8 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n.walletLoadError),
+              const AppLottie(AppAnimation.offline, size: 140),
+              Text(l10n.walletLoadError, textAlign: TextAlign.center),
               const SizedBox(height: 12),
               AppButton(
                 label: l10n.retry,
@@ -95,7 +117,7 @@ class _Body extends StatelessWidget {
                     ],
                   ),
                 ),
-                const Text('🪙', style: TextStyle(fontSize: 88)),
+                const AppLottie(AppAnimation.karma, size: 104, repeat: true),
               ],
             ),
           ),
@@ -133,25 +155,44 @@ class _MovementRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final positive = movement.amount >= 0;
+    final l10n = AppLocalizations.of(context);
+    final badge = _badgeColor;
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
       child: SoftCard(
         child: Row(
           children: [
-            Icon(_icon, color: AppColors.violet),
+            Container(
+              width: 44,
+              height: 44,
+              decoration: BoxDecoration(color: badge, shape: BoxShape.circle),
+              alignment: Alignment.center,
+              child: Icon(
+                _icon,
+                size: 22,
+                color: badge == AppColors.coral ? Colors.white : AppColors.ink,
+              ),
+            ),
             const SizedBox(width: 12),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    movement.title ?? _label(AppLocalizations.of(context)),
+                    switch (movement.title) {
+                      final title? => rewardTitle(l10n, title),
+                      null => _label(l10n),
+                    },
                     style: const TextStyle(fontWeight: FontWeight.w900),
                   ),
                   Text(
-                    _formatDate(movement.createdAt),
-                    style: const TextStyle(
-                      color: AppColors.muted,
+                    // The reason is the title already when there is no task
+                    // or reward to name.
+                    movement.title == null
+                        ? _formatDate(movement.createdAt)
+                        : '${_label(l10n)} · ${_formatDate(movement.createdAt)}',
+                    style: TextStyle(
+                      color: context.palette.muted,
                       fontSize: 13,
                     ),
                   ),
@@ -161,7 +202,9 @@ class _MovementRow extends StatelessWidget {
             Text(
               '${positive ? '+' : ''}${movement.amount}',
               style: TextStyle(
-                color: positive ? const Color(0xFF16853C) : AppColors.coral,
+                color: positive
+                    ? context.palette.positive
+                    : context.palette.danger,
                 fontSize: 20,
                 fontWeight: FontWeight.w900,
                 fontFeatures: AppFonts.tabularFigures,
@@ -172,6 +215,18 @@ class _MovementRow extends StatelessWidget {
       ),
     );
   }
+
+  /// Lime for karma coming in, sky for karma spent in the shop, coral for
+  /// every kind of fine.
+  Color get _badgeColor => switch (movement.reason) {
+    CoinTransactionReason.earned ||
+    CoinTransactionReason.refunded => AppColors.lime,
+    CoinTransactionReason.spent => AppColors.skyTint,
+    CoinTransactionReason.fined ||
+    CoinTransactionReason.proposalDenied ||
+    CoinTransactionReason.validationDenied ||
+    CoinTransactionReason.voteExpired => AppColors.coral,
+  };
 
   IconData get _icon => switch (movement.reason) {
     CoinTransactionReason.earned => Icons.task_alt_rounded,

@@ -177,6 +177,8 @@ class TestEndpoints {
 
   late final _JwtRefreshEndpoint jwtRefresh;
 
+  late final _DemoEndpoint demo;
+
   late final _EventEndpoint event;
 
   late final _GroupEndpoint group;
@@ -204,6 +206,10 @@ class _InternalTestEndpoints extends TestEndpoints
       serializationManager,
     );
     jwtRefresh = _JwtRefreshEndpoint(
+      endpoints,
+      serializationManager,
+    );
+    demo = _DemoEndpoint(
       endpoints,
       serializationManager,
     );
@@ -663,6 +669,48 @@ class _JwtRefreshEndpoint {
   }
 }
 
+class _DemoEndpoint {
+  _DemoEndpoint(
+    this._endpointDispatch,
+    this._serializationManager,
+  );
+
+  final _is.EndpointDispatch _endpointDispatch;
+
+  final _is.SerializationManager _serializationManager;
+
+  _ida.Future<String?> reseed(
+    _ist.TestSessionBuilder sessionBuilder,
+    String secret,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'demo',
+            method: 'reseed',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'demo',
+          methodName: 'reseed',
+          parameters: _ist.testObjectToJson({'secret': secret}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<String?>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+}
+
 class _EventEndpoint {
   _EventEndpoint(
     this._endpointDispatch,
@@ -975,6 +1023,34 @@ class _GroupEndpoint {
     });
   }
 
+  _ida.Future<void> leaveGroup(_ist.TestSessionBuilder sessionBuilder) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'group',
+            method: 'leaveGroup',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'group',
+          methodName: 'leaveGroup',
+          parameters: _ist.testObjectToJson({}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
   _ida.Future<_is20wtgg.GroupMember> updateMyProfile(
     _ist.TestSessionBuilder sessionBuilder, {
     String? displayName,
@@ -1089,6 +1165,7 @@ class _ShopEndpoint {
     String description,
     int price, {
     int? stock,
+    String? icon,
   }) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
@@ -1106,6 +1183,7 @@ class _ShopEndpoint {
             'description': description,
             'price': price,
             'stock': stock,
+            'icon': icon,
           }),
           serializationManager: _serializationManager,
         );
@@ -1115,6 +1193,37 @@ class _ShopEndpoint {
                   _localCallContext.arguments,
                 )
                 as _ida.Future<_iub5jn2z.RewardItem>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<void> withdrawReward(
+    _ist.TestSessionBuilder sessionBuilder,
+    int itemId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'shop',
+            method: 'withdrawReward',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'shop',
+          methodName: 'withdrawReward',
+          parameters: _ist.testObjectToJson({'itemId': itemId}),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<void>);
         return _localReturnValue;
       } finally {
         await _localUniqueSession.close();
@@ -1403,8 +1512,10 @@ class _TaskEndpoint {
     _ist.TestSessionBuilder sessionBuilder,
     String title,
     String description,
-    int reward,
-  ) async {
+    int reward, {
+    String? icon,
+    List<int>? weekdays,
+  }) async {
     return _ist.callAwaitableFunctionAndHandleExceptions(() async {
       var _localUniqueSession =
           (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
@@ -1420,6 +1531,8 @@ class _TaskEndpoint {
             'title': title,
             'description': description,
             'reward': reward,
+            'icon': icon,
+            'weekdays': weekdays,
           }),
           serializationManager: _serializationManager,
         );
@@ -1491,6 +1604,37 @@ class _TaskEndpoint {
             'taskId': taskId,
             'counterReward': counterReward,
           }),
+          serializationManager: _serializationManager,
+        );
+        var _localReturnValue =
+            await (_localCallContext.method.call(
+                  _localUniqueSession,
+                  _localCallContext.arguments,
+                )
+                as _ida.Future<_i0sdpywk.Task>);
+        return _localReturnValue;
+      } finally {
+        await _localUniqueSession.close();
+      }
+    });
+  }
+
+  _ida.Future<_i0sdpywk.Task> withdrawTask(
+    _ist.TestSessionBuilder sessionBuilder,
+    int taskId,
+  ) async {
+    return _ist.callAwaitableFunctionAndHandleExceptions(() async {
+      var _localUniqueSession =
+          (sessionBuilder as _ist.InternalTestSessionBuilder).internalBuild(
+            endpoint: 'task',
+            method: 'withdrawTask',
+          );
+      try {
+        var _localCallContext = await _endpointDispatch.getMethodCallContext(
+          createSessionCallback: (_) => _localUniqueSession,
+          endpointPath: 'task',
+          methodName: 'withdrawTask',
+          parameters: _ist.testObjectToJson({'taskId': taskId}),
           serializationManager: _serializationManager,
         );
         var _localReturnValue =

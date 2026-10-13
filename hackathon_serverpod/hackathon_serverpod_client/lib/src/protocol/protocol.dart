@@ -338,6 +338,15 @@ class Protocol extends _isc.SerializationManager {
     if (t == _isc.getType<_izo0hjq0.RankingEntry?>()) {
       return (data != null ? _izo0hjq0.RankingEntry.fromJson(data) : null) as T;
     }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _isc.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
     if (t == List<_ir4oz66a.GroupMember>) {
       return (data as List)
               .map((e) => deserialize<_ir4oz66a.GroupMember>(e))
@@ -364,6 +373,15 @@ class Protocol extends _isc.SerializationManager {
       return (data as List)
               .map((e) => deserialize<_itpz8rf5.TaskVote>(e))
               .toList()
+          as T;
+    }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _isc.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
           as T;
     }
     if (t == List<_ibr29qpn.CoinMovement>) {

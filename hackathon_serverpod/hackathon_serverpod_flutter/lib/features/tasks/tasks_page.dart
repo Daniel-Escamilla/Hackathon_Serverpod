@@ -2,14 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/empty_state.dart';
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
 import '../../ui/app_button.dart';
+import '../../ui/feedback.dart';
+import '../../ui/failure_messages.dart';
+import '../../ui/sounds.dart';
+import '../../ui/trash_button.dart';
+import '../../ui/weekday_picker.dart';
 import '../group/group_controller.dart';
 import 'available_task_screen.dart';
 import 'counter_offer_decision_screen.dart';
+import 'schedule_screen.dart';
 import 'task_vote_screen.dart';
 import 'tasks_controller.dart';
 import 'validation_screen.dart';
@@ -38,7 +46,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!controller.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     if (controller.error != null && controller.tasks.isEmpty) {
       return Center(
@@ -47,7 +55,8 @@ class _Body extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n.tasksLoadError),
+              const AppLottie(AppAnimation.offline, size: 140),
+              Text(l10n.tasksLoadError, textAlign: TextAlign.center),
               const SizedBox(height: 12),
               AppButton(
                 label: l10n.retry,
@@ -60,7 +69,9 @@ class _Body extends StatelessWidget {
       );
     }
 
-    final me = context.watch<GroupController>().myMemberId;
+    final group = context.watch<GroupController>();
+    final me = group.myMemberId;
+    final isAdmin = group.myMember?.role == GroupMemberRole.admin;
     bool voted(Task t) => controller.hasVoted(t, me);
     bool mine(Task t) => me != null && t.proposedById == me;
     bool claimedByMe(Task t) => me != null && t.doneById == me;
@@ -105,19 +116,29 @@ class _Body extends StatelessWidget {
       return RefreshIndicator(
         onRefresh: controller.load,
         child: ListView(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
           children: [
-            const SizedBox(height: 140),
-            Center(child: Text(l10n.tasksEmpty)),
+            _ScheduleEntry(count: controller.scheduled.length),
+            const SizedBox(height: 60),
+            Center(child: EmptyState(l10n.tasksEmpty)),
           ],
         ),
       );
     }
+
+    // A proposal still being voted on can be taken back by whoever made it,
+    // or by the admin (PRODUCT.md §4.4, §7).
+    bool canWithdraw(Task t) =>
+        (t.status == TaskStatus.proposed ||
+            t.status == TaskStatus.counterOffered) &&
+        (mine(t) || isAdmin);
 
     Widget card(Task task) => _TaskCard(
       task: task,
       statusLabel: _statusLabel(l10n, task.status),
       statusColor: _statusColor(task.status),
       onTap: () => pushPage(context, _detailFor(task, me)),
+      onWithdraw: canWithdraw(task) ? () => _withdraw(context, task) : null,
     );
 
     return RefreshIndicator(
@@ -125,6 +146,8 @@ class _Body extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 100),
         children: [
+          _ScheduleEntry(count: controller.scheduled.length),
+          const SizedBox(height: 12),
           if (yourTurn.isNotEmpty) ...[
             _SectionTitle(l10n.sectionAwaitingVote),
             for (final task in yourTurn) card(task),
@@ -144,6 +167,32 @@ class _Body extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<void> _withdraw(BuildContext context, Task task) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.withdrawTaskTitle,
+      body: l10n.withdrawTaskBody,
+      action: l10n.withdrawAction,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      await controller.withdrawTask(task.id!);
+      if (context.mounted) {
+        showMessage(context, l10n.proposalWithdrawn, sound: AppSound.success);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showMessage(
+          context,
+          failureMessage(e, l10n, fallback: l10n.withdrawError),
+          isError: true,
+        );
+      }
+    }
   }
 
   Widget _detailFor(Task task, int? me) => switch (task.status) {
@@ -172,6 +221,43 @@ class _Body extends StatelessWidget {
   };
 }
 
+/// Opens the home's schedule: the tasks that come back on set weekdays.
+class _ScheduleEntry extends StatelessWidget {
+  const _ScheduleEntry({required this.count});
+
+  final int count;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    return SoftCard(
+      onTap: () => pushPage(context, const ScheduleScreen()),
+      child: Row(
+        children: [
+          Icon(Icons.calendar_month_rounded, color: context.palette.accent),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  l10n.scheduleEntry,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                Text(
+                  l10n.scheduleEntryCount(count),
+                  style: TextStyle(color: context.palette.muted),
+                ),
+              ],
+            ),
+          ),
+          Icon(Icons.chevron_right_rounded, color: context.palette.muted),
+        ],
+      ),
+    );
+  }
+}
+
 class _SectionTitle extends StatelessWidget {
   const _SectionTitle(this.label);
 
@@ -192,12 +278,16 @@ class _TaskCard extends StatelessWidget {
     required this.statusLabel,
     required this.statusColor,
     required this.onTap,
+    this.onWithdraw,
   });
 
   final Task task;
   final String statusLabel;
   final Color statusColor;
   final VoidCallback onTap;
+
+  /// Null when this member cannot withdraw the task.
+  final VoidCallback? onWithdraw;
 
   @override
   Widget build(BuildContext context) {
@@ -211,14 +301,13 @@ class _TaskCard extends StatelessWidget {
               width: 68,
               height: 68,
               decoration: BoxDecoration(
-                color: AppColors.sky.withValues(alpha: .36),
+                color: AppColors.skyTint,
                 borderRadius: BorderRadius.circular(20),
               ),
               alignment: Alignment.center,
-              child: const Icon(
-                Icons.task_alt_rounded,
-                color: AppColors.violet,
-              ),
+              child: task.icon == null
+                  ? const Icon(Icons.task_alt_rounded, color: AppColors.violet)
+                  : Text(task.icon!, style: const TextStyle(fontSize: 30)),
             ),
             const SizedBox(width: 14),
             Expanded(
@@ -237,6 +326,18 @@ class _TaskCard extends StatelessWidget {
                       fontFeatures: AppFonts.tabularFigures,
                     ),
                   ),
+                  if (task.weekdays case final days?) ...[
+                    const SizedBox(height: 3),
+                    Text(
+                      AppLocalizations.of(
+                        context,
+                      ).repeatsOn(weekdayList(context, days)),
+                      style: TextStyle(
+                        color: context.palette.muted,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
                   const SizedBox(height: 9),
                   Wrap(
                     spacing: 8,
@@ -250,8 +351,8 @@ class _TaskCard extends StatelessWidget {
                             AppLocalizations.of(context),
                             task.voteClosesAt!,
                           ),
-                          style: const TextStyle(
-                            color: AppColors.muted,
+                          style: TextStyle(
+                            color: context.palette.muted,
                             fontSize: 12,
                             fontFeatures: AppFonts.tabularFigures,
                           ),
@@ -261,7 +362,13 @@ class _TaskCard extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded, color: AppColors.muted),
+            if (onWithdraw case final withdraw?)
+              TrashButton(
+                tooltip: AppLocalizations.of(context).withdrawProposalTooltip,
+                onTap: withdraw,
+              )
+            else
+              Icon(Icons.chevron_right_rounded, color: context.palette.muted),
           ],
         ),
       ),

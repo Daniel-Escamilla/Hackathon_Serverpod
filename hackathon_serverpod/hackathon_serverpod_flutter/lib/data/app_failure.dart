@@ -63,8 +63,15 @@ enum AppFailure {
   /// Nobody votes on their own proposal or their own completion.
   ownTask,
 
-  /// Only the proposer answers a counter-offer.
+  /// Only the proposer answers a counter-offer; only the proposer or the
+  /// admin withdraws a proposal.
   notProposer,
+
+  /// A scheduled task with no valid weekdays.
+  invalidSchedule,
+
+  /// A task's price below 1 or above the cap of 150.
+  invalidReward,
 
   /// No reward with that id in the caller's group.
   rewardNotFound,
@@ -83,6 +90,9 @@ enum AppFailure {
 
   /// Nothing can be bought with a negative balance.
   negativeBalance,
+
+  /// The balance does not reach the price.
+  notEnoughCoins,
 
   /// The provider has to be another member of the group.
   invalidProvider,
@@ -163,6 +173,8 @@ AppException mapServerError(Object error) => switch (error) {
     TaskErrorReason.notOpen => AppFailure.taskNotOpen,
     TaskErrorReason.ownTask => AppFailure.ownTask,
     TaskErrorReason.notProposer => AppFailure.notProposer,
+    TaskErrorReason.invalidSchedule => AppFailure.invalidSchedule,
+    TaskErrorReason.invalidReward => AppFailure.invalidReward,
   }),
   ShopException(:final reason) => AppException(switch (reason) {
     ShopErrorReason.rewardNotFound => AppFailure.rewardNotFound,
@@ -171,9 +183,11 @@ AppException mapServerError(Object error) => switch (error) {
     ShopErrorReason.rewardNotAvailable => AppFailure.rewardNotAvailable,
     ShopErrorReason.outOfStock => AppFailure.outOfStock,
     ShopErrorReason.negativeBalance => AppFailure.negativeBalance,
+    ShopErrorReason.notEnoughCoins => AppFailure.notEnoughCoins,
     ShopErrorReason.invalidProvider => AppFailure.invalidProvider,
     ShopErrorReason.purchaseNotFound => AppFailure.purchaseNotFound,
     ShopErrorReason.purchaseNotOpen => AppFailure.purchaseNotOpen,
+    ShopErrorReason.notProposer => AppFailure.notProposer,
     ShopErrorReason.notProvider => AppFailure.notProvider,
   }),
   RegistrationException(:final reason) => AppException(switch (reason) {

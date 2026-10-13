@@ -644,6 +644,12 @@ class Protocol extends _is.DatabaseSerializationManager {
           dartType: 'int',
         ),
         _isp.ColumnDefinition(
+          name: 'icon',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
           name: 'status',
           columnType: _isp.ColumnType.text,
           isNullable: false,
@@ -828,6 +834,12 @@ class Protocol extends _is.DatabaseSerializationManager {
           dartType: 'int',
         ),
         _isp.ColumnDefinition(
+          name: 'icon',
+          columnType: _isp.ColumnType.text,
+          isNullable: true,
+          dartType: 'String?',
+        ),
+        _isp.ColumnDefinition(
           name: 'kind',
           columnType: _isp.ColumnType.text,
           isNullable: false,
@@ -839,6 +851,24 @@ class Protocol extends _is.DatabaseSerializationManager {
           columnType: _isp.ColumnType.text,
           isNullable: true,
           dartType: 'protocol:TaskRecurrence?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'weekdays',
+          columnType: _isp.ColumnType.json,
+          isNullable: true,
+          dartType: 'List<int>?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'lastSpawnedOn',
+          columnType: _isp.ColumnType.timestampWithoutTimeZone,
+          isNullable: true,
+          dartType: 'DateTime?',
+        ),
+        _isp.ColumnDefinition(
+          name: 'missionId',
+          columnType: _isp.ColumnType.bigint,
+          isNullable: true,
+          dartType: 'int?',
         ),
         _isp.ColumnDefinition(
           name: 'status',
@@ -1283,6 +1313,15 @@ class Protocol extends _is.DatabaseSerializationManager {
     if (t == _is.getType<_izo0hjq0.RankingEntry?>()) {
       return (data != null ? _izo0hjq0.RankingEntry.fromJson(data) : null) as T;
     }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _is.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
+          as T;
+    }
     if (t == List<_is20wtgg.GroupMember>) {
       return (data as List)
               .map((e) => deserialize<_is20wtgg.GroupMember>(e))
@@ -1309,6 +1348,15 @@ class Protocol extends _is.DatabaseSerializationManager {
       return (data as List)
               .map((e) => deserialize<_ini4h15w.TaskVote>(e))
               .toList()
+          as T;
+    }
+    if (t == List<int>) {
+      return (data as List).map((e) => deserialize<int>(e)).toList() as T;
+    }
+    if (t == _is.getType<List<int>?>()) {
+      return (data != null
+              ? (data as List).map((e) => deserialize<int>(e)).toList()
+              : null)
           as T;
     }
     if (t == List<_ijihwky5.CoinMovement>) {

@@ -122,6 +122,19 @@ void main() {
         expect(proposed.createdById, bob.id);
         expect(proposed.groupId, householdGroup.id);
       });
+
+      test('then a reward proposed with an icon keeps it', () async {
+        final proposed = await endpoints.shop.proposeReward(
+          sessionOf(_bobAuthUserId),
+          'Un masaje',
+          '',
+          50,
+          icon: '💆',
+        );
+
+        final stored = await RewardItem.db.findById(session, proposed.id!);
+        expect(stored!.icon, '💆');
+      });
     });
 
     group('family mode stubs, out of MVP scope (PLAN.md §1)', () {
@@ -283,6 +296,57 @@ void main() {
           ),
           throwsShop(ShopErrorReason.negativeBalance),
         );
+      });
+
+      test(
+        'then a member whose balance does not reach the price cannot buy',
+        () async {
+          await walletService.recordTransaction(
+            session,
+            groupId: householdGroup.id!,
+            memberId: bob.id!,
+            amount: 10,
+            reason: CoinTransactionReason.earned,
+          );
+
+          await expectLater(
+            endpoints.shop.purchaseReward(
+              sessionOf(_bobAuthUserId),
+              proposedItem.id!,
+              carol.id!,
+            ),
+            throwsShop(ShopErrorReason.notEnoughCoins),
+          );
+
+          final buyer = await GroupMember.db.findById(session, bob.id!);
+          expect(buyer!.balance, 10);
+          final item = await RewardItem.db.findById(session, proposedItem.id!);
+          expect(item!.stock, 2);
+          final purchases = await Purchase.db.find(
+            session,
+            where: (t) => t.buyerId.equals(bob.id!),
+          );
+          expect(purchases, isEmpty);
+        },
+      );
+
+      test('then a balance equal to the price is enough', () async {
+        await walletService.recordTransaction(
+          session,
+          groupId: householdGroup.id!,
+          memberId: bob.id!,
+          amount: 20,
+          reason: CoinTransactionReason.earned,
+        );
+
+        await endpoints.shop.purchaseReward(
+          sessionOf(_bobAuthUserId),
+          proposedItem.id!,
+          carol.id!,
+        );
+
+        final buyer = await GroupMember.db.findById(session, bob.id!);
+        expect(buyer!.balance, 0);
       });
 
       group('and bought', () {

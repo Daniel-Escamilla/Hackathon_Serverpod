@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
@@ -51,7 +52,7 @@ class AvailableTaskScreen extends StatelessWidget {
         pushPage(
           context,
           ResultScreen(
-            emoji: '✅',
+            animation: AppAnimation.approved,
             title: l10n.claimedTitle,
             message: l10n.claimedMessage,
             value: l10n.inValidationValue(task.reward),

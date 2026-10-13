@@ -1,16 +1,10 @@
-import 'dart:math';
-
 import '../events/event_service.dart';
 import '../generated/protocol.dart';
 import '../shop/shop_service.dart';
 import 'current_member.dart';
+import 'invite_code.dart';
 import 'package:serverpod/serverpod.dart';
 import 'package:serverpod_auth_idp_server/core.dart';
-
-/// Excludes 0/O and 1/I/L: easy to read out loud and to type from a phone,
-/// which is how a group's code is meant to travel (PRODUCT.md §7).
-const _inviteCodeAlphabet = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
-const _inviteCodeLength = 6;
 
 /// Create a group and join one by invite code (PRODUCT.md §7, §10.3).
 class GroupEndpoint extends Endpoint {
@@ -182,6 +176,7 @@ class GroupEndpoint extends Endpoint {
       session,
       groupId: admin.groupId,
       kind: GroupEventKind.memberExpelled,
+      actorMemberId: admin.id,
       memberId: target.id,
     );
   }
@@ -296,9 +291,67 @@ class GroupEndpoint extends Endpoint {
     );
   }
 
+  /// The signed-in member leaves their home (#141). Like an expelled member,
+  /// they lose their balance and their row stays for everyone's history.
+  /// When the admin leaves, the role goes to whoever has been there longest
+  /// (never a child, §8), so the home is never left without one. Leaving an
+  /// empty home just leaves it empty.
+  ///
+  /// The leaving member's row is read locked, in the same transaction as the
+  /// hand-over: two taps, or the admin leaving while handing the role over by
+  /// hand, would otherwise leave two admins or none.
+  Future<void> leaveGroup(Session session) async {
+    final member = await currentGroupMember(session);
+
+    await session.db.transaction((transaction) async {
+      final locked = await GroupMember.db.findById(
+        session,
+        member.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null || locked.leftAt != null) {
+        throw GroupException(reason: GroupErrorReason.noMembership);
+      }
+
+      await GroupMember.db.updateRow(
+        session,
+        locked.copyWith(leftAt: DateTime.now().toUtc()),
+        transaction: transaction,
+      );
+      if (locked.role != GroupMemberRole.admin) return;
+
+      final successor = await GroupMember.db.findFirstRow(
+        session,
+        where: (t) =>
+            t.groupId.equals(locked.groupId) &
+            t.leftAt.equals(null) &
+            t.role.notEquals(GroupMemberRole.child),
+        orderBy: (t) => t.joinedAt,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (successor != null) {
+        await GroupMember.db.updateRow(
+          session,
+          successor.copyWith(role: GroupMemberRole.admin),
+          transaction: transaction,
+        );
+      }
+    });
+
+    await _eventService.publish(
+      session,
+      groupId: member.groupId,
+      kind: GroupEventKind.memberLeft,
+      actorMemberId: member.id,
+      memberId: member.id,
+    );
+  }
+
   /// The signed-in member changes how the group sees them: their name and
   /// their avatar. Any member may, about themselves only. A field left null
-  /// keeps its current value.
+  /// keeps its current value. The rest of the group sees it live (#140).
   Future<GroupMember> updateMyProfile(
     Session session, {
     String? displayName,
@@ -323,7 +376,7 @@ class GroupEndpoint extends Endpoint {
       throw ArgumentError.value(avatarColor, 'avatarColor', 'is too long');
     }
 
-    return GroupMember.db.updateRow(
+    final updated = await GroupMember.db.updateRow(
       session,
       member.copyWith(
         displayName: trimmedName ?? member.displayName,
@@ -331,6 +384,14 @@ class GroupEndpoint extends Endpoint {
         avatarColor: avatarColor ?? member.avatarColor,
       ),
     );
+    await _eventService.publish(
+      session,
+      groupId: updated.groupId,
+      kind: GroupEventKind.memberUpdated,
+      actorMemberId: updated.id,
+      memberId: updated.id,
+    );
+    return updated;
   }
 
   Future<GroupMember> _requireAdmin(Session session) async {
@@ -375,25 +436,5 @@ class GroupEndpoint extends Endpoint {
   /// the final guard: two groups picking the same code between this check and
   /// their insert would need a collision in about 887 million, and the loser's
   /// transaction fails cleanly rather than half-creating a group.
-  Future<String> _freeInviteCode(Session session) async {
-    for (var attempt = 0; attempt < 5; attempt++) {
-      final code = _generateInviteCode();
-      final taken = await Group.db.findFirstRow(
-        session,
-        where: (t) => t.inviteCode.equals(code),
-      );
-      if (taken == null) return code;
-    }
-    // Five collisions in a row out of 887 million codes is not bad luck. It is
-    // a server fault, so it stays a plain error rather than a GroupException.
-    throw StateError('Could not generate a unique invite code.');
-  }
-
-  String _generateInviteCode() {
-    final random = Random.secure();
-    return List.generate(
-      _inviteCodeLength,
-      (_) => _inviteCodeAlphabet[random.nextInt(_inviteCodeAlphabet.length)],
-    ).join();
-  }
+  Future<String> _freeInviteCode(Session session) => freeInviteCode(session);
 }

@@ -23,6 +23,13 @@ import 'package:serverpod/serverpod.dart' as _is;
 /// The four shop kinds make the shop live too (PLAN.md §1, "tiempo real"): a
 /// reward proposed or voted, and a purchase answered (accepted or refused,
 /// with its fine and refund) or delivered.
+/// `memberUpdated` is a member changing their name or avatar, so the other
+/// phones redraw the member list without a reload (#140).
+/// `memberLeft` is a member leaving on their own (#141); the admin role may
+/// have moved with it, so the others reload the member list.
+/// `taskWithdrawn` and `rewardWithdrawn` are a proposal taken back before the
+/// vote ended, by whoever made it or by the admin (PRODUCT.md §4.3, §9).
+/// `missionDue` is a scheduled mission putting today's task on the board; nobody triggers it.
 enum GroupEventKind implements _is.SerializableModel {
   taskProposed,
   taskVoteCast,
@@ -34,7 +41,12 @@ enum GroupEventKind implements _is.SerializableModel {
   rewardProposed,
   rewardVoteCast,
   purchaseResponded,
-  purchaseDelivered;
+  purchaseDelivered,
+  memberUpdated,
+  memberLeft,
+  taskWithdrawn,
+  rewardWithdrawn,
+  missionDue;
 
   static GroupEventKind fromJson(String name) {
     switch (name) {
@@ -60,6 +72,16 @@ enum GroupEventKind implements _is.SerializableModel {
         return GroupEventKind.purchaseResponded;
       case 'purchaseDelivered':
         return GroupEventKind.purchaseDelivered;
+      case 'memberUpdated':
+        return GroupEventKind.memberUpdated;
+      case 'memberLeft':
+        return GroupEventKind.memberLeft;
+      case 'taskWithdrawn':
+        return GroupEventKind.taskWithdrawn;
+      case 'rewardWithdrawn':
+        return GroupEventKind.rewardWithdrawn;
+      case 'missionDue':
+        return GroupEventKind.missionDue;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "GroupEventKind"',

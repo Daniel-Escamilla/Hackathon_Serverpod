@@ -2,9 +2,7 @@
 
 Four people build this project together for the Build Something Real hackathon. This file
 records what the repository itself cannot: who the authors are, who speaks for the team, and
-how a prize would be shared. Fill in the placeholders and have every member approve the result
-in writing (a "agreed" reply on the PR or in the group chat is enough) before the first real
-feature lands.
+how a prize would be shared.
 
 ## Members
 
@@ -13,13 +11,12 @@ feature lands.
 | Descamil (Daniel) | [@Daniel-Escamilla](https://github.com/Daniel-Escamilla) | admin (owner) |
 | Volmer42 (Juan) | [@VolmerES](https://github.com/VolmerES) | write |
 | Segovia | [@dperez-a](https://github.com/dperez-a) | write |
-| Mayte | [@madel-04](https://github.com/madel-04) | _(not yet added as a collaborator)_ |
+| Mayte | [@madel-04](https://github.com/madel-04) | write |
 
 Both Daniels go by a different name day to day: `Daniel-Escamilla` is "Descamil"
 (his GitHub display name, and the author of the merge commits) and `dperez-a` is
 "Segovia". Getting this backwards puts the work on the wrong person, so use the
-handles when it matters. Fill in the last row's role once madel-04 accepts the
-pending collaborator invite.
+handles when it matters.
 
 Four is the maximum the rules allow (§3: *"A Team may have a maximum of four (4) members"*).
 
@@ -38,7 +35,8 @@ organisers show the project for judging and promotion, for 12 months.
 
 ## Representative
 
-**Representative:** _(name)_
+**Representative:** Juan ([@VolmerES](https://github.com/VolmerES)), as agreed in
+[`docs/PLAN.md`](docs/PLAN.md) §3 and [`docs/PRODUCT.md`](docs/PRODUCT.md) §14.
 
 The rules require one person to register the team, enter the submission and act on the team's
 behalf (§3, "Team Representation"). Cash prizes are paid to that person alone, and the

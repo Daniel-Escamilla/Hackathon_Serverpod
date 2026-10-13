@@ -9,13 +9,13 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Chores prototype';
+  String get appTitle => 'KarmaHome';
 
   @override
   String get retry => 'Try again';
 
   @override
-  String get coinsLabel => 'coins';
+  String get coinsLabel => 'karma';
 
   @override
   String get reject => 'Reject';
@@ -39,10 +39,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get navShop => 'Shop';
 
   @override
-  String get navWallet => 'Wallet';
+  String get navWallet => 'Karma';
 
   @override
-  String get navGroup => 'Group';
+  String get navGroup => 'Home';
 
   @override
   String get proposeTask => 'Propose';
@@ -52,16 +52,93 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get activityEmptyMessage =>
-      'There is no activity list from the server yet.';
+      'You\'ll see what the others do here while the app is open.';
 
   @override
-  String get groupCheckError => 'Couldn\'t check your group.';
+  String get activitySomeone => 'Someone';
 
   @override
-  String get welcomeHeadline => 'Chores,\nfair at last.';
+  String activityTaskProposed(String name) {
+    return '$name proposed a task';
+  }
 
   @override
-  String get welcomeSubtitle => 'House deals are decided by everyone.';
+  String activityTaskVoteCast(String name) {
+    return '$name voted on a task';
+  }
+
+  @override
+  String activityTaskCounterOffered(String name) {
+    return '$name made a counter-offer';
+  }
+
+  @override
+  String activityTaskClaimed(String name) {
+    return '$name says a task is done';
+  }
+
+  @override
+  String activityTaskValidated(String name) {
+    return '$name voted on whether a task is done';
+  }
+
+  @override
+  String activityRewardProposed(String name) {
+    return '$name proposed a reward';
+  }
+
+  @override
+  String activityRewardVoteCast(String name) {
+    return '$name voted on a reward';
+  }
+
+  @override
+  String activityPurchased(String name) {
+    return '$name bought a reward';
+  }
+
+  @override
+  String activityPurchaseResponded(String name) {
+    return '$name answered a purchase';
+  }
+
+  @override
+  String activityPurchaseDelivered(String name) {
+    return '$name delivered a purchase';
+  }
+
+  @override
+  String activityMemberExpelled(String name) {
+    return '$name expelled a member';
+  }
+
+  @override
+  String activityMemberUpdated(String name) {
+    return '$name changed their name or avatar';
+  }
+
+  @override
+  String get activityJustNow => 'Just now';
+
+  @override
+  String activityMinutesAgo(int minutes) {
+    return '$minutes min ago';
+  }
+
+  @override
+  String activityHoursAgo(int hours) {
+    return '$hours h ago';
+  }
+
+  @override
+  String get groupCheckError => 'Couldn\'t check your home.';
+
+  @override
+  String get welcomeHeadline => 'What you do at home\ncomes back.';
+
+  @override
+  String get welcomeSubtitle =>
+      'The whole home agrees what each chore is worth, and every chore done adds karma.';
 
   @override
   String get welcomeSignIn => 'Sign in with email';
@@ -76,13 +153,17 @@ class AppLocalizationsEn extends AppLocalizations {
   String get googleSignInError => 'Couldn\'t sign in with Google.';
 
   @override
+  String get googleSignInPopupBlocked =>
+      'Your browser blocked the Google window. Allow pop-ups for this site and try again.';
+
+  @override
   String get signInTitle => 'Sign in to your account';
 
   @override
   String get emailFieldLabel => 'Email';
 
   @override
-  String get emailHint => 'mayte@email.com';
+  String get emailHint => 'you@example.com';
 
   @override
   String get passwordFieldLabel => 'Password';
@@ -189,7 +270,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get groupChoiceQuestion => 'How do you want\nto start?';
 
   @override
-  String get createGroupTitle => 'Create a group';
+  String get createGroupTitle => 'Create a home';
 
   @override
   String get createGroupSubtitle => 'Set up your space';
@@ -198,10 +279,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinGroupTitle => 'Join with a code';
 
   @override
-  String get joinGroupCardSubtitle => 'Enter an existing group';
+  String get joinGroupCardSubtitle => 'Enter a home that already exists';
 
   @override
-  String get createGroupHeadline => 'Create your group';
+  String get createGroupHeadline => 'Create your home';
 
   @override
   String get createGroupHint => 'Choose how you share a home';
@@ -216,19 +297,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileFamily => 'Family';
 
   @override
-  String get groupNameLabel => 'Group name';
+  String get groupNameLabel => 'Home name';
 
   @override
-  String get groupNameHint => 'Mayte and Juan\'s place';
+  String get groupNameHint => 'Our flat';
 
   @override
-  String get createGroupSubmit => 'Create group';
+  String get createGroupSubmit => 'Create home';
 
   @override
-  String get createGroupErrorEmpty => 'Give the group a name.';
+  String get createGroupErrorEmpty => 'Give the home a name.';
 
   @override
-  String get createGroupErrorGeneric => 'Couldn\'t create the group.';
+  String get createGroupErrorGeneric => 'Couldn\'t create the home.';
 
   @override
   String get joinGroupHeadline => 'Join your people';
@@ -243,16 +324,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get joinGroupCaseNote => 'The code isn\'t case-sensitive';
 
   @override
-  String get joinGroupSubmit => 'Join the group';
+  String get joinGroupSubmit => 'Join the home';
 
   @override
-  String get joinGroupError => 'No group found with that code.';
+  String get joinGroupError => 'No home found with that code.';
 
   @override
   String get groupSuccessTitle => 'You\'ve got a home!';
 
   @override
-  String get groupCodeLabel => 'Group code';
+  String get groupCodeLabel => 'Home code';
 
   @override
   String get shareCode => 'Share code';
@@ -262,13 +343,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupPendingNotice =>
-      'Sample data: there\'s no endpoint yet to ask the server for your group and its members.';
+      'Sample data: there\'s no endpoint yet to ask the server for your home and its members.';
 
   @override
   String get membersTitle => 'Members';
 
   @override
-  String get groupSettings => 'Group settings';
+  String get groupSettings => 'Home settings';
 
   @override
   String get groupSettingsFineLabel => 'Fine';
@@ -298,7 +379,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get tasksLoadError => 'Couldn\'t load the tasks.';
 
   @override
-  String get tasksEmpty => 'No tasks yet. Propose the first one.';
+  String get tasksEmpty =>
+      'The home is calm. Propose the first chore and start adding karma.';
 
   @override
   String get sectionAwaitingVote => 'Waiting for your vote';
@@ -351,7 +433,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get counterOfferSheetTitle => 'Make a counter-offer';
 
   @override
-  String get counterOfferSheetSubtitle => 'How many coins would feel fair?';
+  String get counterOfferSheetSubtitle => 'How much karma would feel fair?';
 
   @override
   String get counterOfferPauseNotice =>
@@ -392,17 +474,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get claimedTitle => 'Claimed!';
 
   @override
-  String get claimedMessage => 'Now the group has to confirm it\'s done.';
+  String get claimedMessage => 'Now the home has to confirm it\'s done.';
 
   @override
   String inValidationValue(int reward) {
-    String _temp0 = intl.Intl.pluralLogic(
-      reward,
-      locale: localeName,
-      other: '$reward coins',
-      one: '1 coin',
-    );
-    return 'In validation · $_temp0';
+    return 'In validation · $reward karma';
   }
 
   @override
@@ -422,7 +498,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get validationYourOwn =>
-      'You claimed it: now the group decides whether it\'s done.';
+      'You claimed it: now the home decides whether it\'s done.';
 
   @override
   String get validationApprove => 'Yes, it\'s done';
@@ -450,19 +526,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get titleFieldLabel => 'Title';
 
   @override
-  String get taskTitleHint => 'Clean the bathroom';
+  String get taskTitleHint => 'Tidy the storage room';
 
   @override
   String get descriptionLabel => 'Description';
 
   @override
-  String get taskDescriptionHint => 'Shower, sink, mirror and floor';
+  String get taskDescriptionHint => 'Boxes on the shelves, sweep the floor';
 
   @override
   String get rewardLabel => 'Reward';
 
   @override
-  String get rewardHintNote => 'A normal task is usually worth 10';
+  String get rewardHintNote => 'A normal task is usually worth 10; 150 at most';
 
   @override
   String get reviewProposal => 'Review proposal';
@@ -474,11 +550,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get reviewDealStatus => 'Review the deal';
 
   @override
-  String get voteWindowNotice => 'The group will have 24 hours to vote';
+  String get voteWindowNotice => 'The home will have 24 hours to vote';
 
   @override
   String get rejectFineNotice =>
-      'If it\'s rejected, you\'ll be fined a share of these coins';
+      'If it\'s rejected, you get bad karma: a fine on what it was worth';
 
   @override
   String get submitToVote => 'Send to vote';
@@ -488,30 +564,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sentToVoteMessage =>
-      'We\'ll let the group know so they can decide on the deal.';
+      'We\'ll let the home know so they can decide on the deal.';
 
   @override
   String rewardAmount(int reward) {
-    String _temp0 = intl.Intl.pluralLogic(
-      reward,
-      locale: localeName,
-      other: '$reward coins',
-      one: '1 coin',
-    );
-    return '$_temp0';
+    return '$reward karma';
   }
 
   @override
   String get proposeError => 'Couldn\'t send the proposal';
 
   @override
-  String get shopSubtitle => 'Turn your coins into plans';
+  String get shopSubtitle => 'Turn your karma into plans';
 
   @override
   String get shopLoadError => 'Couldn\'t load the shop.';
 
   @override
-  String get shopEmpty => 'No rewards yet. Propose the first one.';
+  String get shopEmpty =>
+      'Nothing in the shop yet. Propose a reward to spend your karma on.';
 
   @override
   String get awaitingVoteSection => 'Waiting for a vote';
@@ -541,7 +612,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get priceLabel => 'Price';
 
   @override
-  String get rewardVotingNotice => 'The group will vote before it\'s published';
+  String get rewardVotingNotice => 'The home will vote before it\'s published';
 
   @override
   String get rewardTitleEmptyError => 'Give the reward a title.';
@@ -560,17 +631,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noOtherMembers =>
-      'There\'s nobody else in the group to fulfil it yet.';
+      'There\'s nobody else in the home to fulfil it yet.';
 
   @override
   String notEnoughCoins(int missing, int balance, int price) {
     String _temp0 = intl.Intl.pluralLogic(
       missing,
       locale: localeName,
-      other: 'You\'re $missing coins short',
-      one: 'You\'re 1 coin short',
+      other: 'You\'re $missing karma short',
     );
-    return '$_temp0: you have $balance and this reward costs $price. Do some tasks to earn them.';
+    return '$_temp0: you have $balance and this reward costs $price. Do something for the home to earn it.';
   }
 
   @override
@@ -587,7 +657,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get purchaseError => 'Couldn\'t complete the purchase';
 
   @override
-  String get walletLoadError => 'Couldn\'t load the wallet.';
+  String get walletLoadError => 'Couldn\'t load your karma.';
 
   @override
   String get negativeBalanceNotice =>
@@ -639,11 +709,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get expelBody =>
-      'They\'ll leave the group and lose their balance. What they did stays in everyone\'s history.';
+      'They\'ll leave the home and lose their karma. What they did stays in everyone\'s history.';
 
   @override
   String expelDone(String name) {
-    return '$name is no longer in the group.';
+    return '$name is no longer in the home.';
   }
 
   @override
@@ -654,7 +724,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get groupInviteRegenerateBody =>
-      'The current code will stop working. Everyone already in the group stays in.';
+      'The current code will stop working. Everyone already in the home stays in.';
 
   @override
   String get groupInviteRegenerated =>
@@ -666,21 +736,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errorAlreadyInGroup =>
-      'You\'re already in a group. Leave it before joining another.';
+      'You\'re already in a home. Leave it before joining another.';
 
   @override
-  String get errorNotAdmin => 'Only the group\'s admin can do this.';
+  String get errorNotAdmin => 'Only the home\'s admin can do this.';
 
   @override
-  String get errorMemberNotFound => 'That person is no longer in the group.';
+  String get errorMemberNotFound => 'That person is no longer in the home.';
 
   @override
-  String get errorCannotExpelSelf =>
-      'You can\'t expel yourself from the group.';
+  String get errorCannotExpelSelf => 'You can\'t expel yourself from the home.';
 
   @override
   String get errorCannotTransferAdmin =>
-      'The admin role can only go to another adult in the group.';
+      'The admin role can only go to another adult in the home.';
 
   @override
   String get errorTaskNotFound => 'That task no longer exists.';
@@ -693,8 +762,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorOwnTask => 'You can\'t vote on your own task.';
 
   @override
-  String get errorNotProposer =>
-      'Only whoever proposed the task can answer the counter-offer.';
+  String get errorNotProposer => 'Only whoever made the proposal can do that.';
 
   @override
   String get errorRewardNotFound => 'That reward no longer exists.';
@@ -717,8 +785,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorNegativeBalance => 'You can\'t buy with a negative balance.';
 
   @override
+  String get errorNotEnoughCoins =>
+      'You don\'t have enough karma for this reward.';
+
+  @override
   String get errorInvalidProvider =>
-      'Pick someone else in the group to fulfil it.';
+      'Pick someone else in the home to fulfil it.';
 
   @override
   String get errorPurchaseNotFound => 'That purchase no longer exists.';
@@ -732,11 +804,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Only whoever has to fulfil the purchase can answer or deliver it.';
 
   @override
-  String get errorNoGroup => 'You\'re no longer in this group.';
+  String get errorNoGroup => 'You\'re no longer in this home.';
 
   @override
   String get leftGroupNotice =>
-      'You\'re no longer in the group. You can create another one or join with a code.';
+      'You\'re no longer in the home. You can create another one or join with a code.';
 
   @override
   String get errorGeneric => 'Something went wrong. Try again.';
@@ -764,7 +836,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get purchaseRefuseNotice =>
-      'If you refuse you pay a fine, and the buyer gets their coins back.';
+      'If you refuse you get a fine, and the buyer gets their karma back.';
 
   @override
   String get purchaseMarkDelivered => 'Mark as delivered';
@@ -823,7 +895,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ownProposalNotice =>
-      'You proposed it: the rest of the group votes.';
+      'You proposed it: the rest of the home votes.';
 
   @override
   String get alreadyVotedNotice => 'You\'ve voted. The rest still have to.';
@@ -854,7 +926,31 @@ class AppLocalizationsEn extends AppLocalizations {
   String get profileSection => 'Your profile';
 
   @override
-  String get avatarEmojiLabel => 'Your emoji';
+  String get avatarLabel => 'Your character';
+
+  @override
+  String get avatarTaza => 'Mug';
+
+  @override
+  String get avatarPlanta => 'Plant';
+
+  @override
+  String get avatarCalcetin => 'Sock';
+
+  @override
+  String get avatarEsponja => 'Sponge';
+
+  @override
+  String get avatarTetera => 'Teapot';
+
+  @override
+  String get avatarTostada => 'Toast';
+
+  @override
+  String get avatarCubo => 'Bucket';
+
+  @override
+  String get avatarBombilla => 'Light bulb';
 
   @override
   String get avatarColorLabel => 'Colour';
@@ -878,7 +974,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get displayNameLabel => 'Your name';
 
   @override
-  String get displayNameHint => 'How the group will see you';
+  String get displayNameHint => 'How the home will see you';
 
   @override
   String get displayNameEmptyError => 'Write a name.';
@@ -925,7 +1021,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get soundsToggleHint =>
-      'The button pops, the coin, the fines and the alerts.';
+      'The button pops, the karma, the fines and the alerts.';
+
+  @override
+  String get darkModeToggle => 'Dark mode';
+
+  @override
+  String get darkModeToggleHint =>
+      'A soft grey for the evening, on this device.';
 
   @override
   String get transferAdminAction => 'Make admin';
@@ -937,7 +1040,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String transferAdminBody(String name) {
-    return '$name will be able to expel members, change the code and configure the group. You\'ll become a regular member, and only $name can give the role back.';
+    return '$name will be able to expel members, change the code and configure the home. You\'ll become a regular member, and only $name can give the role back.';
   }
 
   @override
@@ -945,6 +1048,241 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String transferAdminDone(String name) {
-    return '$name is now the group\'s admin.';
+    return '$name is now the home\'s admin.';
   }
+
+  @override
+  String get rankingTitle => 'This week\'s ranking';
+
+  @override
+  String get rankingResets => 'It starts again on Monday at 00:00.';
+
+  @override
+  String get rankingEmpty => 'Nobody has added karma this week yet.';
+
+  @override
+  String get leaveHomeAction => 'Leave the home';
+
+  @override
+  String leaveHomeTitle(String name) {
+    return 'Leave $name?';
+  }
+
+  @override
+  String get leaveHomeBody =>
+      'You\'ll lose your karma, and what you did stays in everyone\'s history. If you run the home, the role goes to whoever has been there longest.';
+
+  @override
+  String get leaveHomeConfirm => 'Leave';
+
+  @override
+  String get leftHomeNotice =>
+      'You left the home. You can create another one or join with a code.';
+
+  @override
+  String activityMemberLeft(String name) {
+    return '$name left the home';
+  }
+
+  @override
+  String get typicalTasksLabel => 'Quick ideas';
+
+  @override
+  String get newTaskSubtitle =>
+      'Pick an idea or write your own. The home votes on the price.';
+
+  @override
+  String get typicalTasksOr => 'or write your own';
+
+  @override
+  String get taskDescriptionOptionalLabel => 'Description (optional)';
+
+  @override
+  String get iconLabel => 'Icon';
+
+  @override
+  String get rewardTemplateShower => 'A long shower with nobody knocking';
+
+  @override
+  String get rewardTemplateMovie => 'I pick tonight\'s film';
+
+  @override
+  String get rewardTemplateSofa => 'The sofa and the remote all afternoon';
+
+  @override
+  String get rewardTemplateDinner => 'I choose dinner';
+
+  @override
+  String get rewardTemplateSkipDishes => 'No washing-up for you today';
+
+  @override
+  String get rewardTemplateBreakfast => 'I bring breakfast on Sunday';
+
+  @override
+  String get rewardTemplateBeers => 'A few beers, on me';
+
+  @override
+  String get rewardTemplateShopping => 'I do your shopping this week';
+
+  @override
+  String get rewardTemplateCleaningTurn => 'I swap cleaning turns with you';
+
+  @override
+  String get rewardTemplateDinnerOutFlat => 'Dinner out, paid for';
+
+  @override
+  String get rewardTemplateSeries => 'I pick tonight\'s series';
+
+  @override
+  String get rewardTemplateBreakfastInBed => 'Breakfast in bed';
+
+  @override
+  String get rewardTemplateMassage => 'A massage';
+
+  @override
+  String get rewardTemplateSaturday => 'I choose Saturday\'s plan';
+
+  @override
+  String get rewardTemplateSkipChore => 'You skip one chore';
+
+  @override
+  String get rewardTemplateMyChoresForADay =>
+      'I do your chores for a whole day';
+
+  @override
+  String get rewardTemplateDinnerOutCouple => 'Dinner out, I pay';
+
+  @override
+  String get rewardTemplateWeekend => 'A weekend getaway';
+
+  @override
+  String get typicalTaskTrash => 'Take the rubbish out';
+
+  @override
+  String get typicalTaskPlants => 'Water the plants';
+
+  @override
+  String get typicalTaskDishes => 'Do the dishes';
+
+  @override
+  String get typicalTaskLaundry => 'Put a wash on';
+
+  @override
+  String get typicalTaskSheets => 'Change the sheets';
+
+  @override
+  String get typicalTaskShopping => 'Do the shopping';
+
+  @override
+  String get typicalTaskHoover => 'Hoover';
+
+  @override
+  String get typicalTaskDinner => 'Make dinner';
+
+  @override
+  String get typicalTaskFridge => 'Clean the fridge';
+
+  @override
+  String get typicalTaskBathroom => 'Clean the bathroom';
+
+  @override
+  String get withdrawProposalTooltip => 'Withdraw the proposal';
+
+  @override
+  String get withdrawTaskTitle => 'Withdraw this task?';
+
+  @override
+  String get withdrawTaskBody =>
+      'It leaves the vote and costs no fine. Any votes it already has are lost.';
+
+  @override
+  String get withdrawRewardTitle => 'Withdraw this reward?';
+
+  @override
+  String get withdrawRewardBody =>
+      'It leaves the shop before the vote ends and costs no fine.';
+
+  @override
+  String get withdrawAction => 'Withdraw';
+
+  @override
+  String get withdrawError => 'Could not withdraw the proposal';
+
+  @override
+  String activityTaskWithdrawn(String name) {
+    return '$name withdrew a task';
+  }
+
+  @override
+  String activityRewardWithdrawn(String name) {
+    return '$name withdrew a reward';
+  }
+
+  @override
+  String get weekdayInitials => 'M,T,W,T,F,S,S';
+
+  @override
+  String get repeatLabel => 'Repeat every week (optional)';
+
+  @override
+  String get repeatHint =>
+      'With no days it is done once. With days, the home votes once and the task appears by itself on those days.';
+
+  @override
+  String repeatsOn(String days) {
+    return 'Repeats: $days';
+  }
+
+  @override
+  String get scheduleTitle => 'Home schedule';
+
+  @override
+  String get scheduleSubtitle =>
+      'Set tasks that appear by themselves on their day. Voted once; validated every time they are done.';
+
+  @override
+  String get scheduleEntry => 'Home schedule';
+
+  @override
+  String scheduleEntryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count set tasks',
+      one: '1 set task',
+      zero: 'No set tasks yet',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get scheduleNothing => 'Nothing';
+
+  @override
+  String get schedulePending => 'Waiting for the vote';
+
+  @override
+  String get scheduleAdd => 'New set task';
+
+  @override
+  String get stopScheduleTitle => 'Remove from the schedule?';
+
+  @override
+  String get stopScheduleBody =>
+      'It stops appearing on its days. The one already on the board stays.';
+
+  @override
+  String get stopScheduleAction => 'Remove';
+
+  @override
+  String get scheduleStopped => 'Removed from the schedule';
+
+  @override
+  String get errorInvalidSchedule => 'Pick at least one day of the week.';
+
+  @override
+  String get activityMissionDue => 'A task from the schedule is due today';
+
+  @override
+  String get errorInvalidReward => 'A task is worth 1 to 150 karmas.';
 }

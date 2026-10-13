@@ -18,13 +18,17 @@ class ShopRepository {
   Future<RewardItem> proposeReward(
     String title,
     String description,
-    int price,
-  ) => guardServerCall(
-    () => client.shop.proposeReward(title, description, price),
+    int price, {
+    String? icon,
+  }) => guardServerCall(
+    () => client.shop.proposeReward(title, description, price, icon: icon),
   );
 
   Future<void> voteReward(int itemId, bool approve) =>
       guardServerCall(() => client.shop.voteReward(itemId, approve));
+
+  Future<void> withdrawReward(int itemId) =>
+      guardServerCall(() => client.shop.withdrawReward(itemId));
 
   Future<Purchase> purchaseReward(int itemId, int providerId) =>
       guardServerCall(() => client.shop.purchaseReward(itemId, providerId));

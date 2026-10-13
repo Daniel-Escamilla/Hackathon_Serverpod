@@ -7,6 +7,9 @@ reglas; este documento manda sobre el **calendario y el reparto**. Escrito el **
 Quedan **26 días**. La entrega cierra el **14 de octubre a las 23:59** y las reglas dicen "sin
 prórrogas".
 
+> Este plan se escribió el 18 de septiembre y se deja como se escribió. Lo que de verdad entró, y lo
+> que queda para después, está en [§10](#10-cómo-acabó-13-de-octubre).
+
 ---
 
 ## 1. El MVP
@@ -144,7 +147,7 @@ día.
 | Fecha | Qué | Quién |
 |---|---|---|
 | 21 sep | Contrato de endpoints en `develop` | Daniel y Segovia |
-| 23 sep | Nombre de la app decidido | Equipo |
+| 23 sep | Nombre de la app decidido: **KarmaHome**, cerrado el 5 de octubre | Equipo |
 | 30 sep | Ciclo completo y primer despliegue en Cloud | Todos |
 | 7 oct | MVP entero desplegado | Todos |
 | 10 oct | Congelación de funcionalidades | Todos |
@@ -197,8 +200,22 @@ Se acumulan con el principal y cuestan poco mientras se construye:
 
 | Qué | Para cuándo |
 |---|---|
-| **Nombre de la app** | 23 de septiembre |
-| **Misiones periódicas** | Cómo se comporta cada repetición, si llegan a entrar |
-| **Ranking semanal** | En qué zona horaria se cierra la semana, si llega a entrar |
 | **Plantillas de recompensas** | Mayte revisa el borrador de [`PRODUCT.md` §6](PRODUCT.md#6-tienda-y-recompensas) |
 | **Entrada de los hijos sin email** | Solo si el modo familia vuelve a entrar en alcance |
+
+## 10. Cómo acabó (13 de octubre)
+
+**El MVP de §1 está entero** y desplegado en Serverpod Cloud: la web en
+<https://karmahome.serverpod.space/> y el APK en `download.html`. El ranking semanal cierra la semana
+el lunes a las 00:00 en Madrid (decidido el 5 de octubre).
+
+**Entró además**, de lo que §1 dejaba para "si sobra" o fuera del todo: ranking semanal, salir de la
+casa (y ceder el cargo al más antiguo), catálogo de tareas típicas, registro con Google, traducción
+al inglés, modo oscuro, iconos en tareas y recompensas, una casa de una sola persona, retirar una
+propuesta, la agenda de tareas fijas por día de la semana y la pantalla de Actividad con los avisos de la sesión. Versión a versión, en
+[`CHANGELOG.md`](../CHANGELOG.md).
+
+**Sigue fuera:** el modo familia, las unidades de stock, iOS y la ruleta.
+Quedan como issues abiertas para después del hackathon las notificaciones push (#161–164), las
+estancias de la casa (#167–171), guardar los avisos al cerrar la app (#159–160), compartir el código
+por redes (#148) y las pestañas deslizables (#46).

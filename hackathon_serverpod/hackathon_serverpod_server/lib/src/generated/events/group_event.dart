@@ -25,6 +25,7 @@ abstract class GroupEvent
     this.purchaseId,
     this.rewardId,
     this.memberId,
+    this.actorMemberId,
     required this.occurredAt,
   });
 
@@ -35,6 +36,7 @@ abstract class GroupEvent
     int? purchaseId,
     int? rewardId,
     int? memberId,
+    int? actorMemberId,
     required DateTime occurredAt,
   }) = _GroupEventImpl;
 
@@ -48,6 +50,7 @@ abstract class GroupEvent
       purchaseId: jsonSerialization['purchaseId'] as int?,
       rewardId: jsonSerialization['rewardId'] as int?,
       memberId: jsonSerialization['memberId'] as int?,
+      actorMemberId: jsonSerialization['actorMemberId'] as int?,
       occurredAt: _is.DateTimeJsonExtension.fromJson(
         jsonSerialization['occurredAt'],
       ),
@@ -65,11 +68,19 @@ abstract class GroupEvent
   /// null otherwise.
   int? purchaseId;
 
-  /// The reward, for `rewardProposed` and `rewardVoteCast`; null otherwise.
+  /// The reward, for `rewardProposed`, `rewardVoteCast` and `rewardWithdrawn`;
+  /// null otherwise.
   int? rewardId;
 
-  /// The member who left, when [kind] is `memberExpelled`; null otherwise.
+  /// The member who left, when [kind] is `memberExpelled`, or who changed
+  /// their name or avatar, when it is `memberUpdated`, or who left, when it is
+  /// `memberLeft`; null otherwise.
   int? memberId;
+
+  /// The member who did it: the proposer, the voter, the buyer, the admin who
+  /// expelled... Null only for an event nobody triggers. The
+  /// app uses it to tell its own actions from everyone else's (#154).
+  int? actorMemberId;
 
   DateTime occurredAt;
 
@@ -83,6 +94,7 @@ abstract class GroupEvent
     int? purchaseId,
     int? rewardId,
     int? memberId,
+    int? actorMemberId,
     DateTime? occurredAt,
   });
   @override
@@ -95,6 +107,7 @@ abstract class GroupEvent
       if (purchaseId != null) 'purchaseId': purchaseId,
       if (rewardId != null) 'rewardId': rewardId,
       if (memberId != null) 'memberId': memberId,
+      if (actorMemberId != null) 'actorMemberId': actorMemberId,
       'occurredAt': occurredAt.toJson(),
     };
   }
@@ -109,6 +122,7 @@ abstract class GroupEvent
       if (purchaseId != null) 'purchaseId': purchaseId,
       if (rewardId != null) 'rewardId': rewardId,
       if (memberId != null) 'memberId': memberId,
+      if (actorMemberId != null) 'actorMemberId': actorMemberId,
       'occurredAt': occurredAt.toJson(),
     };
   }
@@ -129,6 +143,7 @@ class _GroupEventImpl extends GroupEvent {
     int? purchaseId,
     int? rewardId,
     int? memberId,
+    int? actorMemberId,
     required DateTime occurredAt,
   }) : super._(
          groupId: groupId,
@@ -137,6 +152,7 @@ class _GroupEventImpl extends GroupEvent {
          purchaseId: purchaseId,
          rewardId: rewardId,
          memberId: memberId,
+         actorMemberId: actorMemberId,
          occurredAt: occurredAt,
        );
 
@@ -151,6 +167,7 @@ class _GroupEventImpl extends GroupEvent {
     Object? purchaseId = _Undefined,
     Object? rewardId = _Undefined,
     Object? memberId = _Undefined,
+    Object? actorMemberId = _Undefined,
     DateTime? occurredAt,
   }) {
     return GroupEvent(
@@ -160,6 +177,7 @@ class _GroupEventImpl extends GroupEvent {
       purchaseId: purchaseId is int? ? purchaseId : this.purchaseId,
       rewardId: rewardId is int? ? rewardId : this.rewardId,
       memberId: memberId is int? ? memberId : this.memberId,
+      actorMemberId: actorMemberId is int? ? actorMemberId : this.actorMemberId,
       occurredAt: occurredAt ?? this.occurredAt,
     );
   }

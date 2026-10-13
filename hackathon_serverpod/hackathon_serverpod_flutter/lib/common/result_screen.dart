@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../app_theme.dart';
 import '../home_shell.dart';
+import '../ui/app_animation.dart';
 import '../ui/app_button.dart';
+import '../ui/fill_theme.dart';
 
 class ResultScreen extends StatelessWidget {
   const ResultScreen({
     super.key,
-    required this.emoji,
+    required this.animation,
     required this.title,
     required this.message,
     required this.value,
@@ -15,7 +17,7 @@ class ResultScreen extends StatelessWidget {
     this.homeIndex = 0,
   });
 
-  final String emoji;
+  final AppAnimation animation;
   final String title;
   final String message;
   final String value;
@@ -31,7 +33,7 @@ class ResultScreen extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(),
-              Text(emoji, style: const TextStyle(fontSize: 100)),
+              AppLottie(animation, size: 150),
               const SizedBox(height: 24),
               Text(
                 title,
@@ -42,7 +44,7 @@ class ResultScreen extends StatelessWidget {
               Text(
                 message,
                 textAlign: TextAlign.center,
-                style: const TextStyle(color: AppColors.muted, fontSize: 17),
+                style: TextStyle(color: context.palette.muted, fontSize: 17),
               ),
               const SizedBox(height: 28),
               Container(
@@ -54,10 +56,15 @@ class ResultScreen extends StatelessWidget {
                   color: AppColors.lime,
                   borderRadius: BorderRadius.circular(24),
                 ),
-                child: Text(
-                  value,
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.titleLarge,
+                child: FillTheme(
+                  color: AppColors.lime,
+                  child: Builder(
+                    builder: (context) => Text(
+                      value,
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                  ),
                 ),
               ),
               const Spacer(),

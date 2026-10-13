@@ -33,6 +33,10 @@ enum ShopErrorReason implements _is.SerializableModel {
   /// Nothing can be bought with a negative balance (PRODUCT.md §4).
   negativeBalance,
 
+  /// The balance does not reach the price: buying never takes it below zero,
+  /// only fines do (PRODUCT.md §4).
+  notEnoughCoins,
+
   /// The provider has to be another member of the caller's group.
   invalidProvider,
 
@@ -44,7 +48,10 @@ enum ShopErrorReason implements _is.SerializableModel {
   purchaseNotOpen,
 
   /// Only the member chosen to fulfil a purchase answers it or delivers it.
-  notProvider;
+  notProvider,
+
+  /// Only whoever proposed a reward, or the admin, withdraws the proposal.
+  notProposer;
 
   static ShopErrorReason fromJson(String name) {
     switch (name) {
@@ -60,6 +67,8 @@ enum ShopErrorReason implements _is.SerializableModel {
         return ShopErrorReason.outOfStock;
       case 'negativeBalance':
         return ShopErrorReason.negativeBalance;
+      case 'notEnoughCoins':
+        return ShopErrorReason.notEnoughCoins;
       case 'invalidProvider':
         return ShopErrorReason.invalidProvider;
       case 'purchaseNotFound':
@@ -68,6 +77,8 @@ enum ShopErrorReason implements _is.SerializableModel {
         return ShopErrorReason.purchaseNotOpen;
       case 'notProvider':
         return ShopErrorReason.notProvider;
+      case 'notProposer':
+        return ShopErrorReason.notProposer;
       default:
         throw ArgumentError(
           'Value "$name" cannot be converted to "ShopErrorReason"',

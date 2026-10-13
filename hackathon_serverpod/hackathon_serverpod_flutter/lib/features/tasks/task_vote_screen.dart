@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -10,6 +11,7 @@ import '../../ui/app_button.dart';
 import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
+import '../../ui/weekday_picker.dart';
 import 'counter_offer_decision_screen.dart';
 import 'counter_offer_sheet.dart';
 import 'task_voters.dart';
@@ -38,6 +40,7 @@ class TaskVoteScreen extends StatelessWidget {
       ),
       title: task.title,
       content: [
+        const Center(child: AppLottie(AppAnimation.vote, size: 76)),
         BigValueCard(
           color: AppColors.lime,
           value: '${task.reward}',
@@ -46,10 +49,21 @@ class TaskVoteScreen extends StatelessWidget {
         ),
         const SizedBox(height: 16),
         InfoRow(icon: Icons.description_rounded, text: task.description),
+        if (task.weekdays case final days?) ...[
+          const SizedBox(height: 12),
+          InfoRow(
+            icon: Icons.event_repeat_rounded,
+            text: l10n.repeatsOn(weekdayList(context, days)),
+          ),
+        ],
         if (task.voteClosesAt != null) ...[
           const SizedBox(height: 12),
           InfoRow(
-            icon: Icons.schedule_rounded,
+            leading: const AppLottie(
+              AppAnimation.timer,
+              size: 28,
+              repeat: true,
+            ),
             text: _remaining(l10n, task.voteClosesAt!),
           ),
         ],

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -10,6 +11,7 @@ import '../../ui/failure_messages.dart';
 import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
 import 'shop_controller.dart';
+import 'reward_titles.dart';
 
 class RewardVoteScreen extends StatelessWidget {
   const RewardVoteScreen({required this.reward, super.key});
@@ -24,8 +26,9 @@ class RewardVoteScreen extends StatelessWidget {
         label: l10n.awaitingYourVote,
         color: const Color(0xFFE2DCFF),
       ),
-      title: reward.title,
+      title: rewardTitle(AppLocalizations.of(context), reward.title),
       content: [
+        const Center(child: AppLottie(AppAnimation.vote, size: 76)),
         BigValueCard(
           color: AppColors.sky,
           value: '${reward.price}',

@@ -1,12 +1,15 @@
-# Hackathon Serverpod
+# KarmaHome
 
-Full-stack app built with [Serverpod](https://serverpod.dev) (Dart backend) and Flutter, for the
+A household app where everyone at home agrees on every chore and what it is worth. Full-stack, built with [Serverpod](https://serverpod.dev) (Dart backend) and Flutter, for the
 **Build Something Real** hackathon, 2026-09-15 to 2026-10-14.
 
-A household-chores app where the group agrees on every task and pays for it in coins: someone
-proposes a task and its price, the group votes on it, anyone does it, the group confirms it was
-done, and the coins go to a wallet spent in a shop the group sets up. What it does and how it was
-built, including the use of AI tooling: [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+Someone proposes a task and its price, the home votes on it, anyone does it, the home confirms it
+was done, and the karmas (the app's coins) go to a wallet spent in a shop the home sets up. What it
+does and how it was built, including the use of AI tooling: [`docs/SUBMISSION.md`](docs/SUBMISSION.md).
+
+**Try it:** the web app at <https://karmahome.serverpod.space/>, the Android APK from
+<https://karmahome.serverpod.space/download.html>, and the judges' demo accounts in
+[`docs/SUBMISSION.md`](docs/SUBMISSION.md#try-it).
 
 The Dart workspace lives in [`hackathon_serverpod/`](hackathon_serverpod) and holds three packages:
 
@@ -149,6 +152,87 @@ The APK is built against this computer's LAN address, which the script detects a
 correct, so the phone has to be on the same Wi-Fi. To point it somewhere else, set it up front:
 `SERVER_URL=https://<host>/ ./hackathon_serverpod/scripts/run_on_phone.sh`.
 
+### Sign in with Google
+
+The code is in the repo; the one secret it needs is not. Without it the server still boots and
+everything else works; only "Entrar con Google" fails.
+
+1. **Get the secret privately** from whoever holds it (Daniel): the `googleClientSecret` block,
+   through a password manager or a one-time link. Never through git, an issue or the team chat.
+2. **Paste it** into your `hackathon_serverpod_server/config/passwords.yaml`, under
+   `development:`, indented two spaces like the other keys:
+
+   ```yaml
+   development:
+     # ...the keys already there...
+     googleClientSecret: |
+       {
+         "web": {
+           "client_id": "266308220325-jvpioj5f1pldrqqj7ika3ujqrfmb22n5.apps.googleusercontent.com",
+           "client_secret": "<the secret>",
+           "redirect_uris": ["http://localhost:8082/auth/callback"],
+           ...
+         }
+       }
+   ```
+
+   For the Docker backend, which runs in staging mode, the same JSON goes in `.env` as
+   `SERVERPOD_PASSWORD_googleClientSecret`.
+3. **On the web, use one of the two origins registered in Google Cloud Console.**
+   - `http://localhost:8082`, the app built into the server and served by `serverpod start`.
+     Google returns to Serverpod's `/auth/callback`:
+
+     ```sh
+     cd hackathon_serverpod/hackathon_serverpod_flutter
+     flutter build web --base-href / --output ../hackathon_serverpod_server/web/app
+     ```
+
+     Then (re)start `serverpod start` and open <http://localhost:8082>. Rebuild after changing the
+     app.
+   - `http://localhost:8095`, for the everyday loop with `flutter run`. A debug build returns to
+     the static copy of that page in `web/auth/callback.html`, because Flutter's dev server has no
+     `/auth/callback`:
+
+     ```sh
+     flutter run -d web-server --web-port 8095 --dart-define=SERVER_URL=http://localhost:8080/
+     ```
+4. **On Android**, send Daniel your debug SHA-1 so it is registered in Google Cloud Console for
+   the package `com.example.hackathon_serverpod_flutter`:
+
+   ```sh
+   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android | grep SHA1
+   ```
+
+While the Google consent screen is in *Testing* mode, only the Google accounts listed as test
+users can sign in: ask to be added.
+
+### The judges' demo accounts
+
+A task needs two people and a judge opens the app alone, so the submission hands over two accounts
+of a couple, **Ana** (`ana.demo@example.com`) and **Leo** (`leo.demo@example.com`), already in a
+group with some history, two tasks to claim and the shop. `scripts/sembrar_demo.sh` builds it on a
+running server, wiping whatever the two accounts had, so it can be run again any time:
+
+```sh
+cd hackathon_serverpod/scripts
+./sembrar_demo.sh                                   # the local server
+./sembrar_demo.sh https://<api host>/               # a deployed one
+```
+
+The server has to have two entries in its `config/passwords.yaml`, under the run mode it uses
+(`development` locally); without them it refuses every call:
+
+```yaml
+  demoSeedSecret: '<any long random string>'      # what the script asks for
+  demoAccountPassword: '<the password the judges get>'
+```
+
+On Serverpod Cloud they are set with `serverpod cloud password set` and take effect on the next
+deploy; the demo there uses the password given in [`docs/SUBMISSION.md`](docs/SUBMISSION.md#try-it).
+
+No vote is left open in the demo: it would close by itself after the vote window and fine
+whoever had not voted. The judges start every vote themselves.
+
 ## Tests
 
 No Docker needed — the test config manages its own embedded PostgreSQL.
@@ -159,7 +243,53 @@ dart test                                                 # everything
 dart test test/integration/wallet_endpoint_test.dart      # one file
 dart analyze --fatal-infos
 dart format --set-exit-if-changed .
+
+cd ../hackathon_serverpod_flutter                         # the app: widget and unit tests
+flutter test
+flutter analyze --fatal-infos
+dart format --set-exit-if-changed .
 ```
+
+CI runs all of them on every pull request.
+
+## Deploying to Serverpod Cloud
+
+The app runs on Serverpod Cloud as the project `karmahome`: the web app at
+<https://karmahome.serverpod.space/> and the API at <https://karmahome.api.serverpod.space/>.
+`scloud.yaml` links the server package to that project, and `.scloudignore` decides what is
+uploaded. Deploying changes a live service, so it is the team's call, not a side effect of
+another task. With access to the project:
+
+```sh
+cd hackathon_serverpod/hackathon_serverpod_server
+serverpod cloud auth login       # once
+serverpod cloud deploy
+```
+
+Before uploading, `deploy` runs `serverpod generate` and `serverpod run flutter_build`, which
+builds the web app with whatever `flutter` comes first on the `PATH`: put the pinned 3.44.4 there
+first (with fvm, `PATH="$HOME/fvm/versions/3.44.4/bin:$PATH"`). It uploads the working tree as it
+is, uncommitted changes included, so deploy from a clean checkout of `develop`.
+
+Secrets live in Cloud, not in the repo: the auth keys are managed by the platform, and the rest
+are set with `serverpod cloud password set <name> --from-file <file>` (`googleClientSecret` is).
+A new secret takes effect on the next deploy.
+
+The Android APK is uploaded with the deploy and served at `/web/apk/KarmaHome.apk`, which the
+page to share, <https://karmahome.serverpod.space/download.html>, links to. It stays out of git,
+so build it into place before deploying, or the deploy goes out without it:
+
+```sh
+cd hackathon_serverpod/hackathon_serverpod_flutter
+flutter build apk --release --dart-define=SERVER_URL=https://karmahome.api.serverpod.space/
+mkdir -p ../hackathon_serverpod_server/web/static/apk
+cp build/app/outputs/flutter-apk/app-release.apk ../hackathon_serverpod_server/web/static/apk/KarmaHome.apk
+```
+
+Then bump the `?v=` on the APK link in `hackathon_serverpod_flutter/web/download.html`: Serverpod
+serves `/web/` as immutable for a year, and the CDN in front of Cloud keeps handing out the APK it
+first saw for that exact URL. Do not open the new link before the deploy's rollout has finished:
+the CDN would cache the old APK under it.
 
 ## After changing a model or an endpoint
 
@@ -202,9 +332,11 @@ serverpod create-migration     # only when a model with a `table` changed
 
 ## Status
 
-Working end to end against the real backend: accounts (sign-up with a verification code, sign-in,
-password reset), groups (create, join by code, admin settings, expelling), the whole task cycle
-(propose, vote, counter-offer, claim, validate, fines, votes that expire), the shop (templates,
-proposals and their vote, buying, the provider's answer, delivery), the wallet and its history, and
-live updates between phones. Family mode, recurring tasks and the weekly ranking screen are out of
-scope for now; see [`docs/PLAN.md`](docs/PLAN.md).
+Deployed on Serverpod Cloud and working end to end against the real backend: accounts (email with
+a verification code, or Google; password reset), homes (create, join by code, admin settings,
+expelling, leaving), the whole task cycle (propose with an icon or a typical chore, vote,
+counter-offer, withdraw, claim, validate, fines, votes that expire), a home of one, the shop
+(templates, proposals and their vote, buying, the provider's answer, delivery), the wallet and its
+history, this week's ranking, and live updates between phones with an Activity screen. Spanish and
+English, light and dark. Family mode and recurring tasks are out of scope; push notifications and
+rooms are open issues for after the hackathon. What changed when: [`CHANGELOG.md`](CHANGELOG.md).

@@ -72,14 +72,14 @@ class _JoinGroupScreenState extends State<JoinGroupScreen> {
         Text(
           l10n.joinGroupCaseNote,
           textAlign: TextAlign.center,
-          style: const TextStyle(color: AppColors.muted),
+          style: TextStyle(color: context.palette.muted),
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
           Text(
             _error!,
             textAlign: TextAlign.center,
-            style: const TextStyle(color: AppColors.coral),
+            style: TextStyle(color: context.palette.danger),
           ),
         ],
         const SizedBox(height: 20),

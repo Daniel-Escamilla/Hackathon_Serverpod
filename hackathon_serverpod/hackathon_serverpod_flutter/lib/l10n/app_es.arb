@@ -1,10 +1,10 @@
 {
   "@@locale": "es",
 
-  "appTitle": "Prototipo de tareas",
+  "appTitle": "KarmaHome",
 
   "retry": "Reintentar",
-  "coinsLabel": "monedas",
+  "coinsLabel": "karmas",
   "reject": "Rechazar",
   "decreaseAmount": "Restar",
   "increaseAmount": "Sumar",
@@ -19,25 +19,56 @@
 
   "navTasks": "Tareas",
   "navShop": "Tienda",
-  "navWallet": "Cartera",
-  "navGroup": "Grupo",
+  "navWallet": "Karma",
+  "navGroup": "Casa",
   "proposeTask": "Proponer",
 
   "activityTitle": "Actividad",
-  "activityEmptyMessage": "Todavía no hay un listado de actividad del servidor.",
+  "activityEmptyMessage": "Aquí verás lo que hagan los demás mientras tengas la app abierta.",
+  "activitySomeone": "Alguien",
+  "activityTaskProposed": "{name} ha propuesto una tarea",
+  "@activityTaskProposed": {"placeholders": {"name": {"type": "String"}}},
+  "activityTaskVoteCast": "{name} ha votado una tarea",
+  "@activityTaskVoteCast": {"placeholders": {"name": {"type": "String"}}},
+  "activityTaskCounterOffered": "{name} ha hecho una contraoferta",
+  "@activityTaskCounterOffered": {"placeholders": {"name": {"type": "String"}}},
+  "activityTaskClaimed": "{name} dice que ha hecho una tarea",
+  "@activityTaskClaimed": {"placeholders": {"name": {"type": "String"}}},
+  "activityTaskValidated": "{name} ha votado si una tarea está hecha",
+  "@activityTaskValidated": {"placeholders": {"name": {"type": "String"}}},
+  "activityRewardProposed": "{name} ha propuesto una recompensa",
+  "@activityRewardProposed": {"placeholders": {"name": {"type": "String"}}},
+  "activityRewardVoteCast": "{name} ha votado una recompensa",
+  "@activityRewardVoteCast": {"placeholders": {"name": {"type": "String"}}},
+  "activityPurchased": "{name} ha comprado una recompensa",
+  "@activityPurchased": {"placeholders": {"name": {"type": "String"}}},
+  "activityPurchaseResponded": "{name} ha respondido a una compra",
+  "@activityPurchaseResponded": {"placeholders": {"name": {"type": "String"}}},
+  "activityPurchaseDelivered": "{name} ha entregado una compra",
+  "@activityPurchaseDelivered": {"placeholders": {"name": {"type": "String"}}},
+  "activityMemberExpelled": "{name} ha expulsado a un miembro",
+  "@activityMemberExpelled": {"placeholders": {"name": {"type": "String"}}},
+  "activityMemberUpdated": "{name} ha cambiado su nombre o su avatar",
+  "@activityMemberUpdated": {"placeholders": {"name": {"type": "String"}}},
+  "activityJustNow": "Ahora mismo",
+  "activityMinutesAgo": "Hace {minutes} min",
+  "@activityMinutesAgo": {"placeholders": {"minutes": {"type": "int"}}},
+  "activityHoursAgo": "Hace {hours} h",
+  "@activityHoursAgo": {"placeholders": {"hours": {"type": "int"}}},
 
-  "groupCheckError": "No se pudo comprobar tu grupo.",
+  "groupCheckError": "No se pudo comprobar tu casa.",
 
-  "welcomeHeadline": "Las tareas,\npor fin justas.",
-  "welcomeSubtitle": "Los acuerdos de casa se deciden entre todos.",
+  "welcomeHeadline": "Lo que haces en casa,\nvuelve.",
+  "welcomeSubtitle": "Cada tarea la valora la casa entera, y cada tarea hecha suma karma.",
   "welcomeSignIn": "Entrar con email",
   "welcomeCreateAccount": "Crear una cuenta",
   "welcomeGoogle": "Entrar con Google",
   "googleSignInError": "No se pudo entrar con Google.",
+  "googleSignInPopupBlocked": "Tu navegador ha bloqueado la ventana de Google. Permite las ventanas emergentes de esta web y vuelve a probar.",
 
   "signInTitle": "Entra en tu cuenta",
   "emailFieldLabel": "Email",
-  "emailHint": "mayte@email.com",
+  "emailHint": "tu@example.com",
   "passwordFieldLabel": "Contraseña",
   "passwordHint": "••••••••",
   "signInSubmit": "Entrar",
@@ -101,37 +132,37 @@
 
   "groupChoiceGreeting": "¡Hola!",
   "groupChoiceQuestion": "¿Cómo quieres\nempezar?",
-  "createGroupTitle": "Crear un grupo",
+  "createGroupTitle": "Crear una casa",
   "createGroupSubtitle": "Prepara vuestro espacio",
   "joinGroupTitle": "Unirme con un código",
-  "joinGroupCardSubtitle": "Entra en un grupo existente",
+  "joinGroupCardSubtitle": "Entra en una casa que ya existe",
 
-  "createGroupHeadline": "Crea vuestro grupo",
+  "createGroupHeadline": "Cread vuestra casa",
   "createGroupHint": "Elige cómo compartís casa",
   "profileSharedFlat": "Piso compartido",
   "profileCouple": "Pareja",
   "profileFamily": "Familia",
-  "groupNameLabel": "Nombre del grupo",
-  "groupNameHint": "Casa de Mayte y Juan",
-  "createGroupSubmit": "Crear grupo",
-  "createGroupErrorEmpty": "Ponle un nombre al grupo.",
-  "createGroupErrorGeneric": "No se pudo crear el grupo.",
+  "groupNameLabel": "Nombre de la casa",
+  "groupNameHint": "Nuestro piso",
+  "createGroupSubmit": "Crear casa",
+  "createGroupErrorEmpty": "Ponle un nombre a la casa.",
+  "createGroupErrorGeneric": "No se pudo crear la casa.",
 
   "joinGroupHeadline": "Únete a tu gente",
   "joinGroupSubtitle": "Introduce el código que te han compartido.",
   "joinGroupCodeHint": "NIDO-482",
   "joinGroupCaseNote": "El código no distingue mayúsculas",
-  "joinGroupSubmit": "Entrar al grupo",
-  "joinGroupError": "No se encontró ningún grupo con ese código.",
+  "joinGroupSubmit": "Entrar en la casa",
+  "joinGroupError": "No hay ninguna casa con ese código.",
 
   "groupSuccessTitle": "¡Ya tenéis casa!",
-  "groupCodeLabel": "Código del grupo",
+  "groupCodeLabel": "Código de la casa",
   "shareCode": "Compartir código",
   "goToTasks": "Ir a las tareas",
 
-  "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu grupo y sus miembros al servidor.",
+  "groupPendingNotice": "Datos de ejemplo: falta un endpoint para pedir tu casa y sus miembros al servidor.",
   "membersTitle": "Miembros",
-  "groupSettings": "Configuración del grupo",
+  "groupSettings": "Configuración de la casa",
   "groupSettingsFineLabel": "Multa",
   "@groupSettingsFineLabel": {
     "description": "Label above the fine percentage slider in the group settings screen"
@@ -159,7 +190,7 @@
   "copyCode": "Copiar código",
 
   "tasksLoadError": "No se pudieron cargar las tareas.",
-  "tasksEmpty": "Todavía no hay tareas. Propón la primera.",
+  "tasksEmpty": "La casa está en calma. Propón la primera tarea y empieza a sumar karma.",
   "sectionAwaitingVote": "Esperan tu voto",
   "sectionAvailable": "Disponibles",
   "statusProposal": "Propuesta",
@@ -184,7 +215,7 @@
   "counterOfferError": "No se pudo enviar la contraoferta",
 
   "counterOfferSheetTitle": "Haz una contraoferta",
-  "counterOfferSheetSubtitle": "¿Cuántas monedas te parecerían justas?",
+  "counterOfferSheetSubtitle": "¿Cuántos karmas te parecerían justos?",
   "counterOfferPauseNotice": "La votación se pausará hasta que el autor responda",
   "sendCounterOffer": "Enviar contraoferta",
 
@@ -199,8 +230,8 @@
   "notReserved": "No se reserva: reclama cuando esté hecha",
   "markDone": "Ya está hecha",
   "claimedTitle": "¡Reclamada!",
-  "claimedMessage": "Ahora el grupo debe confirmar que está hecha.",
-  "inValidationValue": "En validación · {reward} monedas",
+  "claimedMessage": "Ahora la casa debe confirmar que está hecha.",
+  "inValidationValue": "En validación · {reward} karmas",
   "@inValidationValue": {
     "placeholders": {
       "reward": { "type": "int" }
@@ -217,7 +248,7 @@
   "@validationQuestion": {
     "description": "Shown to the group on a task someone has claimed as done"
   },
-  "validationYourOwn": "La has reclamado tú: ahora el grupo decide si está hecha.",
+  "validationYourOwn": "La has reclamado tú: ahora la casa decide si está hecha.",
   "@validationYourOwn": {
     "description": "Shown instead of the vote buttons to whoever claimed the task"
   },
@@ -248,21 +279,21 @@
 
   "newTaskTitle": "Nueva tarea",
   "titleFieldLabel": "Título",
-  "taskTitleHint": "Limpiar el baño",
+  "taskTitleHint": "Ordenar el trastero",
   "descriptionLabel": "Descripción",
-  "taskDescriptionHint": "Ducha, lavabo, espejo y suelo",
+  "taskDescriptionHint": "Cajas a las baldas y barrer el suelo",
   "rewardLabel": "Recompensa",
-  "rewardHintNote": "Una tarea normal suele valer 10",
+  "rewardHintNote": "Una tarea normal suele valer 10; como mucho, 150",
   "reviewProposal": "Revisar propuesta",
   "taskTitleEmptyError": "Ponle un título a la tarea.",
 
   "reviewDealStatus": "Revisa el trato",
-  "voteWindowNotice": "El grupo tendrá 24 horas para votar",
-  "rejectFineNotice": "Si la rechazan, recibirás una multa sobre estas monedas",
+  "voteWindowNotice": "La casa tendrá 24 horas para votar",
+  "rejectFineNotice": "Si la rechazan, te llevas mal karma: una multa sobre lo que valía",
   "submitToVote": "Enviar a votación",
   "sentToVoteTitle": "Enviada a votación",
-  "sentToVoteMessage": "Avisaremos al grupo para que decida el trato.",
-  "rewardAmount": "{reward} monedas",
+  "sentToVoteMessage": "Avisaremos a la casa para que decida el trato.",
+  "rewardAmount": "{reward} karmas",
   "@rewardAmount": {
     "placeholders": {
       "reward": { "type": "int" }
@@ -270,9 +301,9 @@
   },
   "proposeError": "No se pudo enviar la propuesta",
 
-  "shopSubtitle": "Convierte tus monedas en planes",
+  "shopSubtitle": "Convierte tu karma en planes",
   "shopLoadError": "No se pudo cargar la tienda.",
-  "shopEmpty": "Todavía no hay recompensas. Propón la primera.",
+  "shopEmpty": "Aún no hay nada en la tienda. Propón una recompensa para gastar tu karma.",
   "awaitingVoteSection": "Esperando votación",
 
   "awaitingYourVote": "Espera tu voto",
@@ -284,15 +315,15 @@
   "rewardTitleHint": "Desayuno en la cama",
   "rewardDescriptionHint": "Café, tostadas y fruta",
   "priceLabel": "Precio",
-  "rewardVotingNotice": "El grupo votará antes de publicarla",
+  "rewardVotingNotice": "La casa votará antes de publicarla",
   "rewardTitleEmptyError": "Ponle un título a la recompensa.",
   "rewardSentToVote": "Recompensa enviada a votación",
   "rewardSubmitError": "No se pudo enviar la recompensa",
 
   "whoWillFulfil": "¿Quién la cumplirá?",
   "selectMember": "Selecciona a una persona",
-  "noOtherMembers": "Todavía no hay nadie más en el grupo para cumplirla.",
-  "notEnoughCoins": "{missing, plural, =1{Te falta 1 moneda} other{Te faltan {missing} monedas}}: tienes {balance} y este premio cuesta {price}. Haz tareas para conseguirlas.",
+  "noOtherMembers": "Todavía no hay nadie más en la casa para cumplirla.",
+  "notEnoughCoins": "{missing, plural, =1{Te falta 1 karma} other{Te faltan {missing} karmas}}: tienes {balance} y este premio cuesta {price}. Haz algo por la casa para conseguirlos.",
   "@notEnoughCoins": {
     "description": "Buy screen, when the balance does not cover the reward's price. The buy button is disabled while this shows",
     "placeholders": {
@@ -306,7 +337,7 @@
   "backToShop": "Volver a la tienda",
   "purchaseError": "No se pudo completar la compra",
 
-  "walletLoadError": "No se pudo cargar la cartera.",
+  "walletLoadError": "No se pudo cargar tu karma.",
   "negativeBalanceNotice": "Con saldo negativo no puedes comprar en la tienda, pero sí seguir haciendo tareas para recuperarte.",
   "recentMovements": "Últimos movimientos",
   "noMovements": "Todavía no hay movimientos.",
@@ -342,11 +373,11 @@
       "name": { "type": "String" }
     }
   },
-  "expelBody": "Saldrá del grupo y perderá su saldo. Lo que hizo seguirá en el historial de todos.",
+  "expelBody": "Saldrá de la casa y perderá su karma. Lo que hizo seguirá en el historial de todos.",
   "@expelBody": {
     "description": "Explains the consequences of expelling a member"
   },
-  "expelDone": "{name} ya no está en el grupo.",
+  "expelDone": "{name} ya no está en la casa.",
   "@expelDone": {
     "description": "Confirmation after a member is expelled",
     "placeholders": {
@@ -361,7 +392,7 @@
   "@groupInviteRegenerateTitle": {
     "description": "Title of the confirmation before replacing the invite code"
   },
-  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en el grupo sigue dentro.",
+  "groupInviteRegenerateBody": "El código de ahora dejará de valer. Quien ya está en la casa sigue dentro.",
   "@groupInviteRegenerateBody": {
     "description": "Explains what replacing the invite code does and does not affect"
   },
@@ -374,23 +405,23 @@
   "@errorInviteCode": {
     "description": "Shown when no group matches the invite code"
   },
-  "errorAlreadyInGroup": "Ya estás en un grupo. Sal de él antes de entrar en otro.",
+  "errorAlreadyInGroup": "Ya estás en una casa. Sal de ella antes de entrar en otra.",
   "@errorAlreadyInGroup": {
     "description": "Shown when the user already has an active membership"
   },
-  "errorNotAdmin": "Solo quien administra el grupo puede hacer esto.",
+  "errorNotAdmin": "Solo quien administra la casa puede hacer esto.",
   "@errorNotAdmin": {
     "description": "Shown when a non-admin tries an admin-only action"
   },
-  "errorMemberNotFound": "Esa persona ya no está en el grupo.",
+  "errorMemberNotFound": "Esa persona ya no está en la casa.",
   "@errorMemberNotFound": {
     "description": "Shown when the member to act on has left or is in another group"
   },
-  "errorCannotExpelSelf": "No puedes expulsarte a ti del grupo.",
+  "errorCannotExpelSelf": "No puedes expulsarte a ti de la casa.",
   "@errorCannotExpelSelf": {
     "description": "Shown when the admin tries to expel themselves"
   },
-  "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta del grupo.",
+  "errorCannotTransferAdmin": "El cargo de admin solo se puede ceder a otra persona adulta de la casa.",
   "@errorCannotTransferAdmin": {
     "description": "Shown when the admin tries to hand the role to themselves or to a child"
   },
@@ -406,7 +437,7 @@
   "@errorOwnTask": {
     "description": "Voting on or counter-offering your own proposal, or voting on your own completion"
   },
-  "errorNotProposer": "Solo quien propuso la tarea puede responder a la contraoferta.",
+  "errorNotProposer": "Eso solo puede hacerlo quien hizo la propuesta.",
   "@errorNotProposer": {
     "description": "Someone other than the proposer answered a counter-offer"
   },
@@ -434,7 +465,11 @@
   "@errorNegativeBalance": {
     "description": "Buying while the balance is below zero"
   },
-  "errorInvalidProvider": "Elige a otra persona del grupo para cumplirla.",
+  "errorNotEnoughCoins": "No te llega el karma para esta recompensa.",
+  "@errorNotEnoughCoins": {
+    "description": "Buying a reward that costs more than the balance"
+  },
+  "errorInvalidProvider": "Elige a otra persona de la casa para cumplirla.",
   "@errorInvalidProvider": {
     "description": "The provider chosen for a purchase is the buyer or not in the group"
   },
@@ -450,11 +485,11 @@
   "@errorNotProvider": {
     "description": "Someone other than the provider answered or delivered a purchase"
   },
-  "errorNoGroup": "Ya no estás en este grupo.",
+  "errorNoGroup": "Ya no estás en esta casa.",
   "@errorNoGroup": {
     "description": "A call was refused because the member has left or been expelled"
   },
-  "leftGroupNotice": "Ya no estás en el grupo. Puedes crear otro o unirte con un código.",
+  "leftGroupNotice": "Ya no estás en la casa. Puedes crear otra o unirte con un código.",
   "@leftGroupNotice": {
     "description": "Shown on the create-or-join screen after being expelled from the group"
   },
@@ -488,7 +523,7 @@
   "@purchaseRefuseTitle": {
     "description": "Title of the dialog before refusing a purchase"
   },
-  "purchaseRefuseNotice": "Si te niegas pagas una multa, y quien compró recupera sus monedas.",
+  "purchaseRefuseNotice": "Si te niegas te llevas una multa, y quien compró recupera su karma.",
   "@purchaseRefuseNotice": {
     "description": "Warns the provider what refusing a purchase costs"
   },
@@ -562,7 +597,7 @@
   "@voteAgainst": {
     "description": "A no vote in the voters list"
   },
-  "ownProposalNotice": "La has propuesto tú: vota el resto del grupo.",
+  "ownProposalNotice": "La has propuesto tú: vota el resto de la casa.",
   "@ownProposalNotice": {
     "description": "Shown instead of the vote buttons on the member's own proposal"
   },
@@ -600,10 +635,26 @@
   "@profileSection": {
     "description": "Settings screen: heading of the avatar and name section"
   },
-  "avatarEmojiLabel": "Tu emoji",
-  "@avatarEmojiLabel": {
-    "description": "Settings screen: label over the grid of emoji to pick an avatar from"
+  "avatarLabel": "Tu personaje",
+  "@avatarLabel": {
+    "description": "Settings screen: label over the grid of house characters to pick an avatar from"
   },
+  "avatarTaza": "Taza",
+  "@avatarTaza": {"description": "Avatar character: a mug. Read out by screen readers"},
+  "avatarPlanta": "Planta",
+  "@avatarPlanta": {"description": "Avatar character: a potted plant"},
+  "avatarCalcetin": "Calcetín",
+  "@avatarCalcetin": {"description": "Avatar character: a sock"},
+  "avatarEsponja": "Esponja",
+  "@avatarEsponja": {"description": "Avatar character: a kitchen sponge"},
+  "avatarTetera": "Tetera",
+  "@avatarTetera": {"description": "Avatar character: a teapot"},
+  "avatarTostada": "Tostada",
+  "@avatarTostada": {"description": "Avatar character: a slice of toast"},
+  "avatarCubo": "Cubo",
+  "@avatarCubo": {"description": "Avatar character: a mop bucket"},
+  "avatarBombilla": "Bombilla",
+  "@avatarBombilla": {"description": "Avatar character: a light bulb"},
   "avatarColorLabel": "Color",
   "@avatarColorLabel": {
     "description": "Settings screen: label over the avatar background colours"
@@ -632,7 +683,7 @@
   "@displayNameLabel": {
     "description": "Settings screen: label of the name field"
   },
-  "displayNameHint": "Como te verá el grupo",
+  "displayNameHint": "Como te verá la casa",
   "@displayNameHint": {
     "description": "Settings screen: hint inside the empty name field"
   },
@@ -693,9 +744,17 @@
   "@soundsToggle": {
     "description": "Settings screen: label of the switch that turns every UI sound on or off"
   },
-  "soundsToggleHint": "Los pops de los botones, la moneda, las multas y los avisos.",
+  "soundsToggleHint": "Los pops de los botones, el karma, las multas y los avisos.",
   "@soundsToggleHint": {
     "description": "Settings screen: what the sound switch covers, under its label"
+  },
+  "darkModeToggle": "Modo oscuro",
+  "@darkModeToggle": {
+    "description": "Settings screen: label of the switch between the light and the dark theme"
+  },
+  "darkModeToggleHint": "Un gris suave para la noche, en este dispositivo.",
+  "@darkModeToggleHint": {
+    "description": "Settings screen: what the dark mode switch does, under its label"
   },
   "transferAdminAction": "Hacer admin",
   "@transferAdminAction": {
@@ -708,7 +767,7 @@
       "name": { "type": "String" }
     }
   },
-  "transferAdminBody": "{name} podrá expulsar, cambiar el código y configurar el grupo. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.",
+  "transferAdminBody": "{name} podrá expulsar, cambiar el código y configurar la casa. Tú pasarás a ser un miembro más, y solo {name} podrá devolverte el cargo.",
   "@transferAdminBody": {
     "description": "Explains what handing the admin role over means",
     "placeholders": {
@@ -719,11 +778,149 @@
   "@transferAdminConfirm": {
     "description": "Confirm button of the dialog that hands the admin role over"
   },
-  "transferAdminDone": "{name} es ahora admin del grupo.",
+  "transferAdminDone": "{name} es ahora admin de la casa.",
   "@transferAdminDone": {
     "description": "Message after the admin role was handed over",
     "placeholders": {
       "name": { "type": "String" }
     }
-  }
+  },
+  "rankingTitle": "Ranking de la semana",
+  "@rankingTitle": {"description":"Casa tab: heading of the weekly ranking"},
+  "rankingResets": "Vuelve a empezar el lunes a las 00:00.",
+  "@rankingResets": {"description":"Under the ranking heading: when the week starts again (Madrid time)"},
+  "rankingEmpty": "Nadie ha sumado karma esta semana todavía.",
+  "@rankingEmpty": {"description":"Ranking with nobody above zero yet"},
+  "leaveHomeAction": "Salir de la casa",
+  "@leaveHomeAction": {"description":"Casa tab: button to leave the home"},
+  "leaveHomeTitle": "¿Salir de {name}?",
+  "@leaveHomeTitle": {"description":"Confirmation title; name is the home","placeholders":{"name":{"type":"String"}}},
+  "leaveHomeBody": "Perderás tu karma, y lo que hiciste seguirá en el historial de todos. Si administras la casa, el cargo pasa a quien lleve más tiempo en ella.",
+  "@leaveHomeBody": {"description":"Confirmation body for leaving the home"},
+  "leaveHomeConfirm": "Salir",
+  "@leaveHomeConfirm": {"description":"Confirmation button for leaving the home"},
+  "leftHomeNotice": "Has salido de la casa. Puedes crear otra o unirte con un código.",
+  "@leftHomeNotice": {"description":"Shown on the create-or-join screen after leaving on your own"},
+  "activityMemberLeft": "{name} se ha ido de la casa",
+  "@activityMemberLeft": {"description":"Activity: another member left the home","placeholders":{"name":{"type":"String"}}},
+  "typicalTasksLabel": "Ideas rápidas",
+  "@typicalTasksLabel": {"description":"Propose task: label over the chips of typical chores"},
+  "newTaskSubtitle": "Elige una idea o escribe la tuya. La casa vota el precio.",
+  "@newTaskSubtitle": {"description":"Propose task: line under the screen title"},
+  "typicalTasksOr": "o escribe la tuya",
+  "@typicalTasksOr": {"description":"Propose task: divider between the typical chores and the form"},
+  "taskDescriptionOptionalLabel": "Descripción (opcional)",
+  "iconLabel": "Icono",
+  "@iconLabel": {"description":"Propose task / reward: label over the row of emoji to pick from"},
+  "rewardTemplateShower": "Ducha larga sin que nadie llame",
+  "@rewardTemplateShower": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateMovie": "Elegir la peli de la noche",
+  "@rewardTemplateMovie": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateSofa": "El sofá y el mando toda la tarde",
+  "@rewardTemplateSofa": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateDinner": "Elijo yo la cena",
+  "@rewardTemplateDinner": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateSkipDishes": "Te libras de fregar hoy",
+  "@rewardTemplateSkipDishes": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateBreakfast": "Traigo el desayuno el domingo",
+  "@rewardTemplateBreakfast": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateBeers": "Unas cervezas y pago yo",
+  "@rewardTemplateBeers": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateShopping": "Te hago la compra esta semana",
+  "@rewardTemplateShopping": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateCleaningTurn": "Te cambio el turno de limpieza",
+  "@rewardTemplateCleaningTurn": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateDinnerOutFlat": "Cena pagada fuera",
+  "@rewardTemplateDinnerOutFlat": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateSeries": "Elijo yo la serie esta noche",
+  "@rewardTemplateSeries": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateBreakfastInBed": "Desayuno en la cama",
+  "@rewardTemplateBreakfastInBed": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateMassage": "Un masaje",
+  "@rewardTemplateMassage": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateSaturday": "El plan del sábado lo elijo yo",
+  "@rewardTemplateSaturday": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateSkipChore": "Te libras de una tarea",
+  "@rewardTemplateSkipChore": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateMyChoresForADay": "Hago tus tareas un día entero",
+  "@rewardTemplateMyChoresForADay": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateDinnerOutCouple": "Cena fuera, pago yo",
+  "@rewardTemplateDinnerOutCouple": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "rewardTemplateWeekend": "Escapada de fin de semana",
+  "@rewardTemplateWeekend": {"description":"Shop: a starting reward of a new home, stored in Spanish on the server"},
+  "@taskDescriptionOptionalLabel": {"description":"Propose task: label over the optional description field"},
+  "typicalTaskTrash": "Sacar la basura",
+  "@typicalTaskTrash": {"description":"Typical chore"},
+  "typicalTaskPlants": "Regar las plantas",
+  "@typicalTaskPlants": {"description":"Typical chore"},
+  "typicalTaskDishes": "Fregar los platos",
+  "@typicalTaskDishes": {"description":"Typical chore"},
+  "typicalTaskLaundry": "Poner una lavadora",
+  "@typicalTaskLaundry": {"description":"Typical chore"},
+  "typicalTaskSheets": "Cambiar las sábanas",
+  "@typicalTaskSheets": {"description":"Typical chore"},
+  "typicalTaskShopping": "Hacer la compra",
+  "@typicalTaskShopping": {"description":"Typical chore"},
+  "typicalTaskHoover": "Pasar la aspiradora",
+  "@typicalTaskHoover": {"description":"Typical chore"},
+  "typicalTaskDinner": "Hacer la cena",
+  "@typicalTaskDinner": {"description":"Typical chore"},
+  "typicalTaskFridge": "Limpiar la nevera",
+  "@typicalTaskFridge": {"description":"Typical chore"},
+  "typicalTaskBathroom": "Limpiar el baño",
+  "@typicalTaskBathroom": {"description":"Typical chore"},
+  "withdrawProposalTooltip": "Retirar la propuesta",
+  "@withdrawProposalTooltip": {"description": "Trash button on a proposal still being voted on"},
+  "withdrawTaskTitle": "¿Retirar esta tarea?",
+  "@withdrawTaskTitle": {"description": "Confirmation title before withdrawing a task proposal"},
+  "withdrawTaskBody": "Sale de la votación y no cuesta multa. Los votos que ya tenga se pierden.",
+  "@withdrawTaskBody": {"description": "Confirmation body before withdrawing a task proposal"},
+  "withdrawRewardTitle": "¿Retirar esta recompensa?",
+  "@withdrawRewardTitle": {"description": "Confirmation title before withdrawing a reward proposal"},
+  "withdrawRewardBody": "Sale de la tienda antes de que se vote y no cuesta multa.",
+  "@withdrawRewardBody": {"description": "Confirmation body before withdrawing a reward proposal"},
+  "withdrawAction": "Retirar",
+  "@withdrawAction": {"description": "Confirm button that withdraws a proposal"},
+  "withdrawError": "No se pudo retirar la propuesta",
+  "@withdrawError": {"description": "Withdrawing a proposal failed"},
+  "activityTaskWithdrawn": "{name} ha retirado una tarea",
+  "@activityTaskWithdrawn": {"description":"Activity: another member withdrew a task proposal","placeholders":{"name":{"type":"String"}}},
+  "activityRewardWithdrawn": "{name} ha retirado una recompensa",
+  "@activityRewardWithdrawn": {"description":"Activity: another member withdrew a reward proposal","placeholders":{"name":{"type":"String"}}},
+  "weekdayInitials": "L,M,X,J,V,S,D",
+  "@weekdayInitials": {"description":"Initials of the days of the week, Monday first, comma-separated, seven of them"},
+  "repeatLabel": "Repetir cada semana (opcional)",
+  "@repeatLabel": {"description":"Propose task: label over the weekday picker"},
+  "repeatHint": "Sin días, se hace una vez. Con días, la casa vota una vez y la tarea aparece sola esos días.",
+  "@repeatHint": {"description":"Propose task: note under the weekday picker"},
+  "repeatsOn": "Se repite: {days}",
+  "@repeatsOn": {"description":"Task card / review: the days a scheduled task comes back on","placeholders":{"days":{"type":"String"}}},
+  "scheduleTitle": "Agenda de la casa",
+  "@scheduleTitle": {"description":"Title of the panel with the tasks that repeat on set weekdays"},
+  "scheduleSubtitle": "Tareas fijas que aparecen solas en su día. Se votan una vez; cada vez que se hacen, se validan.",
+  "@scheduleSubtitle": {"description":"Line under the schedule panel title"},
+  "scheduleEntry": "Agenda de la casa",
+  "@scheduleEntry": {"description":"Tasks tab: the card that opens the schedule panel"},
+  "scheduleEntryCount": "{count, plural, =0{Sin tareas fijas todavía} =1{1 tarea fija} other{{count} tareas fijas}}",
+  "@scheduleEntryCount": {"description":"Tasks tab: how many scheduled tasks the home has","placeholders":{"count":{"type":"int"}}},
+  "scheduleNothing": "Nada",
+  "@scheduleNothing": {"description":"Schedule panel: a weekday with no tasks"},
+  "schedulePending": "Esperando la votación",
+  "@schedulePending": {"description":"Schedule panel: section of scheduled tasks still being voted on"},
+  "scheduleAdd": "Nueva tarea fija",
+  "@scheduleAdd": {"description":"Schedule panel: button to propose a task that repeats"},
+  "stopScheduleTitle": "¿Quitar de la agenda?",
+  "@stopScheduleTitle": {"description":"Confirmation title before stopping a scheduled task"},
+  "stopScheduleBody": "Deja de aparecer en sus días. La que ya está en el tablero sigue ahí.",
+  "@stopScheduleBody": {"description":"Confirmation body before stopping a scheduled task"},
+  "stopScheduleAction": "Quitar",
+  "@stopScheduleAction": {"description":"Confirm button that stops a scheduled task"},
+  "scheduleStopped": "Quitada de la agenda",
+  "@scheduleStopped": {"description":"Message after stopping a scheduled task"},
+  "errorInvalidSchedule": "Elige al menos un día de la semana.",
+  "@errorInvalidSchedule": {"description":"A scheduled task with no valid weekdays"},
+  "activityMissionDue": "Hoy toca una tarea de la agenda",
+  "@activityMissionDue": {"description":"Activity: a scheduled task appeared on the board today. Nobody did it, so no name"},
+  "errorInvalidReward": "Una tarea vale entre 1 y 150 karmas.",
+  "@errorInvalidReward": {"description":"A task price or counter-offer outside 1 to 150"}
 }

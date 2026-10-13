@@ -1,9 +1,13 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import 'weekly_ranking.dart';
+import '../wallet/wallet_controller.dart';
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/widgets.dart';
@@ -44,7 +48,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     if (!controller.hasLoaded) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoading();
     }
     final group = controller.group;
     if (controller.error != null || group == null) {
@@ -82,65 +86,77 @@ class _Body extends StatelessWidget {
         children: [
           SoftCard(
             color: AppColors.lime,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    const Text('🏠', style: TextStyle(fontSize: 48)),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        group.name,
-                        style: Theme.of(context).textTheme.titleLarge,
+            // A Builder so the texts below read the theme SoftCard sets for
+            // the lime, not the page's.
+            child: Builder(
+              builder: (context) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/brand/logo.svg',
+                        width: 52,
+                        height: 52,
+                        excludeFromSemantics: true,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          group.name,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      StatusPill(
+                        label: _typeLabel(l10n, group.type),
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  const Divider(height: 28),
+                  Text(
+                    l10n.groupCodeLabel,
+                    style: TextStyle(color: context.palette.muted),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          group.inviteCode,
+                          style: Theme.of(context).textTheme.titleLarge,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () => _copyCode(context, group.inviteCode),
+                        tooltip: l10n.copyCode,
+                        icon: const Icon(Icons.copy_rounded),
+                      ),
+                    ],
+                  ),
+                  if (isAdmin) ...[
+                    const SizedBox(height: 10),
+                    AppButton(
+                      label: l10n.groupInviteRegenerate,
+                      kind: AppButtonKind.quiet,
+                      compact: true,
+                      onPressed: () => _regenerateCode(context),
+                    ),
+                    const SizedBox(height: 6),
+                    AppButton(
+                      label: l10n.groupSettings,
+                      kind: AppButtonKind.quiet,
+                      compact: true,
+                      onPressed: () => pushPage(
+                        context,
+                        GroupSettingsScreen(
+                          group: group,
+                          controller: controller,
+                        ),
                       ),
                     ),
-                    StatusPill(
-                      label: _typeLabel(l10n, group.type),
-                      color: Colors.white,
-                    ),
                   ],
-                ),
-                const Divider(height: 28),
-                Text(
-                  l10n.groupCodeLabel,
-                  style: const TextStyle(color: AppColors.muted),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        group.inviteCode,
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                    ),
-                    IconButton(
-                      onPressed: () => _copyCode(context, group.inviteCode),
-                      tooltip: l10n.copyCode,
-                      icon: const Icon(Icons.copy_rounded),
-                    ),
-                  ],
-                ),
-                if (isAdmin) ...[
-                  const SizedBox(height: 10),
-                  AppButton(
-                    label: l10n.groupInviteRegenerate,
-                    kind: AppButtonKind.quiet,
-                    compact: true,
-                    onPressed: () => _regenerateCode(context),
-                  ),
-                  const SizedBox(height: 6),
-                  AppButton(
-                    label: l10n.groupSettings,
-                    kind: AppButtonKind.quiet,
-                    compact: true,
-                    onPressed: () => pushPage(
-                      context,
-                      GroupSettingsScreen(group: group, controller: controller),
-                    ),
-                  ),
                 ],
-              ],
+              ),
             ),
           ),
           const SizedBox(height: 26),
@@ -158,6 +174,11 @@ class _Body extends StatelessWidget {
               onExpel: () => _expel(context, member),
             ),
           const SizedBox(height: 26),
+          WeeklyRanking(
+            entries: context.watch<WalletController>().ranking,
+            myMemberId: myMemberId,
+          ),
+          const SizedBox(height: 26),
           AppButton(
             label: l10n.mySettings,
             kind: AppButtonKind.secondary,
@@ -169,9 +190,38 @@ class _Body extends StatelessWidget {
             kind: AppButtonKind.quiet,
             onPressed: () => _signOut(context),
           ),
+          const SizedBox(height: 8),
+          AppButton(
+            label: l10n.leaveHomeAction,
+            kind: AppButtonKind.danger,
+            onPressed: () => _leave(context, group),
+          ),
         ],
       ),
     );
+  }
+
+  /// Leaves the home for good (#141), and back to create-or-join.
+  Future<void> _leave(BuildContext context, Group group) async {
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await confirmAction(
+      context,
+      title: l10n.leaveHomeTitle(group.name),
+      body: l10n.leaveHomeBody,
+      action: l10n.leaveHomeConfirm,
+      destructive: true,
+    );
+    if (!confirmed || !context.mounted) return;
+    try {
+      await controller.leave();
+      if (context.mounted) {
+        leaveHome(context, l10n.leftHomeNotice, isError: false);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        showMessage(context, failureMessage(e, l10n), isError: true);
+      }
+    }
   }
 
   /// Back to the welcome screen, so another account can sign in.
@@ -301,7 +351,7 @@ class _MemberRow extends StatelessWidget {
           children: [
             MemberAvatar(
               name: member.displayName,
-              emoji: member.avatarEmoji,
+              avatar: member.avatarEmoji,
               color: member.avatarColor,
             ),
             const SizedBox(width: 12),
@@ -324,13 +374,13 @@ class _MemberRow extends StatelessWidget {
               _RowAction(
                 tooltip: l10n.transferAdminAction,
                 icon: Icons.admin_panel_settings_rounded,
-                color: AppColors.violet,
+                color: context.palette.accent,
                 onTap: onMakeAdmin,
               ),
               _RowAction(
                 tooltip: l10n.expelAction,
                 icon: Icons.person_remove_rounded,
-                color: AppColors.coral,
+                color: context.palette.danger,
                 onTap: onExpel,
               ),
             ],

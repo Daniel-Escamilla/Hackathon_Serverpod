@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!--
+    KarmaHome's mark: a home split into two halves that fit together, like
+    yin and yang. The deal at home is fair because everyone at home makes it.
+    Picked on 5 October from four directions (direction C). Same palette and
+    ink outline as lib/app_theme.dart and the house characters.
+  -->
+
+  <!-- Tile -->
+  <rect width="512" height="512" rx="116" fill="#F7F4EC"/>
+
+  <g id="mark">
+  <g transform="translate(256 262) scale(3.6) translate(-60 -59)">
+    <path d="M60 18 L20 54 L20 100 L60 100 C80 70 40 45 60 18 Z" fill="#6558F5"/>
+    <path d="M60 18 L100 54 L100 100 L60 100 C80 70 40 45 60 18 Z" fill="#DDFB69"/>
+    <path d="M60 18 C40 45 80 70 60 100" fill="none" stroke="#12152A" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="44" cy="76" r="6" fill="#DDFB69" stroke="#12152A" stroke-width="2.5"/>
+    <circle cx="77" cy="56" r="6" fill="#6558F5" stroke="#12152A" stroke-width="2.5"/>
+    <path d="M20 100 V54 L60 18 L100 54 V100 Z" fill="none" stroke="#12152A" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>
+  </g>
+  </g>
+</svg>

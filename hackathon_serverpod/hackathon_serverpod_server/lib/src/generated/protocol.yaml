@@ -13,6 +13,8 @@ googleIdp:
   - hasAccount:
 jwtRefresh:
   - refreshAccessToken:
+demo:
+  - reseed:
 event:
   - watchGroup:
 group:
@@ -24,11 +26,13 @@ group:
   - regenerateInviteCode:
   - transferAdmin:
   - updateGroup:
+  - leaveGroup:
   - updateMyProfile:
 shop:
   - listRewards:
   - listPurchases:
   - proposeReward:
+  - withdrawReward:
   - voteReward:
   - requestWish:
   - purchaseReward:
@@ -41,6 +45,7 @@ task:
   - proposeTask:
   - voteTaskProposal:
   - counterOfferTask:
+  - withdrawTask:
   - respondToCounterOffer:
   - markTaskDone:
   - voteTaskCompletion:

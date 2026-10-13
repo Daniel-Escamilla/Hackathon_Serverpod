@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:hackathon_serverpod_flutter/data/google_popup.dart';
 import 'package:hackathon_serverpod_flutter/features/auth/google_sign_in_button.dart';
 
 import '../../helpers/harness.dart';
@@ -29,5 +30,23 @@ void main() {
     await tapLabel(tester, 'Entrar con Google');
 
     expect(find.text('No se pudo entrar con Google.'), findsOneWidget);
+  });
+
+  testWidgets('a blocked Google window says how to allow it', (tester) async {
+    await openScreen(
+      tester,
+      Scaffold(
+        body: GoogleSignInButton(
+          signIn: () async => throw const GooglePopupBlockedException(),
+        ),
+      ),
+    );
+
+    await tapLabel(tester, 'Entrar con Google');
+
+    expect(
+      find.textContaining('ha bloqueado la ventana de Google'),
+      findsOneWidget,
+    );
   });
 }

@@ -97,7 +97,7 @@ class _SignInScreenState extends State<SignInScreen> {
         ),
         if (_error != null) ...[
           const SizedBox(height: 12),
-          Text(_error!, style: const TextStyle(color: AppColors.coral)),
+          Text(_error!, style: TextStyle(color: context.palette.danger)),
         ],
         const SizedBox(height: 18),
         AppButton(

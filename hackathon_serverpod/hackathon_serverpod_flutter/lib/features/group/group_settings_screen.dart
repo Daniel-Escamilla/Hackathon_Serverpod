@@ -98,7 +98,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
           ),
           Text(
             l10n.groupSettingsFineHint,
-            style: const TextStyle(color: AppColors.muted),
+            style: TextStyle(color: context.palette.muted),
           ),
           Slider(
             value: _finePercent.toDouble(),
@@ -109,7 +109,7 @@ class _GroupSettingsScreenState extends State<GroupSettingsScreen> {
           ),
           if (_error != null) ...[
             const SizedBox(height: 12),
-            Text(_error!, style: const TextStyle(color: AppColors.coral)),
+            Text(_error!, style: TextStyle(color: context.palette.danger)),
           ],
           const SizedBox(height: 24),
           AppButton(

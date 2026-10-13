@@ -22,6 +22,7 @@ import 'package:serverpod_auth_idp_server/serverpod_auth_idp_server.dart'
 import '../auth/email_idp_endpoint.dart' as _iuc1hd5t;
 import '../auth/google_idp_endpoint.dart' as _i71axiz0;
 import '../auth/jwt_refresh_endpoint.dart' as _inwq3ztq;
+import '../demo/demo_endpoint.dart' as _i46mxkwc;
 import '../events/event_endpoint.dart' as _i7r7roa3;
 import '../groups/group_endpoint.dart' as _irt1w8ui;
 import '../shop/shop_endpoint.dart' as _ig43k7x5;
@@ -49,6 +50,12 @@ class Endpoints extends _is.EndpointDispatch {
         ..initialize(
           server,
           'jwtRefresh',
+          null,
+        ),
+      'demo': _i46mxkwc.DemoEndpoint()
+        ..initialize(
+          server,
+          'demo',
           null,
         ),
       'event': _i7r7roa3.EventEndpoint()
@@ -360,6 +367,30 @@ class Endpoints extends _is.EndpointDispatch {
         ),
       },
     );
+    connectors['demo'] = _is.EndpointConnector(
+      name: 'demo',
+      endpoint: endpoints['demo']!,
+      methodConnectors: {
+        'reseed': _is.MethodConnector(
+          name: 'reseed',
+          params: {
+            'secret': _is.ParameterDescription(
+              name: 'secret',
+              type: _is.getType<String>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['demo'] as _i46mxkwc.DemoEndpoint).reseed(
+                session,
+                params['secret'],
+              ),
+        ),
+      },
+    );
     connectors['event'] = _is.EndpointConnector(
       name: 'event',
       endpoint: endpoints['event']!,
@@ -533,6 +564,16 @@ class Endpoints extends _is.EndpointDispatch {
                     finePercent: params['finePercent'],
                   ),
         ),
+        'leaveGroup': _is.MethodConnector(
+          name: 'leaveGroup',
+          params: {},
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async => (endpoints['group'] as _irt1w8ui.GroupEndpoint)
+                  .leaveGroup(session),
+        ),
         'updateMyProfile': _is.MethodConnector(
           name: 'updateMyProfile',
           params: {
@@ -613,6 +654,11 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<int?>(),
               nullable: true,
             ),
+            'icon': _is.ParameterDescription(
+              name: 'icon',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -625,6 +671,26 @@ class Endpoints extends _is.EndpointDispatch {
                     params['description'],
                     params['price'],
                     stock: params['stock'],
+                    icon: params['icon'],
+                  ),
+        ),
+        'withdrawReward': _is.MethodConnector(
+          name: 'withdrawReward',
+          params: {
+            'itemId': _is.ParameterDescription(
+              name: 'itemId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['shop'] as _ig43k7x5.ShopEndpoint).withdrawReward(
+                    session,
+                    params['itemId'],
                   ),
         ),
         'voteReward': _is.MethodConnector(
@@ -815,6 +881,16 @@ class Endpoints extends _is.EndpointDispatch {
               type: _is.getType<int>(),
               nullable: false,
             ),
+            'icon': _is.ParameterDescription(
+              name: 'icon',
+              type: _is.getType<String?>(),
+              nullable: true,
+            ),
+            'weekdays': _is.ParameterDescription(
+              name: 'weekdays',
+              type: _is.getType<List<int>?>(),
+              nullable: true,
+            ),
           },
           call:
               (
@@ -826,6 +902,8 @@ class Endpoints extends _is.EndpointDispatch {
                     params['title'],
                     params['description'],
                     params['reward'],
+                    icon: params['icon'],
+                    weekdays: params['weekdays'],
                   ),
         ),
         'voteTaskProposal': _is.MethodConnector(
@@ -876,6 +954,25 @@ class Endpoints extends _is.EndpointDispatch {
                     session,
                     params['taskId'],
                     params['counterReward'],
+                  ),
+        ),
+        'withdrawTask': _is.MethodConnector(
+          name: 'withdrawTask',
+          params: {
+            'taskId': _is.ParameterDescription(
+              name: 'taskId',
+              type: _is.getType<int>(),
+              nullable: false,
+            ),
+          },
+          call:
+              (
+                _is.Session session,
+                Map<String, dynamic> params,
+              ) async =>
+                  (endpoints['task'] as _i3nmwja6.TaskEndpoint).withdrawTask(
+                    session,
+                    params['taskId'],
                   ),
         ),
         'respondToCounterOffer': _is.MethodConnector(

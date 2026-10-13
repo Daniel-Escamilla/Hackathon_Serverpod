@@ -29,7 +29,7 @@ void main() {
     final repository = RefusingGroupRepository(failure);
     await openScreen(tester, JoinGroupScreen(repository: repository));
     await tester.enterText(find.byType(TextField), ' nido-482 ');
-    await tapLabel(tester, 'Entrar al grupo');
+    await tapLabel(tester, 'Entrar en la casa');
     return repository;
   }
 
@@ -47,7 +47,7 @@ void main() {
     await tryCode(tester, AppFailure.alreadyInGroup);
 
     expect(
-      find.text('Ya estás en un grupo. Sal de él antes de entrar en otro.'),
+      find.text('Ya estás en una casa. Sal de ella antes de entrar en otra.'),
       findsOneWidget,
     );
   });
@@ -56,7 +56,7 @@ void main() {
     await tryCode(tester, AppFailure.unknown);
 
     expect(
-      find.text('No se encontró ningún grupo con ese código.'),
+      find.text('No hay ninguna casa con ese código.'),
       findsOneWidget,
     );
   });

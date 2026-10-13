@@ -7,6 +7,8 @@ fields:
   title: String
   description: String
   price: int
+  ### An emoji picked when proposing, shown on the reward's card. Null shows the app's default.
+  icon: String?
   status: RewardItemStatus, default=proposed
   createdById: int, relation(parent=group_member)
   ### Null means unlimited (the default per PRODUCT.md §6); a number caps how many times it can

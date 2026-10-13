@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/navigation.dart';
 import '../../common/result_screen.dart';
@@ -15,6 +16,7 @@ import '../../ui/pressable.dart';
 import '../group/group_controller.dart';
 import '../wallet/wallet_controller.dart';
 import 'shop_controller.dart';
+import 'reward_titles.dart';
 
 class BuyRewardScreen extends StatefulWidget {
   const BuyRewardScreen({required this.reward, super.key});
@@ -61,9 +63,16 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                 ),
                 const SizedBox(width: 14),
                 Expanded(
-                  child: Text(
-                    widget.reward.title,
-                    style: Theme.of(context).textTheme.titleLarge,
+                  // Builder: the title reads the light theme SoftCard sets
+                  // for its lavender, not the page's.
+                  child: Builder(
+                    builder: (context) => Text(
+                      rewardTitle(
+                        AppLocalizations.of(context),
+                        widget.reward.title,
+                      ),
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
                   ),
                 ),
                 Text(
@@ -78,7 +87,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
           ),
           const SizedBox(height: 24),
           if (!group.hasLoaded || !wallet.hasLoaded)
-            const Center(child: CircularProgressIndicator())
+            const AppLoading()
           else if (!canAfford)
             InfoRow(
               icon: Icons.savings_rounded,
@@ -102,13 +111,13 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                   sound: null,
                   borderRadius: BorderRadius.circular(20),
                   child: Container(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.palette.card,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: _selectedMemberId == member.id
-                            ? AppColors.violet
+                            ? context.palette.accent
                             : Colors.transparent,
                         width: 2,
                       ),
@@ -117,7 +126,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                       children: [
                         MemberAvatar(
                           name: member.displayName,
-                          emoji: member.avatarEmoji,
+                          avatar: member.avatarEmoji,
                           color: member.avatarColor,
                         ),
                         const SizedBox(width: 12),
@@ -132,8 +141,8 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
                               ? Icons.check_circle_rounded
                               : Icons.circle_outlined,
                           color: _selectedMemberId == member.id
-                              ? AppColors.violet
-                              : AppColors.muted,
+                              ? context.palette.accent
+                              : context.palette.muted,
                         ),
                       ],
                     ),
@@ -164,7 +173,7 @@ class _BuyRewardScreenState extends State<BuyRewardScreen> {
         pushPage(
           context,
           ResultScreen(
-            emoji: '🎁',
+            animation: AppAnimation.reward,
             title: l10n.purchaseSentTitle,
             message: l10n.purchaseSentMessage,
             value: l10n.rewardAmount(widget.reward.price),

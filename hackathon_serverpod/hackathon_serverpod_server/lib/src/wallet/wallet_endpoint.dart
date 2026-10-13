@@ -1,6 +1,7 @@
 import '../generated/protocol.dart';
 import '../groups/current_member.dart';
 import 'package:serverpod/serverpod.dart';
+import 'week.dart';
 
 /// Balance, history and ranking (PRODUCT.md §10.3, §4.6).
 class WalletEndpoint extends Endpoint {
@@ -85,10 +86,10 @@ class WalletEndpoint extends Endpoint {
   }
 
   /// This week's ranking: coins earned minus fines, spending excluded. Resets every
-  /// Monday (PRODUCT.md §4.6).
+  /// Monday at 00:00 in Madrid (PRODUCT.md §4.6, see week.dart).
   Future<List<RankingEntry>> getWeeklyRanking(Session session) async {
     final member = await currentGroupMember(session);
-    final weekStart = _startOfWeekUtc(DateTime.now().toUtc());
+    final weekStart = startOfWeekMadrid(DateTime.now());
 
     final members = await GroupMember.db.find(
       session,
@@ -118,16 +119,12 @@ class WalletEndpoint extends Endpoint {
         RankingEntry(
           memberId: m.id!,
           displayName: m.displayName,
+          avatarEmoji: m.avatarEmoji,
+          avatarColor: m.avatarColor,
           netCoins: netByMember[m.id!] ?? 0,
         ),
     ]..sort((a, b) => b.netCoins.compareTo(a.netCoins));
 
     return ranking;
-  }
-
-  DateTime _startOfWeekUtc(DateTime now) {
-    final daysSinceMonday = now.weekday - DateTime.monday;
-    final today = DateTime.utc(now.year, now.month, now.day);
-    return today.subtract(Duration(days: daysSinceMonday));
   }
 }

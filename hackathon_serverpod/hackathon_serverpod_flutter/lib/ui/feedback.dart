@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_animation.dart';
 import '../app_theme.dart';
 import '../l10n/generated/app_localizations.dart';
 import 'app_button.dart';
@@ -8,19 +9,32 @@ import 'sounds.dart';
 /// A short message at the bottom of the screen. Every screen uses this one, so
 /// a confirmation and an error look — and sound — the same wherever they
 /// appear. An error plays the "bonk" on its own; pass [sound] for anything
-/// else worth hearing.
+/// else worth hearing, and [leading] for a small picture before the text.
 void showMessage(
   BuildContext context,
   String message, {
   bool isError = false,
   AppSound? sound,
+  Widget? leading,
 }) {
   final play = sound ?? (isError ? AppSound.error : null);
   if (play != null) uiSounds.play(play);
+  final picture =
+      leading ??
+      (play == AppSound.success
+          ? const AppLottie(AppAnimation.sparkle, size: 32)
+          : null);
 
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(message, style: const TextStyle(color: Colors.white)),
+      content: Row(
+        children: [
+          if (picture != null) ...[picture, const SizedBox(width: 12)],
+          Expanded(
+            child: Text(message, style: const TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
       backgroundColor: isError ? AppColors.coral : AppColors.ink,
       behavior: SnackBarBehavior.floating,
       duration: const Duration(seconds: 5),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hackathon_serverpod_client/hackathon_serverpod_client.dart';
 import 'package:provider/provider.dart';
 
+import '../../ui/app_animation.dart';
 import '../../app_theme.dart';
 import '../../common/widgets.dart';
 import '../../l10n/generated/app_localizations.dart';
@@ -12,6 +13,7 @@ import '../../ui/feedback.dart';
 import '../../ui/sounds.dart';
 import '../group/group_controller.dart';
 import 'shop_controller.dart';
+import 'reward_titles.dart';
 
 /// One purchase, seen by whoever bought it or whoever has to fulfil it
 /// (PRODUCT.md §6). Only the provider acts on it: accept or refuse while it
@@ -43,7 +45,9 @@ class PurchaseScreen extends StatelessWidget {
         label: purchaseStatusLabel(l10n, purchase.status),
         color: purchaseStatusColor(purchase.status),
       ),
-      title: reward?.title ?? l10n.purchaseUnknownReward,
+      title: reward == null
+          ? l10n.purchaseUnknownReward
+          : rewardTitle(l10n, reward.title),
       content: [
         if (reward != null) ...[
           BigValueCard(
@@ -115,6 +119,9 @@ class PurchaseScreen extends StatelessWidget {
           context,
           accept ? l10n.purchaseAccepted : l10n.purchaseRefused,
           sound: accept ? AppSound.success : AppSound.fine,
+          leading: accept
+              ? const AppLottie(AppAnimation.heart, size: 36)
+              : null,
         );
         Navigator.of(context).pop();
       }
@@ -132,6 +139,7 @@ class PurchaseScreen extends StatelessWidget {
       await controller.markDelivered(purchase.id!);
       if (context.mounted) {
         showMessage(context, l10n.purchaseDelivered, sound: AppSound.success);
+        showCelebration(context);
         Navigator.of(context).pop();
       }
     } catch (e) {

@@ -98,6 +98,19 @@ void main() {
       expect(task.status, TaskStatus.proposed);
       expect(task.proposedById, alice.id);
       expect(task.voteClosesAt, isNotNull);
+      expect(task.icon, isNull);
+    });
+
+    test('then a task proposed with an icon keeps it', () async {
+      final task = await endpoints.task.proposeTask(
+        sessionOf(_aliceAuthUserId),
+        'Limpiar el baño',
+        '',
+        25,
+        icon: '🛁',
+      );
+
+      expect((await Task.db.findById(session, task.id!))!.icon, '🛁');
     });
 
     test(

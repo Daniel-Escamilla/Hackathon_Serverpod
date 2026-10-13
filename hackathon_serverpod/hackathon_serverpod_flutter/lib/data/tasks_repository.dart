@@ -14,10 +14,21 @@ class TasksRepository {
   Future<List<TaskVote>> listTaskVotes() =>
       guardServerCall(client.task.listTaskVotes);
 
-  Future<Task> proposeTask(String title, String description, int reward) =>
-      guardServerCall(
-        () => client.task.proposeTask(title, description, reward),
-      );
+  Future<Task> proposeTask(
+    String title,
+    String description,
+    int reward, {
+    String? icon,
+    List<int>? weekdays,
+  }) => guardServerCall(
+    () => client.task.proposeTask(
+      title,
+      description,
+      reward,
+      icon: icon,
+      weekdays: weekdays,
+    ),
+  );
 
   Future<Task> voteTaskProposal(int taskId, bool approve) =>
       guardServerCall(() => client.task.voteTaskProposal(taskId, approve));
@@ -29,6 +40,9 @@ class TasksRepository {
 
   Future<Task> respondToCounterOffer(int taskId, bool accept) =>
       guardServerCall(() => client.task.respondToCounterOffer(taskId, accept));
+
+  Future<Task> withdrawTask(int taskId) =>
+      guardServerCall(() => client.task.withdrawTask(taskId));
 
   Future<Task> markTaskDone(int taskId) =>
       guardServerCall(() => client.task.markTaskDone(taskId));

@@ -22,6 +22,22 @@ Duration _voteWindow(Session session) {
       : const Duration(minutes: 2);
 }
 
+/// Where an approved proposal goes: a one-off task opens for anyone to claim,
+/// a mission goes on the schedule and puts a task on the board on each of its
+/// weekdays (PRODUCT.md §5).
+/// The most a task can be worth, proposed or counter-offered (PRODUCT.md
+/// §4.5): a typical chore is 5 to 25, so 150 leaves room for the biggest.
+const maxTaskReward = 150;
+
+void _checkReward(int reward) {
+  if (reward < 1 || reward > maxTaskReward) {
+    throw TaskException(reason: TaskErrorReason.invalidReward);
+  }
+}
+
+TaskStatus approvedStatus(Task task) =>
+    task.kind == TaskKind.mission ? TaskStatus.scheduled : TaskStatus.open;
+
 /// Proposing and voting on tasks (PRODUCT.md §3, §4.1, §4.4).
 class TaskService {
   const TaskService({
@@ -32,30 +48,50 @@ class TaskService {
   final WalletService walletService;
   final EventService eventService;
 
-  /// Starts a new task as `proposed`, open to a proposal vote.
+  /// Starts a new task as `proposed`, open to a proposal vote — or straight
+  /// as `open` when [proposer] is alone in the home: nobody else can vote, and
+  /// the majority of zero others is zero (PRODUCT.md §4.1).
   Future<Task> proposeTask(
     Session session, {
     required GroupMember proposer,
     required String title,
     required String description,
     required int reward,
+    String? icon,
+    List<int>? weekdays,
   }) async {
+    _checkReward(reward);
+    final days = weekdays == null ? null : (weekdays.toSet().toList()..sort());
+    if (days != null && (days.isEmpty || days.any((d) => d < 1 || d > 7))) {
+      throw TaskException(reason: TaskErrorReason.invalidSchedule);
+    }
+    final alone = await isAloneInGroup(session, proposer);
+    final draft = Task(
+      groupId: proposer.groupId,
+      title: title,
+      description: description,
+      reward: reward,
+      icon: icon,
+      kind: days == null ? TaskKind.oneOff : TaskKind.mission,
+      recurrence: days == null ? null : TaskRecurrence.weekly,
+      weekdays: days,
+      proposedById: proposer.id!,
+    );
     final task = await Task.db.insertRow(
       session,
-      Task(
-        groupId: proposer.groupId,
-        title: title,
-        description: description,
-        reward: reward,
-        proposedById: proposer.id!,
-        voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
+      draft.copyWith(
+        status: alone ? approvedStatus(draft) : TaskStatus.proposed,
+        voteClosesAt: alone
+            ? null
+            : DateTime.now().toUtc().add(_voteWindow(session)),
       ),
     );
-    await _scheduleVoteExpiry(session, task);
+    if (!alone) await _scheduleVoteExpiry(session, task);
     await eventService.publish(
       session,
       groupId: task.groupId,
       kind: GroupEventKind.taskProposed,
+      actorMemberId: proposer.id,
       taskId: task.id,
     );
     return task;
@@ -158,7 +194,7 @@ class TaskService {
       if (approveCount >= needed) {
         return Task.db.updateRow(
           session,
-          locked.copyWith(status: TaskStatus.open, voteClosesAt: null),
+          locked.copyWith(status: approvedStatus(locked), voteClosesAt: null),
           transaction: transaction,
         );
       }
@@ -172,6 +208,7 @@ class TaskService {
       session,
       groupId: resolved.groupId,
       kind: GroupEventKind.taskVoteCast,
+      actorMemberId: voter.id,
       taskId: resolved.id,
     );
     return resolved;
@@ -191,6 +228,7 @@ class TaskService {
     required GroupMember voter,
     required int counterReward,
   }) async {
+    _checkReward(counterReward);
     final countered = await session.db.transaction((transaction) async {
       final locked = await Task.db.findById(
         session,
@@ -247,9 +285,56 @@ class TaskService {
       session,
       groupId: countered.groupId,
       kind: GroupEventKind.taskCounterOffered,
+      actorMemberId: voter.id,
       taskId: countered.id,
     );
     return countered;
+  }
+
+  /// Takes back a proposal still being voted on, with or without a
+  /// counter-offer waiting: one made by mistake, or one the home will not
+  /// want. Only [member] who proposed it or the admin can, and it carries no
+  /// fine (PRODUCT.md §4.4, §7). The pending vote expiry finds no
+  /// `voteClosesAt` and does nothing.
+  Future<Task> withdrawProposal(
+    Session session, {
+    required Task task,
+    required GroupMember member,
+  }) async {
+    final withdrawn = await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
+        session,
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
+      // A scheduled mission is stopped the same way: no more repetitions.
+      if (locked.status != TaskStatus.proposed &&
+          locked.status != TaskStatus.counterOffered &&
+          locked.status != TaskStatus.scheduled) {
+        throw TaskException(reason: TaskErrorReason.notOpen);
+      }
+      if (member.id != locked.proposedById &&
+          member.role != GroupMemberRole.admin) {
+        throw TaskException(reason: TaskErrorReason.notProposer);
+      }
+      return Task.db.updateRow(
+        session,
+        locked.copyWith(status: TaskStatus.withdrawn, voteClosesAt: null),
+        transaction: transaction,
+      );
+    });
+    await eventService.publish(
+      session,
+      groupId: withdrawn.groupId,
+      kind: GroupEventKind.taskWithdrawn,
+      actorMemberId: member.id,
+      taskId: withdrawn.id,
+    );
+    return withdrawn;
   }
 
   /// [author] accepts or withdraws the pending counter-offer on [task]
@@ -332,7 +417,8 @@ class TaskService {
   /// a task beforehand (PRODUCT.md §3), so two members can press "done" on the
   /// same task at once; the row lock inside this transaction means only the
   /// first commit sees `open` and wins, the other gets `TaskErrorReason.notOpen`
-  /// (PRODUCT.md §10.2).
+  /// (PRODUCT.md §10.2). A [claimant] alone in the home has nobody to validate
+  /// it, so it is paid at once, as a vote needing zero approvals would be.
   Future<Task> markDone(
     Session session, {
     required Task task,
@@ -352,21 +438,33 @@ class TaskService {
         throw TaskException(reason: TaskErrorReason.notOpen);
       }
 
-      return Task.db.updateRow(
+      final alone = await isAloneInGroup(
+        session,
+        claimant,
+        transaction: transaction,
+      );
+      final inValidation = await Task.db.updateRow(
         session,
         locked.copyWith(
           status: TaskStatus.inValidation,
           doneById: claimant.id,
-          voteClosesAt: DateTime.now().toUtc().add(_voteWindow(session)),
+          voteClosesAt: alone
+              ? null
+              : DateTime.now().toUtc().add(_voteWindow(session)),
         ),
         transaction: transaction,
       );
+      if (!alone) return inValidation;
+      return _payClaimant(session, inValidation, transaction: transaction);
     });
-    await _scheduleVoteExpiry(session, claimed);
+    if (claimed.status == TaskStatus.inValidation) {
+      await _scheduleVoteExpiry(session, claimed);
+    }
     await eventService.publish(
       session,
       groupId: claimed.groupId,
       kind: GroupEventKind.taskClaimed,
+      actorMemberId: claimant.id,
       taskId: claimed.id,
     );
     return claimed;
@@ -507,6 +605,7 @@ class TaskService {
       session,
       groupId: resolved.groupId,
       kind: GroupEventKind.taskValidated,
+      actorMemberId: voter.id,
       taskId: resolved.id,
     );
     return resolved;
@@ -694,4 +793,22 @@ class TaskService {
       );
     });
   }
+}
+
+/// Whether [member] is the only one left in their home, so no vote they open
+/// has anybody to cast it (PRODUCT.md §4.1).
+Future<bool> isAloneInGroup(
+  Session session,
+  GroupMember member, {
+  Transaction? transaction,
+}) async {
+  final others = await GroupMember.db.count(
+    session,
+    where: (t) =>
+        t.groupId.equals(member.groupId) &
+        t.leftAt.equals(null) &
+        t.id.notEquals(member.id!),
+    transaction: transaction,
+  );
+  return others == 0;
 }
