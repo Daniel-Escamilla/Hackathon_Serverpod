@@ -263,6 +263,50 @@ class TaskService {
     return countered;
   }
 
+  /// Takes back a proposal still being voted on, with or without a
+  /// counter-offer waiting: one made by mistake, or one the home will not
+  /// want. Only [member] who proposed it or the admin can, and it carries no
+  /// fine (PRODUCT.md §4.4, §7). The pending vote expiry finds no
+  /// `voteClosesAt` and does nothing.
+  Future<Task> withdrawProposal(
+    Session session, {
+    required Task task,
+    required GroupMember member,
+  }) async {
+    final withdrawn = await session.db.transaction((transaction) async {
+      final locked = await Task.db.findById(
+        session,
+        task.id!,
+        transaction: transaction,
+        lockMode: LockMode.forNoKeyUpdate,
+      );
+      if (locked == null) {
+        throw TaskException(reason: TaskErrorReason.taskNotFound);
+      }
+      if (locked.status != TaskStatus.proposed &&
+          locked.status != TaskStatus.counterOffered) {
+        throw TaskException(reason: TaskErrorReason.notOpen);
+      }
+      if (member.id != locked.proposedById &&
+          member.role != GroupMemberRole.admin) {
+        throw TaskException(reason: TaskErrorReason.notProposer);
+      }
+      return Task.db.updateRow(
+        session,
+        locked.copyWith(status: TaskStatus.withdrawn, voteClosesAt: null),
+        transaction: transaction,
+      );
+    });
+    await eventService.publish(
+      session,
+      groupId: withdrawn.groupId,
+      kind: GroupEventKind.taskWithdrawn,
+      actorMemberId: member.id,
+      taskId: withdrawn.id,
+    );
+    return withdrawn;
+  }
+
   /// [author] accepts or withdraws the pending counter-offer on [task]
   /// (PRODUCT.md §4.3). Accepting restarts the proposal vote from zero at the
   /// new price; withdrawing carries no fine.

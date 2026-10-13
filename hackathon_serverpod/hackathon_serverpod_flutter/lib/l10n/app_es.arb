@@ -437,7 +437,7 @@
   "@errorOwnTask": {
     "description": "Voting on or counter-offering your own proposal, or voting on your own completion"
   },
-  "errorNotProposer": "Solo quien propuso la tarea puede responder a la contraoferta.",
+  "errorNotProposer": "Eso solo puede hacerlo quien hizo la propuesta.",
   "@errorNotProposer": {
     "description": "Someone other than the proposer answered a counter-offer"
   },
@@ -868,5 +868,23 @@
   "typicalTaskFridge": "Limpiar la nevera",
   "@typicalTaskFridge": {"description":"Typical chore"},
   "typicalTaskBathroom": "Limpiar el baño",
-  "@typicalTaskBathroom": {"description":"Typical chore"}
+  "@typicalTaskBathroom": {"description":"Typical chore"},
+  "withdrawProposalTooltip": "Retirar la propuesta",
+  "@withdrawProposalTooltip": {"description": "Trash button on a proposal still being voted on"},
+  "withdrawTaskTitle": "¿Retirar esta tarea?",
+  "@withdrawTaskTitle": {"description": "Confirmation title before withdrawing a task proposal"},
+  "withdrawTaskBody": "Sale de la votación y no cuesta multa. Los votos que ya tenga se pierden.",
+  "@withdrawTaskBody": {"description": "Confirmation body before withdrawing a task proposal"},
+  "withdrawRewardTitle": "¿Retirar esta recompensa?",
+  "@withdrawRewardTitle": {"description": "Confirmation title before withdrawing a reward proposal"},
+  "withdrawRewardBody": "Sale de la tienda antes de que se vote y no cuesta multa.",
+  "@withdrawRewardBody": {"description": "Confirmation body before withdrawing a reward proposal"},
+  "withdrawAction": "Retirar",
+  "@withdrawAction": {"description": "Confirm button that withdraws a proposal"},
+  "withdrawError": "No se pudo retirar la propuesta",
+  "@withdrawError": {"description": "Withdrawing a proposal failed"},
+  "activityTaskWithdrawn": "{name} ha retirado una tarea",
+  "@activityTaskWithdrawn": {"description":"Activity: another member withdrew a task proposal","placeholders":{"name":{"type":"String"}}},
+  "activityRewardWithdrawn": "{name} ha retirado una recompensa",
+  "@activityRewardWithdrawn": {"description":"Activity: another member withdrew a reward proposal","placeholders":{"name":{"type":"String"}}}
 }

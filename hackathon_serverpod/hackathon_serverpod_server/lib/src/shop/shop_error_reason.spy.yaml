@@ -26,3 +26,5 @@ values:
   - purchaseNotOpen
   ### Only the member chosen to fulfil a purchase answers it or delivers it.
   - notProvider
+  ### Only whoever proposed a reward, or the admin, withdraws the proposal.
+  - notProposer

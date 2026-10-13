@@ -27,6 +27,9 @@ class ShopRepository {
   Future<void> voteReward(int itemId, bool approve) =>
       guardServerCall(() => client.shop.voteReward(itemId, approve));
 
+  Future<void> withdrawReward(int itemId) =>
+      guardServerCall(() => client.shop.withdrawReward(itemId));
+
   Future<Purchase> purchaseReward(int itemId, int providerId) =>
       guardServerCall(() => client.shop.purchaseReward(itemId, providerId));
 

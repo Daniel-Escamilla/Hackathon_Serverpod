@@ -763,7 +763,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorNotProposer =>
-      'Solo quien propuso la tarea puede responder a la contraoferta.';
+      'Eso solo puede hacerlo quien hizo la propuesta.';
 
   @override
   String get errorRewardNotFound => 'Esa recompensa ya no existe.';
@@ -1184,4 +1184,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get typicalTaskBathroom => 'Limpiar el baño';
+
+  @override
+  String get withdrawProposalTooltip => 'Retirar la propuesta';
+
+  @override
+  String get withdrawTaskTitle => '¿Retirar esta tarea?';
+
+  @override
+  String get withdrawTaskBody =>
+      'Sale de la votación y no cuesta multa. Los votos que ya tenga se pierden.';
+
+  @override
+  String get withdrawRewardTitle => '¿Retirar esta recompensa?';
+
+  @override
+  String get withdrawRewardBody =>
+      'Sale de la tienda antes de que se vote y no cuesta multa.';
+
+  @override
+  String get withdrawAction => 'Retirar';
+
+  @override
+  String get withdrawError => 'No se pudo retirar la propuesta';
+
+  @override
+  String activityTaskWithdrawn(String name) {
+    return '$name ha retirado una tarea';
+  }
+
+  @override
+  String activityRewardWithdrawn(String name) {
+    return '$name ha retirado una recompensa';
+  }
 }

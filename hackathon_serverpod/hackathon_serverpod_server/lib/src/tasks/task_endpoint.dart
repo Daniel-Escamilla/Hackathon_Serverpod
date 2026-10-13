@@ -106,6 +106,18 @@ class TaskEndpoint extends Endpoint {
     );
   }
 
+  /// Takes back a proposal still being voted on. Only the proposer or the
+  /// admin; no fine.
+  Future<Task> withdrawTask(Session session, int taskId) async {
+    final member = await currentGroupMember(session);
+    final task = await _findGroupTask(session, member, taskId);
+    return _taskService.withdrawProposal(
+      session,
+      task: task,
+      member: member,
+    );
+  }
+
   /// The proposer accepts or withdraws the pending counter-offer.
   Future<Task> respondToCounterOffer(
     Session session,

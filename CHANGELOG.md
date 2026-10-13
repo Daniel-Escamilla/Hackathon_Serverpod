@@ -45,6 +45,9 @@ is promoted, that section gets the new number and the date, the app's `version` 
 - **A home of one works on its own**: with nobody else to vote, a proposed task opens at once, a
   task marked done is paid at once and a proposed reward goes straight to the shop. Once someone
   joins, everything is voted again (PRODUCT.md §4.1).
+- **Withdrawing a proposal**: a bin on a task or reward still being voted on, for whoever proposed
+  it and for the admin. It asks first and costs no fine; a withdrawn reward is deleted with its
+  votes. The rest of the home sees it live and in Activity.
 - **A clearer new task screen** (#189): a line saying what to do, «o escribe la tuya» between the
   ideas and the form, and the description marked optional.
 - **Leaving a home** from the Casa tab (#141). If the admin leaves, the role goes to whoever has

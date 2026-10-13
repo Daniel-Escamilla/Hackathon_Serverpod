@@ -762,8 +762,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get errorOwnTask => 'You can\'t vote on your own task.';
 
   @override
-  String get errorNotProposer =>
-      'Only whoever proposed the task can answer the counter-offer.';
+  String get errorNotProposer => 'Only whoever made the proposal can do that.';
 
   @override
   String get errorRewardNotFound => 'That reward no longer exists.';
@@ -1185,4 +1184,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get typicalTaskBathroom => 'Clean the bathroom';
+
+  @override
+  String get withdrawProposalTooltip => 'Withdraw the proposal';
+
+  @override
+  String get withdrawTaskTitle => 'Withdraw this task?';
+
+  @override
+  String get withdrawTaskBody =>
+      'It leaves the vote and costs no fine. Any votes it already has are lost.';
+
+  @override
+  String get withdrawRewardTitle => 'Withdraw this reward?';
+
+  @override
+  String get withdrawRewardBody =>
+      'It leaves the shop before the vote ends and costs no fine.';
+
+  @override
+  String get withdrawAction => 'Withdraw';
+
+  @override
+  String get withdrawError => 'Could not withdraw the proposal';
+
+  @override
+  String activityTaskWithdrawn(String name) {
+    return '$name withdrew a task';
+  }
+
+  @override
+  String activityRewardWithdrawn(String name) {
+    return '$name withdrew a reward';
+  }
 }

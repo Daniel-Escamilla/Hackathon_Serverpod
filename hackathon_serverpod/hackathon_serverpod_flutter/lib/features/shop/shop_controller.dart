@@ -61,6 +61,11 @@ class ShopController extends ChangeNotifier {
     await load();
   }
 
+  Future<void> withdrawReward(int itemId) async {
+    await repository.withdrawReward(itemId);
+    await load();
+  }
+
   Future<Purchase> purchaseReward(int itemId, int providerId) async {
     final purchase = await repository.purchaseReward(itemId, providerId);
     await load();
