@@ -1,10 +1,10 @@
 # hackathon_serverpod_server
 
-This is the starting point for your Serverpod server.
+KarmaHome's Serverpod backend: endpoints, models, migrations and run-mode config.
 
-Start your server by running:
+Start it from this directory:
 
-    cd hackathon_serverpod
     serverpod start
 
-When you are finished, you can shut down the running server with `Q`.
+Stop it with `Q`. How to set it up the first time, run it in Docker, test it and deploy it is in the
+[root README](../../README.md).

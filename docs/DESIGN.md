@@ -7,7 +7,9 @@ haga, persona o agente— salga igual que las demás.
 La app es un juego de karma entre gente que vive junta, y el "playful" sale de ahí: del **tacto**
 (los botones rebotan), del **sonido** (pops, un "bling" al cobrar), de la **forma** (redondeada,
 colores planos, el trazo negro de los personajes) y de unas pocas **animaciones** que siempre
-significan lo mismo. No sale de degradados ni de emoji.
+significan lo mismo. No sale de degradados ni de emoji. La única excepción es el icono que cada
+tarea o recompensa lleva en su tarjeta: un emoji que se elige al proponerla de una lista cerrada
+(`task_icons.dart`, `reward_icons.dart`).
 
 El jurado no puntúa la presentación, pero sí el acabado. El estándar existe para que el acabado
 salga gratis: está dentro de los componentes, así que no hay que acordarse de él en cada pantalla.
@@ -53,6 +55,10 @@ karma es lo que lee la gente, no un cambio de modelo.
 | `MemberAvatar` | La foto de un miembro: el personaje de casa (taza, planta, calcetín…, en `assets/avatars/`) y el color que eligió en sus ajustes, o su inicial si aún no eligió. Un emoji elegido antes de los personajes se sigue viendo |
 | `showMessage` | Aviso abajo. Si es error, suena el "bonk" solo |
 | `confirmAction` | Pregunta antes de algo destructivo |
+| `IconPicker` | La rejilla de emoji para elegir el icono de una tarea o una recompensa |
+| `TrashButton` | La papelera redonda de una tarjeta cuya propuesta se puede retirar. Va dentro de la tarjeta y se queda el toque para ella |
+| `EmptyState` | Una lista vacía: la animación de vacío y una frase que dice qué aparecerá ahí |
+| `AppLottie` | Las animaciones, por su significado (`AppAnimation`), nunca por el nombre del fichero |
 
 ### Los cuatro tipos de `AppButton`
 
@@ -82,6 +88,11 @@ Y `loading: true` cambia el texto por una ruedita y lo bloquea mientras hay una 
 | `appSky` | `#A8D7FF` | Acento suave: la insignia de "tú" |
 | `appCoral` | `#FF776D` | Error, multa, acción destructiva |
 | `appMuted` | `#687086` | Texto secundario |
+
+**Modo oscuro**: gris suave, no negro, elegido en Mis ajustes y guardado en el dispositivo. Los
+colores de una pantalla se leen de `context.palette`, que cambia con el tema; los de la tabla son los
+del modo claro. Todo texto llega a 4.5:1 en oscuro: el violeta, el coral y el verde pasan a un tono
+claro cuando son texto o icono, y lo que va sobre un pastel mantiene la tinta oscura.
 
 **Tipografía**: Fredoka para los títulos (redondeada, es la que pone el tono) y Nunito Sans para
 todo lo demás. **Esquinas**: 20 en controles, 30 en tarjetas.

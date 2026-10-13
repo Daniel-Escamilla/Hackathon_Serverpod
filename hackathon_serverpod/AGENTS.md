@@ -104,7 +104,7 @@ A build installed on a device never goes through that route: it reads the checke
 The server enables Google only when `googleClientSecret` is in `config/passwords.yaml` (`server.dart` checks `pod.getPassword`), so a server without it boots and only the Google button fails — an error from "Entrar con Google" on a teammate's machine is most likely that missing key. `GoogleIdpEndpoint` is in `lib/src/auth/`, the web callback is `FlutterWebAuth2CallbackRoute` at `/auth/callback`, and the app's `lib/client.dart` holds the Web OAuth client id, which is public. The setup each person does is in the README, under "Sign in with Google".
 
 - **Never print, log, commit or paste the secret**, and never ask for it in the conversation. To check it is in place, parse `passwords.yaml` and report only whether the key exists. If someone needs it, point them to whoever holds it.
-- **On the web it only works from `http://localhost:8082`**, the origin registered in Google Cloud Console: the app built into `web/app` and served by `serverpod start`. `flutter run -d chrome` uses another port, and Google rejects it. That is expected, not a bug to fix in code.
+- **On the web it works from the two origins registered in Google Cloud Console**: `http://localhost:8082`, the app built into `web/app` and served by `serverpod start`, which returns to `/auth/callback`; and `http://localhost:8095`, `flutter run -d web-server --web-port 8095`, where a debug build returns to the static copy in `hackathon_serverpod_flutter/web/auth/callback.html` (`googleWebRedirectUri` in `lib/client.dart`). Any other port is rejected by Google; that is expected, not a bug to fix in code.
 - **On Android** the device's debug SHA-1 has to be registered in Google Cloud Console for `com.example.hackathon_serverpod_flutter`; the code has nothing to change for it. Changing the `applicationId` means a new Android OAuth client.
 
 ## Flutter conventions
@@ -196,7 +196,7 @@ For Serverpod-specific questions, prefer the documentation (or the local `server
 Graded deliverables beyond the code, all of it in English or with an English translation — the UI being in Spanish is fine, the submission materials are not:
 
 - **A repo URL** with all source, assets and instructions needed to make the Project work. A private repo that is not the one created under Serverpod's GitHub org has to be shared with `viktor@`, `alexander@` and `isak@serverpod.dev`.
-- **Build and run instructions.** A requirement, not a nicety. `scripts/run_on_phone.sh` and the Docker path are most of the answer already; the root `README.md` is the natural home for them and is currently stale.
+- **Build and run instructions.** A requirement, not a nicety. They are in the root `README.md`: the Docker path, native `serverpod start`, `scripts/run_on_phone.sh`, the tests and the Cloud deploy.
 - **A text description** of the features and how it was built, which **must disclose the use of AI and agentic tooling**. Using it is expressly encouraged; failing to disclose it is a rules breach.
 - **A demo video under 2 minutes**, publicly visible on YouTube or Vimeo, showing the Project running on its target device, free of third-party marks and music.
 - **Working access for testing** — a link, a demo or a test build — free and unrestricted until judging ends, with credentials included if anything is gated.
@@ -205,15 +205,17 @@ Third-party SDKs, APIs and data need to be licensed for this use; open-source co
 
 ## About this app
 
-A household-chores app where the group agrees on every task and pays for it in coins (see
-`docs/PRODUCT.md`). The look is Mayte's: Fredoka and Nunito Sans, violet on cream, held in
+KarmaHome: a household-chores app where the home agrees on every task and pays for it in karmas,
+the app's coins (see `docs/PRODUCT.md`). It is live on Serverpod Cloud at
+<https://karmahome.serverpod.space/>. The look is Mayte's: Fredoka and Nunito Sans, violet on cream, held in
 `lib/app_theme.dart`. `prototype_app.dart` started as her 2555-line static design reference and is
 now the app's real `MaterialApp` shell — `main.dart` runs it, and it points at `AuthGate`.
 
 What runs today, all against the server, is listed version by version in the root
-[`CHANGELOG.md`](../CHANGELOG.md). In short: accounts, groups and their admin, the whole task cycle
-with its fines, the shop from proposal to delivery, the wallet, and live updates for all of it.
-`docs/PLAN.md` says what is left and when. Endpoints the app does not call yet, all out of the MVP:
+[`CHANGELOG.md`](../CHANGELOG.md). In short: accounts (email and Google), homes and their admin, the whole task cycle
+with its fines, the shop from proposal to delivery, the wallet and the weekly ranking, and live
+updates for all of it, in Spanish and English, light and dark. `docs/PLAN.md` §10 says what came in
+and what is left for after the hackathon. Endpoints the app does not call yet, all out of the MVP:
 family mode's `requestWish` and `approveChildPurchase`.
 
 User-facing strings and the scripts are in Spanish; `run_on_phone.sh`

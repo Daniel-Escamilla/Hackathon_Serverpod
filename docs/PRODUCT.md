@@ -111,6 +111,11 @@ en lugar de rechazarla. El autor elige:
 **La primera contraoferta congela la votación:** mientras el autor no decide, nadie más vota ni
 contraoferta. Así hay siempre una sola oferta sobre la mesa, también en un piso de seis.
 
+**Retirar una propuesta en cualquier momento de la votación**, haya contraoferta o no: quien la hizo
+o el admin, con la papelera de su tarjeta, sin multa. Sirve para lo que se propuso por error. Vale
+igual para las recompensas que se están votando, que se borran con sus votos. Una vez aprobada ya no
+se retira. Decidido el 13 de octubre.
+
 ### 4.4 Multas
 
 | Qué pasa | Quién paga | Porcentaje sobre |
@@ -299,11 +304,14 @@ sitio para `family`, pero al crear un grupo solo se ofrecen piso y pareja.
   tiempo
 - Unidades de stock en la tienda
 - ~~Catálogo de tareas típicas para añadirlas de un toque~~: hecho el 6 de octubre
-- Traducción al inglés (los textos salen en ARB desde el primer día, así que es traducir, no rehacer)
+- ~~Traducción al inglés~~: hecha; se elige en Mis ajustes y por defecto sigue al teléfono
 
-**Descartado:** ruleta de asignación aleatoria · registro con Google · invitación por QR ·
-notificaciones push · **iOS**, porque la revisión de TestFlight no cabe en el calendario · dibujar la
-casa.
+**Entraron después, fuera de esta lista:** ~~registro con Google~~ (hecho el 30 de septiembre), ~~modo oscuro~~, ~~iconos en tareas y recompensas~~ y ~~una casa de una sola
+persona~~ ([§4.1](#41-mayoría-la-mitad-de-los-demás)).
+
+**Descartado:** ruleta de asignación aleatoria · invitación por QR · notificaciones push (quedan
+como issues para después del hackathon) · **iOS**, porque la revisión de TestFlight no cabe en el
+calendario · dibujar la casa.
 
 ## 10. Arquitectura
 
@@ -380,20 +388,21 @@ Con `FutureCall` de Serverpod, sin depender de que nadie tenga la app abierta:
 
 ### 10.6 Autenticación
 
-Ya está montada en `lib/server.dart`: identidad por email con JWT (`serverpod_auth_idp`). En
-desarrollo, los códigos de verificación salen por la consola del servidor, así que se puede probar sin
-correo. En Serverpod Cloud los correos se envían de verdad.
+Ya está montada en `lib/server.dart`: identidad por email y por **Google**, con JWT
+(`serverpod_auth_idp`). En desarrollo, los códigos de verificación salen por la consola del servidor,
+así que se puede probar sin correo. En Serverpod Cloud los correos se envían de verdad. Google se
+activa solo si el servidor tiene `googleClientSecret`; cómo se configura está en el README.
 
 La **entrada de los hijos con código** no encaja de serie en el proveedor de email y hay que resolverla
 (ver [Decisiones pendientes](#13-decisiones-pendientes)); está en "si da tiempo".
 
 ### 10.7 Despliegue y plataformas
 
-- **Android** (APK) y **web**, y también **iOS**, que es viable porque el equipo tiene Mac y cuenta de
-  desarrollador de Apple. Ojo con el calendario: la revisión de TestFlight tarda, así que iOS no puede
-  quedarse para los últimos días.
-- Los jueces entran por la **web servida por el propio Serverpod** en Serverpod Cloud: un enlace,
-  gratis y sin instalar nada. Es el acceso de prueba que exigen las reglas.
+- **Android** (APK) y **web**. iOS quedó fuera el 18 de septiembre: la revisión de TestFlight no
+  cabía en el calendario ([§9](#9-alcance-por-prioridad)).
+- Los jueces entran por la **web servida por el propio Serverpod** en Serverpod Cloud
+  (<https://karmahome.serverpod.space/>): un enlace, gratis y sin instalar nada. Es el acceso de
+  prueba que exigen las reglas. El APK se descarga desde `descargar.html` en el mismo sitio.
 - Desplegar es decisión del equipo, no un efecto secundario: `serverpod cloud launch` crea un servicio
   vivo y facturable. El **mes gratis de Serverpod Cloud** empieza a contar cuando se activa, y el
   despliegue tiene que seguir en pie hasta que termine el jurado el **20 de octubre**: activarlo antes
@@ -410,7 +419,9 @@ Entrada
   └─ "Soy un hijo: tengo un código" ─► Inicio
 ```
 
-**Inicio**, con la cartera siempre visible arriba (ya está en la app) y tres pestañas deslizables:
+**Inicio**, con el saldo siempre visible arriba y cuatro pestañas: Tareas, Tienda, Karma (la
+cartera y su historial) y Casa. Pasar de una a otra deslizando el dedo es la issue #46, aún abierta.
+Así se pensó en septiembre:
 
 | Pestaña | Qué hay |
 |---|---|
@@ -422,13 +433,13 @@ Pantallas de detalle: **tarea** (votar, contraofertar, pulsar "hecha", ver quié
 **recompensa** (comprar y elegir a quién le toca) y **proponer tarea** (título, descripción, monedas,
 puntual o misión).
 
-Diseño: Mayte lo está preparando. Mientras tanto vale lo que hay — tema claro, tipografía Archivo,
-pestañas deslizables y las monedas en la barra superior.
+Diseño: el estándar Playful UI de Mayte, en [`DESIGN.md`](DESIGN.md) — Fredoka y Nunito Sans,
+violeta sobre crema, con tema claro y oscuro.
 
 ## 12. Idioma
 
-La interfaz va en **español e inglés**: se desarrolla en español y se traduce (está en "si da tiempo",
-pero conviene no dejarlo para el último día, porque el jurado es internacional). Los **materiales de la
+La interfaz va en **español e inglés**: se desarrolla en español y se traduce. Las dos están completas;
+cada persona elige en Mis ajustes, y por defecto la app sigue el idioma del teléfono. Los **materiales de la
 entrega van en inglés obligatoriamente**: descripción, instrucciones y vídeo.
 
 ## 13. Decisiones pendientes
@@ -465,12 +476,12 @@ Entregables que no son código, y que puntúan:
   llegar a abrir la app, así que el vídeo tiene que enseñar el ciclo completándose de verdad.
 - **Descripción del proyecto** en inglés, que **debe declarar el uso de IA y de herramientas
   agénticas**. Usarlas está bien visto; no declararlo incumple las reglas.
-- **Instrucciones de compilación y ejecución** (ya casi están en el `README.md`).
+- **Instrucciones de compilación y ejecución**, en el `README.md`.
 - **Acceso de prueba gratuito** hasta que termine el jurado, y aquí hay un problema propio de esta app:
   **un ciclo necesita dos personas y el juez la abre solo**. Se resuelve entregando **las credenciales
   de dos cuentas de una pareja**, con un grupo ya montado (tareas propuestas, tienda con recompensas y
   algo de historial), para que abra las dos y vea la votación decidir al instante. Hace falta un script
   que siembre ese grupo en el servidor desplegado y volver a sembrarlo si alguien lo deja hecho un
-  desastre.
+  desastre: `scripts/sembrar_demo.sh`, con Ana y Leo.
 - Dos premios aparte, que se acumulan: el **formulario de feedback** (apuntar la fricción con Serverpod
   según aparece, no reconstruirla el 14 de octubre) y un **post público** con `#buildsomethingreal`.

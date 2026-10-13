@@ -60,7 +60,7 @@ is promoted, that section gets the new number and the date, the app's `version` 
   show it in Activity (#140).
 - **Demo accounts for the judges.** `scripts/sembrar_demo.sh` builds a couple, Ana and Leo, with
   some history, two tasks to claim and the shop, through a `demo.reseed` endpoint that only answers
-  with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again.
+  with the server's `demoSeedSecret`. It wipes the previous demo first, so it can be run again. Every demo task carries its icon.
 - **House characters instead of emoji avatars.** Eight characters drawn for the app (a mug, a
   plant, a sock, a sponge, a teapot, a toast, a bucket and a light bulb) on the member's colour.
   An emoji picked before them is still shown.
@@ -76,6 +76,10 @@ is promoted, that section gets the new number and the date, the app's `version` 
   them in English too.
 - **Placeholders without teammates' names**: the email field suggests `tu@example.com` and a new
   home «Nuestro piso».
+- **Google sign-in under `flutter run` on the web**: a debug build returns to a static copy of
+  Serverpod's callback page in `web/auth/`, so the everyday loop on `localhost:8095` signs in too.
+- **Docs brought up to date for the submission**: the README (how to try it, the app's tests,
+  status), the submission text, the feedback log, the product spec and the plan's outcome.
 - **A fine from the task cycle now sounds in the wallet.** Only shop fines played the fine sound;
   a denied proposal, a denied validation and an expired vote are fines too.
 
