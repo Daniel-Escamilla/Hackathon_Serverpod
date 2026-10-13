@@ -12,6 +12,10 @@ is promoted, that section gets the new number and the date, the app's `version` 
 
 ## [Unreleased]
 
+## [1.0.0] - 2026-10-13
+
+The submission to the Build Something Real hackathon.
+
 ### Added
 
 - **Dark mode**, a soft grey rather than black, switched from Mis ajustes and kept on the device.
@@ -161,5 +165,6 @@ backend, between phones and in real time.
   ranking screen and handing over the admin role (their endpoints exist, the app does not call
   them).
 
-[Unreleased]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/compare/v0.1.0...develop
+[Unreleased]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/compare/v1.0.0...develop
+[1.0.0]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/compare/v0.1.0...v1.0.0
 [0.1.0]: https://github.com/Daniel-Escamilla/Hackathon_Serverpod/releases/tag/v0.1.0
